@@ -24,3 +24,37 @@ This project focuses on optimizing the Canvas rendering pipeline to smoothly dis
 * **Physical Keypad Support:** Smooth navigation and control using the D-Pad and number keys.
 * **Highly Customizable:** Supports a full 128-key piano display, customizable track colors, and adjustable note falling speeds.
 * **WebAudio Synthesizer:** Built-in lightweight audio synth that minimizes RAM usage on low-end devices.
+
+---
+
+## Installation Guide for KaiOS 2.5 (Sideloading)
+
+To install this app on your KaiOS 2.5 device, choose **one of the two methods** below:
+
+### Prerequisites
+Enable **Debug Mode** on your KaiOS 2.5 phone:
+1. Open the Phone app and dial: `*#*#33284#*#*` *(a bug icon will appear in the status bar)*.
+2. Or go to **Settings > Device > Developer > Debugger > Select ADB & DevTools**.
+
+---
+
+### Method 1: WebIDE / Waterfox Classic (For Developers & Direct Sideloading)
+
+1. **Preparation:**
+   * Download [ADB Platform Tools](https://developer.android.com/studio/releases/platform-tools) on your computer.
+   * Download a WebIDE-compatible browser like **Waterfox Classic** or **Firefox v59 / ESR 52**.
+2. **Connect Phone to PC:**
+   * Connect your phone to your PC via USB cable.
+   * Open Terminal / Command Prompt and verify the connection:
+     ```bash
+     adb devices
+     ```
+   * Forward the debugger port (for KaiOS 2.5):
+     ```bash
+     adb forward tcp:6000 localfilesystem:/data/local/debugger-socket
+     ```
+3. **Install Application:**
+   * Open **Waterfox Classic / Firefox** and press `Shift + F8` to open **WebIDE**.
+   * In the right panel, select **Remote Runtime** (Port `6000`).
+   * In the left panel, select **Open Packaged App...** and select your project folder (containing `manifest.webapp`).
+   * Click the **Play** (Triangle) button in the top toolbar to build and run the app directly on your phone.
