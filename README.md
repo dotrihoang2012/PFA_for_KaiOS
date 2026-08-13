@@ -11,3 +11,16 @@
 </p>
 
 </div>
+
+**Piano From Above (FPA)** for **KaiOS 2.5** is a MIDI visualizer optimized for smart feature phones (Nokia 2720 Flip, Nokia 8000 4G, Nokia 6300 4G, Nokia 8110 4G, JioPhone, etc.).
+
+This project focuses on optimizing the Canvas rendering pipeline to smoothly display high-density **Black MIDI** tracks with massive note counts on hardware-constrained KaiOS 2.5 devices.
+
+---
+
+## Key Features
+
+* **Black MIDI Optimization:** Lightweight rendering algorithms handle tens of thousands of notes without severe FPS drops.
+* **Physical Keypad Support:** Smooth navigation and control using the D-Pad and number keys.
+* **Highly Customizable:** Supports a full 128-key piano display, customizable track colors, and adjustable note falling speeds.
+* **WebAudio Synthesizer:** Built-in lightweight audio synth that minimizes RAM usage on low-end devices.
