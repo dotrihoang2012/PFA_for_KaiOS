@@ -58,3 +58,34 @@ Enable **Debug Mode** on your KaiOS 2.5 phone:
    * In the right panel, select **Remote Runtime** (Port `6000`).
    * In the left panel, select **Open Packaged App...** and select your project folder (containing `manifest.webapp`).
    * Click the **Play** (Triangle) button in the top toolbar to build and run the app directly on your phone.
+
+---
+
+### Method 2: OmniSD / Gerda File Manager / Wallace Toolbox (.zip File)
+
+1. **Package the App:**
+   * Zip all files in the project folder (including `manifest.webapp`, `index.html`, `js/`, `css/`, `icons/`, etc.) into a `.zip` archive (e.g., `fpa-kaios.zip`).
+   * *Note:* Zip the contents directly inside the project root, not the parent folder itself.
+2. **On your Phone:**
+   * Copy `fpa-kaios.zip` to your SD card or internal storage.
+   * Open **OmniSD**, **Gerda File Manager**, or **Wallace Toolbox** on KaiOS 2.5.
+   * Select `fpa-kaios.zip` and press **Install**.
+   * Once installed, **Piano From Above** will appear on your app launcher menu.
+
+---
+
+## Contributing
+
+Contributions to optimize Canvas rendering performance or reduce memory consumption for massive Black MIDI files are highly appreciated!
+
+1. Fork this repository.
+2. Create a feature branch (`git checkout -b feature/OptimizeCanvas`).
+3. Commit your changes (`git commit -m 'Optimize frame rendering time'`).
+4. Push to the branch (`git push origin feature/OptimizeCanvas`).
+5. Open a **Pull Request**.
+
+---
+
+## License
+
+This project is released under the [MIT License](LICENSE).
