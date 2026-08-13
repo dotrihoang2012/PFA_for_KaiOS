@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>MIDI Player</title>
+<link rel="stylesheet" href="css/kaiui.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+<div id="statusbar-placeholder"></div>
+<main id="viewport">
+  <canvas id="main-canvas"></canvas>
+ <div id="hud">
+   <span id="hud-note-count">0 notes</span>
+   <span id="hud-speed">1.0x</span>
+   <span id="hud-time">00:00</span>
+   <span id="hud-fps">0 FPS</span>
+   <span id="now-playing" class="hidden"></span>
+</div>
+ <div id="parse-bar" class="hidden">
+   <div id="parse-bar-fill"></div>
+</div>
+</main>
+<footer id="softkey-bar" class="kai-softkey">
+  <button id="sk-left" class="sk-left">Options</button>
+  <button id="sk-center" class="sk-center">Select</button>
+  <button id="sk-right" class="sk-right">Back</button>
+</footer>
+<div id="menu-overlay" class="kai-om-overlay hidden">
+ <div class="kai-om">
+   <header>Options</header>
+   <nav id="menu-list">
+     <div tabindex="-1" class="kai-om-item" data-action="load-midi">Load MIDI</div>
+     <div tabindex="-1" class="kai-om-item" data-action="fullscreen">Full Screen</div>
+     <div tabindex="-1" class="kai-om-item" data-action="volume">Volume</div>
+     <div tabindex="-1" class="kai-om-item has-submenu" data-action="midi-output">MIDI-OUT Settings</div>
+     <div tabindex="-1" class="kai-om-item has-submenu" data-action="visual">Visual Settings</div>
+     <div tabindex="-1" class="kai-om-item" data-action="rotate">Rotate Screen</div>
+ </nav>
+</div>
+</div>
+<div id="settings-overlay" class="kai-om-overlay hidden" data-group="midi">
+ <div class="kai-om">
+   <header>MIDI Output</header>
+   <nav id="settings-list"></nav>
+</div>
+</div>
+<div id="loading-screen" class="loading-overlay hidden">
+  <div class="loading-spinner"></div>
+  <p>Loading</p>
+</div>
+</div>
+<script src="js/utils/constants.js"></script>
+<script src="js/utils/l10n.js"></script>
+<script src="js/midi/tempo.js"></script>
+<script src="js/midi/midiParser.js"></script>
+<script src="js/midi/sequencer.js"></script>
+<script src="js/audio/synth.js"></script>
+<script src="js/audio/soundbank.js"></script>
+<script src="js/render/keyboard.js"></script>
+<script src="js/render/notes.js"></script>
+<script src="js/render/hud.js"></script>
+<script src="js/store/state.js"></script>
+<script src="js/input/bindings.js"></script>
+<script src="js/ui/settings.js"></script>
+<script src="js/input/controls.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

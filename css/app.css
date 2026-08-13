@@ -1,0 +1,145 @@
+/* === APP-SPECIFIC LAYOUT (absolute positioning — no flexbox) ===
+   Matches reference audio-visualizer pattern: canvas is base layer,
+   chrome elements are absolutely positioned on top. No flex = no
+   per-frame layout recalculation on KaiOS Gecko 48 compositor. */
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Status-bar placeholder — solid black strip at the top mimicking
+   the KaiOS system status bar zone. Prevents the OS bar from
+   overlapping our HUD/canvas when the app window shifts during
+   MozActivity wake-up (the shell briefly reports a different
+   viewport height before settling). The strip below pushes all
+   real content below the system bar area. */
+#statusbar-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: #000;
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* Header REMOVED — no chrome at the top of the app. Only softkey now. */
+#softkey-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+}
+
+#viewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Canvas fills the whole viewport — sized from screen.availWidth/Height in JS */
+#main-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+/* === HUD (overlay on canvas — single thin bar, pointer-events:none) === */
+#hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 8px;
+  font-size: 10px;
+  color: #ccc;
+  background: rgba(0,0,0,0.45);
+  pointer-events: none;
+  z-index: 20;
+  height: 16px;
+  line-height: 16px;
+  box-sizing: border-box;
+}
+
+#hud-note-count { color: #fff; font-weight: bold; }
+#hud-speed      { color: #ccc; }
+#hud-time       { color: #ccc; }
+#hud-fps        { color: #888; }
+
+/* === NOW PLAYING TOAST === */
+#now-playing {
+  position: absolute;
+  bottom: 38px;
+  left: 8px;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  z-index: 30;
+  text-shadow: 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+}
+
+#now-playing.fade-in  { opacity: 1; }
+#now-playing.fade-out { opacity: 0; }
+
+/* === FULLSCREEN ADJUSTMENTS === */
+#app.fullscreen #softkey-bar {
+  display: none;
+}
+#app.fullscreen #now-playing {
+  bottom: 8px;
+}
+
+/* ===========================================
+   VISUAL THEMES — selected via Visual → Theme.
+   Theme tokens apply to canvas background,
+   HUD text color, and piano black-key tint.
+   Settings sub-page UI (flat blue) is NOT
+   themed; only mention-of-canvas/HUD/piano change.
+   =========================================== */
+:root,
+:root[data-theme="dark"] {
+  --theme-bg:      #0a0a0a;
+  --theme-fg:      #ffffff;
+  --theme-fg-dim:  #cccccc;
+  --theme-piano-black: #1a1a1a;
+}
+
+:root[data-theme="light"] {
+  --theme-bg:      #f7f7f3;
+  --theme-fg:      #202020;
+  --theme-fg-dim:  #555555;
+  --theme-piano-black: #2a2a2a;
+}
+
+:root[data-theme="blue"] {
+  --theme-bg:      #001a33;
+  --theme-fg:      #cce6ff;
+  --theme-fg-dim:  #6699cc;
+  --theme-piano-black: #051a2a;
+}
+
+:root[data-theme="purple"] {
+  --theme-bg:      #1a0a26;
+  --theme-fg:      #e0cce6;
+  --theme-fg-dim:  #996699;
+  --theme-piano-black: #180520;
+}
+
+/* HUD adapts to theme foreground */
+:root[data-theme="light"] #hud { color: var(--theme-fg); }
+:root[data-theme="light"] #hud-note-count { color: var(--theme-fg); }

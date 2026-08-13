@@ -1,0 +1,650 @@
+/* ===========================================
+   kaiui.css — Softkey + menu overlay only (header removed)
+   =========================================== */
+
+/* --- Design Tokens (from KaiUI theme.scss) --- */
+:root {
+  /* Greyscale */
+  --color-gs100: #000000;
+  --color-gs90:  #323232;
+  --color-gs70:  #6a6a6a;
+  --color-gs45:  #8c8c8c;
+  --color-gs20:  #cccccc;
+  --color-gs10:  #e6e6e6;
+  --color-gs00:  #ffffff;
+
+  /* Highlight */
+  --color-purple: #873eff;
+  --color-purple-dark: #320374;
+
+  /* KaiOS native softkey colors (from SoftKey.scss) */
+  --softkeybar-background-color: var(--color-gs20);
+  --softkey-color: var(--color-gs90);
+  --softkey-background-color--active: #00aacc;
+
+  /* Layout (matches theme/layout.scss) */
+  --softkeybar-height: 3.0rem;
+  --header-height:      2.8rem;
+  --list-item-height:   6.0rem;
+  --separator-height:   2.4rem;
+
+  /* Option Menu */
+  --option-menu-color: var(--color-gs90);
+  --option-menu-item-height: 5.0rem;
+}
+
+/* --- Global Reset --- */
+html, body {
+  /* Lock the root font-size so KaiUI's `rem` values translate to pixel
+     numbers the JS renderer can match. Without this, 2.8rem = 44.8px
+     (browser default 16), and KaiUI's design tokens (header 2.8rem,
+     softkey 3rem) end up much larger than expected — pianos get cut. */
+  font-size: 10px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 10px;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-gs100);
+  color: var(--color-gs00);
+  /* Match the Gaiamobile settings convention: every visible section
+     offsets its top by --statusbar-height. Setting it here on :root
+     means CSS / JS can both query it. */
+}
+:root {
+  --statusbar-height: 5px;
+}
+
+/* Gaia icons font — loaded from fonts/gaia-icons.ttf (copied from Gaia
+   shared/elements/gaia-icons). Used inside Options menu + Settings rows
+   to render OS-native "forward" arrow glyph. */
+@font-face {
+  font-family: 'gaia-icons';
+  src: url('../fonts/gaia-icons.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+.gaia-icon,
+[data-icon]::before {
+  font-family: 'gaia-icons';
+  content: attr(data-icon);
+  display: inline-block;
+  font-weight: 500;
+  font-style: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================
+   HEADER — white background, black bold text
+   Height: 2.8rem
+   ============================================ */
+.kai-header-bg {
+  background: var(--color-gs00);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--header-height);
+  width: 100%;
+  outline: none;
+  padding: 0 1rem;
+}
+
+.kai-header-bg h1 {
+  width: 100%;
+  height: 100%;
+  color: var(--color-gs100);
+  font-weight: 600;
+  font-size: 1.7rem;
+  text-align: center;
+  padding: 0 1rem;
+  margin: 0;
+  line-height: var(--header-height);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ============================================
+   SOFTKEYS — kai-softkey (from KaiUI SoftKey.scss)
+   Background: #ccc (gs20), Text: #323232 (gs90)
+   Position: absolute bottom
+   Z-Index: 9999
+   ============================================ */
+.kai-softkey {
+  z-index: 9999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  outline: none;
+  text-align: center;
+  color: var(--softkey-color);
+  background-color: var(--softkeybar-background-color);
+  flex-shrink: 0;
+  width: 100%;
+  height: var(--softkeybar-height);
+  overflow: hidden;
+}
+
+/* Left softkey button */
+.kai-softkey .sk-left {
+  font-weight: 600;
+  font-size: 1.4rem;
+  text-transform: capitalize;
+  min-width: 7.2rem;
+  padding: 0 0.5rem;
+  text-align: left;
+  color: var(--softkey-color);
+  background: none;
+  border: none;
+  height: var(--softkeybar-height);
+  line-height: var(--softkeybar-height);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Center softkey text */
+.kai-softkey .sk-center {
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  min-width: 3rem;
+  max-width: 7.6rem;
+  padding: 0 0.5rem;
+  color: var(--softkey-color);
+  background: none;
+  border: none;
+  height: var(--softkeybar-height);
+  line-height: var(--softkeybar-height);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Right softkey button */
+.kai-softkey .sk-right {
+  font-weight: 600;
+  font-size: 1.4rem;
+  text-transform: capitalize;
+  min-width: 7.2rem;
+  padding: 0 0.5rem;
+  text-align: right;
+  color: var(--softkey-color);
+  background: none;
+  border: none;
+  height: var(--softkeybar-height);
+  line-height: var(--softkeybar-height);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Softkey active/pressed state */
+.kai-softkey .sk-left:active,
+.kai-softkey .sk-right:active,
+.kai-softkey .sk-center:active {
+  background-color: var(--softkey-background-color--active);
+  color: var(--color-gs00);
+}
+
+/* ============================================
+   OPTION MENU / SETTINGS — kai-om (panel-style)
+   Matches settings.gaiamobile.org pattern: each panel is
+   a full-bleed screen (canvas + header + items + softkey
+   bay). Transition is horizontal (translateX) — when user
+   drills into a sub-page, the current panel slides OFF
+   to the LEFT and the next panel slides IN from the RIGHT.
+   Back does the reverse. Header doesn't grow, items stay
+   at full KaiUI 6rem.
+   ============================================ */
+
+.kai-om-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--softkeybar-height));
+  z-index: 100;
+  overflow: hidden;
+  background: var(--color-gs00);
+  /* Default = hidden. visibility:hidden (not display:none) keeps the
+     element in the render tree so toggling .hidden gives an instant
+     show without re-layout of the rest of the page. */
+  visibility: hidden;
+}
+.kai-om-overlay:not(.hidden) {
+  visibility: visible;
+}
+/* Override the global .hidden { display: none !important } just for
+   kai-om-overlay, so the panel can still occupy layout space if a
+   future tweak wants to slide it in. For now the rule is harmless. */
+.kai-om-overlay.hidden {
+  display: none !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+/* Override for our drill-back path: when the Options menu should
+   slide OUT to the LEFT while the Settings overlay is sliding IN
+   from the RIGHT, both panels must stay in the render tree. We use
+   a separate class (instead of .hidden) so we keep the original
+   visibility-hides-immediately behaviour for the very first open. */
+.kai-om-overlay.off-screen {
+  display: block;
+  visibility: visible;
+  pointer-events: none;
+}
+/* Horizontal slide between Options menu and Settings sub-page.
+   Matches upgrade-tool pattern: 0.15s translateX. The Options menu
+   opens/closes instantly (no slide) — slide is reserved for the
+   drill-into-settings transition only. Both panels remain mounted
+   during the transition; Options exits LEFT, Settings enters RIGHT,
+   so user sees a simultaneous horizontal slide instead of a swap. */
+@keyframes slideFromRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes slideFromLeft  { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+@keyframes slideToLeft    { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+@keyframes slideToRight   { from { transform: translateX(0); } to { transform: translateX(100%); } }
+.slide-enter-fwd  { animation: slideFromRight 0.15s ease forwards; }
+.slide-enter-back { animation: slideFromLeft  0.15s ease forwards; }
+.slide-exit-fwd   { animation: slideToLeft    0.15s ease forwards; pointer-events: none; }
+.slide-exit-back  { animation: slideToRight   0.15s ease forwards; pointer-events: none; }
+/* (slide rules removed — menu/settings now show instantly) */
+
+#menu-overlay .kai-om,
+#settings-overlay .kai-om {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--color-gs00);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Panel header — matches default KaiUI OptionMenu separator height
+   (2.4rem); upped to 2.8rem so the title of "Options" / "MIDI Output"
+   / "Visual" reads as a proper page heading, not a ribbon. Still
+   noticeably thinner than a list item (6rem) so the panel does not
+   look top-heavy. */
+.kai-om > header {
+  text-align: center;
+  padding: 0 1.6rem;
+  line-height: 2.8rem;
+  height: 2.8rem;
+  color: var(--color-gs90);
+  background: var(--color-gs20);
+  font-weight: 500;
+  font-size: 1.7rem;
+  flex-shrink: 0;
+}
+
+/* Items container — flex fills remaining height so long lists scroll
+   inside the panel instead of overflowing off the bottom of the screen. */
+#menu-overlay .kai-om > nav,
+#settings-overlay .kai-om > nav {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  background: var(--color-gs00);
+  /* Hint the compositor: scrolling will happen, so promote to its own layer
+     on Gecko 48 (KaiOS) — avoids per-frame layer recomputation. */
+  will-change: scroll-position;
+}
+
+.kai-om-item {
+  width: 100%;
+  min-height: 6rem;
+  padding: 0 1.6rem;
+  color: var(--option-menu-color);
+  background: var(--color-gs00);
+  font-weight: 400;
+  font-size: 1.7rem;
+  line-height: 6rem;
+  border-bottom: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  outline: none;
+  /* Keep menu labels on one line; without this, "MIDI-OUT Settings"
+     wraps onto two lines and KaiOS Gecko inserts a hyphen between
+     the wrapped chunks. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Focused item — blue highlight + white text (matches Settings sub-page) */
+.kai-om-item:focus,
+.kai-om-item.focused {
+  color: var(--color-gs00);
+  background: #0066cc;
+}
+
+/* ============================================
+   LOADING SCREEN (KaiOS style)
+   ============================================ */
+.loading-overlay {
+  position: absolute;
+  top: var(--header-height);
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--header-height) - var(--softkeybar-height));
+  z-index: 200;
+  background: var(--color-gs100);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* Simple CSS spinner matching Kai's */
+.loading-spinner {
+  width: 4rem;
+  height: 4rem;
+  border: 0.4rem solid var(--color-gs90);
+  border-top-color: var(--color-purple);
+  border-radius: 50%;
+  animation: kai-spin 0.8s linear infinite;
+}
+
+@keyframes kai-spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-overlay p {
+  color: var(--color-gs20);
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+/* ============================================
+   PARSE PROGRESS (indeterminate bar in header)
+   Mimics gaia-progress from upgrade-tool
+   ============================================ */
+#parse-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0.3rem;
+  background: #aaa;
+  overflow: hidden;
+  z-index: 25;
+  pointer-events: none;
+}
+
+#parse-bar-fill {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--color-purple);
+}
+
+#parse-bar.indeterminate #parse-bar-fill {
+  left: -100%;
+  animation: kaiParseSweep 1.2s ease-in-out infinite;
+}
+
+@keyframes kaiParseSweep {
+  0%   { left: -100%; }
+  50%  { left: 0%; }
+  100% { left: 100%; }
+}
+
+/* ============================================
+   FULLSCREEN — hide chrome, fill overlays to full viewport
+   ============================================ */
+#app.fullscreen .kai-header-bg {
+  height: 0;
+  overflow: hidden;
+}
+#app.fullscreen .kai-softkey {
+  height: 0;
+  overflow: hidden;
+}
+#app.fullscreen #parse-bar {
+  display: none;
+}
+
+/* Fullscreen: panel needs to span full viewport (no softkey padding)
+   AND still slide horizontally. */
+#app.fullscreen .kai-om-overlay {
+  top: 0;
+  height: 100%;
+}
+
+/* Solid white backdrop inside the menu/settings panel — keeps canvas
+   from ghosting through. */
+#menu-overlay .kai-om,
+#settings-overlay .kai-om {
+  background: var(--color-gs00);
+}
+.kai-om-item {
+  background: var(--color-gs00);
+}
+
+/* ============================================
+   SETTINGS SUB-PAGE — row layout, blue flat style
+   Mirrors kaiui .kai-om-item, with the value on the right edge.
+   ============================================ */
+#settings-list {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-gs00);
+}
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 5rem;
+  padding: 0 1.6rem;
+  color: var(--option-menu-color);
+  background: var(--color-gs00);
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 5rem;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  border-bottom: none;
+}
+.setting-row-slider {
+  display: flex;
+  flex-direction: column;
+  min-height: 5rem;
+  padding: 0 1.6rem;
+  background: var(--color-gs00);
+  outline: none;
+  border-bottom: 1px solid var(--color-gs20);
+}
+.setting-row-slider-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5rem;
+}
+.setting-row-slider.focused {
+  background: #0066cc;
+  color: var(--color-gs00);
+}
+.setting-row-slider-line {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  width: 100%;
+}
+.setting-row-slider-header {
+  font-weight: 700;
+  font-size: 1.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.setting-row-slider-tracker {
+  font-weight: 500;
+  font-size: 1.4rem;
+  color: inherit;
+  opacity: 0.7;
+  margin-left: 1rem;
+  flex-shrink: 0;
+}
+.setting-row-slider.focused .setting-row-slider-tracker {
+  opacity: 0.9;
+}
+/* Slider track + thumb (CSS vars drive the fill). */
+.setting-row-slider input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2rem;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  --range: calc(var(--max) - var(--min));
+  --ratio: calc((var(--val) - var(--min)) / var(--range));
+  --sx: calc(0.5 * 2rem + var(--ratio) * (100% - 2rem));
+  --slider-fill: #0066cc;
+  --slider-track: #cccccc;
+  --slider-thumb-border-color: #ffffff;
+}
+.setting-row-slider.focused input[type="range"] {
+  /* Focused state: keep blue fill, cyan track (KaiUI blue theme). */
+  --slider-fill: #0066cc;
+  --slider-track: #5ce6f4;
+  --slider-thumb-border-color: #0066cc;
+}
+/* Fix: Thumb luôn trắng, viền xanh dương khi hàng được focus */
+.setting-row-slider.focused input[type="range"]::-webkit-slider-thumb {
+  background: #ffffff !important;
+  border: 0.3rem solid #0066cc !important;
+  box-shadow: none;
+}
+.setting-row-slider.focused input[type="range"]::-moz-range-thumb {
+  background: #ffffff !important;
+  border: 0.3rem solid #0066cc !important;
+}
+
+.setting-row-slider.focused input[type="range"]::-ms-thumb {
+  background: #ffffff !important;
+  border: 0.3rem solid #0066cc !important;
+}
+.setting-row-slider input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 0.5rem;
+  background: linear-gradient(var(--slider-fill), var(--slider-fill)) 0 / var(--sx) 100% no-repeat var(--slider-track);
+  border-radius: 50px;
+  border: none;
+}
+.setting-row-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 2rem;
+  height: 2rem;
+  border: 0.3rem solid #ffffff;
+  border-radius: 50%;
+  background: var(--slider-fill);
+  margin-top: -0.75rem;
+  cursor: pointer;
+}
+.setting-row-slider input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 0.5rem;
+  background: var(--slider-track);
+  border-radius: 50px;
+  border: none;
+}
+.setting-row-slider input[type="range"]::-moz-range-progress {
+  height: 0.5rem;
+  background: var(--slider-fill);
+  border-radius: 50px;
+}
+.setting-row-slider input[type="range"]::-moz-range-thumb {
+  width: 2rem;
+  height: 2rem;
+  border: 0.3rem solid #ffffff;
+  border-radius: 50%;
+  background: var(--slider-fill);
+  cursor: pointer;
+}
+.setting-row-slider input[type="range"]::-ms-track {
+  width: 100%;
+  height: 0.5rem;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+.setting-row-slider input[type="range"]::-ms-fill-lower {
+  background: var(--slider-fill);
+  border-radius: 50px;
+}
+.setting-row-slider input[type="range"]::-ms-fill-upper {
+  background: var(--slider-track);
+  border-radius: 50px;
+}
+.setting-row-slider input[type="range"]::-ms-thumb {
+  width: 2rem;
+  height: 2rem;
+  border: 0.3rem solid #ffffff;
+  border-radius: 50%;
+  background: var(--slider-fill);
+  cursor: pointer;
+}
+/* Hide the native input visually but keep it focusable */
+.setting-row-slider input[type="range"]:focus {
+  outline: none;
+}
+
+/* Prevent the range input from stealing arrow key focus when
+   the parent .setting-row-slider should handle cycling. */
+.setting-row-slider input[type="range"] {
+  pointer-events: none;
+}
+.setting-row-slider.focused input[type="range"] {
+  pointer-events: auto;
+}
+.setting-row-label {
+  flex: 1;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+.setting-row-value {
+  font-weight: 500;
+  font-size: 1.4rem;
+  text-align: right;
+  margin-left: 1rem;
+}
+/* Forward arrow (gaia-icons "forward" ligature) — only on items that
+   drill into a Settings sub-page. Mirrors upgrade-tool pattern but
+   scoped so plain actions (Load MIDI, Volume, etc.) don't get one. */
+.kai-om-item.has-submenu {
+  position: relative;
+}
+.kai-om-item.has-submenu::after {
+  position: absolute;
+  top: calc(50% - 1.5rem);
+  right: 0.5rem;
+  font-family: 'gaia-icons';
+  content: 'forward';
+  font-size: 3.2rem;
+  line-height: 3rem;
+  color: #c7c7c7;
+  pointer-events: none;
+}
+.kai-om-item.has-submenu.focused::after {
+  color: #ffffff;
+}
+
+/* ============================================
+   UTILITY
+   ============================================ */
+.hidden { display: none !important; }

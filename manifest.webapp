@@ -1,0 +1,62 @@
+{
+  "name": "Piano From Above (BETA)",
+  "description": "MIDI Player with keyboard visualization.",
+  "launch_path": "/index.html",
+  "developer": {
+    "name": "T.Hoang",
+    "url": "https://github.com/dotrihoang2012"
+  },
+  "icons": {
+    "56": "/icons/piano_56.png",
+    "112": "/icons/piano_112.png",
+    "128": "/icons/piano_128.png"
+  },
+  "origin": "app://midiplayer.tool.dotrihoang2012",
+  "default_locale": "en-US",
+  "fullscreen": false,
+  "orientation": ["portrait-primary", "portrait-secondary", "landscape-primary", "landscape-secondary"],
+  "version": "1.0.1",
+  "type": "web",
+  "theme_color": "#320374",
+  "chrome": {
+    "navigation": false
+  },
+  "permissions": {
+    "device-storage:sdcard": {
+      "access": "readwrite"
+    },
+    "systemXHR": {},
+    "power": {},
+    "audio-channel-content": {}
+  },
+  "activities": {
+    "open": {
+      "filters": {
+        "filename": {
+          "pattern": ".*(mid$|MID$|midi$|MIDI$)",
+          "patternFlags": "gi"
+        }
+      },
+      "href": "/index.html",
+      "disposition": "inline",
+      "returnValue": true
+    },
+    "share": {
+      "filters": {
+        "filenames": {
+          "pattern": ".*(mid$|MID$|midi$|MIDI$)",
+          "patternFlags": "gi"
+        }
+      },
+      "href": "/index.html",
+      "disposition": "window",
+      "returnValue": true
+    }
+  },
+  "categories": [
+    "utilities"
+  ],
+  "messages": [
+    { "activity": "/index.html" }
+  ]
+}
