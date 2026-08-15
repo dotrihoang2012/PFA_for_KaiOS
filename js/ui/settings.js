@@ -29,9 +29,13 @@ var Settings = (function () {
 
   var DEFAULTS = {
     midi: {
-      engine:     'synth',     // 'synth' | 'soundbank'
-      waveform:   'square',    // 'sine' | 'square' | 'saw' | 'triangle'
-      trail:      1.0,         // 0.1 .. 8.0 (slider)
+      engine:       'synth',   // 'synth' | 'soundbank'
+      synthesizer:  'osc',     // 'osc' | 'pico' | 'wild'
+      waveform:     'square',  // 'sine' | 'square' | 'saw' | 'triangle'
+      trail:        1.0,       // 0.1 .. 8.0
+      reverb:       true,
+      chorus:       true,
+      reverbVolume: 1.5,       // 0.0 .. 3.0
     },
     visual: {
       speed:        1.0,      // 0.1 .. 8.0 (slider)
@@ -45,12 +49,18 @@ var Settings = (function () {
   // ── Schema for each group (label, key, type, choices/values, fmt) ──
   var SCHEMA = {
     midi: [
-      { key: 'engine',   label: 'Sound Engine',     type: 'enum',
+      { key: 'engine',       label: 'Sound Engine',    type: 'enum',
         choices: [['synth','Synth'],['soundbank','Soundbank']] },
-      { key: 'waveform', label: 'Waveform',         type: 'enum',
+      { key: 'synthesizer',  label: 'Synthesizer',     type: 'enum',
+        choices: [['osc','Oscillator'],['pico','PicoAudio'],['wild','WildWebMidi']] },
+      { key: 'waveform',     label: 'Waveform',        type: 'enum',
         choices: [['sine','Sine'],['square','Square'],['saw','Saw'],['triangle','Triangle']] },
-      { key: 'trail',    label: 'Note Trail Length',type: 'number',
+      { key: 'trail',        label: 'Note Trail',      type: 'number',
         min: 0.1, max: 8.0, step: 0.1, fmt: function (v) { return v.toFixed(1); } },
+      { key: 'reverb',       label: 'Reverb',          type: 'bool' },
+      { key: 'chorus',       label: 'Chorus',          type: 'bool' },
+      { key: 'reverbVolume', label: 'Reverb Volume',   type: 'number',
+        min: 0.0, max: 3.0, step: 0.1, fmt: function (v) { return v.toFixed(1); } },
     ],
     visual: [
       { key: 'speed',      label: 'Speed',          type: 'number',
@@ -91,10 +101,14 @@ var Settings = (function () {
     // Push current values into Store + DOM. Order matters: theme must set
     // first so subsequent visual changes read the right tokens.
     Store.setState({
-      waveform:   _values.midi.waveform,
-      trail:      _values.midi.trail,
-      engine:     _values.midi.engine,
-      speed:      _values.visual.speed,
+      waveform:     _values.midi.waveform,
+      trail:        _values.midi.trail,
+      engine:       _values.midi.engine,
+      synthesizer:  _values.midi.synthesizer,
+      reverb:       _values.midi.reverb,
+      chorus:       _values.midi.chorus,
+      reverbVolume: _values.midi.reverbVolume,
+      speed:        _values.visual.speed,
       theme:      _values.visual.theme,
       noteLabels: _values.visual.noteLabels,
       showFps:    _values.visual.showFps,
@@ -226,13 +240,16 @@ var Settings = (function () {
         input.style.setProperty('--val', String(val));
         row.appendChild(input);
 
-        // Keep tracker + CSS fill in sync if the user touches the
-        // physical slider (rare on KaiOS, but harmless to wire).
-        input.addEventListener('input', (function (row, def, trk, ev) {
-          var v = parseFloat(ev.target.value);
-          trk.textContent = formatValue(def, v);
-          ev.target.style.setProperty('--val', String(v));
-        }).bind(null, row, def, trk));
+        // Keep tracker + CSS fill in sync on native input change.
+        // IIFE closure captures input/def/trk to avoid .bind() arg-shift
+        // where ev ended up as the 4th positional arg (undefined).
+        (function (capturedInput, capturedDef, capturedTrk) {
+          capturedInput.addEventListener('input', function () {
+            var v = parseFloat(capturedInput.value);
+            capturedTrk.textContent = formatValue(capturedDef, v);
+            capturedInput.style.setProperty('--val', String(v));
+          });
+        }(input, def, trk));
 
         list.appendChild(row);
       } else {
@@ -449,6 +466,15 @@ var Settings = (function () {
         if (typeof showToast === 'function') showToast('Soundbank not loaded');
       }
     }
+    if (group === 'midi' && typeof PicoSynth !== 'undefined') {
+      if (key === 'synthesizer') {
+        if (next === 'pico') PicoSynth.ensure();
+        if (next === 'wild' && typeof WildSynth !== 'undefined') WildSynth.ensure();
+      }
+      if (key === 'reverb')       PicoSynth.setReverb(next);
+      if (key === 'chorus')       PicoSynth.setChorus(next);
+      if (key === 'reverbVolume') PicoSynth.setReverbVolume(next);
+    }
 
     // Persist
     save();
@@ -456,9 +482,13 @@ var Settings = (function () {
 
   function _mapToStore(group, key, val) {
     if (group === 'midi') {
-      if (key === 'engine')   return { engine: val };
-      if (key === 'waveform') return { waveform: val };
-      if (key === 'trail')    return { trail: val };
+      if (key === 'engine')       return { engine: val };
+      if (key === 'synthesizer')  return { synthesizer: val };
+      if (key === 'waveform')     return { waveform: val };
+      if (key === 'trail')        return { trail: val };
+      if (key === 'reverb')       return { reverb: val };
+      if (key === 'chorus')       return { chorus: val };
+      if (key === 'reverbVolume') return { reverbVolume: val };
     } else {
       if (key === 'speed')      return { speed: val };
       if (key === 'theme')      return { theme: val };

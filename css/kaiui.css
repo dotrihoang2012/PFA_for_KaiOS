@@ -222,6 +222,7 @@ html, body {
   visibility: hidden;
 }
 .kai-om-overlay:not(.hidden) {
+  display: block;
   visibility: visible;
 }
 /* Override the global .hidden { display: none !important } just for
@@ -459,85 +460,89 @@ html, body {
   overflow: hidden;
   border-bottom: none;
 }
+.setting-row.focused {
+  background: #0066cc;
+  color: #ffffff;
+}
 .setting-row-slider {
   display: flex;
   flex-direction: column;
-  min-height: 5rem;
-  padding: 0 1.6rem;
+  justify-content: flex-start;
+  min-height: 6rem;
+  padding: 0.6rem 1rem;
   background: var(--color-gs00);
+  color: var(--option-menu-color);
   outline: none;
-  border-bottom: 1px solid var(--color-gs20);
+  border-bottom: none;
 }
 .setting-row-slider-line {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 5rem;
-}
-.setting-row-slider.focused {
-  background: #0066cc;
-  color: var(--color-gs00);
-}
-.setting-row-slider-line {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 1rem;
   width: 100%;
+  height: 1.8rem;
+  margin-bottom: 0.4rem;
+  flex: 0 0 auto;
 }
 .setting-row-slider-header {
-  font-weight: 700;
-  font-size: 1.5rem;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #323232;
 }
 .setting-row-slider-tracker {
-  font-weight: 500;
-  font-size: 1.4rem;
-  color: inherit;
-  opacity: 0.7;
-  margin-left: 1rem;
-  flex-shrink: 0;
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: #323232;
+    margin-left: 1rem;
+    flex-shrink: 0;
 }
+.setting-row-slider.focused .setting-row-slider-header,
 .setting-row-slider.focused .setting-row-slider-tracker {
-  opacity: 0.9;
+    color: #ffffff;
 }
-/* Slider track + thumb (CSS vars drive the fill). */
+/* FOCUSED: blue background, white text, shows only slider */
+.setting-row-slider.focused {
+  background: #0066cc;
+  color: #ffffff;
+}
+/* Slider track + thumb vars */
 .setting-row-slider input[type="range"] {
   -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
   width: 100%;
   height: 2rem;
   margin: 0;
   padding: 0;
   background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  pointer-events: none;
   --range: calc(var(--max) - var(--min));
   --ratio: calc((var(--val) - var(--min)) / var(--range));
   --sx: calc(0.5 * 2rem + var(--ratio) * (100% - 2rem));
   --slider-fill: #0066cc;
   --slider-track: #cccccc;
-  --slider-thumb-border-color: #ffffff;
+  --slider-thumb-bg: #0066cc;
+  --slider-thumb-border: #ffffff;
 }
+.setting-row-slider input[type="range"]::-moz-focus-outer {
+    border: 0;
+}
+.setting-row-slider input[type="range"]::-moz-focus-inner {
+    border: 0;
+}
+.setting-row-slider input[type="range"]::-moz-range-track {
+    border: none;
+    box-shadow: none;
+}
+/* FOCUSED: white fill, gray track, white thumb with blue border */
 .setting-row-slider.focused input[type="range"] {
-  /* Focused state: keep blue fill, cyan track (KaiUI blue theme). */
-  --slider-fill: #0066cc;
-  --slider-track: #5ce6f4;
-  --slider-thumb-border-color: #0066cc;
-}
-/* Fix: Thumb luôn trắng, viền xanh dương khi hàng được focus */
-.setting-row-slider.focused input[type="range"]::-webkit-slider-thumb {
-  background: #ffffff !important;
-  border: 0.3rem solid #0066cc !important;
-  box-shadow: none;
-}
-.setting-row-slider.focused input[type="range"]::-moz-range-thumb {
-  background: #ffffff !important;
-  border: 0.3rem solid #0066cc !important;
-}
-
-.setting-row-slider.focused input[type="range"]::-ms-thumb {
-  background: #ffffff !important;
-  border: 0.3rem solid #0066cc !important;
+  --slider-fill:        #ffffff;       /* white fill */
+  --slider-track:       #aaaaaa;       /* gray track */
+  --slider-thumb-bg:    #ffffff;       /* white knob */
+  --slider-thumb-border:#0066cc;       /* blue border */
 }
 .setting-row-slider input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
@@ -548,13 +553,14 @@ html, body {
 }
 .setting-row-slider input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 2rem;
-  height: 2rem;
-  border: 0.3rem solid #ffffff;
+  width: 1.8rem;
+  height: 1.8rem;
   border-radius: 50%;
-  background: var(--slider-fill);
-  margin-top: -0.75rem;
+  background: var(--slider-thumb-bg);
+  border: 0.3rem solid var(--slider-thumb-border);
+  margin-top: -0.65rem;
   cursor: pointer;
+  box-shadow: none;
 }
 .setting-row-slider input[type="range"]::-moz-range-track {
   width: 100%;
@@ -569,11 +575,11 @@ html, body {
   border-radius: 50px;
 }
 .setting-row-slider input[type="range"]::-moz-range-thumb {
-  width: 2rem;
-  height: 2rem;
-  border: 0.3rem solid #ffffff;
+  width: 1.8rem;
+  height: 1.8rem;
   border-radius: 50%;
-  background: var(--slider-fill);
+  background: var(--slider-thumb-bg);
+  border: 0.2rem solid var(--slider-thumb-border);
   cursor: pointer;
 }
 .setting-row-slider input[type="range"]::-ms-track {
@@ -594,9 +600,9 @@ html, body {
 .setting-row-slider input[type="range"]::-ms-thumb {
   width: 2rem;
   height: 2rem;
-  border: 0.3rem solid #ffffff;
   border-radius: 50%;
-  background: var(--slider-fill);
+  background: var(--slider-thumb-bg);
+  border: 0.3rem solid var(--slider-thumb-border);
   cursor: pointer;
 }
 /* Hide the native input visually but keep it focusable */
@@ -604,13 +610,13 @@ html, body {
   outline: none;
 }
 
-/* Prevent the range input from stealing arrow key focus when
-   the parent .setting-row-slider should handle cycling. */
+/* Always disable pointer-events on the range input.
+   On KaiOS 2.5 (Gecko 48) an input with pointer-events:auto inside a
+   focused row steals keydown events before they bubble to window,
+   so handleKey in settings.js never fires. All value changes go
+   through cycleValue() (ArrowLeft/Right), not native drag. */
 .setting-row-slider input[type="range"] {
   pointer-events: none;
-}
-.setting-row-slider.focused input[type="range"] {
-  pointer-events: auto;
 }
 .setting-row-label {
   flex: 1;

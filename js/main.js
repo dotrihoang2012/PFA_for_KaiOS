@@ -233,12 +233,15 @@
     // Audio context lazy — only on user gesture (Chrome autoplay policy)
     // Synth.noteOn will bootstrap on first note dispatch
 
-    // Wire Sequencer → Synth
+    // Wire Sequencer → active engine (Synth or PicoSynth, swappable at runtime)
+    // _engine() returns the live engine reference; _switchEngine() re-wires
+    // these callbacks when the user changes synthesizer in Settings.
+    _activeEngine = Synth; // default engine until Settings.load() runs
     Sequencer.noteDown(function (note, ch, vel, delay, dur) {
-      Synth.noteOn(note, ch, vel, delay, dur);
+      _engine().noteOn(note, ch, vel, delay, dur);
     });
     Sequencer.noteUp(function (note, ch) {
-      Synth.noteOff(note, ch);
+      _engine().noteOff(note, ch);
     });
     Sequencer.onEnd(function () {
       Store.setState({ play: 'stop' });
@@ -329,30 +332,69 @@
 
   // ── STORE CHANGE HANDLER ──
 
-  var _prevSpeed = null;
-  var _prevWave  = null;
+  var _prevSpeed      = null;
+  var _prevWave       = null;
+  var _prevSynth      = null;   // 'osc' | 'pico'
+  var _activeEngine   = null;   // live reference: Synth or PicoSynth
+
+  /** Return the currently-selected engine object. */
+  function _engine() {
+    return _activeEngine || Synth;
+  }
+
+  /** Switch to the engine indicated by synthKey ('osc' | 'pico'). */
+  function _switchEngine(synthKey) {
+    if (synthKey === _prevSynth) return;
+    _prevSynth = synthKey;
+
+    // Silence whatever was playing before swapping
+    try { _engine().silence(); } catch (e) {}
+
+    if (synthKey === 'pico' && typeof PicoSynth !== 'undefined') {
+      _activeEngine = PicoSynth;
+      PicoSynth.ensure();
+      console.log('[Main] engine → PicoSynth');
+    } else {
+      _activeEngine = Synth;
+      Synth.ensure();
+      console.log('[Main] engine → Synth (oscillator)');
+    }
+
+    // Re-wire Sequencer callbacks to the new engine
+    Sequencer.noteDown(function (note, ch, vel, delay, dur) {
+      _engine().noteOn(note, ch, vel, delay, dur);
+    });
+    Sequencer.noteUp(function (note, ch) {
+      _engine().noteOff(note, ch);
+    });
+  }
 
   function onStoreChange(state) {
     // Playback control (avoid re-trigger from onEnd cycle)
     var prevPlay = Store._prevPlay;
     Store._prevPlay = state.play;
 
+    // Synthesizer engine switch (must happen BEFORE play commands below)
+    if (state.synthesizer && state.synthesizer !== _prevSynth) {
+      _switchEngine(state.synthesizer);
+    }
+
     if (state.play === 'play' && prevPlay !== 'play') {
       // Bootstrap audio context (no-op if already running)
-      Synth.ensure();
+      _engine().ensure();
       Sequencer.play();
     } else if (state.play === 'pause' && prevPlay !== 'pause') {
       Sequencer.pause();
-      Synth.silence();
+      _engine().silence();
     } else if (state.play === 'stop' && prevPlay !== 'stop') {
       Sequencer.stop();
-      Synth.silence();
+      _engine().silence();
     }
 
     // Waveform change (only when actually changed — setWave iterates 48 oscillators)
     if (state.waveform && state.waveform !== _prevWave) {
       _prevWave = state.waveform;
-      Synth.setWave(state.waveform);
+      Synth.setWave(state.waveform);   // only Synth uses waveform; PicoSynth ignores it
     }
 
     // Speed (only when actually changed — avoids recalibration churn)
@@ -385,7 +427,7 @@
       fpsCounter = 0;
       fpsAcc = 0;
       // Periodic zombie-voice cleanup (KaiOS onended never fires)
-      try { if (typeof Synth !== 'undefined' && Synth.zoo) Synth.zoo(); } catch (e) {}
+      try { var _eng = _engine(); if (_eng && _eng.zoo) _eng.zoo(); } catch (e) {}
     }
 
     var st = Store.getState();
@@ -558,13 +600,11 @@
   // Matches reference audio-visualizer pattern: on blur, suspend AudioContext
   // and pause playback so Gecko's audio thread doesn't compete with foreground app.
   window.addEventListener('blur', function () {
-    if (typeof Synth !== 'undefined' && Synth.silence) Synth.silence();
+    try { _engine().silence(); } catch (e) {}
     if (typeof Sequencer !== 'undefined' && Sequencer.pause) Sequencer.pause();
   }, false);
   window.addEventListener('focus', function () {
-    if (typeof Synth !== 'undefined' && Synth.resume) {
-      try { Synth.resume(); } catch (e) {}
-    }
+    try { _engine().resume(); } catch (e) {}
   }, false);
 
   // ── SOFTKEYS ──

@@ -29,7 +29,7 @@
 
   function onKeyDown(e) {
     // Bootstrap AudioContext on first interaction
-    try { Synth.ensure(); } catch (ign) {}
+    try { if (typeof _engine === 'function') _engine().ensure(); else Synth.ensure(); } catch (ign) {}
 
     var key = e.keyCode || e.key;
     if (!key) return;
@@ -611,86 +611,37 @@
     releaseOSDVolumeLock();
     var appEl = document.getElementById('app');
     var m = document.getElementById('menu-overlay');
-    var s = document.getElementById('settings-overlay');
-    // Drop focus highlight (so menu doesn't look still-selected)
+
+    // Drop focus highlight
     var items = document.querySelectorAll('#menu-list .kai-om-item');
     for (var i = 0; i < items.length; i++) {
       items[i].classList.remove('focused');
     }
-    // While Settings is open, mark the Options menu as closed in store
-    // so onKeyDown routes arrow keys to Settings.handleKey instead of
-    // back into Options menu nav.
+
+    // Hide menu, mark closed in Store
     Store.setState({ menu: { open: false, focus: _focusedItemIndex } });
     if (appEl) appEl.classList.remove('menu-open');
-    // Hide menu BEFORE opening Settings so the Options overlay
-    // never flashes through underneath. Settings.open() removes an
-    // animation class from s — once that transition starts, the
-    // menu-overlay must already be hidden, otherwise Gecko 48
-    // renders menu + settings stacked for the duration of the slide.
     if (m) {
-      m.style.display = 'none';
       m.classList.add('hidden');
+      m.style.display = '';
       m.style.transform = '';
-      m.classList.remove('slide-exit-fwd', 'slide-enter-back', 'slide-enter-fwd', 'slide-exit-back');
-      // Di chuyển menu vào cuối body để menu-overlay khong render trên settings-overlay.
-      // Cả 2 overlay có z-index:100, DOM order >= stacking context.
-      document.body.appendChild(m);
     }
-    // Force reflow so menu is actually painted as hidden before
-    // Settings.open() removes .hidden from settings-overlay. Without this,
-    // Gecko 48 can render both overlays in the same compositor frame.
-    if (m) { m.offsetHeight; }
-    if (s) { s.offsetHeight; }  // also prime settings overlay
+
+    // Open Settings panel. onClose restores Options menu.
     Settings.open(group, function () {
-      // Settings closed → restore Options overlay state. The menu
-      // slides IN from the left while the Settings overlay slides
-      // OUT to the right.
       if (m) {
-        m.style.display = 'block';
         m.classList.remove('hidden');
-        void m.offsetWidth;
-        m.classList.add('slide-enter-back');
-        setTimeout(function () { m.classList.remove('slide-enter-back'); }, 200);
-      }
-      if (s) {
-        s.classList.remove('slide-enter-fwd', 'slide-enter-back');
-        s.classList.add('slide-exit-back');
-        setTimeout(function () {
-          s.classList.remove('slide-exit-back');
-          s.classList.add('hidden');
-          s.style.transform = '';
-        }, 200);
+        m.style.display = '';
+        m.style.transform = '';
       }
       Store.setState({ menu: { open: true, focus: _focusedItemIndex } });
       if (appEl) appEl.classList.add('menu-open');
       var its = m ? m.querySelectorAll('.kai-om-item') : [];
-      if (its.length) {
-        focusOverlayItem(its, _focusedItemIndex);
-      }
+      if (its.length) focusOverlayItem(its, _focusedItemIndex);
       if (typeof refreshMenuLabels === 'function') refreshMenuLabels();
       if (typeof updateSoftkeys === 'function') updateSoftkeys();
     });
-    // Drill-in: Slide the Settings overlay IN from the right.
-    if (s) {
-      s.classList.remove('hidden', 'slide-enter-fwd', 'slide-exit-back');
-      // Park it to the RIGHT (translateX 100%) so the slide has a
-      // visible starting frame.
-      s.style.transform = 'translateX(100%)';
-      void s.offsetWidth;
-      // Clear the inline transform so the keyframes can take over
-      // (from translateX(100%) → 0% over 0.15s).
-      s.style.transform = '';
-      void s.offsetWidth;
-      s.classList.add('slide-enter-fwd');
-      setTimeout(function () { s.classList.remove('slide-enter-fwd'); }, 200);
-    }
-    // Menu is parked off-screen to the LEFT during this animation
-    // so the user perceives the Settings panel sliding over it.
-    if (m) {
-      m.style.display = 'none';
-      m.classList.add('hidden');
-      m.classList.remove('slide-exit-fwd', 'slide-enter-back');
-    }
+
     if (typeof updateSoftkeys === 'function') updateSoftkeys();
   }
 
