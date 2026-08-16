@@ -150,15 +150,7 @@ var Keyboard = (function () {
     // Highlights
     try {
       var live = state._activeList;
-      if (!live) {
-        try {
-          // Dùng audioList (notes đang chơi thực sự) thay vì activeList (6s lookahead)
-          // để piano không chớp và không bị overwhelm
-          live = (typeof Sequencer.audioList === 'function')
-            ? Sequencer.audioList()
-            : Sequencer.activeList();
-        } catch (e) { live = []; }
-      }
+      if (!live) live = Sequencer.activeList();
       if (live && live.length) {
         var ns = Sequencer.getTime();
         var wh = [], bh = [];

@@ -23,29 +23,16 @@ var Synth = (function () {
   // single source of truth for loudness. We keep masterGain at 1.0 so
   // the user hears exactly what the OS slider shows, with no double dip.
   var volume = 1.0;
-  var ZOMBIE_MS = 1800;
+  var ZOMBIE_MS = 600;
   var MAX_PER_CHANNEL = 8;
 
-  // Per-channel waveform map — gives each MIDI track a distinct timbre
-  // so multi-track is audibly distinguishable (instead of all-square blend).
-  // Channel 9 (MIDI drum channel, 0-indexed) gets noise-ish "triangle".
+  // Tất cả channel dùng sine — không còn tiếng buzzer/chói
+  // Square và sawtooth có quá nhiều harmonic, nghe như chuông điện báo
   var CH_WAVE = [
-    'square',   // ch 0 — lead
-    'sawtooth', // ch 1 — bass
-    'triangle', // ch 2 — pad
-    'square',   // ch 3
-    'sawtooth', // ch 4
-    'triangle', // ch 5
-    'square',   // ch 6
-    'sawtooth', // ch 7
-    'triangle', // ch 8
-    'square',   // ch 9 — drums (0-indexed: MIDI ch 10)
-    'sawtooth', // ch 10
-    'triangle', // ch 11
-    'square',   // ch 12
-    'sawtooth', // ch 13
-    'triangle', // ch 14
-    'square'    // ch 15
+    'sine', 'sine', 'sine', 'sine',
+    'sine', 'sine', 'sine', 'sine',
+    'sine', 'sine', 'sine', 'sine',
+    'sine', 'sine', 'sine', 'sine'
   ];
 
   // ── Auto-resume on any user gesture ──
@@ -71,7 +58,10 @@ var Synth = (function () {
     if (ctx) return;
     try {
       var AC = window.AudioContext || window.webkitAudioContext;
+      console.log('[Synth] AudioContext impl:', AC ? AC.name || typeof AC : 'NONE');
       ctx = new AC();
+      console.log('[Synth] ctx.state=' + ctx.state + ' sampleRate=' + ctx.sampleRate);
+
       masterGain = ctx.createGain();
       masterGain.gain.value = volume;
       masterGain.connect(ctx.destination);
@@ -108,7 +98,11 @@ var Synth = (function () {
     var v = voices[idx];
     if (!v) return;
     var t = ctx ? ctx.currentTime : 0;
-    try { v.gn.gain.cancelScheduledValues(t); v.gn.gain.setValueAtTime(0, t); } catch (e) {}
+    try {
+      v.gn.gain.cancelScheduledValues(t);
+      v.gn.gain.setValueAtTime(v.gn.gain.value, t);
+      v.gn.gain.linearRampToValueAtTime(0, t + 0.020); // 20ms fade — không bụp
+    } catch (e) {}
     v.alive = false;
     v.note = -1;
     v.ch = -1;
@@ -207,12 +201,12 @@ var Synth = (function () {
     try { v.gn.gain.cancelScheduledValues(now); } catch (e) {}
     try { v.osc.frequency.cancelScheduledValues(now); } catch (e) {}
 
-    // Schedule new envelope
+    // Schedule new envelope — attack 8ms, release 20ms để không click/pop
     try {
       v.osc.frequency.setValueAtTime(f, tStart);
       v.gn.gain.setValueAtTime(0, now);
-      v.gn.gain.linearRampToValueAtTime(g, tStart + 0.003);
-      v.gn.gain.setValueAtTime(g, tEnd - 0.005);
+      v.gn.gain.linearRampToValueAtTime(g, tStart + 0.008);
+      v.gn.gain.setValueAtTime(g, tEnd - 0.020);
       v.gn.gain.linearRampToValueAtTime(0, tEnd);
     } catch (e) {
       freeSlot(idx);

@@ -12,11 +12,11 @@
 var Notes = (function () {
   'use strict';
 
-  var VISUAL_LK = 4.0;       // lookahead window (matches falling duration)
-  var HEAT_THRESH_LO = 24;   // below this → individual notes
-  var HEAT_THRESH_HI = 40;   // above this → heatmap (hysteresis)
-  var MAX_DRAW_PER_FRAME = 256;
-  var SCAN_MAX = 256;
+  var VISUAL_LK = 6.0;       // lookahead window — đủ để note xuất hiện từ top canvas
+  var HEAT_THRESH_LO = 200;
+  var HEAT_THRESH_HI = 300;
+  var MAX_DRAW_PER_FRAME = 512;
+  var SCAN_MAX = 512;
 
   // 16 channel colors (matching dipswitchhuey scheme)
   var CH_COLORS = [
@@ -126,17 +126,18 @@ var Notes = (function () {
 
     ensureKeyCache(ck, kw);
 
+    // Scroll offset — same as keyboard.js: sx = x position of camKey
+    var camOffset = _keyCache[ck] ? _keyCache[ck].x : 0;
+
     if (_heatMode) {
-      drawHeatmap(live, ctx, w, fbTop, fbBot, fbH, kw, ck, ns, sp);
+      drawHeatmap(live, ctx, w, fbTop, fbBot, fbH, kw, ck, ns, sp, camOffset);
       return;
     }
 
     // ── Individual falling notes ──
-    // Sort by channel → batch fillStyle changes (huge win on Gecko 48).
-    // Active list from sequencer is roughly insertion-ordered; we batch
-    // by channel using a small pass-through per channel.
-    var drawn = 0;
-    var lastCh = -1;
+    // Pre-sort into white/black arrays ONCE, then draw white first, black on top.
+    // Không scan 2 lần → không duplicate, không mờ ảo.
+    var whites = [], blacks = [];
 
     for (var i = 0; i < liveLen && i < SCAN_MAX; i++) {
       var a = live[i];
@@ -144,13 +145,15 @@ var Notes = (function () {
       if (n < ck || n > 127) continue;
 
       var pos = _keyCache[n];
-      if (!pos || pos.x < -5 || pos.x > w + 5) continue;
+      if (!pos) continue;
+      var nx = pos.x - camOffset;
+      if (nx < -5 || nx > w + 5) continue;
 
       var ss = a.startSec != null ? a.startSec : Tempo.toSec(a.tick);
       var es = a.endSec   != null ? a.endSec   :
                (a.endTick != null ? Tempo.toSec(a.endTick) : ss + 0.5);
 
-      if (es < ns - 0.05) continue;
+      if (es < ns - 0.1) continue;
       if (ss > ns + VISUAL_LK) continue;
 
       var du = es - ss;
@@ -165,18 +168,29 @@ var Notes = (function () {
       if (ny + nh < 0) continue;
       if (ny > fbBot) continue;
 
-      // Only switch fillStyle when channel changes (Gecko parses color on each set)
-      if (a.channel !== lastCh) {
-        ctx.fillStyle = channelColor(a.channel);
-        lastCh = a.channel;
-      }
-      ctx.fillRect(pos.x, ny, pos.w, nh);
-      drawn++;
-      if (drawn >= MAX_DRAW_PER_FRAME) break;
+      var entry = { nx: nx, ny: ny, nw: pos.w, nh: nh, ch: a.channel,
+                    black: Constants.isBlackKey(n % 12) };
+      if (entry.black) blacks.push(entry);
+      else             whites.push(entry);
+    }
+
+    // Draw white notes first
+    var lastCh = -1;
+    for (var wi = 0; wi < whites.length; wi++) {
+      var e = whites[wi];
+      if (e.ch !== lastCh) { ctx.fillStyle = channelColor(e.ch); lastCh = e.ch; }
+      ctx.fillRect(e.nx, e.ny, e.nw, e.nh);
+    }
+    // Draw black notes on top (narrower)
+    lastCh = -1;
+    for (var bi = 0; bi < blacks.length; bi++) {
+      var e = blacks[bi];
+      if (e.ch !== lastCh) { ctx.fillStyle = channelColor(e.ch); lastCh = e.ch; }
+      ctx.fillRect(e.nx + 1, e.ny, e.nw - 2, e.nh);
     }
   }
 
-  function drawHeatmap(live, ctx, w, fbTop, fbBot, fbH, keyW, camKey, nowSec, speed) {
+  function drawHeatmap(live, ctx, w, fbTop, fbBot, fbH, keyW, camKey, nowSec, speed, camOffset) {
     var BUCKETS = 16;
     var hor = nowSec + VISUAL_LK;
     var HM_SCAN = 400;
@@ -217,6 +231,7 @@ var Notes = (function () {
       var ve = Math.min(hor, es);
       if (vs >= ve) continue;
 
+      // bucket 0 = xa nhất (trên cao), bucket BUCKETS-1 = gần piano
       var bFrom = Math.floor((vs - nowSec) / VISUAL_LK * BUCKETS);
       var bTo   = Math.floor((ve - nowSec) / VISUAL_LK * BUCKETS);
       if (bFrom < 0) bFrom = 0;
@@ -225,7 +240,7 @@ var Notes = (function () {
 
       var pos = _keyCache[n];
       if (!pos) continue;
-      var px = pos.x;
+      var px = pos.x - camOffset;
       if (px < 0 || px >= w) continue;
 
       var ch = a.channel || 0;
@@ -267,7 +282,8 @@ var Notes = (function () {
           lastCh = ch;
           lastAlphaIdx = ai;
         }
-        var yPos = fbBot - (bi + 1) * bucketH;
+        // bi=0 → trên cao (xa), bi=BUCKETS-1 → gần piano
+        var yPos = fbBot - (BUCKETS - bi) * bucketH;
         ctx.fillRect(x, yPos, 1, bucketH + 1);
       }
     }

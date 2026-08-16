@@ -16,7 +16,7 @@
   "fullscreen": false,
   "orientation": ["portrait-primary", "portrait-secondary", "landscape-primary", "landscape-secondary"],
   "version": "1.0.1",
-  "type": "web",
+  "type": "privileged",
   "theme_color": "#320374",
   "chrome": {
     "navigation": false

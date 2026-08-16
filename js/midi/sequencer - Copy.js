@@ -14,8 +14,7 @@ var Sequencer = (function () {
   var timer   = null;
   var ctxBase = 0;
   var tickStart = 0;
-  var active  = [];   // visual list (LK lookahead)
-  var audioActive = []; // keyboard/audio list (current notes only)
+  var active  = [];
 
   var fireOn  = null;
   var fireOff = null;
@@ -33,7 +32,7 @@ var Sequencer = (function () {
     notes = noteList || [];
     Tempo.map = tempoList || [{ t: 0, u: 500000 }];
     Tempo.div = division || 480;
-    cursor = 0; tick = 0; active = []; audioActive = []; stopPlay();
+    cursor = 0; tick = 0; active = []; stopPlay();
   }
 
   function startPlay() {
@@ -42,17 +41,17 @@ var Sequencer = (function () {
     timer = setInterval(pulse, 80);
   }
   function stopPlay() { playing = false; if (timer) { clearInterval(timer); timer = null; } }
-  function fullStop() { stopPlay(); cursor = 0; tick = 0; active = []; audioActive = []; }
+  function fullStop() { stopPlay(); cursor = 0; tick = 0; active = []; }
 
   function seekDelta(ds) {
-    stopPlay(); active = []; audioActive = [];
+    stopPlay(); active = [];
     var tps = Tempo.tps(tick); tick += ds * tps;
     if (tick < 0) tick = 0;
     cursor = 0;
     while (cursor < notes.length && notes[cursor].t < tick) cursor++;
   }
   function jumpTo(tt) {
-    stopPlay(); active = []; audioActive = []; tick = tt;
+    stopPlay(); active = []; tick = tt;
     if (tick < 0) tick = 0;
     cursor = 0;
     while (cursor < notes.length && notes[cursor].t < tick) cursor++;
@@ -74,47 +73,53 @@ var Sequencer = (function () {
     var esc = 0;
     var auCnt = 0;
 
-    while (cursor < notes.length) {
+    while (cursor < notes.length && esc < 8000) {
+      esc++;
       var n = notes[cursor];
       var ss = Tempo.toSec(n.t);
       if (ss > hor) break;
-      var etk = n.t + n.d;
-      var esSec = Tempo.toSec(etk);
-      var delay = (ss - nowSec) / speed;
-      var dur   = (esSec - ss) / speed;
       if (ss >= nowSec - 0.05) {
-        if (delay <= 0.05 && auCnt < AUDIO_PER_PULSE && fireOn) {
-          fireOn(n.n, n.c, n.v, Math.max(0, delay), dur);
-          auCnt++;
-        }
+        var delay = (ss - nowSec) / speed;
+        var dur   = (Tempo.toSec(n.t + n.d) - ss) / speed;
+        var etk   = n.t + n.d;
+        if (auCnt < AUDIO_PER_PULSE && fireOn) fireOn(n.n, n.c, n.v, delay, dur);
+        auCnt++;
         if (active.length < MAX_ACTIVE) {
-          active.push({ note: n.n, channel: n.c, tick: n.t, endTick: etk,
-                        startSec: ss, endSec: esSec, velocity: n.v });
-        }
-        if (ss <= nowSec + 0.05 && esSec >= nowSec && audioActive.length < 128) {
-          audioActive.push({ note: n.n, channel: n.c, tick: n.t, endTick: etk,
-                             startSec: ss, endSec: esSec, velocity: n.v });
+          active.push({
+            note: n.n, channel: n.c, tick: n.t, endTick: etk,
+            startSec: ss, endSec: Tempo.toSec(etk), velocity: n.v,
+          });
         }
       }
       cursor++;
     }
-
-    // Cleanup visual list (keep notes until 0.1s past end)
-    for (var i = active.length - 1; i >= 0; i--) {
-      if (active[i].endSec < nowSec - 0.1) active.splice(i, 1);
+    // Nếu esc limit bị hit và cursor chưa vượt qua nowSec
+    // (dense MIDI: hàng ngàn note trong 1 tick) → binary search để skip
+    if (esc >= 8000 && cursor < notes.length) {
+      var target = tick;
+      var lo = cursor, hi = notes.length - 1, mid;
+      while (lo < hi) {
+        mid = (lo + hi) >> 1;
+        if (notes[mid].t < target) lo = mid + 1;
+        else hi = mid;
+      }
+      if (lo > cursor) cursor = lo;
     }
-    // Cleanup keyboard list + fire noteOff
-    for (var i = audioActive.length - 1; i >= 0; i--) {
-      if (audioActive[i].endSec < nowSec) {
-        if (fireOff) fireOff(audioActive[i].note, audioActive[i].channel);
-        audioActive.splice(i, 1);
+
+    // cleanup — dùng endSec thay vì endTick để note ở lại active
+    // đủ lâu cho keyboard highlight (trail) trước khi bị xóa
+    var trailSec = 0.05;
+    for (var i = active.length - 1; i >= 0; i--) {
+      if (active[i].endSec + trailSec < nowSec) {
+        if (fireOff) fireOff(active[i].note, active[i].channel);
+        active.splice(i, 1);
       }
     }
+
     if (cursor >= notes.length && !active.length) { stopPlay(); if (fireEnd) fireEnd(); }
   }
 
   function list() { return active; }
-  function audioList() { return audioActive; }
 
   return {
     load: load, play: startPlay, pause: stopPlay, stop: fullStop,
@@ -133,6 +138,6 @@ var Sequencer = (function () {
     noteDown: function(fn){fireOn=fn;},
     noteUp: function(fn){fireOff=fn;},
     onEnd: function(fn){fireEnd=fn;},
-    activeList: list, audioList: audioList, bpm: function(){return Tempo.bpm(tick);},
+    activeList: list, bpm: function(){return Tempo.bpm(tick);},
   };
 })();

@@ -262,6 +262,8 @@
           blob = res;
         }
         if (blob) {
+          window._midiBlob = blob; // expose for native audio — disk reference, no RAM copy
+          window._midiName = blob.name || 'picked.mid';
           handlePickedBlob(blob, blob.name || 'picked.mid');
         }
       };

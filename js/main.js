@@ -143,6 +143,8 @@
           console.log('[Activity] reading blob as ArrayBuffer...');
           showParsing();
           Store.setState({ fileName: name });
+          window._midiBlob = blob; // expose for native audio
+          window._midiName = name;
           var reader = new FileReader();
           reader.onload = function () {
             try {
@@ -172,27 +174,37 @@
         }
 
         if (filepath) {
-          // Filepath-only route: fetch the file via XHR.
+          // Filepath-only route: fetch as Blob (stream from disk, no OOM for large files)
           showParsing();
           var fname = name || filepath.split('/').pop() || 'picked.mid';
           Store.setState({ fileName: fname });
-          // sdcard paths from KaiOS are usually prefixed file:// or just absolute.
-          // navigator.storage.* won't help; we use XMLHttpRequest with responseType.
           var url = filepath;
           if (filepath[0] === '/') url = 'file://' + filepath;
           var xhr = new XMLHttpRequest();
           xhr.open('GET', url, true);
-          xhr.responseType = 'arraybuffer';
+          xhr.responseType = 'blob';  // Blob = disk reference, not RAM copy
           xhr.onload = function () {
             if (xhr.status >= 200 && xhr.status < 300 && xhr.response) {
-              try {
-                var midiData2 = MidiParser.parseMIDI(xhr.response);
-                loadMIDIData(midiData2);
-                _foregroundAfterActivity();
-              } catch (e) {
-                console.error('[Main] XHR MIDI parse error', e);
+              var fileBlob = xhr.response;
+              window._midiBlob = fileBlob; // expose for native audio
+              window._midiName = fname;
+              // Read blob as ArrayBuffer for parser (visual only)
+              var reader = new FileReader();
+              reader.onload = function () {
+                try {
+                  var midiData2 = MidiParser.parseMIDI(reader.result);
+                  loadMIDIData(midiData2);
+                  _foregroundAfterActivity();
+                } catch (e) {
+                  console.error('[Main] XHR MIDI parse error', e);
+                  hideParsing();
+                }
+              };
+              reader.onerror = function () {
+                console.error('[Main] FileReader error (filepath)');
                 hideParsing();
-              }
+              };
+              reader.readAsArrayBuffer(fileBlob);
             } else {
               console.error('[Main] XHR fetch failed', xhr.status);
               hideParsing();
@@ -238,10 +250,10 @@
     // these callbacks when the user changes synthesizer in Settings.
     _activeEngine = Synth; // default engine until Settings.load() runs
     Sequencer.noteDown(function (note, ch, vel, delay, dur) {
-      _engine().noteOn(note, ch, vel, delay, dur);
+      if (!window._audioMute) _engine().noteOn(note, ch, vel, delay, dur);
     });
     Sequencer.noteUp(function (note, ch) {
-      _engine().noteOff(note, ch);
+      if (!window._audioMute) _engine().noteOff(note, ch);
     });
     Sequencer.onEnd(function () {
       Store.setState({ play: 'stop' });
@@ -292,6 +304,8 @@
   function handlePickedBlob(blob, name) {
     showParsing();
     Store.setState({ fileName: name });
+    window._midiBlob = blob; // expose for native audio + debug
+    window._midiName = name;
     var reader = new FileReader();
     reader.onload = function () {
       try {
@@ -308,6 +322,8 @@
 
   function fetchAndLoad(filepath, name) {
     var url = filepath;
+    window._midiFilePath = filepath; // expose for native audio test
+    window._midiName = name;
     if (filepath[0] === '/') url = 'file://' + filepath;
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
@@ -362,10 +378,10 @@
 
     // Re-wire Sequencer callbacks to the new engine
     Sequencer.noteDown(function (note, ch, vel, delay, dur) {
-      _engine().noteOn(note, ch, vel, delay, dur);
+      if (!window._audioMute) _engine().noteOn(note, ch, vel, delay, dur);
     });
     Sequencer.noteUp(function (note, ch) {
-      _engine().noteOff(note, ch);
+      if (!window._audioMute) _engine().noteOff(note, ch);
     });
   }
 
@@ -663,6 +679,13 @@
    * Feed parsed MIDI data object directly to Sequencer + Store.
    * No JSON.stringify/parse round-trip — takes the already-parsed JS object.
    */
+  // Wrap parseMIDI to expose buffer
+  var _origParseMIDI = MidiParser.parseMIDI;
+  MidiParser.parseMIDI = function(buf) {
+    window._rawMidiBuffer = buf;
+    return _origParseMIDI(buf);
+  };
+
   function loadMIDIData(midiData) {
     var notes = midiData.notes || [];
     var tempo = midiData.tempo || [{ t: 0, u: 500000 }];
@@ -754,7 +777,9 @@
 
       if (typeof navigator !== 'undefined' && navigator.getDeviceStorage) {
         var ds = navigator.getDeviceStorage('sdcard');
-        var req = ds.get(filePath);
+        // Strip /sdcard/ prefix — getDeviceStorage path is relative to storage root
+        var dsPath = filePath.replace(/^\/sdcard\//, '');
+        var req = ds.get(dsPath);
 
         req.onsuccess = function () {
           var reader = new FileReader();
@@ -769,6 +794,28 @@
 
         req.onerror = function () {
           console.error('[Main] deviceStorage.get failed: ' + filePath);
+          // Fallback: fetch via systemXHR as blob (stream from disk, no OOM)
+          var url = filePath;
+          if (filePath[0] === '/') url = 'file://' + filePath;
+          var xhr = new XMLHttpRequest({mozSystem: true});
+          xhr.open('GET', url, true);
+          xhr.responseType = 'blob';
+          xhr.onload = function () {
+            if (xhr.status >= 200 && xhr.status < 300 && xhr.response) {
+              var fileBlob = xhr.response;
+              window._midiBlob = fileBlob;
+              window._midiName = filePath.split('/').pop();
+              var reader = new FileReader();
+              reader.onload = function () { handleMidiBuffer(reader.result, filePath); };
+              reader.onerror = function () { console.error('[Main] FileReader error'); hideParsing(); };
+              reader.readAsArrayBuffer(fileBlob);
+            } else {
+              console.error('[Main] XHR fallback failed', xhr.status);
+              hideParsing();
+            }
+          };
+          xhr.onerror = function () { console.error('[Main] XHR fallback error'); hideParsing(); };
+          try { xhr.send(); } catch (e) { console.error('[Main] XHR send failed', e); hideParsing(); }
         };
       } else {
         // Desktop debug: XHR fetch
@@ -828,6 +875,7 @@
    * Parse a .mid ArrayBuffer → .mid.json, cache to /data/local/tmp/, load.
    */
   function handleMidiBuffer(buffer, filePath) {
+    window._rawMidiBuffer = buffer; // expose for native audio test
     try {
       var midiData = MidiParser.parseMIDI(buffer);
 
