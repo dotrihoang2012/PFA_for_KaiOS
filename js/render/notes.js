@@ -118,11 +118,12 @@ var Notes = (function () {
     if (!live) { try { live = Sequencer.activeList(); } catch (e) { live = []; } }
     if (!live || !live.length) return;
 
-    var liveLen = live.length;
+    var liveLen  = live.length;
+    var audioLen = (typeof Sequencer.audioList === 'function') ? Sequencer.audioList().length : 0;
 
-    // Hysteresis: only switch mode when clearly past thresholds
-    if (!_heatMode && liveLen > HEAT_THRESH_HI) _heatMode = true;
-    else if (_heatMode && liveLen < HEAT_THRESH_LO) _heatMode = false;
+    // Heatmap based on currently-playing notes (audioList), not 6s lookahead
+    if (!_heatMode && audioLen > HEAT_THRESH_HI) _heatMode = true;
+    else if (_heatMode && audioLen < HEAT_THRESH_LO) _heatMode = false;
 
     ensureKeyCache(ck, kw);
 
@@ -159,9 +160,11 @@ var Notes = (function () {
       var du = es - ss;
       if (du < 0.01) du = 0.01;
 
-      var dt = (ss - ns) * FALL * sp;
-      var nh = du * FALL * sp;
-      if (nh < 3)   nh = 3;
+      var trailMul = (state.trail != null && isFinite(state.trail)) ? state.trail : 1.0;
+      var effectiveFALL = FALL * trailMul; // trail scales both height and fall speed
+      var dt = (ss - ns) * effectiveFALL * sp;
+      var nh = du * effectiveFALL * sp;
+      if (nh < 2)   nh = 2;
       if (nh > fbH) nh = fbH;
 
       var ny = fbBot - dt - nh;

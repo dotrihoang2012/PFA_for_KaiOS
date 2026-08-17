@@ -152,11 +152,19 @@ var Keyboard = (function () {
       var live = state._activeList;
       if (!live) {
         try {
-          // Dùng audioList (notes đang chơi thực sự) thay vì activeList (6s lookahead)
-          // để piano không chớp và không bị overwhelm
           live = (typeof Sequencer.audioList === 'function')
             ? Sequencer.audioList()
             : Sequencer.activeList();
+          // Fallback: nếu audioList rỗng, dùng activeList lọc theo nowSec
+          if (!live || !live.length) {
+            var all = Sequencer.activeList();
+            var ns2 = Sequencer.getTime();
+            live = [];
+            for (var fi = 0; fi < all.length; fi++) {
+              var fa = all[fi];
+              if (fa.startSec <= ns2 + 0.1 && fa.endSec >= ns2 - 0.1) live.push(fa);
+            }
+          }
         } catch (e) { live = []; }
       }
       if (live && live.length) {
@@ -166,12 +174,12 @@ var Keyboard = (function () {
         var CH = (typeof Notes !== 'undefined' && Notes.channelColor) ? Notes.channelColor : null;
 
         var SCAN_LIMIT = 200;
-        // ── Trail length: how long past note end does the keyboard stay lit ──
+        // Trail: state.trail là number 0.1..8.0 (seconds × scale)
         var trailMs = 0;
         var tl = state.trail;
-        if (tl === 'short')       trailMs = 100;
-        else if (tl === 'medium') trailMs = 350;
-        else if (tl === 'long')   trailMs = 800;
+        if (tl != null && isFinite(tl)) {
+          trailMs = tl * 200; // 1.0 → 200ms, 8.0 → 1600ms, 0.1 → 20ms
+        }
         for (var i = 0; i < live.length && i < SCAN_LIMIT; i++) {
           var nn = live[i].note;
           if (nn < ck || nn > 127) continue;

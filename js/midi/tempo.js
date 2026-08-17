@@ -31,6 +31,24 @@ var Tempo = {
     return this.div / (this.at(tick) / 1000000);
   },
 
+  /** seconds → tick (inverse of toSec) */
+  toTick: function (sec) {
+    var left = sec, tick = 0;
+    for (var i = 0; i < this.map.length; i++) {
+      var next = (i + 1 < this.map.length) ? this.map[i + 1].t : Infinity;
+      var segTicks = next - this.map[i].t;
+      var segSec   = segTicks * this.map[i].u / 1000000 / this.div;
+      if (left <= segSec) {
+        tick += left / (this.map[i].u / 1000000 / this.div);
+        return tick;
+      }
+      tick += segTicks;
+      left -= segSec;
+    }
+    // Past last tempo change
+    return tick + left * this.tps(tick);
+  },
+
   /** Current BPM */
   bpm: function (tick) {
     return 60000000 / this.at(tick);
