@@ -145,9 +145,8 @@
       return;
     }
 
-    // Enter / SoftLeft = select focused item
-    if (key === Constants.KEY.ENTER || key === 13 ||
-        key === Constants.KEY.SOFT_LEFT || key === 'SoftLeft') {
+    // Enter/SELECT only -- LSK blocked for all Options items
+    if (key === Constants.KEY.ENTER || key === 13) {
       selectMenuItem(_focusedItemIndex);
       return;
     }
@@ -209,6 +208,15 @@
 
   function execMenuAction(action) {
     switch (action) {
+      case 'clear-midi':
+        closeMenuOverlay();
+        try {
+          Sequencer.stop();
+          Store.setState({ play: 'stop', notes: [], fileName: '', timeSec: 0 });
+          window._midiBlob = null;
+          window._rawMidiBuffer = null;
+        } catch (e) { console.error('[Ctrl] clear-midi error', e); }
+        return;
       case 'close':
         closeMenuOverlay();
         return;
@@ -238,9 +246,16 @@
 
   // ── File picker via MozActivity ──
   function launchFilePicker() {
+    // Exit fullscreen before launching file picker
+    var appEl = document.getElementById('app');
+    if (appEl && appEl.classList.contains('fullscreen')) {
+      appEl.classList.remove('fullscreen');
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+      setTimeout(function () { if (typeof onResize === 'function') onResize(); }, 100);
+    }
     // Close menu overlay but keep chrome visible for MozActivity
     Store.setState({ menu: { open: false } });
-    var appEl = document.getElementById('app');
     if (appEl) appEl.classList.remove('menu-open');
     var m = document.getElementById('menu-overlay');
     if (m) m.classList.add('hidden');

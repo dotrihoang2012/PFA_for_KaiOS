@@ -66,10 +66,6 @@ var Sequencer = (function () {
 
     _pls++;
     if (_pls % 20 === 0) { try { if (typeof Synth !== 'undefined' && Synth.zoo) Synth.zoo(); } catch(e) {} }
-    // Sort active by startSec every 5 pulses so renderer can break early
-    if (_pls % 5 === 0 && active.length > 1) {
-      active.sort(function(a, b) { return a.startSec - b.startSec; });
-    }
 
     var ctxNow  = audioNow();
     var elapsed = (ctxNow - ctxBase) * speed;
@@ -92,14 +88,6 @@ var Sequencer = (function () {
         if (delay <= 0.05 && auCnt < AUDIO_PER_PULSE && fireOn) {
           fireOn(n.n, n.c, n.v, Math.max(0, delay), dur);
           auCnt++;
-        }
-        if (active.length >= MAX_ACTIVE) {
-          // Xoa note cu nhat (startSec nho nhat) de nhuong cho note tuong lai
-          var oldest = 0;
-          for (var ci = 1; ci < active.length; ci++) {
-            if (active[ci].startSec < active[oldest].startSec) oldest = ci;
-          }
-          active.splice(oldest, 1);
         }
         if (active.length < MAX_ACTIVE) {
           active.push({ note: n.n, channel: n.c, tick: n.t, endTick: etk,

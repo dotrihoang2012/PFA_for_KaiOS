@@ -15,8 +15,8 @@ var Notes = (function () {
   var VISUAL_LK = 6.0;       // lookahead window — đủ để note xuất hiện từ top canvas
   var HEAT_THRESH_LO = 200;
   var HEAT_THRESH_HI = 300;
-  var MAX_DRAW_PER_FRAME = 512;
-  var SCAN_MAX = 512;
+  var MAX_DRAW_PER_FRAME = 1024;
+  var SCAN_MAX = 4096;
 
   // 16 channel colors (matching dipswitchhuey scheme)
   var CH_COLORS = [
@@ -107,7 +107,9 @@ var Notes = (function () {
     if (fbBot < fbTop) fbBot = fbTop + 30;
     var fbH   = fbBot - fbTop;               // height of band
     if (fbH < 30) { fbH = 30; fbBot = fbTop + 30; } // safety on tiny screens
-    var FALL = fbH / VISUAL_LK;
+    var trailSetting = (state.trail != null && isFinite(state.trail)) ? state.trail : 1.0;
+    var effectiveLK = VISUAL_LK / trailSetting; // trail=2 -> half lookahead -> 2x faster
+    var FALL = fbH / effectiveLK;
     var kw = state.keyWidth || 16;
     var ck = state.camKey   || 48;
     var ns = 0;
@@ -155,21 +157,18 @@ var Notes = (function () {
                (a.endTick != null ? Tempo.toSec(a.endTick) : ss + 0.5);
 
       if (es < ns - 0.1) continue;
-      if (ss > ns + VISUAL_LK) continue;
+      if (ss > ns + effectiveLK) continue;
 
       var du = es - ss;
       if (du < 0.01) du = 0.01;
 
-      var trailMul = (state.trail != null && isFinite(state.trail)) ? state.trail : 1.0;
-      var effectiveFALL = FALL * trailMul; // trail scales both height and fall speed
-      var dt = (ss - ns) * effectiveFALL * sp;
-      var nh = du * effectiveFALL * sp;
-      if (nh < 2)   nh = 2;
-      if (nh > fbH) nh = fbH;
-
-      var ny = fbBot - dt - nh;
-      if (ny + nh < 0) continue;
-      if (ny > fbBot) continue;
+      // nyBottom: note bottom falls at FALL speed (already scaled by trail via effectiveLK)
+      var nyBottom = fbBot - (ss - ns) * FALL * sp;
+      var nh = du * FALL * sp; // note height (trail already in FALL)
+      if (nh < 2) nh = 2;
+      var ny = nyBottom - nh;
+      if (nyBottom < 0) continue;
+      if (ny > fbBot)   continue;
 
       var entry = { nx: nx, ny: ny, nw: pos.w, nh: nh, ch: a.channel,
                     black: Constants.isBlackKey(n % 12) };
