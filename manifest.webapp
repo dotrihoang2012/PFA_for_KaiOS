@@ -11,7 +11,7 @@
     "112": "/icons/piano_112.png",
     "128": "/icons/piano_128.png"
   },
-  "origin": "app://midiplayer.tool.dotrihoang2012",
+  "origin": "app://PFA.midiplayer.dotrihoang2012",
   "default_locale": "en-US",
   "fullscreen": false,
   "orientation": ["portrait-primary", "portrait-secondary", "landscape-primary", "landscape-secondary"],
