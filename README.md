@@ -91,6 +91,15 @@ Contributions to optimize Canvas rendering performance or reduce memory consumpt
 
 ---
 
+## TODO
+
+* Fix audio playback while running.
+* Add +1s and -1s seeking support.
+* Add 2x fast forward (`>>2`) and fast rewind (`<<2`).
+* Add "About" section in Options menu.
+
+---
+
 ## License
 
 This project is released under the [MIT License](LICENSE).
