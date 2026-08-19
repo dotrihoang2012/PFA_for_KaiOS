@@ -12,11 +12,11 @@
 var Notes = (function () {
   'use strict';
 
-  var VISUAL_LK = 6.0;       // lookahead window — đủ để note xuất hiện từ top canvas
-  var HEAT_THRESH_LO = 200;
-  var HEAT_THRESH_HI = 300;
-  var MAX_DRAW_PER_FRAME = 1024;
-  var SCAN_MAX = 4096;
+  var VISUAL_LK = 2.0;       // lookahead window
+  var HEAT_THRESH_LO = 1180591620717411303424;
+  var HEAT_THRESH_HI = 1180591620717411303424;
+  var MAX_DRAW_PER_FRAME = 1180591620717411303424;
+  var SCAN_MAX = 1180591620717411303424;
 
   // 16 channel colors (matching dipswitchhuey scheme)
   var CH_COLORS = [

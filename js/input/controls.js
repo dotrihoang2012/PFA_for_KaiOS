@@ -212,9 +212,14 @@
         closeMenuOverlay();
         try {
           Sequencer.stop();
+          Sequencer.load([], [], 480);
           Store.setState({ play: 'stop', notes: [], fileName: '', timeSec: 0 });
+          if (typeof HUD !== 'undefined' && HUD.setTotal) HUD.setTotal(0);
           window._midiBlob = null;
           window._rawMidiBuffer = null;
+          setTimeout(function() {
+            if (typeof updateSoftkeys === 'function') updateSoftkeys();
+          }, 0);
         } catch (e) { console.error('[Ctrl] clear-midi error', e); }
         return;
       case 'close':
@@ -448,6 +453,7 @@
     var s = Store.getState();
     switch (action) {
       case 'playPause':
+        if (!s.fileName) break; // no file loaded
         Store.setState({ play: (s.play === 'play') ? 'pause' : 'play' });
         break;
       case 'stop':

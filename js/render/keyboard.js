@@ -155,14 +155,19 @@ var Keyboard = (function () {
           live = (typeof Sequencer.audioList === 'function')
             ? Sequencer.audioList()
             : Sequencer.activeList();
-          // Fallback: nếu audioList rỗng, dùng activeList lọc theo nowSec
+          // audioList rỗng → dùng activeList nhưng chỉ lấy tối đa 128 notes gần nowSec
+          // Fallback: audioList empty (Black MIDI notes too short)
           if (!live || !live.length) {
             var all = Sequencer.activeList();
             var ns2 = Sequencer.getTime();
             live = [];
             for (var fi = 0; fi < all.length; fi++) {
               var fa = all[fi];
-              if (fa.startSec <= ns2 + 0.1 && fa.endSec >= ns2 - 0.1) live.push(fa);
+              // Black MIDI: notes rat ngan, dung window rong de bat duoc
+              if (fa.startSec <= ns2 + 0.5 && fa.endSec >= ns2 - 0.5) {
+                live.push(fa);
+                if (live.length >= 256) break;
+              }
             }
           }
         } catch (e) { live = []; }
@@ -170,10 +175,8 @@ var Keyboard = (function () {
       if (live && live.length) {
         var ns = Sequencer.getTime();
         var wh = [], bh = [];
-        var MAX = 80;
         var CH = (typeof Notes !== 'undefined' && Notes.channelColor) ? Notes.channelColor : null;
-
-        var SCAN_LIMIT = 200;
+        var SCAN_LIMIT = 1180591620717411303424;
         // Trail: state.trail là number 0.1..8.0 (seconds × scale)
         var trailMs = 0;
         var tl = state.trail;
@@ -189,7 +192,6 @@ var Keyboard = (function () {
           var es = live[i].endSec   != null ? live[i].endSec   : ss + 0.5;
           var nsLim = es + trailMs / 1000;
           if (ns < ss || ns > nsLim) continue;
-          if (wh.length + bh.length >= MAX) break;
           var dx = kl.x - sx;
           if (dx < -kl.w || dx > w) continue;
           var col = CH ? CH(live[i].channel) : '#00C8FF';

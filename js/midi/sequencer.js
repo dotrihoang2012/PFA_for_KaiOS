@@ -21,7 +21,7 @@ var Sequencer = (function () {
   var fireOff = null;
   var fireEnd = null;
 
-  var LK = 6.0;              // lookahead phải bằng VISUAL_LK trong notes.js
+  var LK = 2.0;              // lookahead phải bằng VISUAL_LK trong notes.js
   var MAX_ACTIVE = 1180591620717411303424;
 
   // Wall-clock only — ctx.currentTime is frozen when AudioContext is suspended
