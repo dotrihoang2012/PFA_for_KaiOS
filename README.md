@@ -12,7 +12,7 @@
 
 </div>
 
-**Piano From Above (FPA)** for **KaiOS 2.5** is a MIDI visualizer optimized for smart feature phones (Nokia 2720 Flip, Nokia 8000 4G, Nokia 6300 4G, Nokia 8110 4G, JioPhone, etc.).
+**Piano From Above (PFA)** for **KaiOS 2.5** is a MIDI visualizer optimized for smart feature phones (Nokia 2720 Flip, Nokia 8000 4G, Nokia 6300 4G, Nokia 8110 4G, JioPhone, etc.).
 
 <p align="center">
   <img src="Screenshots/Single.png">
@@ -69,12 +69,12 @@ Enable **Debug Mode** on your KaiOS 2.5 phone:
 ### Method 2: OmniSD / Gerda File Manager / Wallace Toolbox (.zip File)
 
 1. **Package the App:**
-   * Zip all files in the project folder (including `manifest.webapp`, `index.html`, `js/`, `css/`, `icons/`, etc.) into a `.zip` archive (e.g., `fpa-kaios.zip`).
+   * Zip all files in the project folder (including `manifest.webapp`, `index.html`, `js/`, `css/`, `icons/`, etc.) into a `.zip` archive (e.g., `pfa-kaios.zip`).
    * *Note:* Zip the contents directly inside the project root, not the parent folder itself.
 2. **On your Phone:**
-   * Copy `fpa-kaios.zip` to your SD card or internal storage.
+   * Copy `pfa-kaios.zip` to your SD card or internal storage.
    * Open **OmniSD**, **Gerda File Manager**, or **Wallace Toolbox** on KaiOS 2.5.
-   * Select `fpa-kaios.zip` and press **Install**.
+   * Select `pfa-kaios.zip` and press **Install**.
    * Once installed, **Piano From Above** will appear on your app launcher menu.
 
 ---
