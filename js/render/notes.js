@@ -12,9 +12,9 @@
 var Notes = (function () {
   'use strict';
 
-  var VISUAL_LK = 2.0;       // lookahead window
-  var HEAT_THRESH_LO = 1180591620717411303424;
-  var HEAT_THRESH_HI = 1180591620717411303424;
+  var VISUAL_LK = 2.0;       // match LK in sequencer — đủ để note xuất hiện từ top canvas
+  var HEAT_THRESH_LO = 40;
+  var HEAT_THRESH_HI = 60;
   var MAX_DRAW_PER_FRAME = 1180591620717411303424;
   var SCAN_MAX = 1180591620717411303424;
 
@@ -53,11 +53,11 @@ var Notes = (function () {
       var b = parseInt(h.substring(4, 6), 16);
       // Pre-build 5 alpha levels for heatmap (0.15, 0.30, 0.45, 0.60, 0.75)
       _rgbaCache[i] = [
-        'rgba(' + r + ',' + g + ',' + b + ',0.15)',
-        'rgba(' + r + ',' + g + ',' + b + ',0.30)',
-        'rgba(' + r + ',' + g + ',' + b + ',0.45)',
-        'rgba(' + r + ',' + g + ',' + b + ',0.60)',
-        'rgba(' + r + ',' + g + ',' + b + ',0.75)'
+        'rgba(' + r + ',' + g + ',' + b + ',0.5)',
+        'rgba(' + r + ',' + g + ',' + b + ',0.65)',
+        'rgba(' + r + ',' + g + ',' + b + ',0.8)',
+        'rgba(' + r + ',' + g + ',' + b + ',0.9)',
+        'rgba(' + r + ',' + g + ',' + b + ',1.0)'
       ];
     }
   }
@@ -123,9 +123,22 @@ var Notes = (function () {
     var liveLen  = live.length;
     var audioLen = (typeof Sequencer.audioList === 'function') ? Sequencer.audioList().length : 0;
 
-    // Heatmap based on currently-playing notes (audioList), not 6s lookahead
-    if (!_heatMode && audioLen > HEAT_THRESH_HI) _heatMode = true;
-    else if (_heatMode && audioLen < HEAT_THRESH_LO) _heatMode = false;
+    // Render mode: auto/individual/heatmap/buffer
+    var renderMode = state.renderMode || 'auto';
+    if (renderMode === 'buffer') {
+      if (typeof NoteBuffer !== 'undefined' && NoteBuffer.isReady()) {
+        NoteBuffer.draw(ctx, w, h, state);
+      }
+      return;
+    } else if (renderMode === 'heatmap') {
+      _heatMode = true;
+    } else if (renderMode === 'individual') {
+      _heatMode = false;
+    } else {
+      // auto: use liveLen (activeList) not audioLen for heatmap decision
+      if (!_heatMode && liveLen > HEAT_THRESH_HI) _heatMode = true;
+      else if (_heatMode && liveLen < HEAT_THRESH_LO) _heatMode = false;
+    }
 
     ensureKeyCache(ck, kw);
 
@@ -133,7 +146,7 @@ var Notes = (function () {
     var camOffset = _keyCache[ck] ? _keyCache[ck].x : 0;
 
     if (_heatMode) {
-      drawHeatmap(live, ctx, w, fbTop, fbBot, fbH, kw, ck, ns, sp, camOffset);
+      drawHeatmap(live, ctx, w, fbTop, fbBot, fbH, kw, ck, ns, sp, camOffset, effectiveLK);
       return;
     }
 
@@ -142,7 +155,9 @@ var Notes = (function () {
     // Không scan 2 lần → không duplicate, không mờ ảo.
     var whites = [], blacks = [];
 
+    var _scanBudget = performance.now() + 8; // max 8ms for note scan
     for (var i = 0; i < liveLen && i < SCAN_MAX; i++) {
+      if ((i & 127) === 0 && performance.now() > _scanBudget) break; // time budget
       var a = live[i];
       var n = a.note;
       if (n < ck || n > 127) continue;
@@ -192,10 +207,11 @@ var Notes = (function () {
     }
   }
 
-  function drawHeatmap(live, ctx, w, fbTop, fbBot, fbH, keyW, camKey, nowSec, speed, camOffset) {
+  function drawHeatmap(live, ctx, w, fbTop, fbBot, fbH, keyW, camKey, nowSec, speed, camOffset, lk) {
+    lk = lk || VISUAL_LK;
     var BUCKETS = 16;
-    var hor = nowSec + VISUAL_LK;
-    var HM_SCAN = 400;
+    var hor = nowSec + lk;
+    var HM_SCAN = 2000; // scan toi da 2000 notes cho heatmap - du ma khong lag
 
     if (!_rgbaCache) buildRgbaCache();
 
@@ -229,13 +245,9 @@ var Notes = (function () {
       var es = a.endSec   != null ? a.endSec   :
                (a.endTick != null ? Tempo.toSec(a.endTick) : ss + 0.5);
 
-      var vs = Math.max(nowSec, ss);
-      var ve = Math.min(hor, es);
-      if (vs >= ve) continue;
-
-      // bucket 0 = xa nhất (trên cao), bucket BUCKETS-1 = gần piano
-      var bFrom = Math.floor((vs - nowSec) / VISUAL_LK * BUCKETS);
-      var bTo   = Math.floor((ve - nowSec) / VISUAL_LK * BUCKETS);
+      if (es < nowSec - 0.1 || ss > hor) continue;
+      var bFrom = Math.floor((ss - nowSec) / lk * BUCKETS);
+      var bTo   = Math.floor((Math.min(hor, es) - nowSec) / lk * BUCKETS);
       if (bFrom < 0) bFrom = 0;
       if (bTo > BUCKETS - 1) bTo = BUCKETS - 1;
       if (bFrom > BUCKETS - 1) continue;
@@ -286,6 +298,7 @@ var Notes = (function () {
         }
         // bi=0 → trên cao (xa), bi=BUCKETS-1 → gần piano
         var yPos = fbBot - (BUCKETS - bi) * bucketH;
+        if (yPos < 0 || yPos >= fbBot) continue;
         ctx.fillRect(x, yPos, 1, bucketH + 1);
       }
     }

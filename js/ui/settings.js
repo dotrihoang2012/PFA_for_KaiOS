@@ -38,6 +38,7 @@ var Settings = (function () {
       reverbVolume: 1.5,       // 0.0 .. 3.0
     },
     visual: {
+      renderMode:   'auto',    // 'auto' | 'individual' | 'heatmap'
       speed:        1.0,      // 0.1 .. 8.0 (slider)
       theme:        'dark',    // 'dark' | 'light' | 'blue' | 'purple'
       noteLabels:   false,
@@ -63,6 +64,8 @@ var Settings = (function () {
         min: 0.0, max: 3.0, step: 0.1, fmt: function (v) { return v.toFixed(1); } },
     ],
     visual: [
+      { key: 'renderMode', label: 'Render Mode',    type: 'enum',
+        choices: [['auto','Auto'],['individual','Individual'],['heatmap','Heatmap'],['buffer','Buffer']] },
       { key: 'speed',      label: 'Speed',          type: 'number',
         min: 0.1, max: 8.0, step: 0.1, fmt: function (v) { return v.toFixed(1) + 'x'; } },
       { key: 'theme',      label: 'Theme',          type: 'enum',
@@ -108,6 +111,7 @@ var Settings = (function () {
       reverb:       _values.midi.reverb,
       chorus:       _values.midi.chorus,
       reverbVolume: _values.midi.reverbVolume,
+      renderMode:   _values.visual.renderMode,
       speed:        _values.visual.speed,
       theme:      _values.visual.theme,
       noteLabels: _values.visual.noteLabels,
@@ -490,6 +494,7 @@ var Settings = (function () {
       if (key === 'chorus')       return { chorus: val };
       if (key === 'reverbVolume') return { reverbVolume: val };
     } else {
+      if (key === 'renderMode') return { renderMode: val };
       if (key === 'speed')      return { speed: val };
       if (key === 'theme')      return { theme: val };
       if (key === 'noteLabels') return { noteLabels: val };

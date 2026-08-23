@@ -21,7 +21,8 @@ var Sequencer = (function () {
   var fireOff = null;
   var fireEnd = null;
 
-  var LK = 2.0;              // lookahead phải bằng VISUAL_LK trong notes.js
+  var LK = 2.0;              // base lookahead
+  var _baseLK = 2.0;
   var MAX_ACTIVE = 1180591620717411303424;
 
   // Wall-clock only — ctx.currentTime is frozen when AudioContext is suspended
@@ -39,7 +40,7 @@ var Sequencer = (function () {
   function startPlay() {
     if (!notes.length || playing) return;
     playing = true; ctxBase = audioNow(); tickStart = tick;
-    timer = setInterval(pulse, 25);
+    timer = setInterval(pulse, 33);
   }
   function stopPlay() { playing = false; if (timer) { clearInterval(timer); timer = null; } }
   function fullStop() { stopPlay(); cursor = 0; tick = 0; active = []; audioActive = []; }
@@ -66,11 +67,14 @@ var Sequencer = (function () {
 
     _pls++;
     if (_pls % 20 === 0) { try { if (typeof Synth !== 'undefined' && Synth.zoo) Synth.zoo(); } catch(e) {} }
-    // Sort active by startSec every 5 pulses so renderer can break early
-    if (_pls % 5 === 0 && active.length > 1) {
-      active.sort(function(a, b) { return a.startSec - b.startSec; });
-    }
 
+    // Sync LK voi trail setting de activeList luon du cho renderer
+    try {
+      var _tr = Store.getState().trail;
+      LK = (isFinite(_tr) && _tr > 0) ? (_baseLK / _tr) : _baseLK;
+      if (LK < 0.5) LK = 0.5;
+      if (LK > 3)   LK = 3; // cap 3s - giam activeList size
+    } catch(e) {}
     var ctxNow  = audioNow();
     var elapsed = (ctxNow - ctxBase) * speed;
     // toTick gives accurate tick from elapsed seconds, respecting all tempo changes
@@ -93,18 +97,8 @@ var Sequencer = (function () {
           fireOn(n.n, n.c, n.v, Math.max(0, delay), dur);
           auCnt++;
         }
-        if (active.length >= MAX_ACTIVE) {
-          // Xoa note cu nhat (startSec nho nhat) de nhuong cho note tuong lai
-          var oldest = 0;
-          for (var ci = 1; ci < active.length; ci++) {
-            if (active[ci].startSec < active[oldest].startSec) oldest = ci;
-          }
-          active.splice(oldest, 1);
-        }
-        if (active.length < MAX_ACTIVE) {
-          active.push({ note: n.n, channel: n.c, tick: n.t, endTick: etk,
-                        startSec: ss, endSec: esSec, velocity: n.v });
-        }
+        active.push({ note: n.n, channel: n.c, tick: n.t, endTick: etk,
+                      startSec: ss, endSec: esSec, velocity: n.v });
       }
       cursor++;
     }
@@ -113,18 +107,17 @@ var Sequencer = (function () {
     for (var i = active.length - 1; i >= 0; i--) {
       var a = active[i];
       // Remove if note ended more than 0.5s ago OR starts after lookahead
-      if (a.endSec < nowSec - 0.1 || a.startSec > hor) {
+      if (a.endSec < nowSec - 0.05 || a.startSec > hor) {
         active.splice(i, 1);
       }
     }
-    // Rebuild audioActive: notes currently playing (keyboard highlight)
-    // Deduplicate by note number to avoid double-counting same pitch
+    // Rebuild audioActive: notes currently playing + trail window
+    // Keep notes for 0.5s after they end so keyboard stays lit
     audioActive = [];
-    var _seen = {};
     for (var i = 0; i < active.length; i++) {
       var a = active[i];
-      if (a.startSec <= nowSec + 0.05 && a.endSec >= nowSec - 0.05) {
-        if (!_seen[a.note]) { _seen[a.note] = true; audioActive.push(a); }
+      if (a.startSec <= nowSec + 0.1 && a.endSec >= nowSec - 0.5) {
+        audioActive.push(a);
       }
     }
     // Fire noteOff for notes that just ended

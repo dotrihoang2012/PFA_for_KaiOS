@@ -251,6 +251,12 @@
     _activeEngine = Synth; // default engine until Settings.load() runs
     Sequencer.noteDown(function (note, ch, vel, delay, dur) {
       if (!window._audioMute) _engine().noteOn(note, ch, vel, delay, dur);
+      // Feed NoteBuffer for O(1) render
+      var st = Store.getState();
+      if (typeof NoteBuffer !== 'undefined' && NoteBuffer.isReady()) {
+        NoteBuffer.onNote(note, ch, vel, delay, dur,
+          st.camKey || 48, st.keyWidth || 16);
+      }
     });
     Sequencer.noteUp(function (note, ch) {
       if (!window._audioMute) _engine().noteOff(note, ch);
@@ -282,6 +288,11 @@
     lastFrameTime = performance.now();
     renderLoop(performance.now());
 
+    // Init NoteBuffer with screen dimensions
+    if (typeof NoteBuffer !== 'undefined') {
+      NoteBuffer.init(width, height);
+      NoteBuffer.ensureKeyCache(Store.getState().camKey || 48, Store.getState().keyWidth || 16);
+    }
     console.log('[Main] booted. Canvas ' + width + 'x' + height);
 
     // If MozActivity fired while we were still booting (script parse
@@ -379,6 +390,11 @@
     // Re-wire Sequencer callbacks to the new engine
     Sequencer.noteDown(function (note, ch, vel, delay, dur) {
       if (!window._audioMute) _engine().noteOn(note, ch, vel, delay, dur);
+      var st2 = Store.getState();
+      if (typeof NoteBuffer !== 'undefined' && NoteBuffer.isReady()) {
+        NoteBuffer.onNote(note, ch, vel, delay, dur,
+          st2.camKey || 48, st2.keyWidth || 16);
+      }
     });
     Sequencer.noteUp(function (note, ch) {
       if (!window._audioMute) _engine().noteOff(note, ch);
@@ -707,6 +723,7 @@
     });
 
     HUD.setTotal(notes.length);
+    if (typeof NoteBuffer !== 'undefined' && NoteBuffer.isReady()) NoteBuffer.reset();
 
     // Hide parsing bar — load complete
     hideParsing();
