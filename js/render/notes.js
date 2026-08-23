@@ -8,6 +8,12 @@
  *    between modes at threshold → no "loạn màu".
  *  - VISUAL_LK=4s matching keyboard vertical scale.
  *  - No per-frame object allocation in main scan loop.
+ *
+ * Visual Settings integration:
+ *  - Channel colors are MUTABLE — Options → Note Color Palette Randomise
+ *    regenerates all 16 with guaranteed-unique hues (randomizePalette).
+ *  - Visible note window comes from Store kbStart/kbEnd (Keyboard Range).
+ *  - Falling-notes band bottom follows the Piano Size strip height.
  */
 var Notes = (function () {
   'use strict';
@@ -18,7 +24,10 @@ var Notes = (function () {
   var MAX_DRAW_PER_FRAME = 1180591620717411303424;
   var SCAN_MAX = 1180591620717411303424;
 
-  // 16 channel colors (matching dipswitchhuey scheme)
+  // 16 channel colors (matching dipswitchhuey scheme).
+  // MUTABLE — randomizePalette() overwrites entries in place so every
+  // consumer (notes, keyboard highlights, notebuffer, heatmap) picks up
+  // the new palette through channelColor() without re-wiring.
   var CH_COLORS = [
     '#FFB500', '#00C8FF', '#64FF64', '#FF468C',
     '#FFDC00', '#AA64FF', '#00F0B4', '#FF7850',
@@ -40,6 +49,48 @@ var Notes = (function () {
   function channelColor(ch) {
     ch = (isFinite(ch) ? ch : 0) % 16;
     return CH_COLORS[ch] || '#CCCCCC';
+  }
+
+  /**
+   * Randomize all 16 channel colors — Options → Note Color Palette
+   * Randomise. Uniqueness is guaranteed by construction: hues advance
+   * by the golden angle (137.508°), which never repeats within 16 steps
+   * (the golden-angle sequence only cycles after 360/gcd ≈ huge counts),
+   * and saturation/lightness are jittered per slot on top of that.
+   */
+  function randomizePalette() {
+    var GOLDEN = 137.508;
+    var baseH = Math.floor(Math.random() * 360);
+    for (var i = 0; i < CH_COLORS.length; i++) {
+      var h = (baseH + i * GOLDEN) % 360;
+      var s = 65 + ((i * 29) % 26);   // 65..90  — vivid, readable on dark bg
+      var l = 48 + ((i * 17) % 18);   // 48..65  — mid lightness spread
+      CH_COLORS[i] = hslToHex(h, s, l);
+    }
+    _rgbaCache = null; // heatmap cache must be rebuilt from the new palette
+    buildRgbaCache();  // pre-warm immediately (cheap, 16 entries)
+  }
+
+  /** hsl(h°,s%,l%) → '#rrggbb' — standard HSL conversion. */
+  function hslToHex(h, s, l) {
+    s /= 100; l /= 100;
+    var c = (1 - Math.abs(2 * l - 1)) * s;
+    var hp = h / 60;
+    var x = c * (1 - Math.abs(hp % 2 - 1));
+    var r = 0, g = 0, b = 0;
+    if      (hp < 1) { r = c; g = x; }
+    else if (hp < 2) { r = x; g = c; }
+    else if (hp < 3) { g = c; b = x; }
+    else if (hp < 4) { g = x; b = c; }
+    else if (hp < 5) { r = x; b = c; }
+    else             { r = c; b = x; }
+    var m = l - c / 2;
+    function to(v) {
+      var n = Math.round((v + m) * 255);
+      var hex = n.toString(16);
+      return n < 16 ? '0' + hex : hex;
+    }
+    return '#' + to(r) + to(g) + to(b);
   }
 
   function buildRgbaCache() {
@@ -98,11 +149,13 @@ var Notes = (function () {
   }
 
   function draw(state, ctx, w, h) {
-    var KB_H = 60;
+    // Band bottom follows the Piano Size strip height ('none' → full canvas).
+    var kbH = (typeof Keyboard !== 'undefined' && Keyboard.height)
+      ? Keyboard.height(state) : 60;
     // Canvas height already excludes softkey band (see main.js _chromeH),
     // so fbBot sits flush with the canvas bottom (just above where piano
     // will be drawn).
-    var fbBot = h - KB_H;                    // bottom y of falling-notes band
+    var fbBot = h - kbH;                     // bottom y of falling-notes band
     var fbTop = 0;                           // top y of band
     if (fbBot < fbTop) fbBot = fbTop + 30;
     var fbH   = fbBot - fbTop;               // height of band
@@ -111,7 +164,11 @@ var Notes = (function () {
     var effectiveLK = VISUAL_LK / trailSetting; // trail=2 -> half lookahead -> 2x faster
     var FALL = fbH / effectiveLK;
     var kw = state.keyWidth || 16;
-    var ck = state.camKey   || 48;
+    // Visible window — Keyboard Range [kbStart..kbEnd] replaces camKey.
+    var ckStart = (state.kbStart != null) ? state.kbStart : 21;
+    var ckEnd   = (state.kbEnd   != null) ? state.kbEnd   : 108;
+    ckStart = Math.max(0, Math.min(127, ckStart));
+    ckEnd   = Math.max(ckStart + 1, Math.min(127, ckEnd));
     var ns = 0;
     try { ns = Sequencer.getTime(); } catch(e) { return; }
     var sp = state.speed || 1.0;
@@ -140,13 +197,14 @@ var Notes = (function () {
       else if (_heatMode && liveLen < HEAT_THRESH_LO) _heatMode = false;
     }
 
-    ensureKeyCache(ck, kw);
+    ensureKeyCache(ckStart, kw);
 
-    // Scroll offset — same as keyboard.js: sx = x position of camKey
-    var camOffset = _keyCache[ck] ? _keyCache[ck].x : 0;
+    // Scroll offset — left edge of the range window (same layout math
+    // as keyboard.js, so notes and piano keys line up pixel-perfect).
+    var camOffset = _keyCache[ckStart] ? _keyCache[ckStart].x : 0;
 
     if (_heatMode) {
-      drawHeatmap(live, ctx, w, fbTop, fbBot, fbH, kw, ck, ns, sp, camOffset, effectiveLK);
+      drawHeatmap(live, ctx, w, fbTop, fbBot, fbH, kw, ckStart, ckEnd, ns, sp, camOffset, effectiveLK);
       return;
     }
 
@@ -160,7 +218,8 @@ var Notes = (function () {
       if ((i & 127) === 0 && performance.now() > _scanBudget) break; // time budget
       var a = live[i];
       var n = a.note;
-      if (n < ck || n > 127) continue;
+      // Only notes inside the visible Keyboard Range are drawn
+      if (n < ckStart || n > ckEnd) continue;
 
       var pos = _keyCache[n];
       if (!pos) continue;
@@ -207,7 +266,7 @@ var Notes = (function () {
     }
   }
 
-  function drawHeatmap(live, ctx, w, fbTop, fbBot, fbH, keyW, camKey, nowSec, speed, camOffset, lk) {
+  function drawHeatmap(live, ctx, w, fbTop, fbBot, fbH, keyW, camStart, camEnd, nowSec, speed, camOffset, lk) {
     lk = lk || VISUAL_LK;
     var BUCKETS = 16;
     var hor = nowSec + lk;
@@ -215,7 +274,7 @@ var Notes = (function () {
 
     if (!_rgbaCache) buildRgbaCache();
 
-    ensureKeyCache(camKey, keyW);
+    ensureKeyCache(camStart, keyW);
 
     // Single typed array grid (no per-frame object allocation):
     // For each pixel column (0..w), 16 bucket counts + 1 channel id.
@@ -239,7 +298,8 @@ var Notes = (function () {
     for (var i = 0; i < live.length && i < HM_SCAN; i++) {
       var a = live[i];
       var n = a.note;
-      if (n < camKey || n > 127) continue;
+      // Heatmap respects the visible Keyboard Range too
+      if (n < camStart || n > camEnd) continue;
 
       var ss = a.startSec != null ? a.startSec : Tempo.toSec(a.tick);
       var es = a.endSec   != null ? a.endSec   :
@@ -304,5 +364,5 @@ var Notes = (function () {
     }
   }
 
-  return { draw: draw, channelColor: channelColor };
+  return { draw: draw, channelColor: channelColor, randomizePalette: randomizePalette };
 })();

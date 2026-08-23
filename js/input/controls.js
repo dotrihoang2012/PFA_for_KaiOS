@@ -4,8 +4,10 @@
  *   SoftRight → right softkey
  *   Enter     → center (select)
  *   Backspace → back / exit overlay
- *   ArrowUp/Down → focus-based list navigation
- *   EndCall  → quit app
+ *   ArrowLeft/Right → seek -1s / +1s
+ *   ArrowUp/Down    → OS media volume up / down
+ *   Key 1 / Key 3   → playback speed -0.1x / +0.1x
+ *   EndCall   → quit app
  *
  *   MozActivity picker for file loading (native KaiOS)
  *   Fullscreen toggle + Screen rotation
@@ -15,13 +17,6 @@
   'use strict';
 
   var _focusedItemIndex = 0;
-  // Volume OSD lock: when user picks Volume in Options, we close the
-  // menu, slide the OS OSD on, and for as long as the OSD is showing
-  // arrow keys are routed to OS volume (not keyboard zoom/scroll).
-  // The OS owns ArrowUp/Down inside the OSD, so this is mostly a
-  // defence against the residual event when our app also sees it.
-  var _osdVolumeLock = false;
-  var _osdLockTimer = null;
 
   function init() {
     window.addEventListener('keydown', onKeyDown, false);
@@ -45,13 +40,47 @@
       return;
     }
 
+    // ── About panel: modal; Back / SoftRight / Enter dismiss it back
+    //    to the piano screen. ArrowUp/Down SCROLL the content — KaiOS
+    //    handsets have no touch input, so the D-pad must do it.
+    //    Left/Right are swallowed (no horizontal content).
+    if (aboutOpen()) {
+      e.preventDefault();
+      if (key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
+          key === 'Back' || key === Constants.KEY.BACK ||
+          key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+          key === Constants.KEY.ENTER || key === 13) {
+        hideAbout();
+        return;
+      }
+      if (key === 'ArrowUp' || key === Constants.KEY.ARROW_UP ||
+          key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN) {
+        var anav = document.getElementById('about-list');
+        if (anav) {
+          var astep = 50; // ~5rem at the locked 10px root font-size
+          var adown = (key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN);
+          anav.scrollTop += adown ? astep : -astep;
+        }
+      }
+      return;
+    }
+
     // ── Back: closes menu / Settings if open, otherwise hands control to
     //    OS so the hardware Back button quits the app. ──
     if (key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
         key === 'Back' || key === Constants.KEY.BACK) {
       if (typeof Settings !== 'undefined' && Settings.isOpen && Settings.isOpen()) {
         e.preventDefault();
-        Settings.close();
+        // Delegate to Settings.handleKey: while a level-2 sub-page is
+        // open it steps BACK to the group page (Visual Settings);
+        // otherwise it closes the group page. Calling Settings.close()
+        // directly here skipped the sub-page level entirely and dumped
+        // the user out to the Options menu.
+        if (typeof Settings.handleKey === 'function') {
+          Settings.handleKey(key);
+        } else {
+          Settings.close();
+        }
         return;
       }
       if (menuOpen) {
@@ -77,34 +106,17 @@
       e.preventDefault();
       if (typeof Settings.handleKey === 'function') {
         Settings.handleKey(key);
+        // Focus may have moved onto/off a drill-in row (or opened a
+        // sub-page) — refresh the SELECT softkey label to match.
+        updateSoftkeys();
       }
       return;
     }
 
-    // ── OSD volume lock (after picking Volume in Options) ──
-    // While the OS volume OSD is showing, ArrowUp/Down only step the
-    // OS media volume; nothing else in our canvas should move (no
-    // keyboard zoom, no scroll). Back can pre-empt the lock.
-    if (_osdVolumeLock) {
-      if (key === Constants.KEY.ARROW_UP || key === 'ArrowUp') {
-        e.preventDefault();
-        adjustVolume(+1);
-        return;
-      }
-      if (key === Constants.KEY.ARROW_DOWN || key === 'ArrowDown') {
-        e.preventDefault();
-        adjustVolume(-1);
-        return;
-      }
-      if (key === 'Backspace' || key === Constants.KEY.BACKSPACE) {
-        e.preventDefault();
-        releaseOSDVolumeLock();
-        return;
-      }
-      // Any other key falls through to normal gameplay.
-    }
-
     // ── Gameplay mode ──
+    // ArrowUp/Down step the OS media volume directly (bindings.js), so no
+    // temporary OSD input-lock is needed anymore — volume works everywhere
+    // on the piano screen, and Left/Right always seek ±1s.
     var action = Constants.KEY_MAP[key];
     if (!action) return;
     e.preventDefault();
@@ -185,7 +197,6 @@
   // in CSS — toggling it gives an instant show/hide.
   function closeMenuOverlay() {
     Store.setState({ menu: { open: false } });
-    releaseOSDVolumeLock();
     var app = document.getElementById('app');
     if (app) app.classList.remove('menu-open');
     var m = document.getElementById('menu-overlay');
@@ -204,6 +215,33 @@
     var menuItems = document.querySelectorAll('#menu-list .kai-om-item');
     var action = menuItems[index] && menuItems[index].getAttribute('data-action');
     if (action) execMenuAction(action);
+  }
+
+  // ── About panel ──
+  // Static info page opened from Options → "About This App". Modal:
+  // Back / SoftRight / Enter close it and drop the user back on the
+  // piano screen (the Options menu stays closed).
+  function aboutOpen() {
+    var ov = document.getElementById('about-overlay');
+    return !!(ov && !ov.classList.contains('hidden'));
+  }
+
+  function showAbout() {
+    closeMenuOverlay();
+    var ov = document.getElementById('about-overlay');
+    if (ov) {
+      // Reset scroll so long content starts from the top every time.
+      var nav = ov.querySelector('#about-list');
+      if (nav) nav.scrollTop = 0;
+      ov.classList.remove('hidden');
+    }
+    updateSoftkeys();
+  }
+
+  function hideAbout() {
+    var ov = document.getElementById('about-overlay');
+    if (ov) ov.classList.add('hidden');
+    updateSoftkeys();
   }
 
   function execMenuAction(action) {
@@ -235,13 +273,25 @@
         rotateScreen();
         break;
       case 'volume':
-        enterOSDVolumeLock();
+        showOSDVolume();
+        return;
+      case 'random-colors':
+        closeMenuOverlay();
+        try {
+          if (typeof Notes !== 'undefined' && Notes.randomizePalette) {
+            Notes.randomizePalette();
+            showToast('Track colors randomised');
+          }
+        } catch (e) { console.error('[Ctrl] random-colors failed', e); }
         return;
       case 'midi-output':
         openSettingsGroup('midi');
         return;
       case 'visual':
         openSettingsGroup('visual');
+        return;
+      case 'about':
+        showAbout();
         return;
       default:
         console.log('[Ctrl] unknown menu action: ' + action);
@@ -454,22 +504,29 @@
     switch (action) {
       case 'playPause':
         if (!s.fileName) break; // no file loaded
-        Store.setState({ play: (s.play === 'play') ? 'pause' : 'play' });
+        var willPlay = (s.play !== 'play');
+        Store.setState({ play: willPlay ? 'play' : 'pause' });
+        // Center-screen "Now playing: <file>" toast — only when playback
+        // starts FRESH (from stopped). Resume-from-pause must stay silent.
+        if (willPlay && s.play === 'stop' &&
+            typeof window.showNowPlaying === 'function') {
+          window.showNowPlaying(s.fileName);
+        }
         break;
       case 'stop':
         Store.setState({ play: 'stop', timeSec: 0 });
         break;
-      case 'zoomDeeper':
-        Store.setState({ keyWidth: Math.max(Constants.UI.KEY_W_MIN, s.keyWidth - 2) });
+      case 'seekBack':
+        seekSeconds(-1);
         break;
-      case 'zoomWider':
-        Store.setState({ keyWidth: Math.min(Constants.UI.KEY_W_MAX, s.keyWidth + 2) });
+      case 'seekForward':
+        seekSeconds(+1);
         break;
-      case 'scrollLeft':
-        Store.setState({ camKey: Math.max(0, s.camKey - 2) });
+      case 'speedStepUp':
+        stepSpeed(+0.1);
         break;
-      case 'scrollRight':
-        Store.setState({ camKey: Math.min(110, s.camKey + 2) });
+      case 'speedStepDown':
+        stepSpeed(-0.1);
         break;
       case 'speedUp':
         Store.setState({ speed: Math.min(4.0, s.speed * 2) });
@@ -498,6 +555,33 @@
       default: break;
     }
     updateSoftkeys();
+  }
+
+  // ── Seek by ±N seconds (ArrowLeft / ArrowRight) ──
+  // Sequencer.seek() internally stops the pulse timer and clears the
+  // active-note windows, so if we were playing we must kick playback
+  // off again directly (Store already says 'play', so routing through
+  // setState would be a no-op — see main.js onStoreChange prevPlay guard).
+  function seekSeconds(delta) {
+    var s = Store.getState();
+    if (!s.notes || !s.notes.length) return;   // nothing loaded to seek in
+    var wasPlaying = Sequencer.isPlaying();
+    try { Sequencer.seek(delta); } catch (e) { return; }
+    if (wasPlaying) {
+      Sequencer.play();
+    } else {
+      Store.setState({ timeSec: Sequencer.getTime() });
+    }
+  }
+
+  // ── Playback speed stepping ±0.1x (Key 3 up / Key 1 down) ──
+  // Round to one decimal so repeated presses never accumulate
+  // floating-point drift (0.30000000004-style values).
+  function stepSpeed(delta) {
+    var s = Store.getState();
+    var next = Math.round(((s.speed || 1.0) + delta) * 10) / 10;
+    next = Math.min(8.0, Math.max(0.1, next));
+    if (next !== s.speed) Store.setState({ speed: next });
   }
 
   // ── Menu open ──
@@ -533,17 +617,28 @@
     var settingsOpen = (typeof Settings !== 'undefined' &&
                         Settings.isOpen && Settings.isOpen());
 
-    if (menuOpen) {
+    if (aboutOpen()) {
+      // About is read-only — only Back applies.
+      if (leftE)  leftE.textContent  = '';
+      if (ctrE)   ctrE.textContent   = '';
+      if (rightE) rightE.textContent = 'Back';
+    } else if (menuOpen) {
+      // Options menu — center SELECT activates the focused item.
       if (leftE)  leftE.textContent  = '';
       if (ctrE)   ctrE.textContent   = 'SELECT';
       if (rightE) rightE.textContent = '';
     } else if (settingsOpen) {
-      // Settings rows are value-toggled with Left/Right and exited
-      // with Backspace — no softkey labels needed. The user
-      // navigates by feel; the keyboard layout is already cue
-      // enough.
+      // Drill-in rows (Keyboard Range / Info Card Options / color
+      // pickers) advertise their action with a center SELECT label,
+      // mirroring the Options menu. Plain value rows keep labels blank.
+      var subOv = document.getElementById('subsettings-overlay');
+      var subOpen = !!(subOv && !subOv.classList.contains('hidden'));
+      var selRow = (!subOpen)
+        ? document.querySelector('#settings-list .setting-row.focused')
+        : null;
+      var selType = selRow ? selRow.getAttribute('data-type') : null;
+      if (ctrE)   ctrE.textContent   = (selType === 'sub' || selType === 'color') ? 'SELECT' : '';
       if (leftE)  leftE.textContent  = '';
-      if (ctrE)   ctrE.textContent   = '';
       if (rightE) rightE.textContent = '';
     } else {
       var hasFile = !!s.fileName;
@@ -585,15 +680,13 @@
     // from inside the Options menu.
   }
 
-  // ── Volume OSD lock (picked from Options menu) ──
-  // User asked: pressing Volume closes Options, leaves just piano,
-  // and only Volume acts on arrow keys. So we kill the menu,
-  // request the OSD, and for ~3.5s the ArrowUp/Down in our window
-  // only step OS volume. Back is a manual escape hatch.
-  function enterOSDVolumeLock() {
-    // 1. close Options overlay immediately
+  // ── OS volume OSD (picked from Options menu) ──
+  // Close Options and ask the OS to slide in the media-volume OSD.
+  // ArrowUp/Down already step volume during normal gameplay, so there
+  // is no need for a temporary input lock here — the OSD is purely
+  // visual feedback for the current level.
+  function showOSDVolume() {
     closeMenuOverlay();
-    // 2. ask OS to show media-volume OSD
     var vm = kaiOSVolumeManager();
     if (!vm) {
       showToast('Volume: KaiOS API unavailable');
@@ -601,22 +694,6 @@
     }
     try { vm.requestShow(); } catch (e) {
       showToast('Volume show failed');
-    }
-    // 3. arm the lock
-    _osdVolumeLock = true;
-    if (_osdLockTimer) clearTimeout(_osdLockTimer);
-    // OS HIDE_SOUND_DELAY=2000ms (sound_manager.js). Lock arrows for
-    // exactly that window so user can toggle volume while OSD is up;
-    // right after OSD hides, arrows return to nav.
-    _osdLockTimer = setTimeout(releaseOSDVolumeLock, 2000);
-    showToast('Volume - Up/Down adjust');
-  }
-  
-  function releaseOSDVolumeLock() {
-    _osdVolumeLock = false;
-    if (_osdLockTimer) {
-      clearTimeout(_osdLockTimer);
-      _osdLockTimer = null;
     }
   }
 
@@ -631,7 +708,6 @@
       closeMenuOverlay();
       return;
     }
-    releaseOSDVolumeLock();
     var appEl = document.getElementById('app');
     var m = document.getElementById('menu-overlay');
 
@@ -683,23 +759,11 @@
     }, 2500);
   }
 
-  // ── "Now Playing" toast ──
-  var _npTimer = null;
-  function showNowPlaying(filePath) {
-    var el = document.getElementById('now-playing');
-    if (!el) return;
-    var fileName = filePath.split('/').pop()
-      .replace('.mid.json', '').replace('.mid', '').replace('.json', '');
-    el.textContent = 'Now Playing: ' + fileName;
-    el.classList.remove('fade-out', 'hidden');
-    el.classList.add('fade-in');
-    if (_npTimer) clearTimeout(_npTimer);
-    _npTimer = setTimeout(function () {
-      el.classList.remove('fade-in');
-      el.classList.add('fade-out');
-    }, 3000);
-  }
-  window.showNowPlaying = showNowPlaying;
+  // ── "Now Playing" center toast ──
+  // Implemented in main.js (window.showNowPlaying) so the MozActivity
+  // load path can reuse it. Playback start (dispatchAction playPause)
+  // calls it from here — do NOT redefine it in this module, main.js
+  // loads last and would silently override it.
   window.updateSoftkeys = updateSoftkeys;
   window.refreshMenuLabels = refreshMenuLabels;
 

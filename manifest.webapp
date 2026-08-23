@@ -33,7 +33,7 @@
     "open": {
       "filters": {
         "filename": {
-          "pattern": ".*(mid$|MID$|midi$|MIDI$)",
+          "pattern": ".*(mid$|MID$|midi$|MIDI$|json$|JSON$)",
           "patternFlags": "gi"
         }
       },
@@ -44,7 +44,7 @@
     "share": {
       "filters": {
         "filenames": {
-          "pattern": ".*(mid$|MID$|midi$|MIDI$)",
+          "pattern": ".*(mid$|MID$|midi$|MIDI$|json$|JSON$)",
           "patternFlags": "gi"
         }
       },

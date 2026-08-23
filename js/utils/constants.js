@@ -67,8 +67,8 @@ var Constants = {
   UI: {
     HEADER_H:       28,
     SOFTKEY_H:      24,
-    KEY_W_MIN:       6,
-    KEY_W_MAX:      40,
+    KEY_W_MIN:       3,   // low so wide Keyboard Range windows still fit (auto-fit)
+    KEY_W_MAX:     120,   // high so narrow ranges can still fill the full screen width
     KEY_W_DEFAULT:  16,
     DEFAULT_SPEED: 1.0,
     VOICE_LIMIT:    32,

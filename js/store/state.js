@@ -33,11 +33,31 @@ var Store = (function () {
     engine:     'synth',     // 'synth' | 'soundbank'
     trail:      'medium',    // falling-note tail length
 
+    // Keyboard range — the visible window of the piano strip.
+    // kbStart = leftmost MIDI note drawn, kbEnd = rightmost (inclusive).
+    // Standard 88-key piano defaults: A0 (21) .. C8 (108).
+    kbStart: 21,
+    kbEnd:   108,
+
+    // Piano strip size: 'big' (60px) | 'small' (32px) | 'none' (hidden)
+    pianoSize: 'big',
+
+    // Custom colors. Hex ('#rrggbb'), rgba(...) string, or null.
+    // bgColor null = fall back to the active --theme-bg CSS token.
+    bgColor:       null,       // canvas background override
+    barColor:      '#00ccff',  // separator/playhead line above the piano
+    pianoColorHex: '#f2f2f2',  // white-key fill (replaces enum pianoColor)
+
     // Visual settings
     theme:        'dark',    // 'dark' | 'light' | 'blue' | 'purple'
     noteLabels:   false,     // draw C/D/E labels above white keys
-    showFps:      true,
-    pianoColor:   'white',   // 'white' | 'ivory' | 'ebony'
+    // Info card (HUD) toggles — master gate + per-stat switches
+    infoCard:      true,
+    infoNoteCount: true,
+    infoSpeed:     true,
+    infoTime:      true,
+    infoFps:       true,
+    // (piano white-key color moved to pianoColorHex above)
 
     // Stats (r/o, updated by engine)
     activeNoteCount: 0,

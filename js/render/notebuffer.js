@@ -18,13 +18,6 @@ var NoteBuffer = (function () {
   var _offCtx    = null;
   var _w = 0, _h = 0;
 
-  var CH_COLORS = [
-    '#FFB500','#00C8FF','#64FF64','#FF468C',
-    '#FFDC00','#AA64FF','#00F0B4','#FF7850',
-    '#50B4FF','#C8FF00','#FF3464','#64C8FF',
-    '#FF9B00','#B464FF','#82FFC8','#FF64A0'
-  ];
-
   var _keyCache = null, _keyCacheW = -1, _keyCacheKey = -1;
 
   function ensureKeyCache(camKey, keyW) {
@@ -66,13 +59,19 @@ var NoteBuffer = (function () {
   function draw(ctx, screenW, screenH, state) {
     if (!_offCtx) return;
 
-    var KB_H = 60;
+    // Band bottom follows the Piano Size strip height ('none' → full canvas)
+    var KB_H = (typeof Keyboard !== 'undefined' && Keyboard.height)
+      ? Keyboard.height(state) : 60;
     var fbBot = screenH - KB_H;
     var fbH   = fbBot;
     if (fbH < 30) return;
 
     var kw = state.keyWidth || 16;
-    var ck = state.camKey   || 48;
+    // Visible window — Keyboard Range [kbStart..kbEnd] replaces camKey
+    var ck = (state.kbStart != null) ? state.kbStart : 21;
+    var ckEnd = (state.kbEnd != null) ? state.kbEnd : 108;
+    ck    = Math.max(0, Math.min(127, ck));
+    ckEnd = Math.max(ck + 1, Math.min(127, ckEnd));
     var sp = state.speed    || 1.0;
     var ns = 0;
     try { ns = Sequencer.getTime(); } catch(e) { return; }
@@ -97,14 +96,17 @@ var NoteBuffer = (function () {
     try { live = Sequencer.activeList(); } catch(e) {}
     if (!live || !live.length) return;
 
-    // Render whites then blacks into offscreen
+    // Render whites then blacks into offscreen.
+    // Colors come from the shared Notes palette so Options →
+    // Note Color Palette Randomise applies here too.
     var whites = [], blacks = [];
     var liveLen = live.length;
 
     for (var i = 0; i < liveLen; i++) {
       var a = live[i];
       var n = a.note;
-      if (n < ck || n > 127) continue;
+      // Only notes inside the visible Keyboard Range are drawn
+      if (n < ck || n > ckEnd) continue;
 
       var pos = _keyCache[n];
       if (!pos) continue;
@@ -132,19 +134,21 @@ var NoteBuffer = (function () {
     for (var wi = 0; wi < whites.length; wi++) {
       var e = whites[wi];
       if (e.ch !== lastCh) {
-        _offCtx.fillStyle = CH_COLORS[(e.ch || 0) % 16];
+        _offCtx.fillStyle = (typeof Notes !== 'undefined' && Notes.channelColor)
+          ? Notes.channelColor(e.ch) : '#CCCCCC';
         lastCh = e.ch;
       }
       _offCtx.fillRect(e.nx, e.ny, e.nw, e.nh);
     }
     lastCh = -1;
     for (var bi = 0; bi < blacks.length; bi++) {
-      var e = blacks[bi];
-      if (e.ch !== lastCh) {
-        _offCtx.fillStyle = CH_COLORS[(e.ch || 0) % 16];
-        lastCh = e.ch;
+      var e2 = blacks[bi];
+      if (e2.ch !== lastCh) {
+        _offCtx.fillStyle = (typeof Notes !== 'undefined' && Notes.channelColor)
+          ? Notes.channelColor(e2.ch) : '#CCCCCC';
+        lastCh = e2.ch;
       }
-      _offCtx.fillRect(e.nx + 1, e.ny, e.nw - 2, e.nh);
+      _offCtx.fillRect(e2.nx + 1, e2.ny, e2.nw - 2, e2.nh);
     }
 
     // Single blit to screen

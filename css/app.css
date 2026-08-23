@@ -143,3 +143,210 @@
 /* HUD adapts to theme foreground */
 :root[data-theme="light"] #hud { color: var(--theme-fg); }
 :root[data-theme="light"] #hud-note-count { color: var(--theme-fg); }
+
+/* ===========================================
+   LEVEL-2 SETTINGS SUB-PAGES (settings.js)
+   Color picker swatch grid + RGBA sliders,
+   and the small chip previews in group rows.
+   =========================================== */
+
+/* Panel chrome — kaiui.css scopes its OptionMenu panel layout to
+   #menu-overlay/#settings-overlay only, so the level-2 overlay
+   repeats those rules here (same tokens: full-bleed white sheet,
+   header bar from .kai-om > header, scrollable nav). */
+#subsettings-overlay .kai-om {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--color-gs00);
+  display: flex;
+  flex-direction: column;
+}
+#subsettings-list {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-gs00);
+  will-change: scroll-position;
+}
+
+/* Swatch grid — flex-wrap, SWATCH_COLS=5 columns per visual row.
+   Navigation math in settings.js jumps by 5 for Up/Down. */
+.swatch-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.8rem;
+  background: var(--color-gs00);
+}
+
+/* One selectable preset cell. Focused = project highlight blue,
+   matching .kai-om-item.focused / .setting-row.focused. */
+.swatch {
+  width: 3.6rem;
+  height: 3.6rem;
+  margin: 0.35rem;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  border: 0.2rem solid transparent;
+}
+.swatch.focused {
+  border-color: var(--color-gs00);
+  outline: 0.25rem solid #0066cc;
+}
+
+/* First cell of the grid — restores factory default / theme color. */
+.swatch-default {
+  background: transparent;
+  border: 0.2rem dashed var(--color-gs45);
+  color: var(--color-gs70);
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  line-height: 3.2rem;
+}
+.swatch-default.focused {
+  border-color: var(--color-gs00);
+  outline: 0.25rem solid #0066cc;
+  color: var(--color-gs00);
+}
+
+/* Small inline color preview used on Visual group rows and the
+   sub-page Preview row. */
+.color-chip {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.6rem;
+  border-radius: 0.4rem;
+  border: 1px solid var(--color-gs45);
+  vertical-align: middle;
+  background: transparent;
+}
+.color-preview-row {
+  display: flex;
+  align-items: center;
+  min-height: 4.5rem;
+  padding: 0 1.6rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gs90);
+  background: var(--color-gs00);
+}
+.color-preview-chip {
+  margin-left: auto;
+  margin-right: 0.4rem;
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Forward arrow for drill-in setting rows (Keyboard Range, Background
+   Color …). Uses the SAME gaia-icons 'forward' glyph as
+   .kai-om-item.has-submenu so both settings levels look identical. */
+.setting-row.has-sub {
+  position: relative;
+  padding-right: 3.2rem;
+}
+.setting-row.has-sub::after {
+  position: absolute;
+  top: calc(50% - 1.5rem);
+  right: 0.5rem;
+  font-family: 'gaia-icons';
+  content: 'forward';
+  font-size: 3.2rem;
+  line-height: 3rem;
+  color: #c7c7c7;
+  pointer-events: none;
+}
+/* Focused row: arrow flips to white (matches menu behaviour). */
+.setting-row.has-sub.focused::after { color: #ffffff; }
+.setting-row.focused .color-chip    { border-color: #ffffff; }
+
+/* ===========================================
+   ABOUT PANEL (Options → About This App)
+   Static read-only page. Panel chrome mirrors the OptionMenu
+   sheets in kaiui.css, which are scoped to #menu-overlay /
+   #settings-overlay only — repeat the rules for #about-overlay.
+   =========================================== */
+#about-overlay .kai-om {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--color-gs00);
+  display: flex;
+  flex-direction: column;
+}
+#about-list {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-gs00);
+  will-change: scroll-position;
+}
+.about-body {
+  padding: 2rem 1.6rem;
+  color: var(--color-gs90);
+  font-size: 1.5rem;
+  line-height: 1.55;
+}
+.about-name {
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: #0066cc;
+  margin-bottom: 0.4rem;
+}
+.about-beta {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #e2443a;               /* --color-destructive */
+  background: rgba(226,68,58,.1);
+  border-radius: 0.4rem;
+  padding: 0.2rem 0.8rem;
+  vertical-align: middle;
+}
+.about-ver {
+  color: var(--color-gs45);
+  margin-bottom: 1.4rem;
+}
+.about-tag {
+  margin-bottom: 0.6rem;
+}
+/* Section headings — small caps style like Gaia separators */
+.about-sec {
+  font-weight: 700;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-gs70);
+  border-bottom: 1px solid var(--color-gs10);
+  padding-bottom: 0.3rem;
+  margin: 1.8rem 0 0.7rem;
+}
+.about-body ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.about-body li {
+  position: relative;
+  padding-left: 1.3rem;
+  margin: 0.35rem 0;
+}
+.about-body li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: #0066cc;
+}
+.about-foot {
+  margin-top: 2.2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--color-gs10);
+  color: var(--color-gs45);
+  font-size: 1.3rem;
+}

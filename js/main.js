@@ -252,10 +252,15 @@
     Sequencer.noteDown(function (note, ch, vel, delay, dur) {
       if (!window._audioMute) _engine().noteOn(note, ch, vel, delay, dur);
       // Feed NoteBuffer for O(1) render
-      var st = Store.getState();
+    var st = Store.getState();
+
+    // Keep keyWidth fitted to the current range every frame — covers
+    // Keyboard Range edits from settings sub-pages without relying on
+    // resize events. No-op once converged (value equality check).
+    fitKeyboardWidth(st);
       if (typeof NoteBuffer !== 'undefined' && NoteBuffer.isReady()) {
         NoteBuffer.onNote(note, ch, vel, delay, dur,
-          st.camKey || 48, st.keyWidth || 16);
+          st.kbStart || 21, st.keyWidth || 16);
       }
     });
     Sequencer.noteUp(function (note, ch) {
@@ -291,7 +296,8 @@
     // Init NoteBuffer with screen dimensions
     if (typeof NoteBuffer !== 'undefined') {
       NoteBuffer.init(width, height);
-      NoteBuffer.ensureKeyCache(Store.getState().camKey || 48, Store.getState().keyWidth || 16);
+      NoteBuffer.ensureKeyCache(Store.getState().kbStart || 21,
+                                Store.getState().keyWidth || 16);
     }
     console.log('[Main] booted. Canvas ' + width + 'x' + height);
 
@@ -393,7 +399,7 @@
       var st2 = Store.getState();
       if (typeof NoteBuffer !== 'undefined' && NoteBuffer.isReady()) {
         NoteBuffer.onNote(note, ch, vel, delay, dur,
-          st2.camKey || 48, st2.keyWidth || 16);
+          st2.kbStart || 21, st2.keyWidth || 16);
       }
     });
     Sequencer.noteUp(function (note, ch) {
@@ -464,11 +470,9 @@
 
     var st = Store.getState();
 
-    // Rebuild keyboard spritesheet on keyWidth change
-    if (st.keyWidth !== Keyboard._lastKeyW) {
-      Keyboard.build(st.keyWidth || 16);
-      Keyboard._lastKeyW = st.keyWidth;
-    }
+    // NOTE: keyboard spritesheet rebuilds are handled inside
+    // Keyboard.draw() (keyWidth / pianoSize / pianoColorHex trackers),
+    // so no external build() call is needed here anymore.
 
     // ── Drawing order ──
     // Fetch active notes once per frame (shared across all renderers)
@@ -480,36 +484,38 @@
       } catch (e) { st._activeList = []; }
     }
 
-    // 1. Background — read theme token (CSS var --theme-bg); falls back
-    // to dark gray if not set (default theme or before Settings.load).
+    // 1. Background — Visual → Background Color overrides the theme token
+    //    when set; otherwise fall back to CSS var --theme-bg / dark gray.
     var cs = getComputedStyle(document.documentElement);
     var themeBg = cs.getPropertyValue('--theme-bg').trim() || '#0a0a0a';
-    ctx.fillStyle = themeBg;
+    ctx.fillStyle = st.bgColor || themeBg;
     ctx.fillRect(0, 0, width, height);
 
     // 2. Falling notes
     Notes.draw(st, ctx, width, height);
 
-    // 3. Playhead line — just above the keyboard, below the falling notes.
+    // 3. Bar line — separator between falling notes and piano (Visual →
+    //    Bar Color), sits just above the keyboard strip below the notes.
     //    Header removed; softkey (KaiOS 3rem at 10px = 30px) overlays bottom
-    //    unless in fullscreen. Query softkey's actual rendered height for
-    //    safety against KaiOS font-metric drift.
-    var kbH = 60;
-    // canvas height already excludes softkey, so piano/playhead offset
-    // from the canvas bottom is just kbH.
-    var lineY = height - kbH;
-    if (lineY < 0) lineY = 0;
-    ctx.strokeStyle = '#00ccff';
-    ctx.lineWidth = 1;
-    ctx.globalAlpha = 0.6;
-    ctx.beginPath();
-    ctx.moveTo(0, lineY);
-    ctx.lineTo(width, lineY);
-    ctx.stroke();
-    ctx.globalAlpha = 1.0;
+    //    unless in fullscreen. Height follows Piano Size; hidden entirely
+    //    when the piano strip is hidden ('none').
+    var kbH = (typeof Keyboard !== 'undefined' && Keyboard.height)
+      ? Keyboard.height(st) : 60;
+    if (kbH > 0) {
+      var lineY = height - kbH;
+      if (lineY < 0) lineY = 0;
+      ctx.strokeStyle = st.barColor || '#00ccff';
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = 0.6;
+      ctx.beginPath();
+      ctx.moveTo(0, lineY);
+      ctx.lineTo(width, lineY);
+      ctx.stroke();
+      ctx.globalAlpha = 1.0;
 
-    // 4. Keyboard strip (on top, just above the softkey overlay)
-    Keyboard.draw(st, ctx, width, height);
+      // 4. Keyboard strip (on top, just above the softkey overlay)
+      Keyboard.draw(st, ctx, width, height);
+    }
 
     // 5. HUD overlay (throttled DOM writes — internal 250ms interval)
     HUD.tick(st, liveCount);
@@ -535,6 +541,30 @@
     return 30;
   }
 
+  // Auto-fit keyWidth so the WHOLE Keyboard Range spans the canvas width.
+  // Uses EXACT float division (no floor) — integer rounding used to leave
+  // a dark gap strip on the right edge (up to whitesInRange-1 px).
+  // Called from resizeCanvas AND once per frame in renderLoop, so slider
+  // edits to Keyboard Range refit immediately no matter which code path
+  // wrote kbStart/kbEnd.
+  function fitKeyboardWidth(st) {
+    var rStart = (st.kbStart != null) ? st.kbStart : 21;
+    var rEnd   = (st.kbEnd   != null) ? st.kbEnd   : 108;
+    rStart = Math.max(0, Math.min(127, rStart));
+    rEnd   = Math.max(rStart + 1, Math.min(127, rEnd));
+    // Count white keys inside the visible range
+    var whitesInRange = 0;
+    for (var rn = rStart; rn <= rEnd; rn++) {
+      if (!Constants.isBlackKey(rn % 12)) whitesInRange++;
+    }
+    if (whitesInRange < 1 || width < 1) return;
+    // Float keyWidth → keys tile edge-to-edge with zero remainder
+    var newKeyW = width / whitesInRange;
+    newKeyW = Math.max(Constants.UI.KEY_W_MIN,
+              Math.min(Constants.UI.KEY_W_MAX, newKeyW));
+    if ((st.keyWidth || 16) !== newKeyW) Store.setState({ keyWidth: newKeyW });
+  }
+
   function resizeCanvas() {
     // Use the SMALLER of screen.availHeight / window.innerHeight to avoid
     // drawing into the system nav zone (KaiOS may paint nav above the
@@ -555,13 +585,10 @@
     canvas.style.width  = width + 'px';
     canvas.style.height = height + 'px';
 
-    // Auto-fit keyWidth so ~18 white keys visible (KaiOS-safe: only update when changed)
-    if (width > 0) {
-      var WhiteKeysVisible = Math.max(7, Math.min(28, Math.floor(width / 16)));
-      var newKeyW = Math.max(8, Math.floor(width / WhiteKeysVisible));
-      var st2 = Store.getState();
-      if (st2.keyWidth !== newKeyW) Store.setState({ keyWidth: newKeyW });
-    }
+    // Auto-fit keyWidth so the WHOLE Keyboard Range fits the screen width.
+    // keyWidth is derived (not user-zoomable anymore — D-pad Left/Right
+    // are bound to seeking now), so it is recomputed on every resize.
+    fitKeyboardWidth(Store.getState());
   }
 
   // ── ORIENTATION / RESIZE HANDLING ──
@@ -631,6 +658,19 @@
   // ── BLUR / FOCUS — suspend audio + pause sequencer when backgrounded ──
   // Matches reference audio-visualizer pattern: on blur, suspend AudioContext
   // and pause playback so Gecko's audio thread doesn't compete with foreground app.
+  window.showNowPlaying = function (fileName) {
+    var overlay = document.getElementById('now-playing-overlay');
+    var text    = document.getElementById('now-playing-text');
+    if (!overlay || !text) return;
+    var name = (fileName || '').split('/').pop() || 'Unknown';
+    text.textContent = 'Now playing: ' + name;
+    overlay.classList.remove('hidden');
+    clearTimeout(window._nowPlayingTimer);
+    window._nowPlayingTimer = setTimeout(function () {
+      overlay.classList.add('hidden');
+    }, 3000);
+  };
+
   window.addEventListener('blur', function () {
     try { _engine().silence(); } catch (e) {}
     if (typeof Sequencer !== 'undefined' && Sequencer.pause) Sequencer.pause();
@@ -725,13 +765,9 @@
     HUD.setTotal(notes.length);
     if (typeof NoteBuffer !== 'undefined' && NoteBuffer.isReady()) NoteBuffer.reset();
 
-    // Hide parsing bar — load complete
+    // Hide analyzing overlay — load complete. ("Now playing: <file>" is
+    // shown centered when the user presses Play — see controls.js.)
     hideParsing();
-
-    // Show "Now Playing" toast
-    if (typeof window.showNowPlaying === 'function') {
-      window.showNowPlaying(Store.getState().fileName || '');
-    }
 
     // Update softkeys (show Play button)
     if (typeof window.updateSoftkeys === 'function') {
@@ -933,12 +969,16 @@
     document.addEventListener('DOMContentLoaded', boot);
   }
 
-  // ── MENU CLEAR CACHE HANDLER ---
-  // ── PARSING PROGRESS BAR ──
+  // ── PARSING PROGRESS ──
+  // Center-screen "Analyzing MIDI Data..." message while a file is being
+  // read + parsed. Uses #now-playing-overlay/#now-playing-text (styles in
+  // kaiui.css) — the same pill the Now Playing toast uses.
   function showParsing() {
-    var title = document.getElementById('header-title');
-    var bar   = document.getElementById('parse-bar');
-    if (title) title.textContent = 'Parsing...';
+    var overlay = document.getElementById('now-playing-overlay');
+    var textEl  = document.getElementById('now-playing-text');
+    var bar     = document.getElementById('parse-bar');
+    if (textEl) textEl.textContent = 'Analyzing MIDI Data...';
+    if (overlay) overlay.classList.remove('hidden');
     if (bar) {
       bar.classList.remove('hidden');
       bar.classList.add('indeterminate');
@@ -946,9 +986,9 @@
   }
 
   function hideParsing() {
-    var title = document.getElementById('header-title');
-    var bar   = document.getElementById('parse-bar');
-    if (title) title.textContent = 'MIDI Player';
+    var overlay = document.getElementById('now-playing-overlay');
+    var bar     = document.getElementById('parse-bar');
+    if (overlay) overlay.classList.add('hidden');
     if (bar) {
       bar.classList.remove('indeterminate');
       bar.classList.add('hidden');

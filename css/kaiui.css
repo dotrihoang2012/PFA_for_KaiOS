@@ -654,3 +654,27 @@ html, body {
    UTILITY
    ============================================ */
 .hidden { display: none !important; }
+/* ── Now Playing overlay ── */
+#now-playing-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+#now-playing-overlay.hidden { opacity: 0; }
+#now-playing-overlay:not(.hidden) { opacity: 1; }
+#now-playing-text {
+  background: rgba(0,0,0,0.75);
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  max-width: 90%;
+  word-break: break-all;
+}

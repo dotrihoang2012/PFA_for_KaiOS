@@ -1,7 +1,13 @@
 /**
- * keyboard.js — 128-key piano strip renderer.
- * Pre-caches full 128-key spritesheet, draws visible slice per frame.
- * Only re-blits black keys that have highlights.
+ * keyboard.js — Piano strip renderer (Keyboard Range window).
+ * Pre-caches the full 128-key spritesheet, draws only the visible
+ * [kbStart..kbEnd] slice per frame. Only re-blits black keys that have
+ * highlights.
+ *
+ * Visual Settings integration:
+ *   - pianoSize 'big'|'small'|'none' → strip height 60/32/0 px
+ *   - kbStart/kbEnd                  → visible note window (21..108 default)
+ *   - pianoColorHex                  → custom white-key fill color
  */
 var Keyboard = (function () {
   'use strict';
@@ -9,22 +15,29 @@ var Keyboard = (function () {
 
   var cacheCanvas = null;
   var keyLayout   = [];
-  var KB_H    = 60;
-  var BLACK_H = 36;
 
-  // Piano white-key color presets (Visual → pianoColor setting).
-  // Black keys always use the dark palette below.
-  var PIANO_COLORS = {
-    white: '#f2f2f2',
-    ivory: '#f5ecd9',
-    ebony: '#d8d2c4',
-  };
-  var _lastPianoColor = null;
-  var _lastKeyW = -1;
+  // Strip heights per Visual → Piano Size preset ('none' hides the strip).
+  var KB_HEIGHTS = { big: 60, small: 32, none: 0 };
+
+  // Cache-invalidation trackers (geometry + color)
+  var _lastKeyW     = -1;
+  var _lastSize     = null;
+  var _lastPianoHex = null;
 
   // Note-label state (only painted when Visual → noteLabels=true and theme labels on)
   var NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
   var SHOW_OCTAVE = true;
+
+  /** Strip height in px for the current pianoSize setting ('none' → 0). */
+  function height(state) {
+    var ps = (state && state.pianoSize) || 'big';
+    return (KB_HEIGHTS[ps] != null) ? KB_HEIGHTS[ps] : 60;
+  }
+
+  /** Black keys are ~60% of the strip height at any size. */
+  function blackHeight(kbH) {
+    return Math.round(kbH * 0.6);
+  }
 
   function buildLayout(keyW) {
     keyLayout = [];
@@ -39,80 +52,98 @@ var Keyboard = (function () {
     return x;
   }
 
-  function build(keyW) {
+  function build(keyW, kbH) {
+    // Defensive default — external callers may omit the strip height.
+    if (!kbH) kbH = height(null);
+    var bh = blackHeight(kbH);
     var tw = buildLayout(keyW);
     if (!cacheCanvas) cacheCanvas = document.createElement('canvas');
     cacheCanvas.width  = Math.ceil(tw) + 4;
-    cacheCanvas.height = KB_H;
+    cacheCanvas.height = kbH;
     var c = cacheCanvas.getContext('2d');
 
-    // Read pianoColor from store; default 'white' keeps parity with original.
+    // White-key fill — Visual → Piano Color (custom hex/rgba string,
+    // default near-white). Read live from the Store so the sprite is
+    // always in sync with the persisted setting.
     var pianoColor = '#f2f2f2';
     if (typeof Store !== 'undefined') {
       try {
         var s = Store.getState();
-        if (s && s.pianoColor && PIANO_COLORS[s.pianoColor]) {
-          pianoColor = PIANO_COLORS[s.pianoColor];
+        if (s && typeof s.pianoColorHex === 'string' && s.pianoColorHex) {
+          pianoColor = s.pianoColorHex;
         }
       } catch (e) {}
     }
-    _lastPianoColor = pianoColor;
+    _lastPianoHex = pianoColor;
 
     for (var i = 0; i < 128; i++) {
       var k = keyLayout[i];
       if (k.black) continue;
       c.fillStyle = pianoColor;
-      c.fillRect(k.x, 0, k.w - 1, KB_H);
+      c.fillRect(k.x, 0, k.w - 1, kbH);
     }
     c.strokeStyle = '#aaa';
     c.lineWidth = 0.5;
     for (var j = 0; j < 128; j++) {
       var kj = keyLayout[j];
       if (kj.black) continue;
-      c.strokeRect(kj.x, 0, kj.w - 1, KB_H);
+      c.strokeRect(kj.x, 0, kj.w - 1, kbH);
     }
     for (var m = 0; m < 128; m++) {
       var bm = keyLayout[m];
       if (!bm.black) continue;
       c.fillStyle = '#1a1a1a';
-      c.fillRect(bm.x, 0, bm.w, BLACK_H);
+      c.fillRect(bm.x, 0, bm.w, bh);
       try {
-        var g = c.createLinearGradient(bm.x, 0, bm.x, BLACK_H);
+        var g = c.createLinearGradient(bm.x, 0, bm.x, bh);
         g.addColorStop(0, '#444');
         g.addColorStop(0.5, '#222');
         g.addColorStop(1, '#0a0a0a');
         c.fillStyle = g;
-        c.fillRect(bm.x + 1, BLACK_H * 0.05, bm.w - 2, BLACK_H * 0.9);
+        c.fillRect(bm.x + 1, bh * 0.05, bm.w - 2, bh * 0.9);
       } catch(e) {}
     }
   }
 
   function draw(state, ctx, w, h) {
     var kw = state.keyWidth || 16;
-    // Sync pianoColor from state each frame so live setting changes apply
-    // without needing an explicit rebuild path from settings.js.
-    if (state.pianoColor && state.pianoColor !== _lastPianoColor) {
-      _lastPianoColor = state.pianoColor;
-      _lastKeyW = -1; // invalidate cache → rebuild
-    }
-    if (!cacheCanvas || !keyLayout.length || _lastKeyW === -1) build(kw);
-    _lastKeyW = kw;
+    // Piano Size 'none' hides the strip entirely — nothing to draw.
+    var kbH = height(state);
+    if (!kbH) return;
 
-    var ck = state.camKey || 48;
+    // Rebuild the spritesheet whenever keyWidth, strip size or color changed.
+    var hexChanged = ((state.pianoColorHex || '#f2f2f2') !== _lastPianoHex);
+    if (!cacheCanvas || !keyLayout.length ||
+        _lastKeyW !== kw || _lastSize !== kbH || hexChanged) {
+      build(kw, kbH);
+      _lastKeyW = kw;
+      _lastSize = kbH;
+    }
+
+    // Visible window — Keyboard Range [kbStart..kbEnd] replaces the old
+    // camKey scroll (Left/Right are bound to seeking now).
+    var startN = (state.kbStart != null) ? state.kbStart : 21;
+    var endN   = (state.kbEnd   != null) ? state.kbEnd   : 108;
+    startN = Math.max(0, Math.min(127, startN));
+    endN   = Math.max(startN + 1, Math.min(127, endN));
+
     // Canvas height already excludes softkey band (see main.js _chromeH),
-    // so the piano sits flush with the canvas bottom. KB_H margin guards
-    // against tiny h races.
-    var y = h - KB_H;
+    // so the piano sits flush with the canvas bottom.
+    var y = h - kbH;
     if (y < 0) y = 0;
-    var sx = (ck < 128) ? keyLayout[ck].x : 0;
-    var sw = Math.min(w, cacheCanvas.width - sx);
 
-    if (sw > 0) {
-      ctx.drawImage(cacheCanvas, sx, 0, sw, KB_H, 0, y, sw, KB_H);
-    }
-    if (sw < w) {
-      ctx.fillStyle = '#1a1a1a';
-      ctx.fillRect(sw, y, w - sw, KB_H);
+    var bh2 = blackHeight(kbH);
+    var x0 = keyLayout[startN].x;
+    var lastK = keyLayout[endN];
+    // Slice width: from first key in range to just past the last one.
+    var sw = (lastK.x + lastK.w) - x0;
+
+    if (sw > 0 && w > 0) {
+      // Stretch the slice to the FULL canvas width. With float auto-fit
+      // the scale factor is ~1.0 (sub-pixel); it only becomes noticeable
+      // when the range starts/ends on black keys — and it guarantees
+      // there is never dead space on the right edge of the piano.
+      ctx.drawImage(cacheCanvas, x0, 0, sw, kbH, 0, y, w, kbH);
     }
 
     // Note labels (C/D/E/F/G/A/B) above each white key — opt-in via settings
@@ -125,8 +156,9 @@ var Keyboard = (function () {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
         var kw2 = kw;
-        // Walk 0..127; emit label ONLY on natural C..B white notes.
-        for (var nn = 0; nn < 128; nn++) {
+        // Walk only the visible range [startN..endN]; emit label ONLY on
+        // natural C..B white notes.
+        for (var nn = startN; nn <= endN; nn++) {
           var bn = Constants.isBlackKey(nn % 12);
           if (bn) continue;
           // Only C explicitly (or could emit all natural notes — here we
@@ -139,8 +171,7 @@ var Keyboard = (function () {
           }
           var klbl = keyLayout[nn];
           if (!klbl) continue;
-          if (klbl.x < sx - kw2 || klbl.x > sx + w) continue;
-          var px = klbl.x - sx + Math.floor(klbl.w / 2);
+          var px = klbl.x - x0 + Math.floor(klbl.w / 2);
           if (px < 0 || px > w) continue;
           ctx.fillText(nm, px, y + 2);
         }
@@ -174,10 +205,10 @@ var Keyboard = (function () {
       }
       if (live && live.length) {
         var ns = Sequencer.getTime();
-        var wh = [], bh = [];
+        var wh = [], bhl = [];
         var CH = (typeof Notes !== 'undefined' && Notes.channelColor) ? Notes.channelColor : null;
         var SCAN_LIMIT = 1180591620717411303424;
-        // Trail: state.trail là number 0.1..8.0 (seconds × scale)
+        // Trail: state.trail is a number 0.1..8.0 (seconds × scale)
         var trailMs = 0;
         var tl = state.trail;
         if (tl != null && isFinite(tl)) {
@@ -185,17 +216,18 @@ var Keyboard = (function () {
         }
         for (var i = 0; i < live.length && i < SCAN_LIMIT; i++) {
           var nn = live[i].note;
-          if (nn < ck || nn > 127) continue;
+          // Only notes inside the visible Keyboard Range light up keys
+          if (nn < startN || nn > endN) continue;
           var kl = keyLayout[nn];
           if (!kl) continue;
           var ss = live[i].startSec != null ? live[i].startSec : 0;
           var es = live[i].endSec   != null ? live[i].endSec   : ss + 0.5;
           var nsLim = es + trailMs / 1000;
           if (ns < ss || ns > nsLim) continue;
-          var dx = kl.x - sx;
+          var dx = kl.x - x0;
           if (dx < -kl.w || dx > w) continue;
           var col = CH ? CH(live[i].channel) : '#00C8FF';
-          if (kl.black) bh.push({ dx: dx, w: kl.w, col: col, sx: kl.x });
+          if (kl.black) bhl.push({ dx: dx, w: kl.w, col: col, sx: kl.x });
           else          wh.push({ dx: dx, w: kl.w, col: col });
         }
 
@@ -204,23 +236,23 @@ var Keyboard = (function () {
           ctx.globalAlpha = 0.75;
           for (var wi = 0; wi < wh.length; wi++) {
             ctx.fillStyle = wh[wi].col;
-            ctx.fillRect(wh[wi].dx, y, wh[wi].w, KB_H);
+            ctx.fillRect(wh[wi].dx, y, wh[wi].w, kbH);
           }
           ctx.globalAlpha = 1;
         }
 
         // Re-blit highlighted black keys only
-        if (bh.length > 0) {
+        if (bhl.length > 0) {
           ctx.globalAlpha = 1;
           var done = {};
-          for (var bi = 0; bi < bh.length; bi++) {
-            var sx = bh[bi].sx;
-            if (!done[sx]) {
-              done[sx] = 1;
+          for (var bi = 0; bi < bhl.length; bi++) {
+            var bx = bhl[bi].sx;
+            if (!done[bx]) {
+              done[bx] = 1;
               for (var m = 0; m < keyLayout.length; m++) {
-                if (keyLayout[m].black && keyLayout[m].x === sx) {
-                  ctx.drawImage(cacheCanvas, sx, 0, keyLayout[m].w, BLACK_H,
-                                Math.round(bh[bi].dx), y, keyLayout[m].w, BLACK_H);
+                if (keyLayout[m].black && keyLayout[m].x === bx) {
+                  ctx.drawImage(cacheCanvas, bx, 0, keyLayout[m].w, bh2,
+                                Math.round(bhl[bi].dx), y, keyLayout[m].w, bh2);
                   break;
                 }
               }
@@ -228,9 +260,9 @@ var Keyboard = (function () {
           }
           // Black highlights
           ctx.globalAlpha = 0.75;
-          for (var bj = 0; bj < bh.length; bj++) {
-            ctx.fillStyle = bh[bj].col;
-            ctx.fillRect(bh[bj].dx, y, bh[bj].w, BLACK_H);
+          for (var bj = 0; bj < bhl.length; bj++) {
+            ctx.fillStyle = bhl[bj].col;
+            ctx.fillRect(bhl[bj].dx, y, bhl[bj].w, bh2);
           }
           ctx.globalAlpha = 1;
         }
@@ -238,10 +270,12 @@ var Keyboard = (function () {
     } catch(e) {}
   }
 
-  /** Force sprite rebuild — call after pianoColor or theme change. */
+  /** Force sprite rebuild — call after piano color or size change. */
   function rebuild() {
-    _lastKeyW = -1; // invalidates the cache check in main.js
-    cacheCanvas = null;
+    _lastKeyW     = -1; // invalidates the cache check in main.js + draw()
+    _lastSize     = null;
+    _lastPianoHex = null;
+    cacheCanvas   = null;
   }
 
   // Only show octave number on C (so the label is compact and not all-over)
@@ -249,5 +283,5 @@ var Keyboard = (function () {
     return SHOW_OCTAVE && (nn % 12) === 0;
   }
 
-  return { draw: draw, build: build, rebuild: rebuild };
+  return { draw: draw, build: build, rebuild: rebuild, height: height };
 })();
