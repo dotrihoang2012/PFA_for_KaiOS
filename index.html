@@ -12,11 +12,13 @@
 <div id="statusbar-placeholder"></div>
 <main id="viewport">
   <canvas id="main-canvas"></canvas>
- <div id="hud">
-   <span id="hud-note-count">0 notes</span>
-   <span id="hud-speed">1.0x</span>
-   <span id="hud-time">00:00</span>
-   <span id="hud-fps">0 FPS</span>
+<div id="hud">
+<span id="hud-note-count" class="hud-stat">0 notes</span>
+<span id="hud-speed" class="hud-stat">1.0x</span>
+<span id="hud-time" class="hud-stat">00:00</span>
+<span id="hud-fps" class="hud-stat">0 FPS</span>
+<span id="hud-osd"></span>
+<span id="hud-playpause"></span>
    <span id="now-playing" class="hidden"></span>
 </div>
  <div id="parse-bar" class="hidden">
@@ -60,7 +62,7 @@
 </div>
 <!-- Center-screen message pill ("Now playing: …", "Analyzing MIDI Data…").
      Styles live in kaiui.css (#now-playing-overlay). -->
-<div id="now-playing-overlay" class="hidden">
+<div id="now-playing-overlay" class="np-hide">
   <span id="now-playing-text"></span>
 </div>
 <!-- About panel — static content, opened from Options → "About This App".

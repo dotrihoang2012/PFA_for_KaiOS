@@ -57,6 +57,21 @@ var Store = (function () {
     infoSpeed:     true,
     infoTime:      true,
     infoFps:       true,
+
+    // Playback helpers
+    autoPlay:     false,   // start playing automatically after a MIDI load
+    showDialog:   true,    // show "Analyzing MIDI…" / "Now playing" pills
+    showOsd:      true,    // show the info-bar action OSD (+1 sec / 1.1x…)
+    startDelay:    0,      // seconds to wait before playback (0 = Off, max 10)
+
+    // Start Delay countdown (HUD time shows -0:05 → 0:00 while active)
+    startCountdown: null,  // seconds remaining (null = inactive)
+    cdRunning:      false, // true = ticking, false = held by pause
+
+    // One-shot flag: the loader arms it so "Now playing: <file>" shows
+    // exactly ONCE per loaded file (first play or Auto Play), never on
+    // pause/resume. Cleared by whoever consumes the toast.
+    npPending:    false,
     // (piano white-key color moved to pianoColorHex above)
 
     // Stats (r/o, updated by engine)

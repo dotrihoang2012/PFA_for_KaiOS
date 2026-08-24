@@ -18,6 +18,7 @@ var HUD = (function () {
   var _elSpeed = null;
   var _elFPS   = null;
   var _elTime  = null;
+  var _elPP    = null;
 
   function _cacheDom() {
     if (_domReady) return;
@@ -25,6 +26,7 @@ var HUD = (function () {
     _elSpeed = document.getElementById('hud-speed');
     _elFPS   = document.getElementById('hud-fps');
     _elTime  = document.getElementById('hud-time');
+    _elPP    = document.getElementById('hud-playpause');
     _domReady = true;
   }
 
@@ -54,11 +56,15 @@ var HUD = (function () {
     var fp = (state.fps || 0);
     var tm = '--:--';
 
-    if (typeof Sequencer !== 'undefined') {
+    if (state.startCountdown != null) {
+      // Start Delay countdown: HUD time counts up from -0:05 to 0:00
+      var cs = Math.max(0, Math.ceil(state.startCountdown));
+      tm = '-' + Math.floor(cs / 60) + ':' + (cs % 60 < 10 ? '0' : '') + (cs % 60);
+    } else if (typeof Sequencer !== 'undefined') {
       var sec = Sequencer.getTime();
       var min = Math.floor(sec / 60);
-      var s = Math.floor(sec % 60);
-      tm = (min < 10 ? '0' : '') + min + ':' + (s < 10 ? '0' : '') + s;
+      var s2 = Math.floor(sec % 60);
+      tm = (min < 10 ? '0' : '') + min + ':' + (s2 < 10 ? '0' : '') + s2;
     }
 
     var now = Date.now();
@@ -69,6 +75,8 @@ var HUD = (function () {
     _set(_elSpeed, sp + 'x');
     _set(_elFPS, fp + ' FPS');
     _set(_elTime, tm);
+    // Fullscreen-only play/pause indicator (CSS hides it otherwise)
+    _set(_elPP, state.play === 'play' ? '\u25B6' : 'II');
   }
 
   function _set(el, val) {
@@ -85,5 +93,30 @@ var HUD = (function () {
     /* no-op — combined into tick() */
   }
 
-  return { tick: tick, update: update, refreshLive: refreshLive, setTotal: setTotal };
+  // ── SEEK OSD (+1 sec / -1 sec …) ──
+  // Swaps the four HUD stats for a centered action label. Each call
+  // restarts the hold timer, so repeated presses keep it visible and
+  // the caller can accumulate the total (+2, +3…).
+  var _osdTimer = null;
+
+  function showOsd(text, holdMs) {
+    var hud = document.getElementById('hud');
+    var osd = document.getElementById('hud-osd');
+    if (!hud || !osd) return;
+    osd.textContent = text;
+    hud.classList.add('osd-active');
+    clearTimeout(_osdTimer);
+    _osdTimer = setTimeout(hideOsd, holdMs || 2000);
+  }
+
+  function hideOsd() {
+    if (_osdTimer) { clearTimeout(_osdTimer); _osdTimer = null; }
+    var hud = document.getElementById('hud');
+    if (hud) hud.classList.remove('osd-active');
+  }
+
+  return {
+    tick: tick, update: update, refreshLive: refreshLive,
+    setTotal: setTotal, showOsd: showOsd, hideOsd: hideOsd
+  };
 })();

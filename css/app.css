@@ -350,3 +350,90 @@
   color: var(--color-gs45);
   font-size: 1.3rem;
 }
+
+/* ===========================================
+   NOW PLAYING PILL — FADE BEHAVIOUR
+   The generic .hidden utility is display:none !important, which
+   prevents any opacity transition. This overlay therefore uses its
+   own .np-hide class (opacity only) so it can fade in/out smoothly:
+   visible on Play, holds 3s, then fades out gradually.
+   =========================================== */
+#now-playing-overlay {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+#now-playing-overlay.np-hide { opacity: 0; }
+
+/* ===========================================
+   SEEK OSD (+1 sec / -1 sec …)
+   While active the four HUD stats hide and the
+   accumulated seek total shows centered in the
+   info bar instead.
+   =========================================== */
+#hud-osd {
+  display: none;
+  color: #ffffff;
+  font-weight: bold;
+}
+#hud.osd-active .hud-stat { display: none; }
+#hud.osd-active #hud-osd {
+  display: inline;
+  flex: 1;
+  text-align: center;
+}
+
+/* Play/pause indicator — ONLY while fullscreen (softkey bar shows
+   PLAY/PAUSE the rest of the time). */
+#hud-playpause {
+  display: none;
+  color: #ffffff;
+  font-weight: bold;
+}
+#app.fullscreen #hud-playpause { display: inline; }
+
+/* ===========================================
+   TEXT ENTRY SUB-PAGE (settings.js kind 'text')
+   Adapted from KaiUI-master TextInput.scss
+   (kai-text-input): small gray label above a
+   bordered input line; focused row flips to the
+   project highlight blue with white text.
+   =========================================== */
+.kai-text-input {
+  padding: 1rem;
+  background: var(--color-gs00);
+  outline: none;
+}
+.kai-text-input-label {
+  display: block;
+  padding-bottom: 0.5rem;
+  color: var(--color-gs45);      /* KaiUI --color-epsilon ≈ gs45 */
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+.kai-text-input-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  line-height: 3.6rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--color-gs45);
+  border-radius: 2px;
+  background-color: var(--color-gs00);
+  color: var(--color-gs90);
+  font-size: 1.7rem;
+  font-weight: 400;
+}
+.kai-text-input-hint {
+  padding-top: 0.6rem;
+  font-size: 1.2rem;
+  color: var(--color-gs45);
+}
+/* Focused: KaiUI --focused modifier + project blue highlight */
+.kai-text-input.focused { background: #0066cc; }
+.kai-text-input.focused .kai-text-input-label,
+.kai-text-input.focused .kai-text-input-hint { color: #ffffff; }
+.kai-text-input.focused .kai-text-input-input {
+  border-color: #ffffff;
+  background: transparent;
+  color: #ffffff;
+}

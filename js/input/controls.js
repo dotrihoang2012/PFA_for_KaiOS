@@ -103,6 +103,19 @@
     // Sits ABOVE gameplay so user can navigate settings while a MIDI
     // is loaded. handleKey returns true when it consumed the key.
     if (typeof Settings !== 'undefined' && Settings.isOpen && Settings.isOpen()) {
+      // While a settings text field holds focus (KaiUI-style text entry),
+      // printable keys must reach the input NATIVELY — preventDefault
+      // here would silently kill typing. Only editing-control keys
+      // (Back / Enter / RSK) are intercepted and routed to Settings.
+      var ae = document.activeElement;
+      var isTextField = !!(ae && ae.tagName === 'INPUT');
+      var isEditKey = (key === 8 || key === 'Backspace' ||
+                       key === 13 || key === Constants.KEY.ENTER ||
+                       key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+                       key === 'Back' || key === Constants.KEY.BACK);
+      if (isTextField && !isEditKey) {
+        return; // pass through untouched: digits, '*', '#', caret keys…
+      }
       e.preventDefault();
       if (typeof Settings.handleKey === 'function') {
         Settings.handleKey(key);
@@ -499,22 +512,103 @@
   }
 
   // ── Gameplay actions ──
+  // ── Playback start helpers ──
+  // (Start Delay now uses the pausable countdown — see armCountdown.)
+
+  // ── Start Delay countdown ──
+  // While counting down, HUD time shows -0:05 → -0:04 → … → 0:00 and
+  // playback starts. Pause HOLDS the countdown (value frozen); Play
+  // resumes it; Stop (or clearing the file) cancels it.
+  var _cdTimer = null;
+
+  function cancelCountdown() {
+    if (_cdTimer) {
+      clearInterval(_cdTimer);
+      _cdTimer = null;
+    }
+    if (Store.getState().startCountdown != null) {
+      Store.setState({ startCountdown: null, cdRunning: false });
+    }
+  }
+
+  function armCountdown(sec) {
+    cancelCountdown();
+    Store.setState({ startCountdown: sec, cdRunning: true, play: 'pause' });
+    _cdTimer = setInterval(function () {
+      var st = Store.getState();
+      // Self-heal: file cleared or user stopped → tear down quietly
+      if (st.startCountdown == null || st.play === 'stop') {
+        cancelCountdown();
+        return;
+      }
+      if (!st.cdRunning || st.play === 'play') return; // held
+      var next = Math.round((st.startCountdown - 0.1) * 10) / 10;
+      if (next <= 0) {
+        cancelCountdown();
+        beginPlaybackNow();
+      } else {
+        Store.setState({ startCountdown: next });
+      }
+    }, 100);
+  }
+
+  function beginPlaybackNow() {
+    var st = Store.getState();
+    Store.setState({ play: 'play' });
+    showInfoOsd('Play', 3000);
+    // One-shot "Now playing: <file>" toast — the loader arms npPending,
+    // so this fires exactly once per loaded file (never on resume).
+    if (st.npPending && typeof window.showNowPlaying === 'function') {
+      window.showNowPlaying(st.fileName);
+      Store.setState({ npPending: false });
+    }
+  }
+
+  // Entry point for Auto Play (Visual settings) — called by main.js
+  // right after a MIDI finishes loading.
+  window.pfaRequestStart = function () {
+    var st = Store.getState();
+    if (!st.fileName || st.play !== 'stop' || st.startCountdown != null) return;
+    var d = Number(st.startDelay);
+    if (d > 0) armCountdown(d);
+    else beginPlaybackNow();
+  };
+
   function dispatchAction(action) {
     var s = Store.getState();
     switch (action) {
       case 'playPause':
         if (!s.fileName) break; // no file loaded
-        var willPlay = (s.play !== 'play');
-        Store.setState({ play: willPlay ? 'play' : 'pause' });
-        // Center-screen "Now playing: <file>" toast — only when playback
-        // starts FRESH (from stopped). Resume-from-pause must stay silent.
-        if (willPlay && s.play === 'stop' &&
-            typeof window.showNowPlaying === 'function') {
-          window.showNowPlaying(s.fileName);
+        // Inside a countdown? Play/Pause toggles HOLD ↔ RESUME of the
+        // remaining time — real playback only starts at 0:00.
+        if (s.startCountdown != null) {
+          if (s.cdRunning) {
+            Store.setState({ cdRunning: false }); // hold
+            showInfoOsd('Pause', 3000);
+          } else {
+            Store.setState({ cdRunning: true });  // resume
+            showInfoOsd('Play', 3000);
+          }
+          break;
+        }
+        if (s.play === 'play') {
+          Store.setState({ play: 'pause' });
+          showInfoOsd('Pause', 3000);
+          break;
+        }
+        // Fresh start or resume: positive Start Delay → countdown first.
+        var delaySec = Number(s.startDelay);
+        if (delaySec > 0) {
+          armCountdown(delaySec);
+          showInfoOsd('Play', 3000);
+        } else {
+          beginPlaybackNow();
         }
         break;
       case 'stop':
+        cancelCountdown();
         Store.setState({ play: 'stop', timeSec: 0 });
+        if (s.fileName) showInfoOsd('Stop');
         break;
       case 'seekBack':
         seekSeconds(-1);
@@ -524,15 +618,19 @@
         break;
       case 'speedStepUp':
         stepSpeed(+0.1);
+        showSpeedOsd();
         break;
       case 'speedStepDown':
         stepSpeed(-0.1);
+        showSpeedOsd();
         break;
       case 'speedUp':
         Store.setState({ speed: Math.min(4.0, s.speed * 2) });
+        showSpeedOsd();
         break;
       case 'speedDown':
         Store.setState({ speed: Math.max(0.25, s.speed / 2) });
+        showSpeedOsd();
         break;
       case 'menuOpen':
         openMenu();
@@ -549,6 +647,7 @@
       case 'restart':
         Sequencer.stop();
         Sequencer.play();
+        if (s.fileName) showInfoOsd('Restart');
         break;
       case 'back':
         break;
@@ -562,16 +661,62 @@
   // active-note windows, so if we were playing we must kick playback
   // off again directly (Store already says 'play', so routing through
   // setState would be a no-op — see main.js onStoreChange prevPlay guard).
+  // ── Seek OSD accumulator ──
+  // Repeated presses sum up (+1, +2, +3…) and the HUD info bar shows
+  // the total instead of the four stats. 2s without a press hides the
+  // OSD and resets the COUNTER only — playback speed/position and the
+  // seek already applied are never undone.
+  var _seekAccum = 0;
+  var _seekAccumReset = null;
+
+  // Central OSD entry — Visual → Show OSD = Off silences every info-bar
+  // action label (seek totals, speed, Stop, Restart, Play, Pause).
+  function showInfoOsd(text, holdMs) {
+    if (Store.getState().showOsd === false) return;
+    if (typeof HUD !== 'undefined' && HUD.showOsd) HUD.showOsd(text, holdMs || 2000);
+  }
+
+  function bumpSeekOsd(delta) {
+    if (Store.getState().showOsd === false) return;
+    // Opposite direction starts a FRESH count: at -3, pressing →
+    // shows +1 (never -2, -1, +1 crawling back through zero).
+    if (delta > 0 && _seekAccum < 0) _seekAccum = 0;
+    if (delta < 0 && _seekAccum > 0) _seekAccum = 0;
+    _seekAccum += delta;
+    showInfoOsd((_seekAccum > 0 ? '+' : '') + _seekAccum + ' sec');
+    if (_seekAccumReset) clearTimeout(_seekAccumReset);
+    _seekAccumReset = setTimeout(function () { _seekAccum = 0; }, 2100);
+  }
+
+  // OSD for speed actions (1 / 3 / * / #) — shows the resulting speed
+  // ("1.1x speed"); no accumulation, each press just refreshes the 2s hold.
+  function showSpeedOsd() {
+    var v = Number(Store.getState().speed) || 1;
+    showInfoOsd(v.toFixed(1) + 'x speed');
+  }
+
   function seekSeconds(delta) {
     var s = Store.getState();
     if (!s.notes || !s.notes.length) return;   // nothing loaded to seek in
+    // Seeking while a countdown runs = user intent to go: tear the
+    // countdown down and start playback immediately.
+    if (s.startCountdown != null) {
+      cancelCountdown();
+      beginPlaybackNow();
+    }
+    // Feedback counts PRESSES — bump BEFORE touching the engine so no
+    // seek/play quirk (e.g. clamped at t=0, or play() throwing after a
+    // rejected seek) can ever skip the OSD update.
+    bumpSeekOsd(delta);
     var wasPlaying = Sequencer.isPlaying();
     try { Sequencer.seek(delta); } catch (e) { return; }
-    if (wasPlaying) {
-      Sequencer.play();
-    } else {
-      Store.setState({ timeSec: Sequencer.getTime() });
-    }
+    try {
+      if (wasPlaying) {
+        Sequencer.play();
+      } else {
+        Store.setState({ timeSec: Sequencer.getTime() });
+      }
+    } catch (e) { /* engine hiccup after a rejected seek — ignore */ }
   }
 
   // ── Playback speed stepping ±0.1x (Key 3 up / Key 1 down) ──

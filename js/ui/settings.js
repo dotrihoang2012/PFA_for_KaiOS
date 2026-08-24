@@ -48,6 +48,10 @@ var Settings = (function () {
       renderMode:   'auto',    // 'auto' | 'individual' | 'heatmap' | 'buffer'
       speed:        1.0,       // 0.1 .. 8.0 (slider)
       trail:        1.0,       // Note Trail, 0.1 .. 8.0 (moved from MIDI group)
+      autoPlay:     false,     // start playback automatically after load
+      showDialog:   true,      // show "Analyzing MIDI…" / "Now playing" pills
+      showOsd:      true,      // show the info-bar action OSD (+1 sec / 1.1x…)
+      startDelay:   0,         // Start Delay seconds (0 = Off, slider 0..10)
       theme:        'dark',    // 'dark' | 'light' | 'blue' | 'purple'
       noteLabels:   false,
       // Info card (HUD): master gate + per-stat switches
@@ -97,6 +101,12 @@ var Settings = (function () {
         min: 0.1, max: 8.0, step: 0.1, fmt: function (v) { return v.toFixed(1) + 'x'; } },
       { key: 'trail',      label: 'Note Trail',     type: 'number',
         min: 0.1, max: 8.0, step: 0.1, fmt: function (v) { return v.toFixed(1); } },
+      { key: 'startDelay', label: 'Start Delay',    type: 'number',
+        min: 0, max: 10, step: 1,
+        fmt: function (v) { return (v > 0) ? v + ' sec' : 'Off'; } },
+      { key: 'autoPlay',   label: 'Auto Play',      type: 'bool' },
+      { key: 'showDialog', label: 'Show Dialog',    type: 'bool' },
+      { key: 'showOsd',    label: 'Show OSD',       type: 'bool' },
       { key: 'noteLabels', label: 'Show Note Labels',type: 'bool' },
       { key: 'infoCard',   label: 'Info Card Options', type: 'sub', subkind: 'bools' },
       { key: 'kbRange',       label: 'Keyboard Range',   type: 'sub' },
@@ -151,6 +161,12 @@ var Settings = (function () {
               parsed.visual.infoFps == null) {
             _values.visual.infoFps = parsed.visual.showFps;
           }
+          // Migration: Start Delay used to allow -1 (= Off); the slider
+          // range is 0..10 with 0 meaning Off — normalize old values.
+          if (_values.visual.startDelay == null ||
+              _values.visual.startDelay < 0) {
+            _values.visual.startDelay = 0;
+          }
         }
       } catch (e) {
         console.warn('[Settings] corrupt persist; using defaults', e);
@@ -168,6 +184,10 @@ var Settings = (function () {
       renderMode:    _values.visual.renderMode,
       speed:         _values.visual.speed,
       trail:         _values.visual.trail,
+      autoPlay:      _values.visual.autoPlay,
+      showDialog:    _values.visual.showDialog,
+      showOsd:       _values.visual.showOsd,
+      startDelay:    _values.visual.startDelay,
       theme:         _values.visual.theme,
       noteLabels:    _values.visual.noteLabels,
       infoCard:      _values.visual.infoCard,
@@ -395,37 +415,9 @@ var Settings = (function () {
       _sub.items.push({ type: 'slider', part: 'start' });
       _sub.items.push({ type: 'slider', part: 'end' });
     } else if (kind === 'bools') {
-      // Boolean list page (Info Card Options). The MASTER show/hide gate
-      // sits first; the four stat switches follow. Effective visibility
-      // of a stat = infoCard AND its own switch.
-      var bdefs = [
-        { key: 'infoCard',      label: 'Show Info Card' },
-        { key: 'infoNoteCount', label: 'Note Count' },
-        { key: 'infoSpeed',     label: 'Speed' },
-        { key: 'infoTime',      label: 'Time' },
-        { key: 'infoFps',       label: 'FPS' }
-      ];
-      _sub.ui.boolRows = {};
-      for (var bi = 0; bi < bdefs.length; bi++) {
-        var bd = bdefs[bi];
-        var bRow = document.createElement('div');
-        bRow.className = 'setting-row';
-        bRow.setAttribute('tabindex', '-1');
-
-        var blbl = document.createElement('span');
-        blbl.className = 'setting-row-label';
-        blbl.textContent = bd.label;
-        bRow.appendChild(blbl);
-
-        var bVal = document.createElement('span');
-        bVal.className = 'setting-row-value';
-        bVal.textContent = _values.visual[bd.key] ? 'On' : 'Off';
-        bRow.appendChild(bVal);
-
-        list.appendChild(bRow);
-        _sub.ui.boolRows[bd.key] = { row: bRow, valEl: bVal };
-        _sub.items.push({ type: 'bool', part: bd.key });
-      }
+      // Boolean list page (Info Card Options) — built by buildBoolPage
+      // so the master toggle can collapse/expand it in place.
+      buildBoolPage(list);
     } else {
       // Working color from persisted value (or resolved theme color).
       var cur = _values.visual[key];
@@ -481,6 +473,10 @@ var Settings = (function () {
 
   /** Close the level-2 page and refresh parent group rows/chips. */
   function closeSub() {
+    // Release the native built-in keyboard if a text field holds focus.
+    if (_sub && _sub.ui && _sub.ui.text && _sub.ui.text.input) {
+      try { _sub.ui.text.input.blur(); } catch (e) {}
+    }
     var overlay = document.getElementById('subsettings-overlay');
     if (overlay) overlay.classList.add('hidden');
     _sub = null;
@@ -507,7 +503,7 @@ var Settings = (function () {
     var cells = overlay.querySelectorAll('.swatch');
     for (var i = 0; i < cells.length; i++) cells[i].classList.remove('focused');
 
-    var rows = overlay.querySelectorAll('.setting-row-slider, .setting-row');
+    var rows = overlay.querySelectorAll('.setting-row-slider, .setting-row, .kai-text-input');
     for (var j = 0; j < rows.length; j++) rows[j].classList.remove('focused');
 
     var item = _sub.items[_sub.focusIdx];
@@ -664,6 +660,49 @@ var Settings = (function () {
   }
 
   /**
+   * (Re)build the Info Card Options list. The MASTER "Show Info Card"
+   * row always sits first. When it is Off, the four stat rows are
+   * REMOVED entirely — focus locks onto the master row alone; flipping
+   * it back On restores the full list.
+   */
+  function buildBoolPage(listEl) {
+    var bdefs = [
+      { key: 'infoCard',      label: 'Show Info Card' },
+      { key: 'infoNoteCount', label: 'Note Count' },
+      { key: 'infoSpeed',     label: 'Speed' },
+      { key: 'infoTime',      label: 'Time' },
+      { key: 'infoFps',       label: 'FPS' }
+    ];
+    var masterOn = !!_values.visual.infoCard;
+    _sub.items = [];
+    _sub.ui.boolRows = {};
+    _sub.focusIdx = 0;
+    for (var bi = 0; bi < bdefs.length; bi++) {
+      var bd = bdefs[bi];
+      // Collapsed: only the master row exists while infoCard is Off
+      if (!masterOn && bd.key !== 'infoCard') continue;
+
+      var bRow = document.createElement('div');
+      bRow.className = 'setting-row';
+      bRow.setAttribute('tabindex', '-1');
+
+      var blbl = document.createElement('span');
+      blbl.className = 'setting-row-label';
+      blbl.textContent = bd.label;
+      bRow.appendChild(blbl);
+
+      var bVal = document.createElement('span');
+      bVal.className = 'setting-row-value';
+      bVal.textContent = _values.visual[bd.key] ? 'On' : 'Off';
+      bRow.appendChild(bVal);
+
+      listEl.appendChild(bRow);
+      _sub.ui.boolRows[bd.key] = { row: bRow, valEl: bVal };
+      _sub.items.push({ type: 'bool', part: bd.key });
+    }
+  }
+
+  /**
    * Toggle one Info Card boolean (master gate or per-stat switch),
    * persist it and re-apply HUD visibility immediately.
    */
@@ -674,6 +713,17 @@ var Settings = (function () {
     Store.setState(_mapToStore(_openGroup, key, next));
     save();
     applyInfoCard();
+    if (key === 'infoCard') {
+      // Master flipped → rebuild the page collapsed/expanded in place.
+      // Focus lands back on the master row (idx 0).
+      var list = document.getElementById('subsettings-list');
+      if (list) {
+        while (list.firstChild) list.removeChild(list.firstChild);
+        buildBoolPage(list);
+        paintSubFocus();
+      }
+      return; // row refs were rebuilt — no stale valEl write
+    }
     var ref = _sub.ui.boolRows && _sub.ui.boolRows[key];
     if (ref && ref.valEl) ref.valEl.textContent = next ? 'On' : 'Off';
   }
@@ -806,6 +856,13 @@ var Settings = (function () {
           // .setting-row.has-sub::after (gaia-icons 'forward'), the SAME
           // glyph the Options menu uses for MIDI-OUT / Visual Settings.
           row.classList.add('has-sub');
+          // Sub rows may still advertise their current value (e.g.
+          // Start Delay "-1.0s" / "Off") next to the arrow. Number()
+          // guards against a stringified value crashing toFixed().
+          if (typeof def.fmt === 'function') {
+            try { valEl.textContent = def.fmt(Number(val) || 0); }
+            catch (e) { valEl.textContent = 'Off'; }
+          }
         } else if (def.type === 'color') {
           // Color drill-in row — small chip previewing the current color;
           // bgColor null renders as 'Auto'. Same forward arrow as above.
@@ -1087,6 +1144,10 @@ var Settings = (function () {
       if (key === 'renderMode')    return { renderMode: val };
       if (key === 'speed')         return { speed: val };
       if (key === 'trail')         return { trail: val };
+      if (key === 'autoPlay')      return { autoPlay: val };
+      if (key === 'showDialog')    return { showDialog: val };
+      if (key === 'showOsd')       return { showOsd: val };
+      if (key === 'startDelay')    return { startDelay: val };
       if (key === 'noteLabels')    return { noteLabels: val };
       if (key === 'infoCard')      return { infoCard: val };
       if (key === 'infoNoteCount') return { infoNoteCount: val };

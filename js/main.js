@@ -658,16 +658,34 @@
   // ── BLUR / FOCUS — suspend audio + pause sequencer when backgrounded ──
   // Matches reference audio-visualizer pattern: on blur, suspend AudioContext
   // and pause playback so Gecko's audio thread doesn't compete with foreground app.
+  // Player-screen guard: the center pills belong to the piano player
+  // ONLY — never float above the Options menu, Settings/sub-settings
+  // or the About panel.
+  function _onPlayerScreen() {
+    var ids = ['menu-overlay', 'settings-overlay', 'subsettings-overlay', 'about-overlay'];
+    for (var i = 0; i < ids.length; i++) {
+      var el = document.getElementById(ids[i]);
+      if (el && !el.classList.contains('hidden')) return false;
+    }
+    return true;
+  }
+
   window.showNowPlaying = function (fileName) {
+    // Visual → Show Dialog = Off suppresses the pill entirely
+    if (Store.getState().showDialog === false) return;
+    if (!_onPlayerScreen()) return;
     var overlay = document.getElementById('now-playing-overlay');
     var text    = document.getElementById('now-playing-text');
     if (!overlay || !text) return;
     var name = (fileName || '').split('/').pop() || 'Unknown';
     text.textContent = 'Now playing: ' + name;
-    overlay.classList.remove('hidden');
+    // Fade in (CSS transition on opacity), hold 3s, then FADE OUT
+    // gradually. Uses .np-hide instead of .hidden — the generic
+    // .hidden is display:none !important, which kills the transition.
+    overlay.classList.remove('np-hide');
     clearTimeout(window._nowPlayingTimer);
     window._nowPlayingTimer = setTimeout(function () {
-      overlay.classList.add('hidden');
+      overlay.classList.add('np-hide');
     }, 3000);
   };
 
@@ -760,6 +778,10 @@
       timeSec:   0,
       play:      'stop',
       activeNoteCount: 0,
+      // Arm the one-shot "Now playing" toast for THIS file — consumed by
+      // the first playback start (manual Play or Auto Play), never on
+      // pause/resume.
+      npPending: true,
     });
 
     HUD.setTotal(notes.length);
@@ -772,6 +794,13 @@
     // Update softkeys (show Play button)
     if (typeof window.updateSoftkeys === 'function') {
       window.updateSoftkeys();
+    }
+
+    // Auto Play (Visual settings): start playback right away — honours
+    // Start Delay and fires the pending "Now playing" toast exactly once.
+    var stAuto = Store.getState();
+    if (stAuto.autoPlay && typeof window.pfaRequestStart === 'function') {
+      try { window.pfaRequestStart(); } catch (e) {}
     }
 
     console.log('[Main] Loaded ' + notes.length + ' notes');
@@ -974,11 +1003,21 @@
   // read + parsed. Uses #now-playing-overlay/#now-playing-text (styles in
   // kaiui.css) — the same pill the Now Playing toast uses.
   function showParsing() {
+    // Visual → Show Dialog = Off suppresses the pill entirely
+    var playerOnly = _onPlayerScreen();
+    if (Store.getState().showDialog === false || !playerOnly) {
+      var bar0 = document.getElementById('parse-bar');
+      if (bar0) {
+        bar0.classList.remove('hidden');
+        bar0.classList.add('indeterminate');
+      }
+      return;
+    }
     var overlay = document.getElementById('now-playing-overlay');
     var textEl  = document.getElementById('now-playing-text');
     var bar     = document.getElementById('parse-bar');
     if (textEl) textEl.textContent = 'Analyzing MIDI Data...';
-    if (overlay) overlay.classList.remove('hidden');
+    if (overlay) overlay.classList.remove('np-hide');
     if (bar) {
       bar.classList.remove('hidden');
       bar.classList.add('indeterminate');
@@ -988,7 +1027,7 @@
   function hideParsing() {
     var overlay = document.getElementById('now-playing-overlay');
     var bar     = document.getElementById('parse-bar');
-    if (overlay) overlay.classList.add('hidden');
+    if (overlay) overlay.classList.add('np-hide');
     if (bar) {
       bar.classList.remove('indeterminate');
       bar.classList.add('hidden');
