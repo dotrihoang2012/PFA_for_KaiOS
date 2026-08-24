@@ -558,6 +558,9 @@
     // silent=true (countdown finished / seek flush): playback starting is
     // self-evident — don't flash the Play label over the info bar.
     if (!silent) showInfoOsd('Play', 3000);
+    // Async entry points (countdown timer, Auto Play) bypass
+    // dispatchAction, so the softkey PLAY→PAUSE swap must be done here.
+    if (typeof updateSoftkeys === 'function') updateSoftkeys();
     // One-shot "Now playing: <file>" toast — the loader arms npPending,
     // so this fires exactly once per loaded file (never on resume).
     if (st.npPending && typeof window.showNowPlaying === 'function') {
@@ -583,6 +586,8 @@
     } else {
       beginPlaybackNow();
     }
+    // Not reached via dispatchAction — keep the softkey label in sync.
+    if (typeof updateSoftkeys === 'function') updateSoftkeys();
   };
 
   function dispatchAction(action) {
@@ -607,9 +612,10 @@
           showInfoOsd('Pause', 3000);
           break;
         }
-        // Fresh start or resume: positive Start Delay → countdown first.
+        // Countdown applies ONLY to a fresh start from the beginning
+        // (play === 'stop'). Resume-from-pause must continue instantly.
         var delaySec = Number(s.startDelay);
-        if (delaySec > 0) {
+        if (s.play === 'stop' && delaySec > 0) {
           armCountdown(delaySec);
           showInfoOsd('Play', 3000);
           // Now Playing fires the MOMENT Play is pressed — the countdown
