@@ -811,8 +811,12 @@
       if (rightE) rightE.textContent = '';
     } else {
       var hasFile = !!s.fileName;
+      // PAUSE also while a countdown is RUNNING (press = hold it);
+      // PLAY when idle, held, or stopped.
+      var busy = (s.play === 'play') ||
+                 (s.startCountdown != null && s.cdRunning);
       if (leftE)  leftE.textContent  = 'Options';
-      if (ctrE)   ctrE.textContent   = hasFile ? ((s.play === 'play') ? 'PAUSE' : 'PLAY') : '';
+      if (ctrE)   ctrE.textContent   = hasFile ? (busy ? 'PAUSE' : 'PLAY') : '';
       if (rightE) rightE.textContent = '';
     }
   }
