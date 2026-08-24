@@ -76,12 +76,13 @@ var HUD = (function () {
     _set(_elFPS, fp + ' FPS');
     _set(_elTime, tm);
     // Fullscreen-only play/pause indicator. Visibility is enforced in JS
-    // every DOM tick — deterministic, no CSS specificity doubts.
+    // every DOM tick — deterministic, no CSS specificity doubts. Shows
+    // the WORD, not a glyph (KaiOS fonts render ▶/II inconsistently).
     if (_elPP) {
       var appEl = document.getElementById('app');
       var inFs = !!(appEl && appEl.classList.contains('fullscreen'));
-      _elPP.textContent = (state.play === 'play') ? '\u25B6' : 'II';
-      _elPP.style.display = inFs ? '' : 'none';
+      _elPP.textContent = (state.play === 'play') ? 'Play' : 'Pause';
+      _elPP.style.display = inFs ? 'inline' : 'none';
     }
   }
 

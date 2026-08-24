@@ -382,14 +382,13 @@
   text-align: center;
 }
 
-/* Play/pause indicator — ONLY while fullscreen (softkey bar shows
-   PLAY/PAUSE the rest of the time). */
+/* Play/pause indicator — hidden by default; hud.js shows the word
+   ("Play"/"Pause") ONLY while #app has the fullscreen class. */
 #hud-playpause {
   display: none;
   color: #ffffff;
   font-weight: bold;
 }
-#app.fullscreen #hud-playpause { display: inline; }
 
 /* ===========================================
    TEXT ENTRY SUB-PAGE (settings.js kind 'text')
