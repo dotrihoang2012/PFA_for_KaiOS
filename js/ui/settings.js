@@ -492,6 +492,9 @@ var Settings = (function () {
         focusRow(rows, _focusIdx);
       }
     }
+    // The refocused row may be a drill-in row — refresh the SELECT
+    // softkey label NOW instead of waiting for the next key press.
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
   }
 
   /** Highlight the focused sub-page item (+ scroll into view). */

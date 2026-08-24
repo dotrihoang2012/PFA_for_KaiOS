@@ -75,8 +75,14 @@ var HUD = (function () {
     _set(_elSpeed, sp + 'x');
     _set(_elFPS, fp + ' FPS');
     _set(_elTime, tm);
-    // Fullscreen-only play/pause indicator (CSS hides it otherwise)
-    _set(_elPP, state.play === 'play' ? '\u25B6' : 'II');
+    // Fullscreen-only play/pause indicator. Visibility is enforced in JS
+    // every DOM tick — deterministic, no CSS specificity doubts.
+    if (_elPP) {
+      var appEl = document.getElementById('app');
+      var inFs = !!(appEl && appEl.classList.contains('fullscreen'));
+      _elPP.textContent = (state.play === 'play') ? '\u25B6' : 'II';
+      _elPP.style.display = inFs ? '' : 'none';
+    }
   }
 
   function _set(el, val) {
