@@ -545,17 +545,19 @@
       var next = Math.round((st.startCountdown - 0.1) * 10) / 10;
       if (next <= 0) {
         cancelCountdown();
-        beginPlaybackNow();
+        beginPlaybackNow(true); // no Play label — the music says it all
       } else {
         Store.setState({ startCountdown: next });
       }
     }, 100);
   }
 
-  function beginPlaybackNow() {
+  function beginPlaybackNow(silent) {
     var st = Store.getState();
     Store.setState({ play: 'play' });
-    showInfoOsd('Play', 3000);
+    // silent=true (countdown finished / seek flush): playback starting is
+    // self-evident — don't flash the Play label over the info bar.
+    if (!silent) showInfoOsd('Play', 3000);
     // One-shot "Now playing: <file>" toast — the loader arms npPending,
     // so this fires exactly once per loaded file (never on resume).
     if (st.npPending && typeof window.showNowPlaying === 'function') {
@@ -718,7 +720,7 @@
     // countdown down and start playback immediately.
     if (s.startCountdown != null) {
       cancelCountdown();
-      beginPlaybackNow();
+      beginPlaybackNow(true); // seek OSD takes over the label anyway
     }
     // Feedback counts PRESSES — bump BEFORE touching the engine so no
     // seek/play quirk (e.g. clamped at t=0, or play() throwing after a
