@@ -570,8 +570,17 @@
     var st = Store.getState();
     if (!st.fileName || st.play !== 'stop' || st.startCountdown != null) return;
     var d = Number(st.startDelay);
-    if (d > 0) armCountdown(d);
-    else beginPlaybackNow();
+    if (d > 0) {
+      armCountdown(d);
+      showInfoOsd('Play', 3000);
+      // Same once-per-file toast rule as the manual Play path.
+      if (st.npPending && typeof window.showNowPlaying === 'function') {
+        window.showNowPlaying(st.fileName);
+        Store.setState({ npPending: false });
+      }
+    } else {
+      beginPlaybackNow();
+    }
   };
 
   function dispatchAction(action) {
@@ -601,6 +610,13 @@
         if (delaySec > 0) {
           armCountdown(delaySec);
           showInfoOsd('Play', 3000);
+          // Now Playing fires the MOMENT Play is pressed — the countdown
+          // only delays the audio, not the toast. Consuming npPending
+          // here keeps it a once-per-file toast (no repeat at 0:00).
+          if (s.npPending && typeof window.showNowPlaying === 'function') {
+            window.showNowPlaying(s.fileName);
+            Store.setState({ npPending: false });
+          }
         } else {
           beginPlaybackNow();
         }
