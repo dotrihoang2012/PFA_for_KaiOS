@@ -382,14 +382,6 @@
   text-align: center;
 }
 
-/* Play/pause indicator — hidden by default; hud.js shows the word
-   ("Play"/"Pause") ONLY while #app has the fullscreen class. */
-#hud-playpause {
-  display: none;
-  color: #ffffff;
-  font-weight: bold;
-}
-
 /* ===========================================
    TEXT ENTRY SUB-PAGE (settings.js kind 'text')
    Adapted from KaiUI-master TextInput.scss
