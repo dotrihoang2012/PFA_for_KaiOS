@@ -624,7 +624,7 @@ var Settings = (function () {
     if (!item) return;
 
     if (item.type === 'bool') {
-      toggleSubBool(item.part);
+      // Booleans are Left/Right only — Enter never toggles them.
       return;
     }
     if (item.type === 'swatch') {
@@ -655,11 +655,56 @@ var Settings = (function () {
     }
   }
 
-  /** Move sub-page focus by ±step with clamping. */
+  /** Jump to an absolute sub-page index with wrap-around. */
+  function setSubFocus(idx) {
+    if (!_sub) return;
+    var n = _sub.items.length;
+    if (!n) return;
+    _sub.focusIdx = ((idx % n) + n) % n;
+    paintSubFocus();
+  }
+
+  /** Move sub-page focus by ±step with WRAP-AROUND (bottom ↔ top). */
   function moveSubFocus(step) {
     if (!_sub) return;
-    _sub.focusIdx = Math.max(0, Math.min(_sub.items.length - 1, _sub.focusIdx + step));
-    paintSubFocus();
+    setSubFocus(_sub.focusIdx + step);
+  }
+
+  /**
+   * Vertical navigation for the COLOR page.
+   *   Grid (DEF + swatches): Up/Down stride by column (5 cells).
+   *   Top row cols 1-4 ↑  → bottom cell of the SAME column.
+   *   DEF ↑               → A slider (wrap to the very bottom).
+   *   ANY grid cell at the bottom edge ↓ → R (first slider).
+   *   Sliders stack linearly: A ↑ → B → G → R; R ↑ → S24
+   *   (bottom of DEF's column). A ↓ → DEF (wrap to the very top).
+   * (dir: -1 = up, +1 = down)
+   */
+  function moveColorVertical(dir) {
+    var gLast = SWATCHES.length;        // 25 — last grid cell (S24)
+    var firstSlider = gLast + 1;        // 26 — R
+    var last = _sub.items.length - 1;   // 29 — A
+    var i = _sub.focusIdx;
+    var t;
+    if (dir > 0) { // Down
+      if (i <= gLast) {
+        t = i + SWATCH_COLS;
+        setSubFocus(t <= gLast ? t : firstSlider); // grid bottom edge → R
+      } else {
+        setSubFocus(i === last ? 0 : i + 1);       // A → DEF (wrap)
+      }
+    } else {       // Up
+      if (i === 0) {
+        setSubFocus(last);                          // DEF → A (bottom)
+      } else if (i <= gLast) {
+        t = i - SWATCH_COLS;
+        setSubFocus(t >= 0 ? t : i + 20);           // top row → same column
+      } else {
+        t = i - 1;
+        if (t < firstSlider) t = gLast;             // R ↑ → S24 (DEF column)
+        setSubFocus(t);
+      }
+    }
   }
 
   /**
@@ -738,22 +783,37 @@ var Settings = (function () {
   function handleSubKey(key) {
     if (!_sub) return false;
 
-    // Back / SoftRight → back to the group page
-    if (key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
-        key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT) {
+    // Back → back to the group page. ONLY the hardware Back key exits —
+    // LSK/RSK are strictly forbidden inside sub-pages.
+    if (key === 'Backspace' || key === Constants.KEY.BACKSPACE) {
       closeSub();
       return true;
     }
 
-    // Vertical: swatches jump by grid columns, other rows step by one
+    // Vertical: the COLOR page uses a column-aware grid walk (DEF ↕
+    // bottom wrap, grid columns mapping onto R/G/B/A). Other pages:
+    // swatches AND the DEF cell stride by SWATCH_COLS, rest step by one.
+    // All movement wraps around (bottom ↔ top).
     if (key === 'ArrowUp' || key === Constants.KEY.ARROW_UP) {
       var itU = _sub.items[_sub.focusIdx];
-      moveSubFocus(itU && itU.type === 'swatch' ? -SWATCH_COLS : -1);
+      if (_sub.kind === 'color' && itU &&
+          (itU.type === 'swatch' || itU.type === 'def' || itU.type === 'slider')) {
+        moveColorVertical(-1);
+      } else {
+        moveSubFocus(itU && (itU.type === 'swatch' || itU.type === 'def')
+          ? -SWATCH_COLS : -1);
+      }
       return true;
     }
     if (key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN) {
       var itD = _sub.items[_sub.focusIdx];
-      moveSubFocus(itD && itD.type === 'swatch' ? +SWATCH_COLS : +1);
+      if (_sub.kind === 'color' && itD &&
+          (itD.type === 'swatch' || itD.type === 'def' || itD.type === 'slider')) {
+        moveColorVertical(+1);
+      } else {
+        moveSubFocus(itD && (itD.type === 'swatch' || itD.type === 'def')
+          ? +SWATCH_COLS : +1);
+      }
       return true;
     }
 
@@ -766,8 +826,11 @@ var Settings = (function () {
       return true;
     }
 
-    // Enter activates the focused swatch/DEF cell
+    // Enter activates the focused swatch/DEF cell — but NEVER toggles
+    // booleans (Info Card rows are Left/Right only by design).
     if (key === Constants.KEY.ENTER || key === 13) {
+      var itE = _sub.items[_sub.focusIdx];
+      if (itE && itE.type === 'bool') return true; // swallowed on purpose
       activateFocusedSub();
       return true;
     }
@@ -964,17 +1027,16 @@ var Settings = (function () {
     var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider');
     if (!rows.length) return false;
 
-    // Back / SoftRight → close
-    if (key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
-        key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT) {
+    // Back → close. ONLY the hardware Back key — LSK/RSK are forbidden.
+    if (key === 'Backspace' || key === Constants.KEY.BACKSPACE) {
       close();
       return true;
     }
 
-    // Enter / SoftLeft on a drill-in row opens its sub-page. Plain rows
-    // cycle values with Left/Right only — Enter is intentionally inert.
-    if (key === Constants.KEY.ENTER || key === 13 ||
-        key === Constants.KEY.SOFT_LEFT || key === 'SoftLeft') {
+    // Enter on a drill-in row opens its sub-page. Plain rows cycle
+    // values with Left/Right only — Enter is intentionally inert.
+    // SoftLeft must NEVER open sub-pages (LSK forbidden in settings).
+    if (key === Constants.KEY.ENTER || key === 13) {
       var rowE = rows[_focusIdx];
       var t = rowE && rowE.getAttribute('data-type');
       if (t === 'sub') {
@@ -989,15 +1051,14 @@ var Settings = (function () {
       return true; // consumed but no-op for plain rows
     }
 
-    // ArrowUp/Down: nav
+    // ArrowUp/Down: nav with WRAP-AROUND (bottom ↔ top)
     if (key === 'ArrowUp' || key === Constants.KEY.ARROW_UP) {
-      _focusIdx = Math.max(0, _focusIdx - 1);
+      _focusIdx = (_focusIdx - 1 + rows.length) % rows.length;
       focusRow(rows, _focusIdx);
       return true;
     }
     if (key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN) {
-      _focusIdx = Math.min(rows.length - 1, _focusIdx + 1);
-      if (_focusIdx < 0) _focusIdx = 0;
+      _focusIdx = (_focusIdx + 1) % rows.length;
       focusRow(rows, _focusIdx);
       return true;
     }

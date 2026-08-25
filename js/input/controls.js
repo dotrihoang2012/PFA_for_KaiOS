@@ -111,7 +111,6 @@
       var isTextField = !!(ae && ae.tagName === 'INPUT');
       var isEditKey = (key === 8 || key === 'Backspace' ||
                        key === 13 || key === Constants.KEY.ENTER ||
-                       key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
                        key === 'Back' || key === Constants.KEY.BACK);
       if (isTextField && !isEditKey) {
         return; // pass through untouched: digits, '*', '#', caret keys…
@@ -149,23 +148,26 @@
   function handleOverlayKey(e, key) {
     var items = document.querySelectorAll('#menu-list .kai-om-item');
 
-    // Backspace / SoftRight = exit overlay
+    // Back = the ONLY way out of the Options menu. LSK/RSK are
+    // strictly forbidden here (hardware Back key = keyCode 8 / 'Back').
     if (key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
-        key === Constants.KEY.SOFT_RIGHT || key === 'SoftRight') {
+        key === 'Back' || key === Constants.KEY.BACK) {
       closeMenuOverlay();
       return;
     }
 
-    // ArrowUp / ArrowDown = move focus
+    // ArrowUp / ArrowDown = move focus with WRAP-AROUND (bottom ↔ top)
     if (key === Constants.KEY.ARROW_UP || key === 'ArrowUp') {
-      _focusedItemIndex = Math.max(0, _focusedItemIndex - 1);
+      var nItems = items.length;
+      if (!nItems) return;
+      _focusedItemIndex = ((_focusedItemIndex - 1) % nItems + nItems) % nItems;
       focusOverlayItem(items, _focusedItemIndex);
       return;
     }
     if (key === Constants.KEY.ARROW_DOWN || key === 'ArrowDown') {
-      var max = Math.max(0, items.length - 1);
-      _focusedItemIndex = Math.min(max, _focusedItemIndex + 1);
-      if (_focusedItemIndex < 0) _focusedItemIndex = 0;
+      var nItems2 = items.length;
+      if (!nItems2) return;
+      _focusedItemIndex = ((_focusedItemIndex + 1) % nItems2 + nItems2) % nItems2;
       focusOverlayItem(items, _focusedItemIndex);
       return;
     }
@@ -557,7 +559,7 @@
     Store.setState({ play: 'play' });
     // silent=true (countdown finished / seek flush): playback starting is
     // self-evident — don't flash the Play label over the info bar.
-    if (!silent) showInfoOsd('Play', 3000);
+    if (!silent) showPlaybackOsd('Play');
     // Async entry points (countdown timer, Auto Play) bypass
     // dispatchAction, so the softkey PLAY→PAUSE swap must be done here.
     if (typeof updateSoftkeys === 'function') updateSoftkeys();
@@ -577,7 +579,7 @@
     var d = Number(st.startDelay);
     if (d > 0) {
       armCountdown(d);
-      showInfoOsd('Play', 3000);
+      showPlaybackOsd('Play');
       // Same once-per-file toast rule as the manual Play path.
       if (st.npPending && typeof window.showNowPlaying === 'function') {
         window.showNowPlaying(st.fileName);
@@ -600,16 +602,16 @@
         if (s.startCountdown != null) {
           if (s.cdRunning) {
             Store.setState({ cdRunning: false }); // hold
-            showInfoOsd('Pause', 3000);
+            showPlaybackOsd('Pause');
           } else {
             Store.setState({ cdRunning: true });  // resume
-            showInfoOsd('Play', 3000);
+            showPlaybackOsd('Play');
           }
           break;
         }
         if (s.play === 'play') {
           Store.setState({ play: 'pause' });
-          showInfoOsd('Pause', 3000);
+          showPlaybackOsd('Pause');
           break;
         }
         // Countdown applies ONLY to a fresh start from the beginning
@@ -617,7 +619,7 @@
         var delaySec = Number(s.startDelay);
         if (s.play === 'stop' && delaySec > 0) {
           armCountdown(delaySec);
-          showInfoOsd('Play', 3000);
+          showPlaybackOsd('Play');
           // Now Playing fires the MOMENT Play is pressed — the countdown
           // only delays the audio, not the toast. Consuming npPending
           // here keeps it a once-per-file toast (no repeat at 0:00).
@@ -698,6 +700,15 @@
   function showInfoOsd(text, holdMs) {
     if (Store.getState().showOsd === false) return;
     if (typeof HUD !== 'undefined' && HUD.showOsd) HUD.showOsd(text, holdMs || 2000);
+  }
+
+  // Play/Pause labels are FULLSCREEN-ONLY: outside fullscreen the
+  // softkey bar already shows PLAY/PAUSE, so a second label on the
+  // info bar is just noise.
+  function showPlaybackOsd(text) {
+    var appEl = document.getElementById('app');
+    if (!(appEl && appEl.classList.contains('fullscreen'))) return;
+    showInfoOsd(text, 3000);
   }
 
   function bumpSeekOsd(delta) {
