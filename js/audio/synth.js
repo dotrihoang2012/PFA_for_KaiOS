@@ -48,6 +48,8 @@ var Synth = (function () {
   document.addEventListener('click', _autoResume, false);
   document.addEventListener('keydown', _autoResume, false);
   document.addEventListener('touchstart', _autoResume, false);
+  document.addEventListener('visibilitychange', _autoResume, false);
+  document.addEventListener('mozvisibilitychange', _autoResume, false);
 
   function _resume() {
     if (!ctx) return;
@@ -60,7 +62,9 @@ var Synth = (function () {
       var AC = window.AudioContext || window.webkitAudioContext;
       console.log('[Synth] AudioContext impl:', AC ? AC.name || typeof AC : 'NONE');
       ctx = new AC();
-      console.log('[Synth] ctx.state=' + ctx.state + ' sampleRate=' + ctx.sampleRate);
+      try { ctx.mozAudioChannelType = 'content'; } catch (e) {}
+      try { if (ctx.destination) ctx.destination.mozAudioChannelType = 'content'; } catch (e2) {}
+      console.log('[Synth] ctx.state=' + ctx.state + ' sampleRate=' + ctx.sampleRate + ' ch=' + (ctx.mozAudioChannelType || (ctx.destination && ctx.destination.mozAudioChannelType)));
 
       masterGain = ctx.createGain();
       masterGain.gain.value = volume;
@@ -177,7 +181,17 @@ var Synth = (function () {
       return;
     }
     if (!ctx || !masterGain) return;
-    if (ctx.state !== 'running') { _resume(); return; }
+    if (ctx.state !== 'running') {
+      _resume();
+      // Content channel should keep ctx running in background; if still
+      // suspended, retry shortly instead of dropping the note (this was
+      // causing silence after Back → background).
+      if (ctx.state !== 'running') {
+        var _rn=note,_rc=ch,_rv=vel,_rd=delaySec,_rdu=durSec;
+        setTimeout(function(){ noteOn(_rn,_rc,_rv,_rd,_rdu); }, 60);
+        return;
+      }
+    }
     if (delaySec < 0) delaySec = 0;
     if (durSec < 0.005) durSec = 0.005;
     if (vel < 1) return;

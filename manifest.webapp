@@ -27,7 +27,8 @@
     },
     "systemXHR": {},
     "power": {},
-    "audio-channel-content": {}
+    "audio-channel-content": {},
+    "desktop-notification": {}
   },
   "activities": {
     "open": {

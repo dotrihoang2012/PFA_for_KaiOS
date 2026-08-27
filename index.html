@@ -64,6 +64,21 @@
 <div id="now-playing-overlay" class="np-hide">
   <span id="now-playing-text"></span>
 </div>
+<!-- KaiUI-style error dialog (single OK on centre softkey). Hidden by default.
+     Shown when a .note/.json MIDI file fails to read/parse.
+     Mirrors KaiUI-master Dialog.scss — header + white container,
+     actions live in the softkey bar (centre OK).
+     Styles + animation live in kaiui.css (#error-dialog). -->
+<div id="error-dialog" class="kai-dialog hidden">
+  <div class="kai-dialog-wrapper" tabindex="-1">
+    <div class="kai-dialog-header">Error</div>
+    <div class="kai-dialog-container">
+      <div class="kai-dialog-content">
+        <p id="error-dialog-msg"></p>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- About panel — static content, opened from Options → "About This App".
      Closed by Back / SoftRight / Enter (see controls.js aboutOpen). -->
 <div id="about-overlay" class="kai-om-overlay hidden">

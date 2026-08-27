@@ -25,6 +25,12 @@
   // let boot() flush once the DOM and audio graph are ready.
   var _pendingActivity = null;
 
+  // Demo track (bundled demo.note) auto-plays on the first boot of each
+  // app entry. While active we hide PLAY/PAUSE, show HUD as 0/0 + 0:00,
+  // and lock transport + speed controls. Loading a real .mid/.note (or the
+  // demo finishing) unlocks everything again.
+  var _demoActive = false;
+
   // ── Foreground focus helper ──
   // When the user picks our app from File Manager's action sheet, KaiOS
   // 2.5 starts the app in the background and routes an "activity"
@@ -300,6 +306,9 @@
       if (!window._audioMute) _engine().noteOff(note, ch);
     });
     Sequencer.onEnd(function () {
+      // Natural end: keep demo locked (HUD 0/0, transport disabled) so the
+      // screen stays inert until a real .mid/.note is loaded (loadMIDIData
+      // is the only place that unlocks via clearDemo()).
       Store.setState({ play: 'stop' });
     });
 
@@ -321,6 +330,9 @@
 
     // Softkey labels — let controls.js manage them
     if (typeof updateSoftkeys === 'function') updateSoftkeys();
+
+    // Error dialog (single OK) keyboard/click wiring
+    bindErrorDialogControls();
 
     // Start render loop
     lastFrameTime = performance.now();
@@ -346,6 +358,10 @@
       } else if (p.filepath) {
         fetchAndLoad(p.filepath, p.name || p.filepath.split('/').pop() || 'picked.mid');
       }
+    } else {
+      // No real file was opened this boot — play the bundled demo track
+      // (runs exactly once, ends without looping; see startDemo).
+      startDemo();
     }
   }
 
@@ -461,12 +477,15 @@
       // Bootstrap audio context (no-op if already running)
       _engine().ensure();
       Sequencer.play();
+      acquireCpuWakeLock();
     } else if (state.play === 'pause' && prevPlay !== 'pause') {
       Sequencer.pause();
       _engine().silence();
     } else if (state.play === 'stop' && prevPlay !== 'stop') {
       Sequencer.stop();
       _engine().silence();
+      releaseCpuWakeLock();
+      hideNowPlayingNotification();
     }
 
     // Waveform change (only when actually changed — setWave iterates 48 oscillators)
@@ -730,11 +749,41 @@
   };
 
   window.addEventListener('blur', function () {
+    // Background play: if a real file is playing, keep Sequencer + audio running
+    // and surface the notification (Back already did, but Home/minimize also lands here).
+    var st = null; try { st = Store.getState(); } catch (eB) {}
+    var hasFile = !!(st && st.fileName);
+    var isDemo = false; try { isDemo = isDemoActive(); } catch (eD) {}
+    if (hasFile && !isDemo && st && st.play === 'play') {
+      try { showNowPlayingNotification(st.fileName); } catch (eN) {}
+      try { acquireCpuWakeLock(); } catch (eW) {}
+      // Do NOT silence/pause — let content-channel audio continue in background.
+      return;
+    }
     try { _engine().silence(); } catch (e) {}
     if (typeof Sequencer !== 'undefined' && Sequencer.pause) Sequencer.pause();
   }, false);
   window.addEventListener('focus', function () {
     try { _engine().resume(); } catch (e) {}
+    // If Store still says 'play' but blur's direct Sequencer.pause() stopped the pulse,
+    // restart it. (Background-play blur does NOT pause, so this is a no-op in that case.)
+    try {
+      var st2 = Store.getState();
+      if (st2 && st2.play === 'play' && typeof Sequencer !== 'undefined') {
+        var _isPl = false;
+        try { _isPl = Sequencer.isPlaying ? Sequencer.isPlaying() : false; } catch (eP) {}
+        if (!_isPl) Sequencer.play();
+      }
+    } catch (eF) {}
+    // Kick the rAF loop — it stalls while document is hidden (KaiOS throttles rAF).
+    try {
+      if (typeof cancelAnimationFrame === 'function' && rafId) cancelAnimationFrame(rafId);
+    } catch (eC) {}
+    try {
+      lastFrameTime = performance.now();
+      rafId = requestAnimationFrame(renderLoop);
+    } catch (eR) {}
+    try { onResize(); } catch (eO) {}
   }, false);
 
   // ── SOFTKEYS ──
@@ -804,6 +853,9 @@
     var notes = midiData.notes || [];
     var tempo = midiData.tempo || [{ t: 0, u: 500000 }];
     var div   = midiData.div || 480;
+
+    // Loading any real file ends the demo track and unlocks everything.
+    if (_demoActive) clearDemo();
 
     // Loading a new file ends fullscreen — user wants the chrome.
     exitFullscreenIfActive();
@@ -890,14 +942,70 @@
       return true;
     } catch (e) {
       console.error('[Main] JSON parse error:', e);
-      hideParsing();
+      // File failed to parse — treat as no file loaded so PLAY/PAUSE and
+      // the file name disappear, then show a KaiUI-style error dialog.
+      resetLoadOnError();
+      // Keep demo locked after the error (no restart) — unlock only on
+      // a successful .mid/.note load via loadMIDIData -> clearDemo().
+      showErrorDialog('Could not read this file. It may not be a valid MIDI-JSON (.note) export.');
       return false;
     }
   }
 
-  /**
-   * Read file from SD Card (KaiOS) or XHR (desktop debug).
-   */
+  // Reset player state after a failed load so the app looks empty again
+  // (no file name, no PLAY/PAUSE, no piano data).
+  function resetLoadOnError() {
+    try { if (typeof Sequencer !== 'undefined' && Sequencer.stop) Sequencer.stop(); } catch (ig3) {}
+    try {
+      if (typeof Sequencer !== 'undefined' && Sequencer.load) Sequencer.load([], [], 480);
+    } catch (ig4) {}
+    Store.setState({ play: 'stop', notes: [], fileName: '', timeSec: 0, startCountdown: null, cdRunning: false });
+    if (typeof HUD !== 'undefined' && HUD.setTotal) HUD.setTotal(0);
+    window._midiBlob = null;
+    window._rawMidiBuffer = null;
+    window._midiName = null;
+    window._midiData = null;
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+
+  // True while the built-in demo track is playing.
+  function isDemoActive() { return _demoActive; }
+
+  // End the demo: clear the flag and refresh the softkeys so PLAY/PAUSE,
+  // speed and transport controls reappear. Sequencer contents are replaced
+  // by whoever loads the next file; on natural end we already stopped.
+  function clearDemo() {
+    _demoActive = false;
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+
+  // Play the bundled demo.note (auto-starts on first app entry). Loads it
+  // exactly like a real file, then hides transport, forces HUD to 0/0 +
+  // 0:00, and starts playing. Ends once (no loop); loading a real file or
+  // a parse-error restart calls this again to re-run from the start.
+  function startDemo() {
+    // A pending real-file activity overrides the demo on this boot.
+    if (_pendingActivity) return;
+    fetch('demo.note')
+      .then(function (res) {
+        if (!res.ok) throw new Error('demo.note missing (HTTP ' + res.status + ')');
+        return res.text();
+      })
+      .then(function (txt) {
+        var midi = JSON.parse(txt);
+        loadMIDIData(midi);          // load notes/tempo/div, resets sequencer
+        _demoActive = true;          // set AFTER load so clearDemo isn't triggered
+        HUD.setTotal(0);             // HUD shows 0/0
+        Sequencer.play();            // self-play with audio + visuals
+        Store.setState({ play: 'play', npPending: false });
+        if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+        console.log('[Main] demo track started');
+      })
+      .catch(function (e) {
+        console.error('[Main] demo start failed:', e);
+        _demoActive = false;
+      });
+  }
   window.triggerLoadFile = function (filePath) {
     // ALWAYS clear loadFile FIRST to prevent infinite re-trigger
     Store.setState({ fileName: filePath, loadFile: null });
@@ -1094,6 +1202,153 @@
     }
   }
 
+  // KaiUI-style error dialog — single centre OK on the softkey bar.
+  // Mirrors KaiUI-master Dialog (header + white container, dim overlay).
+  // Used when a .note/.json MIDI file fails to read or parse (see loadMIDIJson).
+  var _errorDialogOpen = false;
+  var _errorOnClose = null;   // optional callback invoked when the dialog is closed
+  function isErrorDialogOpen() { return _errorDialogOpen; }
+
+  function showErrorDialog(msg, onClose) {
+    hideParsing();
+    _errorOnClose = onClose || null;
+    var msgEl = document.getElementById('error-dialog-msg');
+    var dlg   = document.getElementById('error-dialog');
+    if (msgEl) msgEl.textContent = msg || 'Could not read this file.';
+    if (dlg) dlg.classList.remove('hidden');
+    _errorDialogOpen = true;
+    // Drive the softkey bar to centre OK (controls.js updateSoftkeys reads
+    // this flag). Fallback to direct DOM if controls isn't wired yet.
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+    else {
+      var c = document.getElementById('sk-center');
+      var l = document.getElementById('sk-left');
+      var r = document.getElementById('sk-right');
+      if (c) c.textContent = 'OK';
+      if (l) l.textContent = '';
+      if (r) r.textContent = '';
+    }
+  }
+
+  function hideErrorDialog() {
+    var dlg = document.getElementById('error-dialog');
+    var cb  = _errorOnClose;
+    _errorOnClose = null;
+    if (dlg) dlg.classList.add('hidden');
+    _errorDialogOpen = false;
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+    else {
+      var c2 = document.getElementById('sk-center');
+      if (c2) c2.textContent = '';
+    }
+    // Run any queued close handler (e.g. restart the demo track).
+    if (cb) { try { cb(); } catch (e) {} }
+  }
+
+  // Desktop click fallback: tapping the dim overlay dismisses the dialog.
+  function bindErrorDialogControls() {
+    var dlg = document.getElementById('error-dialog');
+    if (!dlg) return;
+    dlg.addEventListener('click', function (e) {
+      if (e.target === dlg) hideErrorDialog();
+    });
+  }
+
+  // ── Now Playing background notification (desktop-notification) ──
+  // Shown when the user presses Back on the piano player while a real
+  // .mid/.note file is playing. Mirrors upgrade-tool-src/js/app.js
+  // dlNotifyUpdate/dlNotifyClose (tag + icon + onclick → launch app).
+  var _nowPlayingNotif = null;
+  var _cpuWakeLock = null;
+  function _nowPlayingBasename(name) {
+    if (!name) return '';
+    var s = String(name);
+    var slash = s.lastIndexOf('/');
+    if (slash !== -1) s = s.slice(slash + 1);
+    var bslash = s.lastIndexOf('\\');
+    if (bslash !== -1) s = s.slice(bslash + 1);
+    return s;
+  }
+  function showNowPlayingNotification(name) {
+    try {
+      if (typeof Notification === 'undefined') return;
+      var raw = name || Store.getState().fileName || '';
+      var base = _nowPlayingBasename(raw) || raw || 'Unknown';
+      if (_nowPlayingNotif) { try { _nowPlayingNotif.close(); } catch (e2) {} _nowPlayingNotif = null; }
+      _nowPlayingNotif = new Notification('PFA is running', {
+        body: 'Now playing: ' + base,
+        tag: 'pfa-nowplaying',
+        icon: 'icons/running.png'
+      });
+      _nowPlayingNotif.onclick = function () {
+        try {
+          if (navigator.mozApps && navigator.mozApps.getSelf) {
+            var req = navigator.mozApps.getSelf();
+            req.onsuccess = function () { if (req.result) req.result.launch(); };
+          } else {
+            window.focus();
+          }
+        } catch (e3) {}
+      };
+      console.log('[NowPlaying] shown: ' + base);
+    } catch (e) { console.warn('[NowPlaying] show failed: ' + e.message); }
+  }
+  function hideNowPlayingNotification() {
+    if (_nowPlayingNotif) { try { _nowPlayingNotif.close(); } catch (e) {} _nowPlayingNotif = null; }
+  }
+  function acquireCpuWakeLock() {
+    try {
+      if (navigator.requestWakeLock && !_cpuWakeLock) {
+        _cpuWakeLock = navigator.requestWakeLock('cpu');
+        if (_cpuWakeLock) console.log('[WakeLock] cpu acquired');
+      }
+    } catch (e) { console.warn('[WakeLock] acquire failed: ' + e.message); }
+  }
+  function releaseCpuWakeLock() {
+    try { if (_cpuWakeLock) _cpuWakeLock.unlock(); } catch (e) {}
+    _cpuWakeLock = null;
+  }
+  // visibilitychange: Home/minimize while playing should also surface the
+  // notification and keep CPU awake; foreground restores the canvas + audio.
+  // KaiOS 2.5 fires either visibilitychange or mozvisibilitychange.
+  if (typeof document !== 'undefined' && document.addEventListener) {
+    var _visHandler = function () {
+      var hidden = document.hidden || document.mozHidden;
+      var st = Store.getState();
+      var hasFile = !!st.fileName;
+      var isDemo = false; try { isDemo = isDemoActive(); } catch (e4) {}
+      if (hidden) {
+        if (hasFile && !isDemo && st.play === 'play') {
+          showNowPlayingNotification(st.fileName);
+          acquireCpuWakeLock();
+        }
+      } else {
+        try { if (st.play === 'play') _engine().ensure(); } catch (e5) {}
+        try { onResize(); } catch (e6) {}
+        // rAF stalls while hidden — kick it and ensure Sequencer pulse is alive
+        try {
+          if (st.play === 'play' && typeof Sequencer !== 'undefined') {
+            var _isPl2 = false;
+            try { _isPl2 = Sequencer.isPlaying ? Sequencer.isPlaying() : false; } catch (eP2) {}
+            if (!_isPl2) Sequencer.play();
+          }
+        } catch (eS) {}
+        try {
+          if (typeof cancelAnimationFrame === 'function' && rafId) cancelAnimationFrame(rafId);
+        } catch (eC2) {}
+        try {
+          lastFrameTime = performance.now();
+          rafId = requestAnimationFrame(renderLoop);
+        } catch (eR2) {}
+      }
+    };
+    document.addEventListener('visibilitychange', _visHandler, false);
+    document.addEventListener('mozvisibilitychange', _visHandler, false);
+    // Also handle pagehide/pageshow (older Gecko app lifecycle)
+    window.addEventListener('pagehide', _visHandler, false);
+    window.addEventListener('pageshow', _visHandler, false);
+  }
+
   function clearCache() {
     // Delete all cached files in /data/local/tmp/ that start with 'mid_'
     const CACHE_PREFIX = 'mid_';
@@ -1108,10 +1363,18 @@
   window.clearCache = clearCache;
   window.showParsing = showParsing;
   window.hideParsing = hideParsing;
+  window.showErrorDialog = showErrorDialog;
+  window.hideErrorDialog = hideErrorDialog;
+  window.isErrorDialogOpen = isErrorDialogOpen;
   window.midiParsingLabel = _parsingLabel;
   window.loadMIDIData = loadMIDIData;
+  window.isDemoActive = isDemoActive;
+  window.clearDemo = clearDemo;
+  window.startDemo = startDemo;
   window.loadMIDIJson = loadMIDIJson;
   window.exitFullscreenIfActive = exitFullscreenIfActive;
+  window.showNowPlayingNotification = showNowPlayingNotification;
+  window.hideNowPlayingNotification = hideNowPlayingNotification;
 
   // Attempt to write to /data/local/tmp/ (will fail silently if not permitted)
   function writeFile(path, data) {

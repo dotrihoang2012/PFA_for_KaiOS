@@ -120,7 +120,10 @@ html, body {
    Z-Index: 9999
    ============================================ */
 .kai-softkey {
-  z-index: 9999;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 10000;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -677,4 +680,52 @@ html, body {
   text-align: center;
   max-width: 90%;
   word-break: break-all;
+}
+
+/* ============================================
+   ERROR DIALOG (KaiUI Dialog style, single OK)
+   Mirrors KaiUI-master Dialog.scss + Toast fade/slide.
+   ============================================ */
+.kai-dialog {
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  bottom: var(--softkeybar-height);
+  width: 100%;
+  height: auto;
+  background: rgba(0, 0, 0, 0.85);
+  color: var(--color-gs90);
+}
+#error-dialog.hidden { display: none !important; }
+.kai-dialog .kai-dialog-wrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  max-height: calc(100% - 2rem - var(--header-height));
+}
+.kai-dialog .kai-dialog-header {
+  padding: 0.5rem 1rem;
+  text-align: center;
+  background: var(--color-gs20);
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--color-gs100);
+}
+.kai-dialog .kai-dialog-container {
+  background: var(--color-gs00);
+  padding: 1rem;
+}
+.kai-dialog .kai-dialog-content {
+  margin: 0;
+  max-height: 30rem;
+  overflow-y: auto;
+}
+.kai-dialog .kai-dialog-content p {
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: var(--color-gs90);
+  text-align: left;
+  line-height: 1.5;
+  margin: 0;
+  word-break: break-word;
 }

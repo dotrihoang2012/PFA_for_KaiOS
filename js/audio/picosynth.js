@@ -73,6 +73,8 @@ var PicoSynth = (function () {
         isSkipEnding:  true,
       });
       _pa.init();
+      try { if (_pa.context) _pa.context.mozAudioChannelType = 'content'; } catch (e) {}
+      try { if (_pa.context && _pa.context.destination) _pa.context.destination.mozAudioChannelType = 'content'; } catch (e2) {}
       _ready = true;
       console.log('[PicoSynth] PicoAudio booted OK');
     } catch (e) {
@@ -177,6 +179,8 @@ var PicoSynth = (function () {
         isSkipBeginning: true,
       });
       pa.init();
+      try { if (pa.context) pa.context.mozAudioChannelType = 'content'; } catch (e3) {}
+      try { if (pa.context && pa.context.destination) pa.context.destination.mozAudioChannelType = 'content'; } catch (e4) {}
 
       var smf = _makeSMF(note, vel, durSec);
       pa.setData(smf);

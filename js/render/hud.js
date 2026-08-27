@@ -69,6 +69,16 @@ var HUD = (function () {
     if (now - _lastDOM < _DOM_INTERVAL) return;
     _lastDOM = now;
 
+    // Built-in demo track: force the HUD to 0/0 notes and 0:00 time.
+    var demo = (typeof window.isDemoActive === 'function') && window.isDemoActive();
+    if (demo) {
+      _set(_elCount, '0/0');
+      _set(_elTime, '00:00');
+      _set(_elSpeed, sp + 'x');
+      _set(_elFPS, fp + ' FPS');
+      return;
+    }
+
     _set(_elCount, _smoothedCount + '/' + _totalNotes);
     _set(_elSpeed, sp + 'x');
     _set(_elFPS, fp + ' FPS');

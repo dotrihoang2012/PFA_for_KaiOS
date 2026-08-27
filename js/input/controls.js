@@ -40,10 +40,30 @@
       return;
     }
 
+    // ── Error dialog: top-most modal; Enter (centre OK) or Back closes it.
+    //    Must be checked BEFORE About/menu so it blocks everything.
+    var _errOpen = false;
+    try {
+      if (typeof window.isErrorDialogOpen === 'function') _errOpen = window.isErrorDialogOpen();
+      else {
+        var _ed = document.getElementById('error-dialog');
+        _errOpen = !!(_ed && !_ed.classList.contains('hidden'));
+      }
+    } catch (ig) {}
+    if (_errOpen) {
+      e.preventDefault();
+      if (key === 13 || key === Constants.KEY.ENTER || key === 'Enter' ||
+          key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+          key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
+          key === 'Back' || key === Constants.KEY.BACK) {
+        if (typeof window.hideErrorDialog === 'function') window.hideErrorDialog();
+      }
+      return;
+    }
+
     // ── About panel: modal; Back / SoftRight / Enter dismiss it back
     //    to the piano screen. ArrowUp/Down SCROLL the content — KaiOS
     //    handsets have no touch input, so the D-pad must do it.
-    //    Left/Right are swallowed (no horizontal content).
     if (aboutOpen()) {
       e.preventDefault();
       if (key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
@@ -88,7 +108,20 @@
         closeMenuOverlay();
         return;
       }
-      // Piano screen — let Back bubble to OS so it quits the app.
+      // Piano screen — real .mid/.note playing: keep it running in
+      // background with "Now playing: name.mid/.note" notification (see
+      // main.js showNowPlayingNotification, mirrors upgrade-tool
+      // desktop-notification). Otherwise let Back bubble to OS (quit/minimize).
+      var hasFileBg = !!(st && st.fileName);
+      var isDemoBg = false;
+      try { isDemoBg = typeof window.isDemoActive === 'function' && window.isDemoActive(); } catch (eBg) {}
+      if (hasFileBg && !isDemoBg && st.play === 'play') {
+        try { if (typeof window.showNowPlayingNotification === 'function') window.showNowPlayingNotification(st.fileName); } catch (eN) {}
+        // Don't preventDefault — let system minimize to background so the
+        // Sequencer (performance.now wall-clock) keeps running. Re-opening
+        // restores via visibilitychange without losing position.
+        return;
+      }
       return;
     }
 
@@ -598,6 +631,23 @@
   };
 
   function dispatchAction(action) {
+    // Demo track: playback + speed controls are locked while the bundled
+    // demo.note is self-playing (HUD shows 0/0 + 0:00, PLAY/PAUSE hidden).
+    // Options / volume remain usable so the user can still open a file.
+    if (typeof window.isDemoActive === 'function' && window.isDemoActive()) {
+      switch (action) {
+        case 'playPause':
+        case 'stop':
+        case 'restart':
+        case 'seekBack':
+        case 'seekForward':
+        case 'speedStepUp':
+        case 'speedStepDown':
+        case 'speedUp':
+        case 'speedDown':
+          return;
+      }
+    }
     var s = Store.getState();
     switch (action) {
       case 'playPause':
@@ -797,6 +847,22 @@
     var rightE = document.getElementById('sk-right');
     var ctrE   = document.getElementById('sk-center');
 
+    // Error dialog overrides every other softkey state (centre OK only)
+    var _eOpen = false;
+    try {
+      if (typeof window.isErrorDialogOpen === 'function') _eOpen = window.isErrorDialogOpen();
+      else {
+        var _ed2 = document.getElementById('error-dialog');
+        _eOpen = !!(_ed2 && !_ed2.classList.contains('hidden'));
+      }
+    } catch (ig2) {}
+    if (_eOpen) {
+      if (leftE)  leftE.textContent  = '';
+      if (ctrE)   ctrE.textContent   = 'OK';
+      if (rightE) rightE.textContent = '';
+      return;
+    }
+
     var s = Store.getState();
     var menuOpen = s.menu && s.menu.open;
     var settingsOpen = (typeof Settings !== 'undefined' &&
@@ -826,6 +892,15 @@
       if (leftE)  leftE.textContent  = '';
       if (rightE) rightE.textContent = '';
     } else {
+      // Demo self-play: hide PLAY/PAUSE and lock speed/stop/restart.
+      // Options stays so a real .mid/.note can stop the demo at any time.
+      var isDemo = false;
+      try { isDemo = typeof window.isDemoActive === 'function' && window.isDemoActive(); } catch (igD) {}
+      if (isDemo) {
+        if (leftE)  leftE.textContent  = 'Options';
+        if (ctrE)   ctrE.textContent   = '';
+        if (rightE) rightE.textContent = '';
+      } else {
       var hasFile = !!s.fileName;
       // PAUSE also while a countdown is RUNNING (press = hold it);
       // PLAY when idle, held, or stopped.
@@ -834,6 +909,7 @@
       if (leftE)  leftE.textContent  = 'Options';
       if (ctrE)   ctrE.textContent   = hasFile ? (busy ? 'PAUSE' : 'PLAY') : '';
       if (rightE) rightE.textContent = '';
+      }
     }
   }
 
