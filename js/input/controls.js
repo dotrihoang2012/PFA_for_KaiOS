@@ -235,6 +235,9 @@
       try { focused.scrollIntoView({ block: 'nearest' }); }
       catch (e) { try { focused.scrollIntoView(false); } catch (e2) {} }
     }
+    // Refresh softkeys so the center SELECT label reflects the focused item
+    // (hidden when it is a locked, non-interactive row).
+    if (typeof updateSoftkeys === 'function') updateSoftkeys();
   }
 
   function closeAllOverlays() {
@@ -262,8 +265,34 @@
   function selectMenuItem(index) {
     var menuItems = document.querySelectorAll('#menu-list .kai-om-item');
     var action = menuItems[index] && menuItems[index].getAttribute('data-action');
-    if (action) execMenuAction(action);
+    if (action) {
+      // Demo-locked items (Note Color Randomise while the demo self-plays)
+      // are non-interactive: consuming Enter keeps them inert.
+      if (menuItems[index] && menuItems[index].classList.contains('demo-locked')) {
+        if (typeof showToast === 'function') showToast('Locked during demo');
+        return;
+      }
+      execMenuAction(action);
+    }
   }
+
+  /** Grey out (or un-grey) the Note Color Randomise Options item based on
+   *  whether playback is locked (demo active OR finished but no file loaded). */
+  function applyMenuDemoLock() {
+    var items = document.querySelectorAll('#menu-list .kai-om-item');
+    var on = false;
+    try { on = typeof window.isPlaybackLocked === 'function' && window.isPlaybackLocked(); } catch (e) {}
+    for (var i = 0; i < items.length; i++) {
+      var a = items[i].getAttribute('data-action');
+      if (a === 'random-colors') {
+        if (on) items[i].classList.add('demo-locked');
+        else    items[i].classList.remove('demo-locked');
+      }
+    }
+  }
+  function refreshDemoLock() { applyMenuDemoLock(); }
+  window.refreshDemoLock = refreshDemoLock;
+  window.applyMenuDemoLock = applyMenuDemoLock;
 
   // ── About panel ──
   // Static info page opened from Options → "About This App". Modal:
@@ -325,6 +354,14 @@
         return;
       case 'random-colors':
         closeMenuOverlay();
+        // Note Color Palette Randomise is locked until a real file is loaded
+        // (demo active or finished but no file yet).
+        try {
+          if (typeof window.isPlaybackLocked === 'function' && window.isPlaybackLocked()) {
+            if (typeof showToast === 'function') showToast('Locked until a file loads');
+            return;
+          }
+        } catch (e) {}
         try {
           if (typeof Notes !== 'undefined' && Notes.randomizePalette) {
             Notes.randomizePalette();
@@ -631,10 +668,10 @@
   };
 
   function dispatchAction(action) {
-    // Demo track: playback + speed controls are locked while the bundled
-    // demo.note is self-playing (HUD shows 0/0 + 0:00, PLAY/PAUSE hidden).
-    // Options / volume remain usable so the user can still open a file.
-    if (typeof window.isDemoActive === 'function' && window.isDemoActive()) {
+    // Demo track: transport AND speed hot-keys stay locked from the demo
+    // start right through the end of the demo (HUD 0/0 + 0:00, PLAY/PAUSE
+    // hidden) until a real file is loaded (isPlaybackLocked).
+    if (typeof window.isPlaybackLocked === 'function' && window.isPlaybackLocked()) {
       switch (action) {
         case 'playPause':
         case 'stop':
@@ -838,6 +875,8 @@
     // the moment the menu opens (the user may have flipped state via OS
     // gesture or hardware key without going through this app's menu).
     refreshMenuLabels();
+    // Grey out Note Color Randomise while the bundled demo self-plays.
+    refreshDemoLock();
     updateSoftkeys();
   }
 
@@ -874,9 +913,13 @@
       if (ctrE)   ctrE.textContent   = '';
       if (rightE) rightE.textContent = 'Back';
     } else if (menuOpen) {
-      // Options menu — center SELECT activates the focused item.
+      // Options menu — center SELECT activates the focused item. When the
+      // focused item is locked (Note Color Randomise while demo / no file),
+      // hide SELECT so it cannot be activated.
+      var focusedItem = document.querySelector('#menu-list .kai-om-item.focused');
+      var fLocked = focusedItem && focusedItem.classList.contains('demo-locked');
       if (leftE)  leftE.textContent  = '';
-      if (ctrE)   ctrE.textContent   = 'SELECT';
+      if (ctrE)   ctrE.textContent   = fLocked ? '' : 'SELECT';
       if (rightE) rightE.textContent = '';
     } else if (settingsOpen) {
       // Drill-in rows (Keyboard Range / Info Card Options / color

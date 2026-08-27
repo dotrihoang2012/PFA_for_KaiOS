@@ -30,6 +30,11 @@
   // and lock transport + speed controls. Loading a real .mid/.note (or the
   // demo finishing) unlocks everything again.
   var _demoActive = false;
+  // True from demo start through the end of the demo AND after it finishes,
+  // until a real .mid/.note is loaded. While true the speed/transport hot
+  // keys and Note Color Randomise stay locked (greyed); loading a file is
+  // the only way to unlock.
+  var _lockNoFile = false;
 
   // ── Foreground focus helper ──
   // When the user picks our app from File Manager's action sheet, KaiOS
@@ -306,10 +311,11 @@
       if (!window._audioMute) _engine().noteOff(note, ch);
     });
     Sequencer.onEnd(function () {
-      // Natural end: keep demo locked (HUD 0/0, transport disabled) so the
-      // screen stays inert until a real .mid/.note is loaded (loadMIDIData
-      // is the only place that unlocks via clearDemo()).
       Store.setState({ play: 'stop' });
+      // Natural end of the bundled demo: the demo stops playing so HUD and
+      // PLAY/PAUSE return to normal, but hot keys and Note Color Randomise
+      // stay LOCKED until a real .mid/.note is loaded (loadMIDIData unlocks).
+      try { if (isDemoActive()) endDemoPlayback(); } catch (e) {}
     });
 
     // Wire Store subscription → engine
@@ -478,6 +484,7 @@
       _engine().ensure();
       Sequencer.play();
       acquireCpuWakeLock();
+      acquireScreenWakeLock();
     } else if (state.play === 'pause' && prevPlay !== 'pause') {
       Sequencer.pause();
       _engine().silence();
@@ -485,6 +492,7 @@
       Sequencer.stop();
       _engine().silence();
       releaseCpuWakeLock();
+      releaseScreenWakeLock();
       hideNowPlayingNotification();
     }
 
@@ -494,8 +502,10 @@
       Synth.setWave(state.waveform);   // only Synth uses waveform; PicoSynth ignores it
     }
 
-    // Speed (only when actually changed — avoids recalibration churn)
-    if (state.speed != null && state.speed !== _prevSpeed) {
+    // Speed (only when actually changed — avoids recalibration churn).
+    // During demo the speed setting is ignored (demo always plays at 1.0x;
+    // the user's speed takes effect once a real file is loaded).
+    if (state.speed != null && state.speed !== _prevSpeed && !_demoActive) {
       _prevSpeed = state.speed;
       Sequencer.setSpeed(state.speed);
     }
@@ -757,6 +767,7 @@
     if (hasFile && !isDemo && st && st.play === 'play') {
       try { showNowPlayingNotification(st.fileName); } catch (eN) {}
       try { acquireCpuWakeLock(); } catch (eW) {}
+      try { releaseScreenWakeLock(); } catch (eS) {}
       // Do NOT silence/pause — let content-channel audio continue in background.
       return;
     }
@@ -774,6 +785,8 @@
         try { _isPl = Sequencer.isPlaying ? Sequencer.isPlaying() : false; } catch (eP) {}
         if (!_isPl) Sequencer.play();
       }
+      // Re-acquire screen wake lock for foreground play (released on blur).
+      if (st2 && st2.play === 'play') acquireScreenWakeLock();
     } catch (eF) {}
     // Kick the rAF loop — it stalls while document is hidden (KaiOS throttles rAF).
     try {
@@ -854,8 +867,10 @@
     var tempo = midiData.tempo || [{ t: 0, u: 500000 }];
     var div   = midiData.div || 480;
 
-    // Loading any real file ends the demo track and unlocks everything.
-    if (_demoActive) clearDemo();
+    // Loading any real file ends the demo track and unlocks everything
+    // (hot keys + Note Color Randomise). Must cover both the case where the
+    // demo is still playing AND the case where it already finished (locked).
+    if (_demoActive || _lockNoFile) clearDemo();
 
     // Loading a new file ends fullscreen — user wants the chrome.
     exitFullscreenIfActive();
@@ -971,12 +986,46 @@
   // True while the built-in demo track is playing.
   function isDemoActive() { return _demoActive; }
 
-  // End the demo: clear the flag and refresh the softkeys so PLAY/PAUSE,
-  // speed and transport controls reappear. Sequencer contents are replaced
-  // by whoever loads the next file; on natural end we already stopped.
-  function clearDemo() {
+  // True from demo start through its end, until a real file is loaded.
+  // While true, speed/transport hot keys and Note Color Randomise are locked.
+  function isPlaybackLocked() { return _lockNoFile; }
+
+  // During the bundled demo, visual settings are ignored: the demo always
+  // renders with the fixed defaults installed in Store at boot. This lets
+  // the user tweak Visual Settings freely, but the demo is unaffected —
+  // the new values only matter once a real .mid/.note is loaded. Returns
+  // `current` when no demo is active.
+  var DEMO_VISUAL_DEFAULTS = {
+    renderMode: 'auto',
+    speed:      1.0,
+    trail:      1.0,
+    kbStart:    21,
+    kbEnd:      108,
+    pianoSize:  'big',
+  };
+  function demoVisualValue(key, current) {
+    if (!_demoActive) return current;
+    return (key in DEMO_VISUAL_DEFAULTS) ? DEMO_VISUAL_DEFAULTS[key] : current;
+  }
+
+  // End the demo cleanly (natural end of the demo track): the demo is no
+  // longer "playing" so HUD/PLAY-PAUSE return to normal, but speed/transport
+  // hot keys and Note Color Randomise STAY locked until a real file loads.
+  function endDemoPlayback() {
     _demoActive = false;
     if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+
+  // Full unlock: called only when a real .mid/.note is loaded. Clears the
+  // demo flag and releases the hot-key / Note Color Randomise lock.
+  function clearDemo() {
+    _demoActive = false;
+    _lockNoFile = false;
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+    // Un-grey the Note Color Randomise Options item.
+    if (typeof window.refreshDemoLock === 'function') {
+      try { window.refreshDemoLock(); } catch (e) {}
+    }
   }
 
   // Play the bundled demo.note (auto-starts on first app entry). Loads it
@@ -995,15 +1044,18 @@
         var midi = JSON.parse(txt);
         loadMIDIData(midi);          // load notes/tempo/div, resets sequencer
         _demoActive = true;          // set AFTER load so clearDemo isn't triggered
+        _lockNoFile = true;          // hot keys + Note Color Randomise stay locked
         HUD.setTotal(0);             // HUD shows 0/0
         Sequencer.play();            // self-play with audio + visuals
         Store.setState({ play: 'play', npPending: false });
         if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+        if (typeof window.refreshDemoLock === 'function') window.refreshDemoLock();
         console.log('[Main] demo track started');
       })
       .catch(function (e) {
         console.error('[Main] demo start failed:', e);
         _demoActive = false;
+        _lockNoFile = false;
       });
   }
   window.triggerLoadFile = function (filePath) {
@@ -1260,6 +1312,7 @@
   // dlNotifyUpdate/dlNotifyClose (tag + icon + onclick → launch app).
   var _nowPlayingNotif = null;
   var _cpuWakeLock = null;
+  var _screenWakeLock = null;
   function _nowPlayingBasename(name) {
     if (!name) return '';
     var s = String(name);
@@ -1308,6 +1361,19 @@
     try { if (_cpuWakeLock) _cpuWakeLock.unlock(); } catch (e) {}
     _cpuWakeLock = null;
   }
+  // Keep the SCREEN lit while playing so the screen never turns off mid-song.
+  function acquireScreenWakeLock() {
+    try {
+      if (navigator.requestWakeLock && !_screenWakeLock) {
+        _screenWakeLock = navigator.requestWakeLock('screen');
+        if (_screenWakeLock) console.log('[WakeLock] screen acquired');
+      }
+    } catch (e) { console.warn('[WakeLock] screen acquire failed: ' + e.message); }
+  }
+  function releaseScreenWakeLock() {
+    try { if (_screenWakeLock) _screenWakeLock.unlock(); } catch (e) {}
+    _screenWakeLock = null;
+  }
   // visibilitychange: Home/minimize while playing should also surface the
   // notification and keep CPU awake; foreground restores the canvas + audio.
   // KaiOS 2.5 fires either visibilitychange or mozvisibilitychange.
@@ -1321,10 +1387,13 @@
         if (hasFile && !isDemo && st.play === 'play') {
           showNowPlayingNotification(st.fileName);
           acquireCpuWakeLock();
+          releaseScreenWakeLock();
         }
       } else {
         try { if (st.play === 'play') _engine().ensure(); } catch (e5) {}
         try { onResize(); } catch (e6) {}
+        // Re-acquire screen wake lock for foreground play (released on hidden).
+        try { if (st.play === 'play') acquireScreenWakeLock(); } catch (e7) {}
         // rAF stalls while hidden — kick it and ensure Sequencer pulse is alive
         try {
           if (st.play === 'play' && typeof Sequencer !== 'undefined') {
@@ -1369,6 +1438,8 @@
   window.midiParsingLabel = _parsingLabel;
   window.loadMIDIData = loadMIDIData;
   window.isDemoActive = isDemoActive;
+  window.isPlaybackLocked = isPlaybackLocked;
+  window.demoVisualValue = demoVisualValue;
   window.clearDemo = clearDemo;
   window.startDemo = startDemo;
   window.loadMIDIJson = loadMIDIJson;

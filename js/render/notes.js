@@ -160,18 +160,24 @@ var Notes = (function () {
     if (fbBot < fbTop) fbBot = fbTop + 30;
     var fbH   = fbBot - fbTop;               // height of band
     if (fbH < 30) { fbH = 30; fbBot = fbTop + 30; } // safety on tiny screens
+    function dv(k, c) { try { return (typeof window.demoVisualValue === 'function') ? window.demoVisualValue(k, c) : c; } catch (e) { return c; } }
     var trailSetting = (state.trail != null && isFinite(state.trail)) ? state.trail : 1.0;
+    trailSetting = dv('trail', trailSetting);
     var effectiveLK = VISUAL_LK / trailSetting; // trail=2 -> half lookahead -> 2x faster
     var FALL = fbH / effectiveLK;
     var kw = state.keyWidth || 16;
+    kw = dv('keyWidth', kw);
     // Visible window — Keyboard Range [kbStart..kbEnd] replaces camKey.
     var ckStart = (state.kbStart != null) ? state.kbStart : 21;
     var ckEnd   = (state.kbEnd   != null) ? state.kbEnd   : 108;
+    ckStart = dv('kbStart', ckStart);
+    ckEnd   = dv('kbEnd', ckEnd);
     ckStart = Math.max(0, Math.min(127, ckStart));
     ckEnd   = Math.max(ckStart + 1, Math.min(127, ckEnd));
     var ns = 0;
     try { ns = Sequencer.getTime(); } catch(e) { return; }
     var sp = state.speed || 1.0;
+    sp = dv('speed', sp);
 
     var live = state._activeList;
     if (!live) { try { live = Sequencer.activeList(); } catch (e) { live = []; } }
@@ -182,6 +188,7 @@ var Notes = (function () {
 
     // Render mode: auto/individual/heatmap/buffer
     var renderMode = state.renderMode || 'auto';
+    renderMode = dv('renderMode', renderMode);
     if (renderMode === 'buffer') {
       if (typeof NoteBuffer !== 'undefined' && NoteBuffer.isReady()) {
         NoteBuffer.draw(ctx, w, h, state);

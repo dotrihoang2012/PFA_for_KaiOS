@@ -31,6 +31,7 @@ var Keyboard = (function () {
   /** Strip height in px for the current pianoSize setting ('none' → 0). */
   function height(state) {
     var ps = (state && state.pianoSize) || 'big';
+    try { if (typeof window.demoVisualValue === 'function') ps = window.demoVisualValue('pianoSize', ps); } catch (e) {}
     return (KB_HEIGHTS[ps] != null) ? KB_HEIGHTS[ps] : 60;
   }
 
@@ -107,6 +108,7 @@ var Keyboard = (function () {
 
   function draw(state, ctx, w, h) {
     var kw = state.keyWidth || 16;
+    try { if (typeof window.demoVisualValue === 'function') kw = window.demoVisualValue('keyWidth', kw); } catch (e) {}
     // Piano Size 'none' hides the strip entirely — nothing to draw.
     var kbH = height(state);
     if (!kbH) return;
@@ -124,6 +126,12 @@ var Keyboard = (function () {
     // camKey scroll (Left/Right are bound to seeking now).
     var startN = (state.kbStart != null) ? state.kbStart : 21;
     var endN   = (state.kbEnd   != null) ? state.kbEnd   : 108;
+    try {
+      if (typeof window.demoVisualValue === 'function') {
+        startN = window.demoVisualValue('kbStart', startN);
+        endN   = window.demoVisualValue('kbEnd', endN);
+      }
+    } catch (e) {}
     startN = Math.max(0, Math.min(127, startN));
     endN   = Math.max(startN + 1, Math.min(127, endN));
 
@@ -211,6 +219,7 @@ var Keyboard = (function () {
         // Trail: state.trail is a number 0.1..8.0 (seconds × scale)
         var trailMs = 0;
         var tl = state.trail;
+        try { if (typeof window.demoVisualValue === 'function') tl = window.demoVisualValue('trail', tl); } catch (e) {}
         if (tl != null && isFinite(tl)) {
           trailMs = tl * 200; // 1.0 → 200ms, 8.0 → 1600ms, 0.1 → 20ms
         }

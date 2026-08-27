@@ -71,6 +71,7 @@ var Sequencer = (function () {
     // Sync LK voi trail setting de activeList luon du cho renderer
     try {
       var _tr = Store.getState().trail;
+      if (typeof window.demoVisualValue === 'function') _tr = window.demoVisualValue('trail', _tr);
       LK = (isFinite(_tr) && _tr > 0) ? (_baseLK / _tr) : _baseLK;
       if (LK < 0.5) LK = 0.5;
       if (LK > 3)   LK = 3; // cap 3s - giam activeList size

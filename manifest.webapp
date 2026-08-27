@@ -25,7 +25,6 @@
     "device-storage:sdcard": {
       "access": "readwrite"
     },
-    "power": {},
     "audio-channel-content": {},
     "desktop-notification": {}
   },
