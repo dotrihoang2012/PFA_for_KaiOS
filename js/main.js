@@ -140,8 +140,27 @@
 
         if (blob) {
           if (!name) name = 'picked.mid';
+          if (_isJsonName(name)) {
+            console.log('[Activity] reading blob as text (.note/.json)...');
+            showParsing(_parsingLabel(name)); // Reading Data...
+            Store.setState({ fileName: name });
+            window._midiBlob = blob; // expose for native audio
+            window._midiName = name;
+            var jreader = new FileReader();
+            jreader.onload = function () {
+              loadMIDIJson(jreader.result);
+              _foregroundAfterActivity();
+            };
+            jreader.onerror = function () {
+              console.error('[Main] JSON FileReader error (activity)');
+              hideParsing();
+            };
+            jreader.readAsText(blob);
+            _foregroundAfterActivity();
+            return;
+          }
           console.log('[Activity] reading blob as ArrayBuffer...');
-          showParsing();
+          showParsing(_parsingLabel(name)); // Analyzing MIDI Data...
           Store.setState({ fileName: name });
           window._midiBlob = blob; // expose for native audio
           window._midiName = name;
@@ -175,8 +194,8 @@
 
         if (filepath) {
           // Filepath-only route: fetch as Blob (stream from disk, no OOM for large files)
-          showParsing();
           var fname = name || filepath.split('/').pop() || 'picked.mid';
+          showParsing(_parsingLabel(fname));
           Store.setState({ fileName: fname });
           var url = filepath;
           if (filepath[0] === '/') url = 'file://' + filepath;
@@ -188,6 +207,20 @@
               var fileBlob = xhr.response;
               window._midiBlob = fileBlob; // expose for native audio
               window._midiName = fname;
+              if (_isJsonName(fname)) {
+                // .note/.json MIDI — read as text, validate + load.
+                var jr = new FileReader();
+                jr.onload = function () {
+                  loadMIDIJson(jr.result);
+                  _foregroundAfterActivity();
+                };
+                jr.onerror = function () {
+                  console.error('[Main] JSON FileReader error (filepath)');
+                  hideParsing();
+                };
+                jr.readAsText(fileBlob);
+                return;
+              }
               // Read blob as ArrayBuffer for parser (visual only)
               var reader = new FileReader();
               reader.onload = function () {
@@ -319,10 +352,17 @@
   // Pulled out of inline handler so boot() can call it on the queued
   // payload. Same logic as the picker path in controls.js.
   function handlePickedBlob(blob, name) {
-    showParsing();
+    showParsing(_parsingLabel(name)); // Reading Data... for .note/.json
     Store.setState({ fileName: name });
     window._midiBlob = blob; // expose for native audio + debug
     window._midiName = name;
+    if (_isJsonName(name)) {
+      var readerT = new FileReader();
+      readerT.onload = function () { loadMIDIJson(readerT.result); };
+      readerT.onerror = function () { console.error('[Main] FileReader error'); hideParsing(); };
+      readerT.readAsText(blob);
+      return;
+    }
     var reader = new FileReader();
     reader.onload = function () {
       try {
@@ -823,8 +863,25 @@
     return true;
   }
 
+  // True when a blob/filepath name points at a MIDI-JSON file (converted
+  // from .mid). Recognises both .json and .note — the .note extension is what
+  // mid2note.js writes and is selectable via the native KaiOS File Manager.
+  // Soundbank JSON is handled separately in triggerLoadFile.
+  function _isJsonName(name) {
+    if (!name) return false;
+    var n = String(name).toLowerCase();
+    if (n.endsWith('.soundbank.json')) return false;
+    return n.endsWith('.json') || n.endsWith('.note');
+  }
+
+  // Parsing pill label: MIDI-JSON files (.json/.note) read as text show
+  // "Reading Data...", raw .mid files keep "Analyzing MIDI Data...".
+  function _parsingLabel(name) {
+    return _isJsonName(name) ? 'Reading Data...' : 'Analyzing MIDI Data...';
+  }
+
   /**
-   * Parse .mid.json text → object → loadMIDIData.
+   * Parse .mid.json/.note text → object → loadMIDIData.
    */
   function loadMIDIJson(jsonText) {
     try {
@@ -855,7 +912,7 @@
 
     // Handle .mid files with caching
     if (filePath.endsWith('.mid')) {
-      showParsing();
+      showParsing(_parsingLabel(filePath)); // Analyzing MIDI Data...
 
       if (typeof navigator !== 'undefined' && navigator.getDeviceStorage) {
         var ds = navigator.getDeviceStorage('sdcard');
@@ -921,8 +978,8 @@
       return;
     }
 
-    // Existing code for other file types...
-    showParsing();
+    // Existing code for other file types (.mid.json / .json / .note MIDI)
+    showParsing(_parsingLabel(filePath)); // Reading Data... for .note/.json
 
     if (typeof navigator !== 'undefined' && navigator.getDeviceStorage) {
       var ds = navigator.getDeviceStorage('sdcard');
@@ -1002,7 +1059,10 @@
   // Center-screen "Analyzing MIDI Data..." message while a file is being
   // read + parsed. Uses #now-playing-overlay/#now-playing-text (styles in
   // kaiui.css) — the same pill the Now Playing toast uses.
-  function showParsing() {
+  // label: optional text; defaults to "Analyzing MIDI Data...". .note/.json
+  // MIDI files show "Reading Data..." instead (see _parsingLabel).
+  function showParsing(label) {
+    var msgToken = (typeof label === 'string' && label.length) ? label : 'Analyzing MIDI Data...';
     // Visual → Show Dialog = Off suppresses the pill entirely
     var playerOnly = _onPlayerScreen();
     if (Store.getState().showDialog === false || !playerOnly) {
@@ -1016,7 +1076,7 @@
     var overlay = document.getElementById('now-playing-overlay');
     var textEl  = document.getElementById('now-playing-text');
     var bar     = document.getElementById('parse-bar');
-    if (textEl) textEl.textContent = 'Analyzing MIDI Data...';
+    if (textEl) textEl.textContent = msgToken;
     if (overlay) overlay.classList.remove('np-hide');
     if (bar) {
       bar.classList.remove('hidden');
@@ -1048,6 +1108,7 @@
   window.clearCache = clearCache;
   window.showParsing = showParsing;
   window.hideParsing = hideParsing;
+  window.midiParsingLabel = _parsingLabel;
   window.loadMIDIData = loadMIDIData;
   window.loadMIDIJson = loadMIDIJson;
   window.exitFullscreenIfActive = exitFullscreenIfActive;

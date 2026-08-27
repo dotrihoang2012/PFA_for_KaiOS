@@ -373,8 +373,13 @@
 
   function handlePickedBlob(blob, name) {
     var url = URL.createObjectURL(blob);
-    // Show loading
-    if (typeof window.showParsing === 'function') window.showParsing();
+    // Show loading — .note/.json show "Reading Data...", .mid stays "Analyzing".
+    if (typeof window.showParsing === 'function') {
+      var plabel = (typeof window.midiParsingLabel === 'function')
+        ? window.midiParsingLabel(name)
+        : undefined;
+      window.showParsing(plabel);
+    }
 
     var isMidi = name.toLowerCase().endsWith('.mid');
     Store.setState({ fileName: name });

@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 /**
- * mid2json.js — Node.js CLI tool: convert .mid files to .mid.json.
- * Usage: node mid2json.js <input.mid> [output.json]
+ * mid2note.js — Node.js CLI tool: convert .mid files to .note.
+ * Usage: node mid2note.js <input.mid> [output-dir]
  *
  * Output format: { notes: [{t,c,n,v,d}], tempo: [{t,u}], div }
  * Compatible with KaiOS Black MIDI Player sequencer.
  *
- * If no output specified, writes to same directory as input with .mid.json extension.
+ * Writes a single-line (JSON without pretty-print) .note file so it stays
+ * small. KaiOS File Manager recognises .note → text/kai_plain as a
+ * selectable/op-able type, unlike .json which it cannot pick.
+ *
+ * If no output dir specified, writes to same directory as input with .note extension.
  */
 
 var fs = require('fs');
@@ -30,10 +34,10 @@ try {
 function main() {
   var args = process.argv.slice(2);
   if (args.length === 0 || args[0] === '-h' || args[0] === '--help') {
-    console.log('mid2json — Convert .mid to .mid.json');
-    console.log('Usage: node mid2json.js <input.mid> [output-dir]');
+    console.log('mid2note — Convert .mid to .note');
+    console.log('Usage: node mid2note.js <input.mid> [output-dir]');
     console.log('');
-    console.log('Output: { notes: [{t,c,n,v,d}], tempo: [{t,u}], div }');
+    console.log('Output: { notes: [{t,c,n,v,d}], tempo: [{t,u}], div } (single line)');
     process.exit(0);
   }
 
@@ -50,7 +54,7 @@ function main() {
   }
 
   var baseName = path.basename(inputFile).replace(/\.mid$/i, '');
-  var outputFile = path.join(outputDir, baseName + '.mid.json');
+  var outputFile = path.join(outputDir, baseName + '.note');
 
   console.log('Input:  ' + inputFile);
   console.log('Output: ' + outputFile);
@@ -69,8 +73,8 @@ function main() {
     console.log('  Tempo events: ' + midiData.tempo.length);
     console.log('  Division: ' + midiData.div);
 
-    // Write JSON
-    fs.writeFileSync(outputFile, JSON.stringify(midiData, null, 2), 'utf-8');
+    // Write as a single line (no pretty-print / newlines) to keep the file small.
+    fs.writeFileSync(outputFile, JSON.stringify(midiData), 'utf-8');
     console.log('Done! ' + outputFile);
   } catch (e) {
     console.error('Error: ' + e.message);
