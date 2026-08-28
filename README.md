@@ -2,7 +2,7 @@
 
 # Piano From Above (PFA) for KaiOS
 
-<img src="icons/piano.png" alt="Piano From Above Icon" width="200" height="200">
+<img src="/piano.png" alt="Piano From Above Icon" width="200" height="200">
 
 <p>
   <img src="https://img.shields.io/badge/KaiOS-2.5-orange.svg" alt="KaiOS Compatible">
