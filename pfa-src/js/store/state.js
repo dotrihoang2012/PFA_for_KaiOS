@@ -64,6 +64,10 @@ var Store = (function () {
     showOsd:      true,    // show the info-bar action OSD (+1 sec / 1.1x…)
     startDelay:    0,      // seconds to wait before playback (0 = Off, max 10)
 
+    // Developer options (mirrored from localStorage by settings.js)
+    osdLog:         false, // On-screen verbose status overlay
+    verboseAnalyze: false, // show [LOG] detail in analysis progress
+
     // Start Delay countdown (HUD time shows -0:05 → 0:00 while active)
     startCountdown: null,  // seconds remaining (null = inactive)
     cdRunning:      false, // true = ticking, false = held by pause

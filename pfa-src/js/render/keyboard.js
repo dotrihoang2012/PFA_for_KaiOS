@@ -240,7 +240,9 @@ var Keyboard = (function () {
           else          wh.push({ dx: dx, w: kl.w, col: col });
         }
 
-        // White highlights
+        // White highlights (drawn UNDER the black keys — they are re-blitted
+        // below so a lit white key's glow never washes over the black key
+        // that overlaps it).
         if (wh.length > 0) {
           ctx.globalAlpha = 0.75;
           for (var wi = 0; wi < wh.length; wi++) {
@@ -250,24 +252,22 @@ var Keyboard = (function () {
           ctx.globalAlpha = 1;
         }
 
-        // Re-blit highlighted black keys only
-        if (bhl.length > 0) {
+        // Re-blit EVERY black key in the visible window whenever a white
+        // highlight was drawn. Black keys overhang onto the adjacent white
+        // keys, so their base sprite must sit back on top of any white glow.
+        if (wh.length > 0) {
           ctx.globalAlpha = 1;
-          var done = {};
-          for (var bi = 0; bi < bhl.length; bi++) {
-            var bx = bhl[bi].sx;
-            if (!done[bx]) {
-              done[bx] = 1;
-              for (var m = 0; m < keyLayout.length; m++) {
-                if (keyLayout[m].black && keyLayout[m].x === bx) {
-                  ctx.drawImage(cacheCanvas, bx, 0, keyLayout[m].w, bh2,
-                                Math.round(bhl[bi].dx), y, keyLayout[m].w, bh2);
-                  break;
-                }
-              }
-            }
+          for (var bk = 0; bk < keyLayout.length; bk++) {
+            var bky = keyLayout[bk];
+            if (!bky.black) continue;
+            if (bky.x < x0 || bky.x > lastK.x + lastK.w) continue;
+            ctx.drawImage(cacheCanvas, bky.x, 0, bky.w, bh2,
+                          Math.round(bky.x - x0), y, bky.w, bh2);
           }
-          // Black highlights
+        }
+
+        // Black highlights (on top of the re-blitted black keys).
+        if (bhl.length > 0) {
           ctx.globalAlpha = 0.75;
           for (var bj = 0; bj < bhl.length; bj++) {
             ctx.fillStyle = bhl[bj].col;

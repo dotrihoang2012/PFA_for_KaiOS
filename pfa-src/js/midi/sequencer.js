@@ -7,6 +7,7 @@ var Sequencer = (function () {
   'use strict';
 
   var notes   = [];
+  var isStr   = false;        // notes is a streaming provider (NoteStream .at)
   var cursor  = 0;
   var tick    = 0;
   var speed   = 1.0;
@@ -16,6 +17,8 @@ var Sequencer = (function () {
   var tickStart = 0;
   var active  = [];   // visual list (LK lookahead)
   var audioActive = []; // keyboard/audio list (current notes only)
+  var _seekPending = null;    // streaming provider seek window load
+  var _resumeSeek  = false;   // play() was requested while a seek was pending
 
   var fireOn  = null;
   var fireOff = null;
@@ -32,29 +35,61 @@ var Sequencer = (function () {
 
   function load(noteList, tempoList, division) {
     notes = noteList || [];
+    isStr = !!(notes && typeof notes.at === 'function');
+    _seekPending = null; _resumeSeek = false;
     Tempo.map = tempoList || [{ t: 0, u: 500000 }];
     Tempo.div = division || 480;
     cursor = 0; tick = 0; active = []; audioActive = []; stopPlay();
   }
 
-  function startPlay() {
-    if (!notes.length || playing) return;
+  // Streaming provider: return a resolved note object for index i (must have
+  // been made ready first — see readyAt below), else the in-RAM note.
+  function nAt(i) {
+    return isStr ? notes.at(i) : notes[i];
+  }
+  function streamReady(i) {
+    return !isStr || notes.readyAt(i);
+  }
+
+  function _beginTimer() {
     playing = true; ctxBase = audioNow(); tickStart = tick;
+    if (isStr && notes.prefetch) { try { notes.prefetch(cursor); } catch (e) {} }
     timer = setInterval(pulse, 33);
   }
+  function startPlay() {
+    if (!notes.length || playing) return;
+    if (_seekPending) { _resumeSeek = true; return; }
+    _beginTimer();
+  }
   function stopPlay() { playing = false; if (timer) { clearInterval(timer); timer = null; } }
-  function fullStop() { stopPlay(); cursor = 0; tick = 0; active = []; audioActive = []; }
+  function fullStop() { _seekPending = null; _resumeSeek = false; stopPlay(); cursor = 0; tick = 0; active = []; audioActive = []; }
+
+  function _finishSeek(idx) {
+    cursor = (idx > 0) ? idx : 0;
+    _seekPending = null;
+    if (_resumeSeek) { _resumeSeek = false; _beginTimer(); }
+  }
 
   function seekDelta(ds) {
     stopPlay(); active = []; audioActive = [];
     var tps = Tempo.tps(tick); tick += ds * tps;
     if (tick < 0) tick = 0;
+    if (isStr) {
+      _seekPending = notes.prepare(tick).then(function (idx) { _finishSeek(idx); })
+        .catch(function () { _finishSeek(0); });
+      return;
+    }
     cursor = 0;
     while (cursor < notes.length && notes[cursor].t < tick) cursor++;
   }
   function jumpTo(tt) {
     stopPlay(); active = []; audioActive = []; tick = tt;
     if (tick < 0) tick = 0;
+    if (isStr) {
+      _seekPending = notes.prepare(tick).then(function (idx) { _finishSeek(idx); })
+        .catch(function () { _finishSeek(0); });
+      return;
+    }
     cursor = 0;
     while (cursor < notes.length && notes[cursor].t < tick) cursor++;
   }
@@ -67,6 +102,8 @@ var Sequencer = (function () {
 
     _pls++;
     if (_pls % 20 === 0) { try { if (typeof Synth !== 'undefined' && Synth.zoo) Synth.zoo(); } catch(e) {} }
+    // Streaming: keep the window around the cursor (and the next) loaded.
+    if (isStr && notes.prefetch) { try { notes.prefetch(cursor); } catch (e) {} }
 
     // Sync LK voi trail setting de activeList luon du cho renderer
     try {
@@ -86,7 +123,8 @@ var Sequencer = (function () {
     var auCnt = 0;
     var ESC_MAX = 50000; // enough to fill 6s lookahead for normal MIDI
     while (cursor < notes.length && esc++ < ESC_MAX) {
-      var n = notes[cursor];
+      if (!streamReady(cursor)) break;   // next window still loading — retry next pulse
+      var n = nAt(cursor);
       var ss = Tempo.toSec(n.t);
       if (ss > hor) break;
       var etk = n.t + n.d;

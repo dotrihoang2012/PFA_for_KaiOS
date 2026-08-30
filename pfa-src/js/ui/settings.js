@@ -9,6 +9,8 @@
  *   - Visual        (render mode, speed, Note Trail,
  *                    note labels, Info Card Options, Keyboard Range,
  *                    Background/Bar/Piano Color, Piano Size)
+ *   - Developer     (On-screen verbose status, Verbose while analyzing,
+ *                    Export log)
  *
  * Level-2 sub-pages (drilled from Visual rows):
  *   - Keyboard Range → two sliders (Start / End note), live-applied.
@@ -47,7 +49,7 @@ var Settings = (function () {
     visual: {
       renderMode:   'auto',    // 'auto' | 'individual' | 'heatmap' | 'buffer'
       speed:        1.0,       // 0.1 .. 8.0 (slider)
-      trail:        1.0,       // Note Trail, 0.1 .. 8.0 (moved from MIDI group)
+      trail:        0.7,       // Note Trail, 0.1 .. 8.0 (moved from MIDI group)
       autoPlay:     false,     // start playback automatically after load
       showDialog:   true,      // show "Analyzing MIDI…" / "Now playing" pills
       showOsd:      true,      // show the info-bar action OSD (+1 sec / 1.1x…)
@@ -66,6 +68,10 @@ var Settings = (function () {
       barColor:     '#00ccff', // separator line between notes band and piano
       pianoColorHex:'#f2f2f2', // white-key fill
       pianoSize:    'big',     // 'big' | 'small' | 'none'
+    },
+    dev: {
+      osdLog:         false,   // On-screen verbose status overlay
+      verboseAnalyze: false,   // show [LOG] detail in analysis progress
     }
   };
 
@@ -115,6 +121,13 @@ var Settings = (function () {
       { key: 'pianoColorHex', label: 'Piano Color',      type: 'color' },
       { key: 'pianoSize',     label: 'Piano Size',       type: 'enum',
         choices: [['big','Big'],['small','Small'],['none','No Piano']] },
+    ],
+    dev: [
+      { key: 'osdLog',         label: 'Verbose Status', type: 'bool' },
+      { key: 'verboseAnalyze', label: 'Verbose while analyzing',  type: 'bool' },
+      { key: 'memory',         label: 'Memory Stats',             type: 'action' },
+      { key: 'exportLog',      label: 'Export Log',               type: 'action' },
+      { key: 'storageTest',    label: 'Storage Test',             type: 'action' },
     ]
   };
 
@@ -201,9 +214,17 @@ var Settings = (function () {
       barColor:      _values.visual.barColor,
       pianoColorHex: _values.visual.pianoColorHex,
       pianoSize:     _values.visual.pianoSize,
+      osdLog:        _values.dev.osdLog,
+      verboseAnalyze: _values.dev.verboseAnalyze,
     });
     applyTheme(_values.visual.theme);
     applyInfoCard();
+    // Reflect the persisted OSD toggle once the overlay element exists.
+    if (typeof window.pfaSetDevOsd === 'function') {
+      setTimeout(function () {
+        try { window.pfaSetDevOsd(!!Store.getState().osdLog); } catch (e) {}
+      }, 0);
+    }
     return _values;
   }
 
@@ -225,7 +246,7 @@ var Settings = (function () {
    * @param onClose Optional callback fired when overlay closes
    */
   function open(group, onClose) {
-    if (group !== 'midi' && group !== 'visual') {
+    if (group !== 'midi' && group !== 'visual' && group !== 'dev') {
       console.error('[Settings] unknown group: ' + group);
       return;
     }
@@ -246,7 +267,9 @@ var Settings = (function () {
     }
     var header = overlay.querySelector('header');
     if (header) {
-      header.textContent = group === 'midi' ? 'MIDI-OUT Settings' : 'Visual Settings';
+      header.textContent = group === 'midi' ? 'MIDI-OUT Settings'
+                         : group === 'dev' ? 'Developer Options'
+                         : 'Visual Settings';
     }
     overlay.setAttribute('data-group', group);
 
@@ -855,6 +878,12 @@ var Settings = (function () {
       row.setAttribute('tabindex', '-1');
       row.setAttribute('data-key', def.key);
       row.setAttribute('data-type', def.type);
+      // Storage permission denied → dim "Export Log" (guard also in
+      // runDevAction, but keep it visibly disabled).
+      if (def.key === 'exportLog' && typeof window !== 'undefined' &&
+          typeof window.pfaStorageGranted === 'function' && !window.pfaStorageGranted()) {
+        row.classList.add('perm-locked');
+      }
       if (def.type === 'sub') {
         row.setAttribute('data-subkind', def.subkind || 'range');
       }
@@ -944,6 +973,10 @@ var Settings = (function () {
           } else {
             valEl.textContent = 'Auto';
           }
+        } else if (def.type === 'action') {
+          // One-shot action row (Export Log) — arrow glyph, no value text;
+          // Enter / ArrowRight fires the action, never cycles a value.
+          row.classList.add('has-sub');
         } else {
           valEl.textContent = formatValue(def, val);
         }
@@ -956,6 +989,7 @@ var Settings = (function () {
   }
 
   function formatValue(def, val) {
+    if (def.type === 'action') return '';
     if (def.type === 'bool') return val ? 'On' : 'Off';
     if (def.type === 'enum') {
       for (var i = 0; i < def.choices.length; i++) {
@@ -1048,6 +1082,11 @@ var Settings = (function () {
         openSub('color', rowE.getAttribute('data-key'));
         return true;
       }
+      if (t === 'action') {
+        // One-shot dev action rows fire on Enter / ArrowRight.
+        runDevAction(rowE);
+        return true;
+      }
       return true; // consumed but no-op for plain rows
     }
 
@@ -1073,6 +1112,10 @@ var Settings = (function () {
         return true;
       }
       if (tR === 'color') { openSub('color', rowR.getAttribute('data-key')); return true; }
+      if (tR === 'action') {
+        runDevAction(rowR);
+        return true;
+      }
       cycleValue(rowR, +1);
       return true;
     }
@@ -1090,6 +1133,7 @@ var Settings = (function () {
     var type = row.getAttribute('data-type');
     var def = findDef(_openGroup, key);
     if (!def) return;
+    if (type === 'action') return; // one-shot rows never cycle
 
     var current = _values[_openGroup][key];
     var next;
@@ -1132,6 +1176,22 @@ var Settings = (function () {
   function inputValue(row) {
     var input = row && row.querySelector('input[type="range"]');
     return input ? parseFloat(input.value) : null;
+  }
+
+  // One-shot dev action rows: dispatch by row key.
+  function runDevAction(rowE) {
+    var k = rowE ? rowE.getAttribute('data-key') : '';
+    try {
+      if (k === 'exportLog') {
+        if (typeof window.pfaStorageGranted === 'function' && !window.pfaStorageGranted()) {
+          if (typeof window.pfaGuardStorageLoad === 'function') window.pfaGuardStorageLoad(false);
+          return;
+        }
+        if (typeof window.pfaExportLog === 'function') window.pfaExportLog();
+      }
+      else if (k === 'memory' && typeof window.pfaDumpMemory === 'function') window.pfaDumpMemory();
+      else if (k === 'storageTest' && typeof window.pfaStorageDiagnose === 'function') window.pfaStorageDiagnose();
+    } catch (e) {}
   }
 
   function applyChange(group, key, next, def, row) {
@@ -1192,6 +1252,14 @@ var Settings = (function () {
       if (key === 'reverbVolume') PicoSynth.setReverbVolume(next);
     }
 
+    if (group === 'dev' && key === 'osdLog') {
+      // Live-toggle the on-screen verbose overlay (window hook lives in
+      // main.js; defer a tick so the overlay exists after first paint).
+      if (typeof window.pfaSetDevOsd === 'function') {
+        setTimeout(function () { try { window.pfaSetDevOsd(!!next); } catch (e) {} }, 0);
+      }
+    }
+
     // Persist
     save();
   }
@@ -1204,7 +1272,7 @@ var Settings = (function () {
       if (key === 'reverb')       return { reverb: val };
       if (key === 'chorus')       return { chorus: val };
       if (key === 'reverbVolume') return { reverbVolume: val };
-    } else {
+    } else if (group === 'visual') {
       if (key === 'renderMode')    return { renderMode: val };
       if (key === 'speed')         return { speed: val };
       if (key === 'trail')         return { trail: val };
@@ -1225,6 +1293,9 @@ var Settings = (function () {
       if (key === 'barColor')      return { barColor: val };
       if (key === 'pianoColorHex') return { pianoColorHex: val };
       if (key === 'pianoSize')     return { pianoSize: val };
+    } else if (group === 'dev') {
+      if (key === 'osdLog')         return { osdLog: val };
+      if (key === 'verboseAnalyze') return { verboseAnalyze: val };
     }
     return {};
   }

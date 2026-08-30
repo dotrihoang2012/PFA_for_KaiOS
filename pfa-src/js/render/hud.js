@@ -8,6 +8,7 @@ var HUD = (function () {
   'use strict';
 
   var _totalNotes = 0;
+  var _totalSet = false; // setTotal() was called → auto-fill is disabled
   var _lastDOM = 0;
   var _smoothedCount = -1;
   var _DOM_INTERVAL = 250;  // ms between DOM writes
@@ -28,7 +29,10 @@ var HUD = (function () {
     _domReady = true;
   }
 
-  function setTotal(n) { _totalNotes = n || 0; }
+  function setTotal(n) {
+    _totalNotes = n || 0;
+    _totalSet = true;   // explicit — auto-fill below must NOT override
+  }
 
   /**
    * Tick — called from main render loop every frame.
@@ -48,7 +52,9 @@ var HUD = (function () {
     else _smoothedCount = Math.round(_smoothedCount * 0.65 + raw * 0.35);
 
     var total = state.notes && state.notes.length ? state.notes.length : 0;
-    if (!_totalNotes && total) _totalNotes = total;
+    // Legacy auto-fill ONLY when setTotal() was never called — an explicit
+    // 0 (demo forces HUD to 0/0) must stay 0, not be re-filled from Store.
+    if (!_totalSet && !_totalNotes && total) _totalNotes = total;
 
     var sp = (state.speed || 1.0).toFixed(1);
     var fp = (state.fps || 0);

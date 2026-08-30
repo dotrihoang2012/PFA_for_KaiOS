@@ -344,6 +344,19 @@ html, body {
   opacity: 0.4;
 }
 
+/* Storage-permission locked menu item (Load MIDI blocked when the OS
+   refused SD-card access). Same visual as demo-locked; inert on tap. */
+.kai-om-item.perm-locked {
+  opacity: 0.4;
+  pointer-events: none;
+}
+.kai-om-item.perm-locked:focus,
+.kai-om-item.perm-locked.focused {
+  color: var(--color-gs00);
+  background: #0066cc;
+  opacity: 0.4;
+}
+
 /* ============================================
    LOADING SCREEN (KaiOS style)
    ============================================ */
@@ -484,7 +497,15 @@ html, body {
    not interactive — focus must not brighten the row to full color. */
 .setting-row.demo-locked {
   opacity: 0.4;
+}
+.setting-row.perm-locked {
+  opacity: 0.4;
   pointer-events: none;
+}
+.setting-row.perm-locked.focused {
+  background: #0066cc;
+  color: var(--color-gs00);
+  opacity: 0.4;
 }
 .setting-row.demo-locked.focused {
   background: var(--color-gs00);
@@ -718,6 +739,15 @@ html, body {
   text-align: center;
   max-width: 90%;
   word-break: break-all;
+  white-space: pre-line;
+}
+/* Analyzer sub-line in the pill (Developer → Verbose while analyzing):
+   smaller, non-bold, dimmed — the trace under the "Analyzing…" label. */
+#now-playing-text .now-playing-log {
+  display: block;
+  font-size: 0.8em;
+  font-weight: normal;
+  opacity: 0.9;
 }
 
 /* ============================================
@@ -739,7 +769,13 @@ html, body {
   position: absolute;
   bottom: 0;
   width: 100%;
-  max-height: calc(100% - 2rem - var(--header-height));
+  /* Content-driven height: short text → short box, long text → it grows up
+     to the room above the softkeys and then scrolls internally (never
+     bleeding under the OK bar). */
+  max-height: calc(100% - 0.5rem - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 .kai-dialog .kai-dialog-header {
   padding: 0.5rem 1rem;
@@ -748,15 +784,18 @@ html, body {
   font-size: 1.8rem;
   font-weight: 500;
   color: var(--color-gs100);
+  flex: 0 0 auto;
 }
 .kai-dialog .kai-dialog-container {
   background: var(--color-gs00);
   padding: 1rem;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 .kai-dialog .kai-dialog-content {
   margin: 0;
-  max-height: 30rem;
-  overflow-y: auto;
+  max-height: none;
 }
 .kai-dialog .kai-dialog-content p {
   font-size: 1.7rem;
@@ -765,5 +804,11 @@ html, body {
   text-align: left;
   line-height: 1.5;
   margin: 0;
-  word-break: break-word;
+  white-space: pre-line;
+  /* Wrap whole words onto the next line (no mid-word splits like
+     "diss/connect"). A single over-long unbroken token (log filename)
+     still breaks softly via break-word on old Gecko (KaiOS 2.5). */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  overflow: hidden;
 }

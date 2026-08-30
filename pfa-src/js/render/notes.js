@@ -161,7 +161,7 @@ var Notes = (function () {
     var fbH   = fbBot - fbTop;               // height of band
     if (fbH < 30) { fbH = 30; fbBot = fbTop + 30; } // safety on tiny screens
     function dv(k, c) { try { return (typeof window.demoVisualValue === 'function') ? window.demoVisualValue(k, c) : c; } catch (e) { return c; } }
-    var trailSetting = (state.trail != null && isFinite(state.trail)) ? state.trail : 1.0;
+    var trailSetting = (state.trail != null && isFinite(state.trail)) ? state.trail : 0.7;
     trailSetting = dv('trail', trailSetting);
     var effectiveLK = VISUAL_LK / trailSetting; // trail=2 -> half lookahead -> 2x faster
     var FALL = fbH / effectiveLK;

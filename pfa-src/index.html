@@ -12,6 +12,7 @@
 <div id="statusbar-placeholder"></div>
 <main id="viewport">
   <canvas id="main-canvas"></canvas>
+  <div id="dev-osd" class="hidden"></div>
 <div id="hud">
 <span id="hud-note-count" class="hud-stat">0 notes</span>
 <span id="hud-speed" class="hud-stat">1.0x</span>
@@ -20,8 +21,8 @@
 <span id="hud-osd"></span>
    <span id="now-playing" class="hidden"></span>
 </div>
- <div id="parse-bar" class="hidden">
-   <div id="parse-bar-fill"></div>
+<div id="parse-bar" class="hidden">
+    <div id="parse-bar-fill"></div>
 </div>
 </main>
 <footer id="softkey-bar" class="kai-softkey">
@@ -32,13 +33,15 @@
 <div id="menu-overlay" class="kai-om-overlay hidden">
  <div class="kai-om">
    <header>Options</header>
-   <nav id="menu-list">
-     <div tabindex="-1" class="kai-om-item" data-action="load-midi">Load MIDI</div>
+<nav id="menu-list">
+      <div tabindex="-1" class="kai-om-item hidden" data-action="cancel-analysis">Cancel Analysis</div>
+      <div tabindex="-1" class="kai-om-item" data-action="load-midi">Load MIDI</div>
      <div tabindex="-1" class="kai-om-item" data-action="clear-midi">Clear</div>
      <div tabindex="-1" class="kai-om-item" data-action="fullscreen">Full Screen</div>
      <div tabindex="-1" class="kai-om-item" data-action="volume">Volume</div>
      <div tabindex="-1" class="kai-om-item has-submenu" data-action="midi-output">MIDI-OUT Settings</div>
      <div tabindex="-1" class="kai-om-item has-submenu" data-action="visual">Visual Settings</div>
+     <div tabindex="-1" class="kai-om-item has-submenu" data-action="dev">Developer Options</div>
      <div tabindex="-1" class="kai-om-item" data-action="random-colors">Random note color track</div>
      <div tabindex="-1" class="kai-om-item" data-action="rotate">Rotate Screen</div>
      <div tabindex="-1" class="kai-om-item" data-action="about">About This App</div>
@@ -106,6 +109,7 @@
         <li>◀ ▶ seek ∓1s · ▲ ▼ volume</li>
         <li>1 / 3 speed −0.1x / +0.1x · * / # speed ×2 / ÷2</li>
         <li>0 stop · 7 restart · OK play/pause</li>
+        <li>Remeber: press clear in options to free RAM and memory</li>
       </ul>
 
       <p class="about-sec">Sound Synthesis Modules</p>
@@ -132,6 +136,10 @@
 </div>
 <script src="js/utils/constants.js"></script>
 <script src="js/utils/l10n.js"></script>
+<script src="js/utils/storage.js"></script>
+<script src="js/utils/writes.js"></script>
+<script src="js/midi/streamParser.js"></script>
+<script src="js/midi/noteStream.js"></script>
 <script src="js/midi/tempo.js"></script>
 <script src="js/midi/midiParser.js"></script>
 <script src="js/midi/sequencer.js"></script>
@@ -147,6 +155,7 @@
 <script src="js/store/state.js"></script>
 <script src="js/input/bindings.js"></script>
 <script src="js/ui/settings.js"></script>
+<script src="js/utils/noteWriter.js"></script>
 <script src="js/input/controls.js"></script>
 <script src="js/main.js"></script>
 </body>

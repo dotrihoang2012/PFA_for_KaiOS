@@ -57,6 +57,22 @@
           key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
           key === 'Back' || key === Constants.KEY.BACK) {
         if (typeof window.hideErrorDialog === 'function') window.hideErrorDialog();
+        return;
+      }
+      // ArrowUp/Down scroll the dialog body (long Memory Stats lists,
+      // error dumps). KaiOS has no touch input — the D-pad must do it,
+      // mirroring the About panel scroll above.
+      if (key === 'ArrowUp' || key === Constants.KEY.ARROW_UP ||
+          key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN) {
+        var _nav = document.getElementById('error-dialog');
+        if (_nav) {
+          var _s = _nav.querySelector('.kai-dialog-container');
+          if (_s) {
+            var _step = 50; // ~5rem at the locked 10px root font-size
+            var _down = (key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN);
+            _s.scrollTop += _down ? _step : -_step;
+          }
+        }
       }
       return;
     }
@@ -162,6 +178,16 @@
     // ArrowUp/Down step the OS media volume directly (bindings.js), so no
     // temporary OSD input-lock is needed anymore — volume works everywhere
     // on the piano screen, and Left/Right always seek ±1s.
+    // While an analysis is running, SoftRight (the visible Cancel softkey)
+    // AND Enter both stop the pipeline at any point.
+    if (analyzingNow()) {
+      if (key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+          key === 13 || key === Constants.KEY.ENTER || key === 'Enter') {
+        e.preventDefault();
+        if (typeof window.cancelAnalyze === 'function') window.cancelAnalyze();
+        return;
+      }
+    }
     var action = Constants.KEY_MAP[key];
     if (!action) return;
     e.preventDefault();
@@ -179,7 +205,7 @@
 
   // ── Overlay navigation ──
   function handleOverlayKey(e, key) {
-    var items = document.querySelectorAll('#menu-list .kai-om-item');
+    var items = document.querySelectorAll('#menu-list .kai-om-item:not(.hidden)');
 
     // Back = the ONLY way out of the Options menu. LSK/RSK are
     // strictly forbidden here (hardware Back key = keyCode 8 / 'Back').
@@ -263,7 +289,7 @@
   }
 
   function selectMenuItem(index) {
-    var menuItems = document.querySelectorAll('#menu-list .kai-om-item');
+    var menuItems = document.querySelectorAll('#menu-list .kai-om-item:not(.hidden)');
     var action = menuItems[index] && menuItems[index].getAttribute('data-action');
     if (action) {
       // Demo-locked items (Note Color Randomise while the demo self-plays)
@@ -323,6 +349,12 @@
 
   function execMenuAction(action) {
     switch (action) {
+      case 'cancel-analysis':
+        closeMenuOverlay();
+        if (typeof window.cancelAnalyze === 'function') {
+          try { window.cancelAnalyze(); } catch (e) { console.error('[Ctrl] cancel-analysis error', e); }
+        }
+        return;
       case 'clear-midi':
         closeMenuOverlay();
         try {
@@ -332,6 +364,12 @@
           if (typeof HUD !== 'undefined' && HUD.setTotal) HUD.setTotal(0);
           window._midiBlob = null;
           window._rawMidiBuffer = null;
+          // Drop the on-disk conversion cache too — the in-RAM notes are gone,
+          // so the pfa_tmp .r*.bin runs + final .note are pure garbage reclaimable
+          // right now (device storage is measured in hundreds of free MB).
+          if (typeof window.clearPfaTmp === 'function') {
+            try { window.clearPfaTmp(); } catch (e) { console.error('[Ctrl] clearPfaTmp error', e); }
+          }
           setTimeout(function() {
             if (typeof updateSoftkeys === 'function') updateSoftkeys();
           }, 0);
@@ -341,6 +379,15 @@
         closeMenuOverlay();
         return;
       case 'load-midi':
+        // Storage permission not granted (SFB Not Allowed / revoked):
+        // the item is inert — tapping does nothing. The dialog hint was
+        // already shown when the denial was detected.
+        try {
+          if (typeof window.pfaStorageGranted === 'function' && !window.pfaStorageGranted()) {
+            if (typeof window.pfaGuardStorageLoad === 'function') window.pfaGuardStorageLoad(false);
+            return;
+          }
+        } catch (e) {}
         launchFilePicker();
         return;
       case 'fullscreen':
@@ -374,6 +421,9 @@
         return;
       case 'visual':
         openSettingsGroup('visual');
+        return;
+      case 'dev':
+        openSettingsGroup('dev');
         return;
       case 'about':
         showAbout();
@@ -462,30 +512,48 @@
     }
 
     if (isMidi) {
-      // Read as array buffer → parse MIDI
-      var reader = new FileReader();
-      reader.onload = function () {
-        if (typeof MidiParser !== 'undefined') {
+      // Route through main.js: large .mid files are streamed straight from the
+      // Blob to a binary .note (StreamParser) and never read fully into RAM;
+      // smaller files are read and played in memory.
+      if (typeof window.routeMidiBlob === 'function') {
+        window.routeMidiBlob(blob, name);
+      } else if (typeof window.analyzeAndLoadMIDI === 'function') {
+        var reader2 = new FileReader();
+        reader2.onload = function () {
+          try { window.analyzeAndLoadMIDI(reader2.result, name, blob); }
+          catch (e) {
+            console.error('[Ctrl] MIDI parse error', e);
+            if (typeof window.hideParsing === 'function') window.hideParsing();
+          }
+        };
+        reader2.onerror = function () {
+          console.error('[Ctrl] FileReader error');
+          if (typeof window.hideParsing === 'function') window.hideParsing();
+        };
+        reader2.readAsArrayBuffer(blob);
+      } else if (typeof window.loadMIDIData === 'function') {
+        var reader3 = new FileReader();
+        reader3.onload = function () {
           try {
-            var midiData = MidiParser.parseMIDI(reader.result);
-            // Reference via window.* — loadMIDIData lives in main.js IIFE,
-            // not in ours, so `typeof loadMIDIData` would be 'undefined'.
-            if (typeof window.loadMIDIData === 'function') {
-              window.loadMIDIData(midiData);
-            }
+            var midiData = MidiParser.parseMIDI(reader3.result);
+            window.loadMIDIData(midiData);
           } catch (e) {
             console.error('[Ctrl] MIDI parse error', e);
             if (typeof window.hideParsing === 'function') window.hideParsing();
           }
-        }
-      };
-      reader.onerror = function () {
-        console.error('[Ctrl] FileReader error');
-        if (typeof window.hideParsing === 'function') window.hideParsing();
-      };
-      reader.readAsArrayBuffer(blob);
-    } else {
-      // Assume JSON
+        };
+        reader3.onerror = function () {
+          console.error('[Ctrl] FileReader error');
+          if (typeof window.hideParsing === 'function') window.hideParsing();
+        };
+        reader3.readAsArrayBuffer(blob);
+      }
+} else {
+      // Assume JSON — but .note may be a PFA2 binary (stream it instead).
+      if (typeof window.openNoteFile === 'function') {
+        window.openNoteFile(blob, name);
+        return;
+      }
       var reader = new FileReader();
       reader.onload = function () {
         if (typeof window.loadMIDIJson === 'function') {
@@ -587,6 +655,28 @@
       showToast('Rotation not supported');
     }
   }
+
+  // ── Analyze-in-flight helper (piano only, pipeline busy) ──
+  function analyzingNow() {
+    try {
+      return !!(window.isAnalyzingActive && window.isAnalyzingActive());
+    } catch (e) { return false; }
+  }
+  // Pipeline busy REGARDLESS of screen — drives the Options menu's
+  // "Cancel Analysis" item (visible while a conversion runs, even if the
+  // user has opened the menu over it). Cancelling hides it again.
+  function engineBusy() {
+    try {
+      return !!(window.isAnalyzing && window.isAnalyzing());
+    } catch (e) { return false; }
+  }
+  function refreshAnalyzeCanItem() {
+    var el = document.querySelector('#menu-list .kai-om-item[data-action="cancel-analysis"]');
+    if (!el) return;
+    var show = engineBusy();
+    el.classList.toggle('hidden', !show);
+  }
+  window.refreshAnalyzeCanItem = refreshAnalyzeCanItem;
 
   // ── Gameplay actions ──
   // ── Playback start helpers ──
@@ -865,7 +955,8 @@
     if (el) {
       // Instant show — remove .hidden so CSS rules take over visibility.
       el.classList.remove('hidden');
-      var items = el.querySelectorAll('.kai-om-item');
+      refreshAnalyzeCanItem();
+      var items = el.querySelectorAll('.kai-om-item:not(.hidden)');
       if (items.length > 0) {
         _focusedItemIndex = 0;
         focusOverlayItem(items, 0);
@@ -882,6 +973,7 @@
 
   // ── Softkey labels ──
   function updateSoftkeys() {
+    refreshAnalyzeCanItem();
     var leftE  = document.getElementById('sk-left');
     var rightE = document.getElementById('sk-right');
     var ctrE   = document.getElementById('sk-center');
@@ -918,6 +1010,8 @@
       // hide SELECT so it cannot be activated.
       var focusedItem = document.querySelector('#menu-list .kai-om-item.focused');
       var fLocked = focusedItem && focusedItem.classList.contains('demo-locked');
+      // A perm-locked item keeps its SELECT: pressing it routes to the
+      // grant-path dialog instead of the picker (see 'load-midi' handler).
       if (leftE)  leftE.textContent  = '';
       if (ctrE)   ctrE.textContent   = fLocked ? '' : 'SELECT';
       if (rightE) rightE.textContent = '';
@@ -931,10 +1025,21 @@
         ? document.querySelector('#settings-list .setting-row.focused')
         : null;
       var selType = selRow ? selRow.getAttribute('data-type') : null;
-      if (ctrE)   ctrE.textContent   = (selType === 'sub' || selType === 'color') ? 'SELECT' : '';
+      // Drill-in ('sub' / color) AND one-shot action rows (Developer:
+      // Memory Stats / Export Log / Storage Test) advertise the center
+      // action with a "SELECT" label, mirroring the Options menu.
+      if (ctrE) ctrE.textContent = (selType === 'sub' || selType === 'color' || selType === 'action') ? 'SELECT' : '';
       if (leftE)  leftE.textContent  = '';
       if (rightE) rightE.textContent = '';
     } else {
+      // Analysis in flight (piano only): everything cedes to Cancel — the
+      // right softkey is the big red button, centre is held idle so PLAY/
+      // PAUSE can't be triggered mid-parse.
+      if (analyzingNow()) {
+        if (leftE)  leftE.textContent  = 'Options';
+        if (ctrE)   ctrE.textContent   = '';
+        if (rightE) rightE.textContent = 'Cancel';
+      } else {
       // Demo self-play: hide PLAY/PAUSE and lock speed/stop/restart.
       // Options stays so a real .mid/.note can stop the demo at any time.
       var isDemo = false;
@@ -952,6 +1057,7 @@
       if (leftE)  leftE.textContent  = 'Options';
       if (ctrE)   ctrE.textContent   = hasFile ? (busy ? 'PAUSE' : 'PLAY') : '';
       if (rightE) rightE.textContent = '';
+      }
       }
     }
   }

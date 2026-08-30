@@ -67,16 +67,23 @@ var NoteBuffer = (function () {
     if (fbH < 30) return;
 
     var kw = state.keyWidth || 16;
+    try { if (typeof window.demoVisualValue === 'function') kw = window.demoVisualValue('keyWidth', kw); } catch (e) {}
     // Visible window — Keyboard Range [kbStart..kbEnd] replaces camKey
     var ck = (state.kbStart != null) ? state.kbStart : 21;
     var ckEnd = (state.kbEnd != null) ? state.kbEnd : 108;
+    try { if (typeof window.demoVisualValue === 'function') {
+      ck = window.demoVisualValue('kbStart', ck);
+      ckEnd = window.demoVisualValue('kbEnd', ckEnd);
+    } } catch (e) {}
     ck    = Math.max(0, Math.min(127, ck));
     ckEnd = Math.max(ck + 1, Math.min(127, ckEnd));
     var sp = state.speed    || 1.0;
+    try { if (typeof window.demoVisualValue === 'function') sp = window.demoVisualValue('speed', sp); } catch (e) {}
     var ns = 0;
     try { ns = Sequencer.getTime(); } catch(e) { return; }
 
-    var trailSetting = (state.trail != null && isFinite(state.trail)) ? state.trail : 1.0;
+    var trailSetting = (state.trail != null && isFinite(state.trail)) ? state.trail : 0.7;
+    try { if (typeof window.demoVisualValue === 'function') trailSetting = window.demoVisualValue('trail', trailSetting); } catch (e) {}
     var effectiveLK  = 1.0 / trailSetting;
     var FALL = fbH / effectiveLK;
 
