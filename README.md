@@ -2,7 +2,7 @@
 
 # Piano From Above (PFA) for KaiOS
 
-<img src="/piano.png" alt="Piano From Above Icon" width="200" height="200">
+<img src="/Image/piano.png" alt="Piano From Above Icon" width="200" height="200">
 
 <p>
   <img src="https://img.shields.io/badge/KaiOS-2.5-orange.svg" alt="KaiOS Compatible">
@@ -15,8 +15,8 @@
 **Piano From Above (PFA)** for **KaiOS 2.5** is a MIDI visualizer optimized for smart feature phones (Nokia 2720 Flip, Nokia 8000 4G, Nokia 6300 4G, Nokia 8110 4G, JioPhone, etc.).
 
 <p align="center">
-  <img src="Screenshots/Single.png">
-  <img src="Screenshots/Multi.png">
+  <img src="Image/Single.png">
+  <img src="Image/Multi.png">
 </p>
 
 This project focuses on optimizing the Canvas rendering pipeline to smoothly display high-density **Black MIDI** tracks with massive note counts on hardware-constrained KaiOS 2.5 devices.
