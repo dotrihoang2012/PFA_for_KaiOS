@@ -53,10 +53,17 @@ var Store = (function () {
     noteLabels:   false,     // draw C/D/E labels above white keys
     // Info card (HUD) toggles — master gate + per-stat switches
     infoCard:      true,
+    infoNps:       true,
     infoNoteCount: true,
+    infoPassed:    true,
     infoSpeed:     true,
     infoTime:      true,
     infoFps:       true,
+    infoPolyphony:    true,
+    infoRendered:     true,
+    infoAudioBuffer:  true,
+    infoTick:         true,
+    infoBpm:          true,
 
     // Playback helpers
     autoPlay:     false,   // start playing automatically after a MIDI load

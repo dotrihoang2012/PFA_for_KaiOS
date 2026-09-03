@@ -49,7 +49,7 @@ var Settings = (function () {
     visual: {
       renderMode:   'auto',    // 'auto' | 'individual' | 'heatmap' | 'buffer'
       speed:        1.0,       // 0.1 .. 8.0 (slider)
-      trail:        0.7,       // Note Trail, 0.1 .. 8.0 (moved from MIDI group)
+      trail:        1.0,       // Note Trail, 0.1 .. 8.0 (moved from MIDI group)
       autoPlay:     false,     // start playback automatically after load
       showDialog:   true,      // show "Analyzing MIDI…" / "Now playing" pills
       showOsd:      true,      // show the info-bar action OSD (+1 sec / 1.1x…)
@@ -58,10 +58,17 @@ var Settings = (function () {
       noteLabels:   false,
       // Info card (HUD): master gate + per-stat switches
       infoCard:      true,
+      infoNps:       true,
       infoNoteCount: true,
+      infoPassed:    true,
       infoSpeed:     true,
       infoTime:      true,
       infoFps:       true,
+      infoPolyphony:    true,
+      infoRendered:     true,
+      infoAudioBuffer:  true,
+      infoTick:         true,
+      infoBpm:          true,
       kbStart:      21,        // Keyboard Range first visible MIDI note (A0)
       kbEnd:        108,       // Keyboard Range last visible MIDI note (C8)
       bgColor:      null,      // null = follow --theme-bg CSS token
@@ -156,11 +163,24 @@ var Settings = (function () {
     console.log('[Settings] load() invoked');
     var raw;
     try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { raw = null; }
+    // Ensure the one-shot migration marker is always present so save()
+    // persists it and the migration below never re-runs to clobber a value
+    // the user later sets — even on a brand-new install (raw === null).
+    _values.__upgraded = true;
     if (raw) {
       try {
         var parsed = JSON.parse(raw);
         if (parsed && typeof parsed === 'object') {
           _values = merge(DEFAULTS, parsed);
+          // Migration (one-shot) for users of PREVIOUS builds: the first run
+          // of this version forces Note Trail to its new default of 1.0 for
+          // any persisted profile that predates this change (no __upgraded
+          // marker). New installs have no raw to migrate, and their trail
+          // already comes from DEFAULTS (1.0).
+          if (!_values.__upgraded) {
+            _values.visual.trail = 1.0;
+            _values.__upgraded = true;
+          }
           // Migration: Note Trail used to live in the MIDI group; older
           // persisted profiles still carry it at midi.trail. Lift it into
           // the Visual group unless a newer visual.trail already exists.
@@ -173,6 +193,14 @@ var Settings = (function () {
           if (parsed.visual && parsed.visual.showFps != null &&
               parsed.visual.infoFps == null) {
             _values.visual.infoFps = parsed.visual.showFps;
+          }
+          // Migration: NPS / Note Count split — carry the old combined
+          // infoNoteCount into the new infoNps / infoPassed switches.
+          if (parsed.visual && parsed.visual.infoNoteCount != null) {
+            if (parsed.visual.infoNps == null)
+              _values.visual.infoNps = parsed.visual.infoNoteCount;
+            if (parsed.visual.infoPassed == null)
+              _values.visual.infoPassed = parsed.visual.infoNoteCount;
           }
           // Migration: Start Delay used to allow -1 (= Off); the slider
           // range is 0..10 with 0 meaning Off — normalize old values.
@@ -204,10 +232,17 @@ var Settings = (function () {
       theme:         _values.visual.theme,
       noteLabels:    _values.visual.noteLabels,
       infoCard:      _values.visual.infoCard,
+      infoNps:       _values.visual.infoNps,
       infoNoteCount: _values.visual.infoNoteCount,
+      infoPassed:    _values.visual.infoPassed,
       infoSpeed:     _values.visual.infoSpeed,
       infoTime:      _values.visual.infoTime,
       infoFps:       _values.visual.infoFps,
+      infoPolyphony:    _values.visual.infoPolyphony,
+      infoRendered:     _values.visual.infoRendered,
+      infoAudioBuffer:  _values.visual.infoAudioBuffer,
+      infoTick:         _values.visual.infoTick,
+      infoBpm:          _values.visual.infoBpm,
       kbStart:       _values.visual.kbStart,
       kbEnd:         _values.visual.kbEnd,
       bgColor:       _values.visual.bgColor,
@@ -738,11 +773,18 @@ var Settings = (function () {
    */
   function buildBoolPage(listEl) {
     var bdefs = [
-      { key: 'infoCard',      label: 'Show Info Card' },
-      { key: 'infoNoteCount', label: 'Note Count' },
-      { key: 'infoSpeed',     label: 'Speed' },
-      { key: 'infoTime',      label: 'Time' },
-      { key: 'infoFps',       label: 'FPS' }
+      { key: 'infoCard',         label: 'Show Info Card' },
+      { key: 'infoNps',          label: 'NPS' },
+      { key: 'infoNoteCount',    label: 'Note Count' },
+      { key: 'infoPassed',       label: 'Passed' },
+      { key: 'infoSpeed',        label: 'Speed' },
+      { key: 'infoTime',         label: 'Time' },
+      { key: 'infoFps',          label: 'FPS' },
+      { key: 'infoPolyphony',    label: 'Polyphony' },
+      { key: 'infoRendered',     label: 'Rendered Notes' },
+      { key: 'infoAudioBuffer',  label: 'Audio Buffer' },
+      { key: 'infoTick',         label: 'Tick' },
+      { key: 'infoBpm',          label: 'BPM' }
     ];
     var masterOn = !!_values.visual.infoCard;
     _sub.items = [];
@@ -851,7 +893,7 @@ var Settings = (function () {
 
     // Enter activates the focused swatch/DEF cell — but NEVER toggles
     // booleans (Info Card rows are Left/Right only by design).
-    if (key === Constants.KEY.ENTER || key === 13) {
+    if (key === Constants.KEY.ENTER || key === 13 || key === 'Enter') {
       var itE = _sub.items[_sub.focusIdx];
       if (itE && itE.type === 'bool') return true; // swallowed on purpose
       activateFocusedSub();
@@ -1070,7 +1112,7 @@ var Settings = (function () {
     // Enter on a drill-in row opens its sub-page. Plain rows cycle
     // values with Left/Right only — Enter is intentionally inert.
     // SoftLeft must NEVER open sub-pages (LSK forbidden in settings).
-    if (key === Constants.KEY.ENTER || key === 13) {
+    if (key === Constants.KEY.ENTER || key === 13 || key === 'Enter') {
       var rowE = rows[_focusIdx];
       var t = rowE && rowE.getAttribute('data-type');
       if (t === 'sub') {
@@ -1184,14 +1226,21 @@ var Settings = (function () {
     try {
       if (k === 'exportLog') {
         if (typeof window.pfaStorageGranted === 'function' && !window.pfaStorageGranted()) {
-          if (typeof window.pfaGuardStorageLoad === 'function') window.pfaGuardStorageLoad(false);
+          // Explicit user action — always respond with the grant path
+          // (force), never a silent no-op.
+          if (typeof window.pfaGuardStorageLoad === 'function') window.pfaGuardStorageLoad(true);
           return;
         }
         if (typeof window.pfaExportLog === 'function') window.pfaExportLog();
       }
       else if (k === 'memory' && typeof window.pfaDumpMemory === 'function') window.pfaDumpMemory();
       else if (k === 'storageTest' && typeof window.pfaStorageDiagnose === 'function') window.pfaStorageDiagnose();
-    } catch (e) {}
+    } catch (e) {
+      // Never leave an explicit action unresponsive.
+      try {
+        if (typeof window.showDevDialog === 'function') window.showDevDialog('Action failed: ' + e);
+      } catch (e2) {}
+    }
   }
 
   function applyChange(group, key, next, def, row) {
@@ -1282,10 +1331,17 @@ var Settings = (function () {
       if (key === 'startDelay')    return { startDelay: val };
       if (key === 'noteLabels')    return { noteLabels: val };
       if (key === 'infoCard')      return { infoCard: val };
+      if (key === 'infoNps')       return { infoNps: val };
       if (key === 'infoNoteCount') return { infoNoteCount: val };
+      if (key === 'infoPassed')    return { infoPassed: val };
       if (key === 'infoSpeed')     return { infoSpeed: val };
       if (key === 'infoTime')      return { infoTime: val };
       if (key === 'infoFps')       return { infoFps: val };
+      if (key === 'infoPolyphony')    return { infoPolyphony: val };
+      if (key === 'infoRendered')     return { infoRendered: val };
+      if (key === 'infoAudioBuffer')  return { infoAudioBuffer: val };
+      if (key === 'infoTick')         return { infoTick: val };
+      if (key === 'infoBpm')          return { infoBpm: val };
       if (key === 'kbStart')       return { kbStart: val };
       if (key === 'kbEnd')         return { kbEnd: val };
       if (key === 'kbRange')       return { kbStart: _values.visual.kbStart, kbEnd: _values.visual.kbEnd };
@@ -1319,10 +1375,17 @@ var Settings = (function () {
       if (v.infoCard && on) el.classList.remove('hidden');
       else                  el.classList.add('hidden');
     }
-    gate('hud-note-count', v.infoNoteCount);
+    gate('hud-note-count', v.infoNps);
+    gate('hud-nc',           v.infoNoteCount);
+    gate('hud-passed',       v.infoPassed);
     gate('hud-speed',      v.infoSpeed);
     gate('hud-time',       v.infoTime);
     gate('hud-fps',        v.infoFps);
+    gate('hud-polyphony',     v.infoPolyphony);
+    gate('hud-rendered',      v.infoRendered);
+    gate('hud-audio-buffer',  v.infoAudioBuffer);
+    gate('hud-tick',          v.infoTick);
+    gate('hud-bpm',           v.infoBpm);
   }
 
   // ──────────────────────────────────────────────────────────────────

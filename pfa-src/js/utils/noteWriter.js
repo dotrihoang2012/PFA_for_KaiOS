@@ -59,11 +59,9 @@ var NoteWriter = (function () {
         }
         // No volume resolved a writable path → the OS prompt was already
         // shown (ensure/gate) and the user declined (or never answered).
-        // Explain how to grant instead of failing silently mid-analyze.
+        // NO dialog — the only permission dialog in the app is the hot-open
+        // gate; here we just stop the analyze.
         if (!best || best.path == null) {
-          if (typeof window !== 'undefined' && typeof window.pfaStorageDeniedDialog === 'function') {
-            window.pfaStorageDeniedDialog();
-          }
           onDone(null);
           return;
         }
@@ -72,16 +70,12 @@ var NoteWriter = (function () {
     }
     // Permission not already granted: do ONE genuine write check first so the
     // OS "Allow device-storage:sdcard?" prompt appears (or re-appears after a
-    // Not Allow). Only after the user declines do we show the instructions
-    // dialog — never a bare analyze-then-error.
+    // Not Allow). A decline just stops the analyze — no instructions dialog.
     var g = (typeof window !== 'undefined') ? window.pfaStorageGranted : null;
     if (typeof g !== 'function' || g()) { real(); return; }
     if (typeof StorageSel === 'undefined' || !StorageSel.ensure) { real(); return; }
     StorageSel.ensure(function (ok) {
       if (ok) { real(); return; }
-      if (typeof window !== 'undefined' && typeof window.pfaStorageDeniedDialog === 'function') {
-        window.pfaStorageDeniedDialog();
-      }
       onDone(null);
     });
   }

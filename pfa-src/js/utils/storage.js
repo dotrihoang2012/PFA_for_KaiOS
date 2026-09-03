@@ -39,6 +39,12 @@ var StorageSel = (function () {
    * from a crashed run is deleted once and the attempt retried.
    */
   function probePath(st, onDone) {
+    // HARD guard: a real write here (addNamed) re-opens the OS App Permissions
+    // prompt if it hasn't been granted yet. Only write when confirmed granted;
+    // otherwise report no path (read-only) — probeFree below still yields the
+    // free space the console wants.
+    if (_perm !== 'granted') { onDone(null, 'no-write-probe'); return; }
+    _diagLogWrite('probePath');
     var done = false;
     var attempt = 0;
     function finish(p, err) { if (done) return; done = true; onDone(p, err || null); }
@@ -181,11 +187,25 @@ var StorageSel = (function () {
 
   /** Single sequential probe pass over every volume (no coordinator). */
   function readProbe(st, cb) {
+    // HARD guard: when the permission is NOT granted (still pending, or
+    // revoked/denied) do NOT touch freeSpace() — on some KaiOS builds
+    // freeSpace() itself re-opens the OS App Permissions prompt, which is the
+    // "second prompt right after deny" bug. Report no usable data instead;
+    // the console already printed the free-space check as cancelled/held.
+    if (_perm !== 'granted') {
+      try { cb(infoFor(st, -1, 'perm-not-granted', null, 'no-write-probe')); } catch (e) {}
+      return;
+    }
     probeFree(st, function (free, freeErr) {
       try { cb(infoFor(st, free, freeErr, null, 'no-write-probe')); } catch (e) {}
     });
   }
   function _detectRaw(onDone, readOnly) {
+    // HARD guarantee: never write unless the permission is already confirmed
+    // granted. Issuing addNamed/probePath while the permission is pending or
+    // denied makes the OS re-show its App Permissions prompt (the "fresh
+    // install asks twice" bug) — writes are allowed here ONLY after grant.
+    if (!readOnly && _perm !== 'granted') readOnly = true;
     var all;
     try { all = (navigator.getDeviceStorages && navigator.getDeviceStorages('sdcard')) || []; }
     catch (e) { all = []; }
@@ -235,37 +255,41 @@ var StorageSel = (function () {
   }
 
   var _wakeGate = false;
-  // Decided by key probe (see _listenWake): the OS permission prompt is a
-  // MODAL — while it is up, keys never reach the app. So the first key that
-  // DOES reach the app with permission still "pending" proves the prompt just
-  // closed. A single bounded addNamed then decides it: Allow → granted
-  // instantly; a Not Allow makes the request hang → the 1.5s cap declares
-  // "denied" so the grant dialog appears promptly instead of a 90s timeout.
-  function _decidePerm() {
-    if (_perm === 'granted' || _perm === 'denied') return;
-    console.log('[Storage] prompt closed / first key — running decisive single write check…');
-    var st = _storageList()[0];
-    if (!st) { setPerm('denied'); return; }
-    var nm = 'others/pfa_tmp/.perm' + Date.now() + '-' + Math.floor(Math.random() * 1e9);
-    var done = false;
-    function finish(ok, perm) { if (done) return; done = true; setPerm(perm); }
-    var req;
-    try { req = st.addNamed(new Blob(['p'], { type: 'text/plain' }), nm); }
-    catch (e) { finish(false, 'denied'); return; }
-    var t = setTimeout(function () { finish(false, 'denied'); }, 1500);
-    req.onsuccess = function () {
-      clearTimeout(t);
-      try { st.delete(nm); } catch (e) {}
-      finish(true, 'granted');
-    };
-    req.onerror = function () {
-      clearTimeout(t);
-      var en = (req.error && req.error.name) || '';
-      finish(false, _isDenyName(en) ? 'denied' : 'denied');
-    };
-  }
+  // Focus/visibility returning while the gate's write is STILL unanswered
+  // (`_gateWaiting`) means the prompt closed without the write resolving.
+  // We NEVER conclude DENIED here: a "denied" read could be the OS auto-
+  // dismissing the prompt after a timeout rather than the user pressing Deny,
+  // and the requirement is to WAIT INDEFINITELY (no timeout → no auto-deny).
+  // The ONLY trustworthy signal for a real user Deny is the gate write's
+  // onerror (req.onerror → denied). So this path can only ever promote to
+  // GRANTED — a timeout is never a false grant, so a read of "granted" here
+  // is safe to accept.
+  var _decidePerm = function () {
+    if (_perm !== 'prompt' && _perm !== 'pending') return;
+    // Only act while the gate's prompt-triggering write is STILL unanswered.
+    // If the write already settled, the gate already decided via onsuccess/
+    // onerror — never re-decide here.
+    if (!_gateWaiting) return;
+    _verifyNoPrompt(function (p) {
+      if (_perm === 'granted' || _perm === 'denied') return;
+      // A real user Deny always arrives through req.onerror; only a GRANT is
+      // trusted here. Anything else (denied from an OS auto-timeout, or
+      // unknown) → keep waiting, never conclude denied.
+      if (p !== 'granted') return;
+      console.log('[Storage] permission = granted — boot free-space check runs normally');
+      setPerm('granted');
+    });
+  };
   function _listenWake() {
-    function wake() { _wakeGate = true; }
+    function wake() {
+      _wakeGate = true;
+      // The OS permission prompt is MODAL: the window only regains focus /
+      // visibility after the user answered it. When a write request then
+      // NEVER calls back (this KaiOS build hangs on Not Allow), settle the
+      // decision read-only right here: deny is detected instantly, and no
+      // second write is ever issued (so no second prompt).
+      if (_perm === 'pending') _decidePerm();
+    }
     try {
       var doc = document;
       doc.addEventListener('visibilitychange', function () {
@@ -281,19 +305,108 @@ var StorageSel = (function () {
     try { doc.addEventListener('keyup', key, false); } catch (e) {}
   }
 
+  // Read-only permission state via the Permissions API — NO write, so it
+  // NEVER triggers the OS "Allow device-storage:sdcard?" prompt. This stops
+  // the app re-asking App Permissions on every reopen when the permission
+  // was already denied/revoked. cb('granted' | 'denied' | 'prompt' | null
+  // when unsupported).
+  function queryPerm(cb) {
+    var done = false;
+    function ok(v) { if (!done) { done = true; try { cb(v); } catch (e) {} } }
+    try {
+      if (navigator.permissions && typeof navigator.permissions.query === 'function') {
+        navigator.permissions.query({ name: 'device-storage:sdcard' }).then(
+          function (r) {
+            var s = (r && r.state) || '';
+            ok((s === 'granted' || s === 'denied' || s === 'prompt') ? s : null);
+          },
+          function () { ok(null); }
+        );
+        return;
+      }
+    } catch (e) {}
+    ok(null);
+  }
+
   // ── Runtime storage-permission state ────────────────────────────────
-  // 'granted' → writes accepted; 'denied' → user refused / revoked via
-  // Settings → App Permissions; 'pending' → dialog unanswered or unprovable
-  // yet. Menu items that write to storage (Load MIDI, Export Log) yield and
-  // show a grant-path hint whenever this isn't 'granted'.
+  // Persisted across app opens so a denied permission is known WITHOUT a
+  // single write on the next boot — a write while revoked is what makes the
+  // OS re-show its App Permissions prompt on every reopen. The cache is only
+  // a hint; _verifyNoPrompt() re-checks it with read-only API calls so a
+  // permission re-granted in Settings is picked up automatically.
+  var PERM_KEY = 'pfa.storage.perm';
+  function _readsCachedPerm() {
+    try {
+      var v = localStorage.getItem(PERM_KEY);
+      return (v === 'granted' || v === 'denied') ? v : null;
+    } catch (e) { return null; }
+  }
+  function _writeCachedPerm(p) {
+    try { localStorage.setItem(PERM_KEY, p); } catch (e) {}
+  }
+  // Resolve the permission with NO write and NO OS prompt:
+  //   1. Permissions API query, when supported (definitive).
+  //   2. Last session's persisted decision (cache) — for a GRANT only.
+  //   3. null → truly unknown (fresh install, or OS query unsupported).
+  // A cached "denied" is deliberately NOT trusted here: the user may have
+  // re-granted in Settings after we last wrote the cache, so returning a stale
+  // "denied" would make every reopen (and hot-open) show the deny error forever
+  // even after a re-grant. Only the OS query's own "denied" is authoritative.
+  // freeSpace() is deliberately NOT a signal: on KaiOS it returns a number even
+  // when write access is refused, so it would report granted wrongly.
+  // cb('granted' | 'denied' | null).
+  function _verifyNoPrompt(cb) {
+    queryPerm(function (qst) {
+      if (qst === 'granted' || qst === 'denied') { cb(qst); return; }
+      var c = _readsCachedPerm();
+      cb(c === 'granted' ? 'granted' : null);
+    });
+  }
+  // Always start as 'pending' — never trust the cache synchronously at load.
+  // The OS may have reset the permission (reinstall clears OS state but NOT
+  // localStorage), so a stale "denied" cache would make the error dialog pop
+  // BEFORE the system prompt even appears. Let the async _validatePermCache
+  // and the gate set the real value.
   var _perm = 'pending';
   var _permCbs = [];
+
+  // ── Boot-time cache validation ───────────────────────────────────────────
+  // On KaiOS, reinstalling the app clears the OS permission state but NOT
+  // localStorage. So cache can say "denied" while the OS is back to "prompt"
+  // and will show its "Allow memory card?" dialog again at launch. If we
+  // blindly trust the stale cache, the error dialog pops BEFORE the user has
+  // had a chance to press Allow/Cancel on the system prompt. Fix: re-check
+  // with the read-only Permissions API at load. When the API says "prompt"
+  // (or is unsupported/null) but cache says "denied", the cache is stale —
+  // the user may have re-granted in Settings since we last wrote it — clear
+  // it and let the gate re-determine via its real write (which succeeds
+  // silently on a re-granted device).
+  (function _validatePermCache() {
+    queryPerm(function (qst) {
+      // If the gate or _decidePerm already decided, don't override.
+      if (_perm !== 'pending') return;
+      if (qst === 'granted') { setPerm('granted'); return; }
+      if (qst === 'denied')  { setPerm('denied');  return; }
+      // query says 'prompt' or is unsupported (null) → the OS cannot confirm
+      // a denial read-only. A cached "denied" from a previous session may now
+      // be stale (user re-granted in Settings), so don't trust it — drop it
+      // and let the gate re-detect. Only a confident read-only 'denied' from
+      // the OS keeps the error dialog without any storage access.
+      var cached = _readsCachedPerm();
+      if (cached === 'denied') {
+        console.log('[Storage] cached denied but OS query cannot confirm (' + qst + ') — clearing stale cache so a Settings re-grant is detected');
+        try { localStorage.removeItem(PERM_KEY); } catch (e) {}
+        setPerm('pending');
+      }
+    });
+  })();
   var PERM_DENY = ['SecurityError', 'NotAllowedError', 'DeniedError',
                    'PermissionDeniedError', 'NoPermissionError'];
   function _isDenyName(n) { return !!n && PERM_DENY.indexOf(n) !== -1; }
   function setPerm(p) {
     if (p === _perm) return;
     _perm = p;
+    if (p === 'granted' || p === 'denied') _writeCachedPerm(p);
     for (var i = 0; i < _permCbs.length; i++) {
       try { _permCbs[i](_perm); } catch (e) {}
     }
@@ -304,12 +417,11 @@ var StorageSel = (function () {
   }
   function markDenied() { setPerm('denied'); }
 
-  // One-shot writable check (short cap). onDone(granted). Keeps _perm in
-  // sync. Uses a UNIQUE name so a stale .perm file can never trip
-  // NoModificationAllowed into a false "blocked".
-  // NEVER issues its own addNamed while a gate/session is deciding: a second
-  // concurrent tiny write while the OS prompt is unanswered queues a SECOND
-  // permission prompt (the "fresh install asks twice" bug).
+  // Read-only permission re-check. onDone(granted). NEVER writes: a bogus
+  // write while the permission is revoked re-opens the OS App Permissions
+  // prompt (the "asks again on every reopen" bug). Decision comes from
+  // _verifyNoPrompt → query + freeSpace + last-session cache; existing
+  // in-flight session/gate results take precedence when still deciding.
   function refreshPerm(onDone) {
     onDone = onDone || function () {};
     if (_perm === 'granted') { onDone(true); return; }
@@ -319,30 +431,14 @@ var StorageSel = (function () {
         : _gateWritable(function (ok) { onDone(ok); }));
       return;
     }
-    var once = false;
-    function finish(ok, perm) {
-      if (once) return;
-      once = true;
-      setPerm(perm);
-      onDone(ok);
-    }
-    var st = _storageList()[0];
-    if (!st) { setPerm('pending'); onDone(false); return; }
-    var nm = 'others/pfa_tmp/.perm' + Date.now() + '-' + Math.floor(Math.random() * 1e9);
-    var req;
-    try { req = st.addNamed(new Blob(['p'], { type: 'text/plain' }), nm); }
-    catch (e) { finish(false, 'denied'); return; }
-    var t = setTimeout(function () { finish(false, 'pending'); }, 1200);
-    req.onsuccess = function () {
-      clearTimeout(t);
-      try { st.delete(nm); } catch (e) {}
-      finish(true, 'granted');
-    };
-    req.onerror = function () {
-      clearTimeout(t);
-      var en = (req.error && req.error.name) || '';
-      finish(false, _isDenyName(en) ? 'denied' : 'pending');
-    };
+    _verifyNoPrompt(function (p) {
+      // Unknown (null) is NOT a denial — don't guess "denied", or the error
+      // dialog would appear before the user has actually declined. Set only
+      // when we have real evidence (granted/denied from query or cache).
+      if (!p) { onDone(_perm === 'granted'); return; }
+      setPerm(p);
+      onDone(p === 'granted');
+    });
   }
 
   // Mutex around the gate: at most ONE addNamed loop may run at a time.
@@ -352,6 +448,25 @@ var StorageSel = (function () {
   // simply chain behind the running gate instead of issuing their own.
   var _gateBusy = false;
   var _gateQueue = [];
+  // Session-scoped: the OS permission prompt may only ever be triggered once
+  // per app session (by the FIRST real write). Every later gate resolves
+  // read-only, so a deny that makes requests hang can never cause a SECOND
+  // App Permissions prompt.
+  var _gateWrote = false;
+  // True while the gate's prompt-triggering write request is still unanswered
+  // on the OS side (its dialog was shown). Used to detect "prompt closed" via
+  // focus/visibility (a deny never calls back on this build) without ever
+  // mis-resolving permission at plain app load.
+  var _gateWaiting = false;
+  // DIAGNOSTIC: total number of real DeviceStorage writes issued this session.
+  // The OS App Permissions prompt appears once per unresolved write — if the
+  // user ever reports seeing the prompt MORE than once, this counter shows how
+  // many writes actually fired and helps pinpoint the extra call site.
+  var _diagWrites = 0;
+  function _diagLogWrite(src) {
+    _diagWrites++;
+    console.log('[Storage][DIAG] DeviceStorage WRITE #' + _diagWrites + ' from: ' + src + ' (perm=' + _perm + ', gateWrote=' + _gateWrote + ')');
+  }
   function _gateWritable(onReady, maxElapsed) {
     if (_gateBusy) { _gateQueue.push(onReady); return; }
     _gateBusy = true;
@@ -367,62 +482,89 @@ var StorageSel = (function () {
 
   /**
    * Gate: waits until the storage subsystem ACCEPTS WRITES. On first launch a
-   * KaiOS permission dialog ("Allow device-storage:sdcard?") is shown; every
-   * request issued while it's still pending hangs, so the boot probe times
-   * out → both volumes print "?". The gate instead retries ONE tiny unique
-   * write with a short 900ms cap until it succeeds (permission answered:
-   * Allow) or the wall-clock budget runs out. Only then does the heavy probe
-   * run — so "allow after the dialog sat there for a while" recovers cleanly.
+   * KaiOS permission dialog is shown — on this device the system labels its
+   * buttons "Cancel" (= deny) and "OK" (= allow); the app cannot rename them.
+   * Every request issued while the prompt is still pending just hangs (and on
+   * some builds a Not-Allow never fires a callback at all).
+   * The gate issues EXACTLY ONE tiny unique write and then WAITS for the user:
+   * OK → onsuccess → granted; Cancel → onerror → denied. No second write is
+   * ever issued here — a retry is what made the OS re-show its permission
+   * dialog right after a deny (the "asks twice on fresh install" bug). If the
+   * prompt never resolves (system stuck) the long cap releases the gate as
+   * still-pending (no re-prompt); the first key that then reaches the app
+   * (_decidePerm) settles the unanswered decision read-only.
    */
-  function _gateWritableUnsafe(onReady, maxElapsed) {
-    var t0 = Date.now();
-    var budget = maxElapsed || 90000;
-    var st = _storageList()[0];
-    if (!st) { onReady(false); _releaseGate(); return; }
-    var n = 0, warned = false, sawDeny = false;
-    function finish(ok) {
-      if (!ok && !sawDeny && Date.now() - t0 <= budget) {
-        if (!warned && Date.now() - t0 > 4000) {
-          warned = true;
-          console.log('[Storage] waiting for storage permission… (Allow device-storage:sdcard) — probing paused until granted');
-        }
-        setTimeout(tryOnce, _wakeGate ? 0 : 300);
-        return;
-      }
-      // Budget ran dry without a deny → treat as denied so the UI knows the
-      // write never became available.
-      if (!ok && !sawDeny && _perm !== 'granted') setPerm('denied');
-      onReady(ok);
-      _releaseGate();
-    }
+  function _gateWritableUnsafe(onReady) {
+    if (!_storageList()[0]) { onReady(false); _releaseGate(); return; }
     (function tryOnce() {
-      // The wake-check may have decided permission already while this loop
-      // was waiting on a hanging prompt: abort to the decision instead of
-      // issuing more tiny writes (each one past a Not Allow waits 900ms and,
-      // worse, can make the OS re-prompt the permission).
+      // The wake-check may have decided permission already while this loop was
+      // waiting on a hanging prompt: abort to the decision instead of writing.
       if (_perm === 'denied') { onReady(false); _releaseGate(); return; }
       if (_perm === 'granted') { onReady(true); _releaseGate(); return; }
-      var nm = 'others/pfa_tmp/.perm' + Date.now() + '-' + (n++) + '-' + Math.floor(Math.random() * 1e6);
-      var settled = false;
-      var req;
-      try { req = st.addNamed(new Blob(['p'], { type: 'text/plain' }), nm); }
-      catch (e) { finish(false); return; }
-      var t = setTimeout(function () { if (settled) return; settled = true; finish(false); }, 900);
-      req.onsuccess = function () {
-        if (settled) return; settled = true; clearTimeout(t);
-        try { st.delete(nm); } catch (e) {}
-        setPerm('granted');
-        finish(true);
-      };
-      req.onerror = function () {
-        var en = (req.error && req.error.name) || '';
-        if (settled) return; settled = true; clearTimeout(t);
-        // Permission denied (Not Allow): STOP retrying immediately — hammering
-        // addNamed while revoked can make the OS re-prompt the permission (the
-        // "I had to say Not Allow twice" report) and destabilise the app.
-        if (_isDenyName(en)) { sawDeny = true; setPerm('denied'); }
-        finish(false);
-      };
+      // Read-only pre-check via the OS Permissions API — NOT the localStorage
+      // cache. Only an authoritative read-only verdict lets us short-circuit
+      // WITHOUT writing. We deliberately do NOT trust a cached "denied" here:
+      // the user may have re-granted in Settings since the cache was written,
+      // and trusting it would re-show the error on every reopen forever (the
+      // "re-grant in Settings then reopen still errors" bug). So:
+      //   granted → no prompt, granted;  denied → no prompt, error;
+      //   prompt / unsupported / cache-only → do the ONE real write to
+      //   re-verify (silent on an already-granted device).
+      queryPerm(function (qst) {
+        if (_perm === 'denied') { onReady(false); _releaseGate(); return; }
+        if (_perm === 'granted') { onReady(true); _releaseGate(); return; }
+        if (qst === 'granted') { setPerm('granted'); onReady(true); _releaseGate(); return; }
+        if (qst === 'denied') { setPerm('denied'); onReady(false); _releaseGate(); return; }
+        // The OS prompt can only appear from the FIRST real write of the
+        // session. If a write already happened (even if the answer left the
+        // request hanging instead of erroring), later gates NEVER write again —
+        // they resolve read-only. This guarantees the permission dialog shows
+        // at most once, even when a deny makes requests hang on the device.
+        if (_gateWrote) {
+          // Already asked this session — NEVER issue another write. Resolve
+          // read-only only from the OS query; unknown stays pending rather
+          // than guessing denied.
+          if (qst === 'granted' || qst === 'denied') {
+            setPerm(qst);
+            console.log('[Storage] permission already asked this session — resolving read-only (' + qst + '), NOT re-asking');
+            onReady(qst === 'granted'); _releaseGate(); return;
+          }
+          console.log('[Storage] permission already asked this session — still unresolved, NOT re-asking');
+          onReady(false); _releaseGate(); return;
+        }
+        _gateWrote = true;
+        _diagLogWrite('gate-doWrite');
+        console.log('[Storage] === GATE WRITE #1 === perm=' + _perm + ' → addNamed → waiting for user to press Allow or Deny on the system prompt...');
+        doWrite();
+      });
+      function doWrite() {
+        var st = _storageList()[0];
+        if (!st) { onReady(false); _releaseGate(); return; }
+        var nm = 'others/pfa_tmp/.perm' + Date.now() + '-' + Math.floor(Math.random() * 1e9);
+        var settled = false;
+        var req;
+        try { req = st.addNamed(new Blob(['p'], { type: 'text/plain' }), nm); }
+        catch (e) { onReady(false); _releaseGate(); return; }
+        // The OS permission prompt is now visible. Wait INDEFINITELY for the
+        // user to press Allow (onsuccess) or Cancel (onerror). No timeout,
+        // no auto-conclusion — the app simply waits until the user decides.
+        _gateWaiting = true;
+        req.onsuccess = function () {
+          if (settled) return; settled = true; _gateWaiting = false;
+          try { st.delete(nm); } catch (e) {}
+          setPerm('granted');
+          onReady(true);
+          _releaseGate();
+        };
+        req.onerror = function () {
+          var en = (req.error && req.error.name) || '';
+          if (settled) return; settled = true; _gateWaiting = false;
+          console.log('[Storage][DIAG] gate write onerror — error.name=' + JSON.stringify(en) + ' isDenyName=' + _isDenyName(en));
+          if (_isDenyName(en)) { setPerm('denied'); onReady(false); _releaseGate(); return; }
+          console.log('[Storage] real write failed (' + (en || 'no error-name') + ') — leaving permission pending');
+          onReady(false); _releaseGate();
+        };
+      }
     }());
   }
 
@@ -452,7 +594,10 @@ var StorageSel = (function () {
     }
     var round = function () {
       if (done) return;
-      var ro = (_perm !== 'granted');
+      // If the gate did NOT return "granted", the permission is pending or
+      // denied — NEVER issue a writable probe here (each addNamed while the
+      // OS prompt is unanswered/un-granted re-opens it). Force read-only.
+      var ro = (_perm !== 'granted') ? true : false;
       tries++;
       _detectRaw(function (infos) {
         if (done) return;
@@ -540,8 +685,43 @@ var StorageSel = (function () {
    * Boot-time console log: prints each volume (internal vs SD) with the REAL
    * probed path/free and any per-request error so failures are diagnosable.
    */
+  var _bootLogState = ''; // '' | 'granted' | 'cancelled'
+  function _bootStorageLog(perm) {
+    var p = perm || permState();
+    if (p !== 'granted' && p !== 'denied') return; // pending → wait for the user's decision
+    if (p === 'denied') {
+      if (_bootLogState === 'cancelled') return;
+      _bootLogState = 'cancelled';
+      console.log('[Storage] permission not granted — free-space check cancelled');
+      return;
+    }
+    if (_bootLogState === 'granted') return;
+    _bootLogState = 'granted';
+    // Granted: now (and only now) probe freeSpace and show the volumes.
+    var vols = _storageList();
+    if (!vols.length) {
+      console.log('[Storage] no DeviceStorage available after grant');
+      return;
+    }
+    console.log('[Storage] boot volumes:');
+    vols.forEach(function (st, i) {
+      probeFree(st, function (free, err) {
+        var mb = free >= 0 ? (free / 1048576).toFixed(1) + 'MB' : '?';
+        console.log('[Storage]   [' + i + '] name=' + (st.storageName || '?') +
+          ' default=' + !!st['default'] + ' free=' + mb +
+          (free < 0 && err ? ' (' + err + ')' : ''));
+      });
+    });
+  }
+
   function log() {
     console.log('[Storage] probe started (distinguish internal vs SD)');
+    // Free-space listing only AFTER the permission decision: granted → probe
+    // and show the volumes; denied / not granted → one "cancelled" line and
+    // no free-space probe; pending → wait for the user to choose Allow/Not
+    // Allow on the OS prompt.
+    _bootStorageLog();
+    onPerm(_bootStorageLog);
     _onSessionResult(function (infos) {
       if (!infos.length) {
         console.log('[Storage] no DeviceStorage available');
@@ -610,6 +790,7 @@ var StorageSel = (function () {
     permState: permState,
     onPerm: onPerm,
     markDenied: markDenied,
+    verifyNoPrompt: _verifyNoPrompt,
     refreshPerm: refreshPerm
   };
 })();

@@ -17,6 +17,8 @@ var Sequencer = (function () {
   var tickStart = 0;
   var active  = [];   // visual list (LK lookahead)
   var audioActive = []; // keyboard/audio list (current notes only)
+  var passedCount = 0;  // cumulative notes that have hit the band and moved on
+  var _ended = false;   // true after natural song end (Play restarts from 0)
   var _seekPending = null;    // streaming provider seek window load
   var _resumeSeek  = false;   // play() was requested while a seek was pending
 
@@ -39,7 +41,7 @@ var Sequencer = (function () {
     _seekPending = null; _resumeSeek = false;
     Tempo.map = tempoList || [{ t: 0, u: 500000 }];
     Tempo.div = division || 480;
-    cursor = 0; tick = 0; active = []; audioActive = []; stopPlay();
+    cursor = 0; tick = 0; active = []; audioActive = []; passedCount = 0; _ended = false; stopPlay();
   }
 
   // Streaming provider: return a resolved note object for index i (must have
@@ -58,14 +60,20 @@ var Sequencer = (function () {
   }
   function startPlay() {
     if (!notes.length || playing) return;
+    if (_ended) { _ended = false; cursor = 0; tick = 0; active = []; audioActive = []; passedCount = 0; }
     if (_seekPending) { _resumeSeek = true; return; }
     _beginTimer();
   }
   function stopPlay() { playing = false; if (timer) { clearInterval(timer); timer = null; } }
-  function fullStop() { _seekPending = null; _resumeSeek = false; stopPlay(); cursor = 0; tick = 0; active = []; audioActive = []; }
+  function fullStop() { _seekPending = null; _resumeSeek = false; stopPlay(); cursor = 0; tick = 0; active = []; audioActive = []; passedCount = 0; _ended = false; }
+  function isEnded() { return _ended; }
 
   function _finishSeek(idx) {
     cursor = (idx > 0) ? idx : 0;
+    // Notes before the new cursor position have effectively "passed" — sync
+    // the passed counter so the info card shows the correct count (and the
+    // skipped-over notes aren't silently dropped from the tally).
+    passedCount = Math.min(cursor, notes ? notes.length : cursor);
     _seekPending = null;
     if (_resumeSeek) { _resumeSeek = false; _beginTimer(); }
   }
@@ -81,6 +89,7 @@ var Sequencer = (function () {
     }
     cursor = 0;
     while (cursor < notes.length && notes[cursor].t < tick) cursor++;
+    passedCount = Math.min(cursor, notes.length);
   }
   function jumpTo(tt) {
     stopPlay(); active = []; audioActive = []; tick = tt;
@@ -92,6 +101,7 @@ var Sequencer = (function () {
     }
     cursor = 0;
     while (cursor < notes.length && notes[cursor].t < tick) cursor++;
+    passedCount = Math.min(cursor, notes.length);
   }
 
   var _pls = 0;
@@ -131,7 +141,13 @@ var Sequencer = (function () {
       var esSec = Tempo.toSec(etk);
       var delay = (ss - nowSec) / speed;
       var dur   = (esSec - ss) / speed;
-      if (ss >= nowSec - 0.05) {
+      // When the pulse runs late the note may already be dead — count it as
+      // passed immediately (it never renders, it already went by). Otherwise
+      // push it so the renderer shows it and cleanup counts it as passed when
+      // it expires. Never DROP notes: Passed must reach NC at song end.
+      if (esSec < nowSec - 0.05) {
+        passedCount++;
+      } else {
         if (delay <= 0.05 && auCnt < AUDIO_PER_PULSE && fireOn) {
           fireOn(n.n, n.c, n.v, Math.max(0, delay), dur);
           auCnt++;
@@ -147,6 +163,7 @@ var Sequencer = (function () {
       var a = active[i];
       // Remove if note ended more than 0.5s ago OR starts after lookahead
       if (a.endSec < nowSec - 0.05 || a.startSec > hor) {
+        if (a.endSec < nowSec - 0.05) passedCount++; // note already hit the band
         active.splice(i, 1);
       }
     }
@@ -167,17 +184,29 @@ var Sequencer = (function () {
         }
       }
     }
-    if (cursor >= notes.length && !active.length) { stopPlay(); if (fireEnd) fireEnd(); }
+    if (cursor >= notes.length && !active.length) {
+      // Natural end: every note has been emitted/hit the band. Notes that were
+      // pushed into `active` inside the lookahead and then pruned by
+      // `startSec > hor` (cleanup above) are never re-counted there, so force
+      // Passed up to the full track total so HUD shows Passed === NC at the end.
+      _ended = true; passedCount = notes.length; audioActive = []; stopPlay(); if (fireEnd) fireEnd();
+    }
   }
 
   function list() { return active; }
   function audioList() { return audioActive; }
+  function passed() {
+    // Clamp so Passed never exceeds the track's total (tail boundary artifacts /
+    // duplicate-row edges can momentarily overcount; the user expects ≤ NC).
+    return Math.min(passedCount, notes ? notes.length : passedCount);
+  }
 
   return {
     load: load, play: startPlay, pause: stopPlay, stop: fullStop,
     seek: seekDelta, jumpTick: jumpTo,
     getTick: function(){return tick;},
     getTime: function(){return Tempo.toSec(tick);},
+    isEnded: isEnded,
     isPlaying: function(){return playing;},
     setSpeed: function(s){
     // Recalibrate tick reference to avoid position jump on speed change
@@ -190,6 +219,6 @@ var Sequencer = (function () {
     noteDown: function(fn){fireOn=fn;},
     noteUp: function(fn){fireOff=fn;},
     onEnd: function(fn){fireEnd=fn;},
-    activeList: list, audioList: audioList, bpm: function(){return Tempo.bpm(tick);},
+    activeList: list, audioList: audioList, passed: passed, bpm: function(){return Tempo.bpm(tick);},
   };
 })();

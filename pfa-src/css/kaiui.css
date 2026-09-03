@@ -357,6 +357,21 @@ html, body {
   opacity: 0.4;
 }
 
+/* BETA-locked menu item (MIDI-OUT under construction in the beta): greyed
+   out, but still focusable/tappable so pressing it can show the beta
+   dialog instead of being fully inert. The focus highlight is kept (dimmed
+   to match the rest of the item) so the user still sees which row is
+   selected. */
+.kai-om-item.beta-locked {
+  opacity: 0.4;
+}
+.kai-om-item.beta-locked:focus,
+.kai-om-item.beta-locked.focused {
+  color: var(--color-gs00);
+  background: #0066cc;
+  opacity: 0.4;
+}
+
 /* ============================================
    LOADING SCREEN (KaiOS style)
    ============================================ */
@@ -451,6 +466,12 @@ html, body {
 #app.fullscreen .kai-om-overlay {
   top: 0;
   height: 100%;
+}
+
+/* Fullscreen: navigation/softkey bar is hidden, so the dialog must sit
+   flush against the bottom (no leftover 3rem softkey gap). */
+#app.fullscreen .kai-dialog {
+  bottom: 0;
 }
 
 /* Solid white backdrop inside the menu/settings panel — keeps canvas

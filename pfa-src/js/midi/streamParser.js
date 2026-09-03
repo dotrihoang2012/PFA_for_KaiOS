@@ -34,13 +34,17 @@ var StreamParser = (function () {
                                 // array + pack transient on old-Gecko heaps,
                                 // at the cost of ~2× more run files (merge RAM
                                 // stays flat either way).
-  var MERGE_K      = 12;         // max files opened at once during merge
-  var FIN_BATCH    = 16384;      // notes packed per final append
-  var MERGE_WINDOW = 524280;     // per-run read window during merge (~512KB,
-                                 // multiple of NOTE_SIZE so note boundaries never
-                                 // split across windows). Keeps merge RAM at
-                                 // ~MERGE_K × window instead of holding whole
-                                 // (possibly multi-MB intermediate) runs.
+  var MERGE_K      = 4;          // max files opened at once during merge
+  var FIN_BATCH    = 8192;      // notes packed per final append
+  var MERGE_WINDOW = 262140;    // per-run read window during merge (~256KB,
+                                // multiple of NOTE_SIZE so note boundaries never
+                                // split across windows). Keeps merge RAM at
+                                // ~MERGE_K × window instead of holding whole
+                                // (possibly multi-MB intermediate) runs. Smaller
+                                // K + window = lower peak heap at the cost of
+                                // more read/append cycles (device GC is slow and
+                                // SpiderMonkey does NOT return grown heap to the
+                                // OS, so peak heap is what Device Manager shows).
   var MAX_TEMPO    = 512;        // cap on tempo-change records kept in the .note
                                  // header (8 bytes each; source MIDIs rarely need
                                  // more, and it bounds header size to ~4KB)
@@ -77,8 +81,19 @@ var StreamParser = (function () {
       function doRej(e) { if (!settled) { settled = true; reject(e); } }
       var b = blob.slice(start, start + len);
       var fr = new FileReader();
-      fr.onload = function () { clearTimeout(t); doRes(fr.result); };
-      fr.onerror = function () { clearTimeout(t); doRej(new Error('readAsArrayBuffer failed')); };
+      function done() {
+        // Drop the FileReader + its cached .result (ArrayBuffer) so a long
+        // merge chain doesn't let FRs accumulate and pin memory. Without
+        // this, each read's `b`/`fr`/`result` stays reachable through the
+        // resolved closure until the next microtask — on a big multi-window
+        // merge that stacks buffers and drives the heap peak up.
+        var out = fr.result;
+        fr.onload = fr.onerror = null;
+        clearTimeout(t);
+        doRes(out);
+      }
+      fr.onload = done;
+      fr.onerror = function () { try { fr.abort(); } catch (e) {} fr.onload = fr.onerror = null; clearTimeout(t); doRej(new Error('readAsArrayBuffer failed')); };
       var t = setTimeout(function () { try { fr.abort(); } catch (e) {} doRej(new Error('readSliceAB timeout')); }, 20000);
       fr.readAsArrayBuffer(b);
     });
@@ -205,17 +220,14 @@ var StreamParser = (function () {
             });
           }
           if (!use || use.path == null) {
-            // No writable volume. When the permission was truly revoked the
-            // grant-path dialog is the ONLY message we may show — resolving
-            // { blocked } lets midiToNote stop SILENTLY (onCancel) so the
-            // error dialog can never overwrite the permission dialog.
+            // No writable volume. When the permission was truly revoked we
+            // resolve { blocked } so midiToNote stops SILENTLY (onCancel) —
+            // NO dialog: the only permission dialog in the app is the
+            // hot-open gate.
             var denied = (typeof window !== 'undefined' && window.pfaStorageDenied &&
                           typeof window.pfaStorageDenied === 'function' &&
                           window.pfaStorageDenied());
             if (denied) {
-              if (typeof window !== 'undefined' && typeof window.pfaStorageDeniedDialog === 'function') {
-                window.pfaStorageDeniedDialog();
-              }
               done({ blocked: true });
               return;
             }
@@ -227,17 +239,13 @@ var StreamParser = (function () {
       }
       // Permission not already granted: do ONE genuine write check first so
       // the OS "Allow device-storage:sdcard?" prompt appears (or re-appears
-      // after a Not Allow). A decline → show the instructions dialog and
-      // resolve { blocked } (NEVER reject → no "analyze failed" error dialog
-      // on top of the permission dialog).
+      // after a Not Allow). A decline → resolve { blocked } (NEVER reject →
+      // no "analyze failed" error dialog over the permission dialog).
       var g = (typeof window !== 'undefined') ? window.pfaStorageGranted : null;
       if (typeof g !== 'function' || g()) { real(); return; }
       if (typeof StorageSel === 'undefined' || !StorageSel.ensure) { real(); return; }
       StorageSel.ensure(function (ok) {
         if (ok) { real(); return; }
-        if (typeof window !== 'undefined' && typeof window.pfaStorageDeniedDialog === 'function') {
-          window.pfaStorageDeniedDialog();
-        }
         done({ blocked: true });
       });
     });
@@ -351,6 +359,19 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
   function collectGarbage() {
     try { if (typeof window !== 'undefined' && typeof window.gc === 'function') { window.gc(); return; } } catch (e) {}
     try { if (typeof window !== 'undefined' && typeof window.forceGC === 'function') { window.forceGC(); } } catch (e) {}
+  }
+
+  // Current JS heap in KiB, or -1 if no gauge is exposed. Kaiso is a Gecko/Firefox
+  // OS descendant, so besides performance.memory it may expose navigator.mozMemory
+  // (the API the Visibility Monitor era used). Returns the first that works.
+  function heapKB() {
+    try {
+      var mem = (typeof performance !== 'undefined' && performance.memory) ||
+                (typeof navigator !== 'undefined' && navigator.mozMemory) ||
+                (typeof window !== 'undefined' && window.mozMemory);
+      if (mem && typeof mem.usedJSHeapSize === 'number') return mem.usedJSHeapSize / 1024;
+      return -1;
+    } catch (e) { return -1; }
   }
 
   function createParseState() {
@@ -607,7 +628,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
               // reader, then resume.
               var doRefills = flush().then(function () {
                 if (_convertCancel) return Promise.reject(mkCancel());
-                if (written > loopLogAt) { loopLogAt = written + FIN_BATCH * 20; console.log('[StreamParser] merge progress notes=' + written); }
+                if (written > loopLogAt) { loopLogAt = written + FIN_BATCH * 20; console.log('[StreamParser] merge progress notes=' + written + ' heapKB=' + heapKB()); collectGarbage(); }
                 var parked = [];
                 for (var j = 0; j < readers.length; j++) {
                   var pj = readers[j];
@@ -625,7 +646,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
             if (n >= FIN_BATCH) {
               var doFlush = flush().then(function () {
                 if (_convertCancel) return Promise.reject(mkCancel());
-                if (written > loopLogAt) { loopLogAt = written + FIN_BATCH * 20; console.log('[StreamParser] merge progress notes=' + written); }
+                if (written > loopLogAt) { loopLogAt = written + FIN_BATCH * 20; console.log('[StreamParser] merge progress notes=' + written + ' heapKB=' + heapKB()); collectGarbage(); }
                 return run();
               });
               return doFlush;
@@ -637,7 +658,15 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
           console.log('[StreamParser] merge openAll done, readers=' + readers.length);
           return run();
         }).then(function () {
-          console.log('[StreamParser] merge loop done');
+          console.log('[StreamParser] merge loop done, heapKB=' + heapKB());
+          // Free every reader's file+buffer and the output buffer so the merge
+          // closure can't pin them. SpiderMonkey won't return this heap to the
+          // OS, so the only way Device Manager drops back after a big merge is
+          // if we drop the references now and let GC reclaim the pages.
+          readers.forEach(function (r) { r.f = null; r.buf = null; r.dv = null; });
+          readers.length = 0;
+          out = null;
+          collectGarbage();
         });
       });
   }
@@ -842,12 +871,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
             var t = hdr.tracks[ti++];
             console.log('[StreamParser] parse track ' + ti + '/' + hdr.tracks.length + ' len=' + t.len);
             return processTrackBlob(t.start, t.len).then(function () {
-              var memKB = 0;
-              try {
-                if (typeof performance !== 'undefined' && performance.memory)
-                  memKB = Math.round(performance.memory.usedJSHeapSize / 1024);
-              } catch (e) {}
-              console.log('[StreamParser] track ' + ti + ' done, runs=' + runs.length + ', mem=' + memKB + 'KB');
+              console.log('[StreamParser] track ' + ti + ' done, runs=' + runs.length + ', mem=' + heapKB() + 'KB');
               return oneTrack();
             });
           }
@@ -889,7 +913,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
           if (runBuf.length) {
             console.log('[StreamParser] flush tail run: ' + runBuf.length + ' notes');
             runBuf.sort(compareT);
-            return storeRun(runBuf).then(function () { console.log('[StreamParser] tail run flushed, total runs=' + runs.length); });
+            return storeRun(runBuf).then(function () { console.log('[StreamParser] tail run flushed, total runs=' + runs.length + ', heapKB=' + heapKB()); });
           }
         })
         .then(function () {

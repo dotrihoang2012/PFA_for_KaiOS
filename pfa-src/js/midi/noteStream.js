@@ -34,9 +34,10 @@ var NoteStream = (function () {
   function readSliceAB(blob, start, len) {
     var b;
     try { b = blob.slice(start, start + len); } catch (e) { return Promise.reject(e); }
+    console.log('[NoteStream] readSliceAB start=' + start + ' len=' + len + ' blob.size=' + blob.size + ' slice.size=' + b.size);
     if (typeof b.arrayBuffer === 'function') {
       return Promise.resolve(b.arrayBuffer()).then(function (ab) {
-        if (!ab || ab.byteLength !== len) throw new Error('slice size mismatch');
+        if (!ab || ab.byteLength !== len) throw new Error('slice size mismatch got=' + (ab && ab.byteLength) + ' want=' + len);
         return ab;
       });
     }
@@ -45,9 +46,9 @@ var NoteStream = (function () {
       function doRes(v) { if (!settled) { settled = true; resolve(v); } }
       function doRej(e) { if (!settled) { settled = true; reject(e); } }
       var fr = new FileReader();
-      fr.onload = function () { clearTimeout(t); doRes(fr.result); };
-      fr.onerror = function () { clearTimeout(t); doRej(new Error('readSliceAB failed')); };
-      var t = setTimeout(function () { try { fr.abort(); } catch (e) {} doRej(new Error('readSliceAB timeout')); }, 20000);
+      fr.onload = function () { clearTimeout(t); console.log('[NoteStream] FR.onload len=' + (fr.result && fr.result.byteLength)); doRes(fr.result); };
+      fr.onerror = function () { clearTimeout(t); console.error('[NoteStream] FR.onerror'); doRej(new Error('readSliceAB failed')); };
+      var t = setTimeout(function () { try { fr.abort(); } catch (e) {} console.error('[NoteStream] readSliceAB TIMEOUT start=' + start + ' len=' + len); doRej(new Error('readSliceAB timeout')); }, 20000);
       fr.readAsArrayBuffer(b);
     });
   }

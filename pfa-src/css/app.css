@@ -54,22 +54,20 @@
   display: block;
 }
 
-/* === HUD (overlay on canvas — single thin bar, pointer-events:none) === */
+/* === HUD (overlay on canvas — vertical stack, pointer-events:none) === */
 #hud {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
   display: flex;
-  justify-content: space-between;
-  padding: 2px 8px;
-  font-size: 10px;
+  flex-direction: column;
+  padding: 2px 5px;
+  font-size: 8px;
   color: #ccc;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.35);
   pointer-events: none;
   z-index: 20;
-  height: 16px;
-  line-height: 16px;
+  line-height: 1.25;
   box-sizing: border-box;
 }
 
@@ -77,6 +75,11 @@
 #hud-speed      { color: #ccc; }
 #hud-time       { color: #ccc; }
 #hud-fps        { color: #888; }
+#hud-nc         { color: #fff; font-weight: bold; }
+#hud-passed     { color: #ccc; }
+#hud-polyphony  { color: #ccc; }
+#hud-rendered   { color: #ccc; }
+#hud-audio-buffer { color: #888; }
 
 /* === DEV LOG OSD (Developer Options → On-screen verbose status) ===
    Invisible panel — white text floats straight ON the piano/canvas so the
@@ -401,9 +404,8 @@
 }
 #hud.osd-active .hud-stat { display: none; }
 #hud.osd-active #hud-osd {
-  display: inline;
-  flex: 1;
-  text-align: center;
+  display: block;
+  text-align: left;
 }
 
 /* ===========================================

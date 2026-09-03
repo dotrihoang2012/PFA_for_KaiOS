@@ -19,6 +19,7 @@
   var width, height;
   var rafId;
   var lastFrameTime = 0, fpsCounter = 0, fpsAcc = 0;
+var _peakActive = 0, _peakAcc = 0;
 
   // Pending activity payload — MozActivity may fire before boot()
   // has registered the canvas / wired the Synth. Park it here and
@@ -33,6 +34,51 @@
   // and Sequencer.play(). That kills the analyzing/reading OSD and lets the
   // demo track play behind the real conversion.
   var _activityBusy = false;
+
+  // ── Hot-open permission gate ──
+  // A MIDI picked via File Manager (MozActivity 'open') is parsed in memory,
+  // but conversion/export/WAV still need SD access, so when the storage
+  // permission is NOT granted we block the load and show the same grant
+  // dialog as Load MIDI / Export Log — OK exits the app. Resolution is
+  // read-only (query + freeSpace + last-session cache), never a write, so a
+  // reopen / hot-open can never make the OS re-show its App Permissions
+  // prompt.
+  function _gateHotOpen(cont) {
+    if (typeof StorageSel === 'undefined' || !StorageSel.permState) { cont(); return; }
+    if (StorageSel.permState() === 'granted') { cont(); return; }
+    if (StorageSel.permState() === 'denied') { _blockHotOpen(); return; }
+    // Still pending/unprovable → resolve read-only (query + last-session
+    // cache). If truly unknown (fresh install, never decided), let ONE
+    // bounded write surface the OS "Allow?" prompt a single time; its answer
+    // sets the permission (DENY → denied → this dialog), then we decide.
+    function finalize(ok) {
+      if (ok) { cont(); return; }
+      // Only block if explicitly denied — pending/timeout = still waiting
+      if (StorageSel.permState && StorageSel.permState() === 'denied') {
+        _blockHotOpen();
+      } else {
+        // Permission pending or timed out — let user answer OS dialog, then retry on focus
+        _activityBusy = false;
+      }
+    }
+    if (StorageSel.verifyNoPrompt) {
+      StorageSel.verifyNoPrompt(function (p) {
+        if (p === 'granted') { cont(); return; }
+        if (p === 'denied') { _blockHotOpen(); return; }
+        StorageSel.ensure(function (ok) { finalize(ok); });
+      });
+    } else {
+      StorageSel.ensure(function (ok) { finalize(ok); });
+    }
+  }
+  function _blockHotOpen() {
+    console.log('[Activity] storage permission not granted — hot-open blocked');
+    _activityBusy = false;
+    if (typeof window.pfaStorageDeniedDialog === 'function') {
+      window.pfaStorageDeniedDialog(true);
+    }
+  }
+  window.pfaGateHotOpen = _gateHotOpen;
 
   // Set on the first boot; guards the low-storage warning from re-firing
   // if boot() is somehow invoked again within the same app instance.
@@ -158,14 +204,11 @@
         // also boot under it (see boot()'s else-branch → startDemo()).
         _activityBusy = true;
 
-        // Hot-open must NEVER prompt for device-storage permission: the
-        // blob the activity hands us is read purely in memory, so no
-        // permission is needed to PARSE/PLAY it. Any later genuine WRITE
-        // (conversion cache .note / export / WAV) is gated at pickStorage
-        // with its own grant-path dialog — it waits on 'pending' and only
-        // blocks + explains when the permission was truly revoked.
+        // Hot-open still needs storage permission for convert / export / WAV,
+        // so when it is NOT granted we block the load and show the standard
+        // grant dialog (OK exits the app) instead of parsing in memory only.
         window.pfaHandledHotOpen = true;
-
+        _gateHotOpen(function () {
         // If boot() hasn't run yet (canvas/Synth not wired), queue this
         // payload and let boot() flush it. Otherwise handle inline.
         if (!canvas) {
@@ -245,6 +288,7 @@
 
         try { console.warn('[Activity] unhandled shape — no blob / filepath. data=', JSON.stringify(data)); } catch (e) {}
         try { activity.postError('No file blob or filepath received'); } catch (e2) {}
+        });
       } catch (e) {
         console.error('[Main] activity handler error:', e);
         try { activity.postError(e.message); } catch (e2) {}
@@ -261,12 +305,15 @@
     try { if (typeof StorageSel !== 'undefined' && StorageSel.log) StorageSel.log(); } catch (e) {}
 
     // ── SD-card permission UX ─────────────────────────────────────────
-    // KaiOS answers device-storage permission via an OS dialog. If the user
-    // taps "Not Allow", storage writes are refused: dim Load MIDI + Export
-    // Log, hide their SELECT, and tell exactly how to re-grant.
-    var _permDeniedShown = false;
+    // KaiOS answers device-storage permission via an OS dialog. FIRST INSTALL:
+    // the storage gate does ONE bounded write → the OS "Allow?" prompt appears
+    // exactly once. Allow → granted: no dialogs, every open runs the free-space
+    // console scan. Not Allow → denied: EVERY app open shows this error dialog
+    // (OK exits) and the free-space scan is cancelled until the user re-grants
+    // in Settings. Hot-opening a MIDI/.note while not granted shows the same
+    // dialog. Menu Load MIDI / Export Log stay silent (dimmed).
     function _grantHint() {
-      return 'This app needs SD card access.\n\nTo allow it:\nSettings → Privacy & Security\n→ App Permissions\n→ PFA\n→ Memory Card Storage\n→ Grant.\n\nThen reopen the app / reload the file.';
+      return 'This app needs SD card access.\n\nTo allow it:\nSettings → Privacy & Security → App Permissions → PFA → Memory Card Storage → Grant.\n\nThen reopen the app / reload the file.\n\nOK closes the app.';
     }
     function storageGranted() {
       return !!(typeof StorageSel !== 'undefined' && StorageSel.permState &&
@@ -280,36 +327,64 @@
                 StorageSel.permState() === 'denied');
     }
     window.pfaStorageDenied = storageDenied;
+    var _permDeniedShown = false;
+    var _permGrantedHandled = false;
     function refreshPermissionUI() {
-      var granted = storageGranted();
+      var state = (typeof StorageSel !== 'undefined' && StorageSel.permState)
+                  ? StorageSel.permState() : 'pending';
+      var granted = (state === 'granted');
+      var denied  = (state === 'denied');
+
       var mk = document.querySelector('#menu-list .kai-om-item[data-action="load-midi"]');
       if (mk) mk.classList.toggle('perm-locked', !granted);
       var er = document.querySelector('#settings-list .setting-row[data-key="exportLog"]');
       if (er) er.classList.toggle('perm-locked', !granted);
-      if (!granted && typeof StorageSel !== 'undefined' && StorageSel.permState &&
-          StorageSel.permState() === 'denied' && !_permDeniedShown && !window.pfaHandledHotOpen) {
+
+      // Allow: refresh storage scan once, dismiss any stale error dialog
+      if (granted && !_permGrantedHandled) {
+        _permGrantedHandled = true;
+        _permDeniedShown = true; // block any stale deny dialog
+        if (typeof hideErrorDialog === 'function') hideErrorDialog();
+        if (typeof StorageSel !== 'undefined' && StorageSel.scanStorages) {
+          try { StorageSel.scanStorages(); } catch (e) {}
+        }
+      }
+
+      // Pending: OS dialog not answered yet — do nothing, wait
+      if (!granted && !denied) return;
+
+      // Deny: show error dialog exactly ONCE per session, OK exits app
+      if (denied && !_permDeniedShown && !window.pfaHandledHotOpen) {
         _permDeniedShown = true;
         showErrorDialog(_grantHint(), _pfaExit, 'Error');
       }
+
       if (typeof window.updateSoftkeys === 'function') {
         try { window.updateSoftkeys(); } catch (e) {}
       }
     }
     // Load gate for the Options "Load MIDI" picker (in-app, no activity):
-    // blocked = show the grant-path dialog (once per session), nothing else.
-    function guardStorageLoad() {
+    // blocked = inert no-op (dimmed), NO dialog — the boot-open and hot-open
+    // gates are the dialog points.
+    function guardStorageLoad(force) {
       if (storageGranted()) return true;
-      if (typeof window.pfaStorageDeniedDialog === 'function') window.pfaStorageDeniedDialog();
       return false;
     }
     window.pfaGuardStorageLoad = guardStorageLoad;
-    // One-shot per-session "grant SD card access" dialog, reused by the write
-    // stages (pickStorage), the boot deny state and the hot-open block so a
-    // missing permission ALWAYS shows the same message. Pressing OK EXITS the
-    // app (requested UX), so only one dialog can ever matter per session.
+    // One-shot per-session "grant SD card access" dialog. Used by the hot-open
+    // gate (_gateHotOpen) when a MIDI/.note is picked while not granted; the
+    // boot-open path (refreshPermissionUI) shows the identical dialog itself.
+    // OK EXITS the app; the user then grants in system Settings and reopens.
+    // force=true keeps an EXPLICIT action responsive even if the once-per-
+    // session guard already fired.
     var _permDialogShownOnce = false;
-    window.pfaStorageDeniedDialog = function () {
-      if (_permDialogShownOnce) return;
+    window.pfaStorageDeniedDialog = function (force) {
+      // Never show when permission is granted or still pending
+      if (typeof StorageSel !== 'undefined' && StorageSel.permState) {
+        var ps = StorageSel.permState();
+        if (ps === 'granted' || ps === 'pending') return;
+      }
+      if (_permDialogShownOnce && !force) return;
       _permDialogShownOnce = true;
       showErrorDialog(_grantHint(), _pfaExit, 'Error');
     };
@@ -335,8 +410,16 @@
     // via Settings App Permissions while the app is alive) → re-verify.
     try {
       function _recheckPerm() {
+        // Already granted - no need to recheck, avoid triggering OS dialog again
+        if (typeof StorageSel !== 'undefined' && StorageSel.permState &&
+            StorageSel.permState() === 'granted') {
+          try { refreshPermissionUI(); } catch (e) {}
+          return;
+        }
         if (typeof StorageSel !== 'undefined' && StorageSel.refreshPerm) {
-          StorageSel.refreshPerm(function () { try { refreshPermissionUI(); } catch (e) {} });
+          StorageSel.refreshPerm(function (ok) {
+            try { refreshPermissionUI(); } catch (e) {}
+          });
         }
       }
       document.addEventListener('visibilitychange', function () {
@@ -395,6 +478,9 @@
 
     // Audio context lazy — only on user gesture (Chrome autoplay policy)
     // Synth.noteOn will bootstrap on first note dispatch
+
+    // TEMP: disable audio render (both engines) — no notes are voiced.
+    window._audioMute = true;
 
     // Wire Sequencer → active engine (Synth or PicoSynth, swappable at runtime)
     // _engine() returns the live engine reference; _switchEngine() re-wires
@@ -484,12 +570,14 @@
     if (_pendingActivity) {
       var p = _pendingActivity;
       _pendingActivity = null;
-      console.log('[Main] flushing pending activity: blob?', !!p.blob, 'name=', p.name);
-      if (p.blob) {
-        handlePickedBlob(p.blob, p.name || 'picked.mid');
-      } else if (p.filepath) {
-        fetchAndLoad(p.filepath, p.name || p.filepath.split('/').pop() || 'picked.mid');
-      }
+      _gateHotOpen(function () {
+        console.log('[Main] flushing pending activity: blob?', !!p.blob, 'name=', p.name);
+        if (p.blob) {
+          handlePickedBlob(p.blob, p.name || 'picked.mid');
+        } else if (p.filepath) {
+          fetchAndLoad(p.filepath, p.name || p.filepath.split('/').pop() || 'picked.mid');
+        }
+      });
     } else {
       // No real file was opened this boot — play the bundled demo track
       // (runs exactly once, ends without looping; see startDemo).
@@ -549,10 +637,14 @@
 
   // MIDI files at/above HUGE_MIDI_BYTES are streamed straight from the source
   // Blob into a binary .note (StreamParser, external sort, bounded RAM) and NOT
-  // parsed in memory. Kept low (1 MB) because the RAM cost of a file is driven
-  // by its number of notes (a few MB of MIDI can hold ~1M notes), not its byte
-  // size; the device's remaining RAM above baseline is too small for that.
-  var HUGE_MIDI_BYTES = 1024 * 1024; // 1 MB
+  // parsed in memory. Kept low because the RAM cost of a file is driven by its
+  // number of notes (a few MB of MIDI can hold ~1M notes), not its byte size;
+  // the device's remaining RAM above baseline is too small for that. A Black
+  // MIDI with millions of notes compresses into well under 1 MB, so the
+  // threshold cannot be large or those files would be parsed fully into RAM
+  // (3.14M notes ≈ 225MB heap). 256KB catches every real multi-note MIDI while
+  // letting tiny files (<256KB) still play in RAM without an on-disk round trip.
+  var HUGE_MIDI_BYTES = 256 * 1024; // 256 KB
 
   // True while a conversion (.bin/.note writes) or a streamed .note open is in
   // flight. The pfa_tmp wipe-on-close must never run mid-pipeline, or it would
@@ -710,6 +802,8 @@
    */
   function _analyzeAndLoadMIDI(arrayBuffer, name, blob) {
     var bSize = (blob && blob.size !== undefined) ? blob.size : (arrayBuffer ? arrayBuffer.byteLength : 0);
+    try { if (performance && performance.memory) console.log('[Heap] _analyzeAndLoadMIDI enter heapKB=' + Math.round(performance.memory.usedJSHeapSize / 1024) + ' bSize=' + bSize); } catch (e) {}
+    console.log('[Main] _analyzeAndLoadMIDI name=' + name + ' blob=' + !!blob + ' bSize=' + bSize + ' hugeThresh=' + HUGE_MIDI_BYTES);
 
     if (_pipelineBusy) {
       // Entry is not gated below, so a second open while a conversion (or a
@@ -735,6 +829,12 @@
         onDone: function (path) {
           console.log('[StreamParser] wrote ' + path);
           window._midiNotePath = path;
+          // Free the source MIDI Blob now that the .note is written and we're
+          // about to stream it back from disk. Nothing consumes _midiBlob /
+          // _rawMidiBuffer (they're only exposed "for native audio" that is
+          // never wired up), so keeping them just pins ~25MB in RAM per load.
+          window._midiBlob = null;
+          window._rawMidiBuffer = null;
           // _pipelineBusy stays true until the stream playback is open, so an
           // app close exactly at this boundary can't wipe the file out from
           // under the reader. Do NOT loadMIDIData (would OOM) — stream the
@@ -812,6 +912,9 @@
   function _engine() {
     return _activeEngine || Synth;
   }
+  // Expose the active engine so the HUD can report true voice polyphony
+  // (number of actually-sounding voices) instead of the note-event window.
+  window._engine = _engine;
 
   /** Switch to the engine indicated by synthKey ('osc' | 'pico'). */
   function _switchEngine(synthKey) {
@@ -865,11 +968,21 @@
       Sequencer.pause();
       _engine().silence();
     } else if (state.play === 'stop' && prevPlay !== 'stop') {
-      Sequencer.stop();
+      // Natural song end: the sequencer already soft-stopped with its
+      // counters intact (Passed + Time stay on screen). A user Stop (or
+      // restart / file unload) hits fullStop → resets time + passed to 0.
+      var seqEnded = false;
+      try { seqEnded = typeof Sequencer !== 'undefined' && Sequencer.isEnded && Sequencer.isEnded(); } catch (e) {}
+      if (!seqEnded) { try { Sequencer.stop(); } catch (e) {} }
       _engine().silence();
       releaseCpuWakeLock();
       releaseScreenWakeLock();
       hideNowPlayingNotification();
+      // play:'stop' set elsewhere (onEnd) never refreshed the softkey —
+      // flip center back to PLAY here.
+      if (typeof window.updateSoftkeys === 'function') {
+        try { window.updateSoftkeys(); } catch (e) {}
+      }
     }
 
     // Waveform change (only when actually changed — setWave iterates 48 oscillators)
@@ -879,9 +992,12 @@
     }
 
     // Speed (only when actually changed — avoids recalibration churn).
-    // During demo the speed setting is ignored (demo always plays at 1.0x;
-    // the user's speed takes effect once a real file is loaded).
-    if (state.speed != null && state.speed !== _prevSpeed && !_demoActive) {
+    // During the demo, or while playback is locked (no real file loaded),
+    // the speed setting is ignored — the demo always plays at 1.0x and the
+    // user's speed only takes effect once a real file is loaded. Guarding on
+    // _lockNoFile (not just _demoActive) also stops a persisted speed from
+    // being pushed to the sequencer at boot before the demo has started.
+    if (state.speed != null && state.speed !== _prevSpeed && !_demoActive && !_lockNoFile) {
       _prevSpeed = state.speed;
       Sequencer.setSpeed(state.speed);
     }
@@ -899,16 +1015,10 @@
   function renderLoop(now) {
     rafId = requestAnimationFrame(renderLoop);
 
-    // While a conversion runs the canvas is static behind the parse overlay —
-    // skip per-frame drawing entirely (saves the single biggest source of
-    // continuous allocations + GC + CPU pressure for the streaming parser).
-    // RAF keeps being scheduled so the loop resumes cleanly when released.
-    if (_pipelineBusy) { lastFrameTime = now; return; }
-
+    // FPS counter — update every second. Counted BEFORE the analyze
+    // early-return so the HUD FPS stays live during conversions too.
     var dt = now - lastFrameTime;
     lastFrameTime = now;
-
-    // FPS counter (update every second)
     fpsCounter++;
     fpsAcc += dt;
     if (fpsAcc >= 1000) {
@@ -918,6 +1028,12 @@
       // Periodic zombie-voice cleanup (KaiOS onended never fires)
       try { var _eng = _engine(); if (_eng && _eng.zoo) _eng.zoo(); } catch (e) {}
     }
+
+    // While a conversion runs the canvas is static behind the parse overlay —
+    // skip per-frame drawing entirely (saves the single biggest source of
+    // continuous allocations + GC + CPU pressure for the streaming parser).
+    // RAF keeps being scheduled so the loop resumes cleanly when released.
+    if (_pipelineBusy) return;
 
     var st = Store.getState();
 
@@ -933,6 +1049,17 @@
         st._activeList = Sequencer.activeList();
         liveCount = st._activeList ? st._activeList.length : 0;
       } catch (e) { st._activeList = []; }
+    }
+
+    // Track peak activeList length (RAM diagnostic): log once per second.
+    if (liveCount > _peakActive) _peakActive = liveCount;
+    _peakAcc += dt;
+    if (_peakAcc >= 1000) {
+      _peakAcc = 0;
+      var _heap = 0;
+      try { if (performance && performance.memory) _heap = performance.memory.usedJSHeapSize; } catch (e) {}
+      if (_heap) { try { console.log('[Peak] heapKB=' + Math.round(_heap / 1024) + ' activeList=' + _peakActive); } catch (e) {} }
+      else if (_peakActive > 0) { try { console.log('[Peak] activeList=' + _peakActive + ' (~' + Math.round(_peakActive * 121 / 1048576) + 'MB objects)'); } catch (e) {} }
     }
 
     // 1. Background — Visual → Background Color overrides the theme token
@@ -1001,6 +1128,14 @@
   function fitKeyboardWidth(st) {
     var rStart = (st.kbStart != null) ? st.kbStart : 21;
     var rEnd   = (st.kbEnd   != null) ? st.kbEnd   : 108;
+    // During the demo / locked state, fit width from the FIXED demo range so
+    // a saved Keyboard Range can never change the demo's note spacing.
+    if (typeof window.demoVisualValue === 'function') {
+      try {
+        rStart = window.demoVisualValue('kbStart', rStart);
+        rEnd   = window.demoVisualValue('kbEnd', rEnd);
+      } catch (e) {}
+    }
     rStart = Math.max(0, Math.min(127, rStart));
     rEnd   = Math.max(rStart + 1, Math.min(127, rEnd));
     // Count white keys inside the visible range
@@ -1362,17 +1497,19 @@
 
   function _isPFA2(blob) {
     return new Promise(function (resolve) {
+      console.log('[Main] _isPFA2 size=' + (blob ? blob.size : '?' ) + ' type=' + (blob ? blob.type : '?'));
       var fr = new FileReader();
       fr.onload = function () {
         try {
           var dv = new DataView(fr.result);
+          console.log('[Main] _isPFA2 head=' + [0,1,2,3].map(function(k){return dv.getUint8(k);}).join(','));
           resolve(dv.getUint8(0) === 0x50 && dv.getUint8(1) === 0x46 &&
                   dv.getUint8(2) === 0x41 && dv.getUint8(3) === 0x32);
-        } catch (e) { resolve(false); }
+        } catch (e) { console.error('[Main] _isPFA2 catch', e); resolve(false); }
       };
-      fr.onerror = function () { resolve(false); };
+      fr.onerror = function (e) { console.error('[Main] _isPFA2 onerror', e); resolve(false); };
       try { fr.readAsArrayBuffer(blob.slice(0, 4)); }
-      catch (e) { resolve(false); }
+      catch (e) { console.error('[Main] _isPFA2 slice threw', e); resolve(false); }
     });
   }
 
@@ -1382,10 +1519,12 @@
       hideParsing();
       return Promise.reject(new Error('NoteStream unavailable'));
     }
+    console.log('[Main] loadBinaryNoteFromFile size=' + (file ? file.size : '?'));
     return NoteStream.open(file).then(function (ns) {
+      console.log('[Main] NoteStream.open OK length=' + ns.length);
       return loadBinaryNote(ns, displayName);
     }).catch(function (e) {
-      console.error('[NoteStream] open failed', e);
+      console.error('[NoteStream] open failed', e && e.message, e && e.stack);
       hideParsing();
       return Promise.reject(e);
     });
@@ -1394,6 +1533,7 @@
   function loadBinaryNote(ns, displayName) {
     if (_demoActive || _lockNoFile) clearDemo();
     exitFullscreenIfActive();
+    try { if (performance && performance.memory) console.log('[Heap] loadBinaryNote stream OPEN heapKB=' + Math.round(performance.memory.usedJSHeapSize / 1024)); } catch (e) {}
 
     Sequencer.load(ns, ns.tempoMap, ns.div);
 
@@ -1622,6 +1762,14 @@
         loadMIDIData(midi);          // load notes/tempo/div, resets sequencer
         _demoActive = true;          // set AFTER load so clearDemo isn't triggered
         _lockNoFile = true;          // hot keys + Note Color Randomise stay locked
+        // The demo always plays at its fixed default 1.0x regardless of any
+        // persisted / changed speed setting. (At boot, onStoreChange may have
+        // already applied a saved speed before the demo became active — reset
+        // it here so the demo is never affected by the user's saved speed.)
+        if (typeof Sequencer !== 'undefined' && Sequencer.setSpeed) {
+          try { Sequencer.setSpeed(1.0); } catch (e) {}
+        }
+        _prevSpeed = 1.0;
         HUD.setTotal(0);             // HUD shows 0/0
         Sequencer.play();            // self-play with audio + visuals
         Store.setState({ play: 'play', npPending: false });
@@ -2317,66 +2465,96 @@ vols.forEach(function (vol) {
     function say(m) {
       try { showDevDialog(m); } catch (e) {}
     }
-    if (typeof navigator === 'undefined' || !navigator.getDeviceStorages) {
-      say('No storage available to export the log.');
-      return;
-    }
-    if (typeof StorageSel === 'undefined' || !StorageSel.detect) {
-      say('Log export unavailable (storage module missing).');
-      return;
-    }
+    var vols = [];
+    try { vols = (navigator.getDeviceStorages && navigator.getDeviceStorages('sdcard')) || []; }
+    catch (e) {}
+    if (!vols.length) { say('No storage available to export the log.'); return; }
+
     var d = new Date();
     function pad(n) { return (n < 10 ? '0' : '') + n; }
     var name = 'pfa_log_' + pad(d.getHours()) + '-' + pad(d.getMinutes()) + '_' +
                pad(d.getDate()) + pad(d.getMonth() + 1) + d.getFullYear() + '.log';
     var out = '# PFA device log ' + d.toString() + '\n' + _devBuf.join('\n') + '\n';
-    var need = out.length;
 
-    StorageSel.detect(function (infos) {
-      if (!infos.length) { say('No storage volume found.'); return; }
-      var chosen = (typeof StorageSel.select === 'function') ? StorageSel.select(infos) : infos[0];
-      var use = chosen;
-      if (use && (use.free < 0 || use.free < need)) {
-        infos.forEach(function (inf) {
-          if (inf.st !== use.st && inf.free >= 0 && inf.free > (use.free >= 0 ? use.free : 0)) use = inf;
-        });
+    // EXACTLY like StorageSel.select: removable SD ranks above internal, so
+    // the log lands where it always did (SD has the room — never internal).
+    // Rank by storageName/path (6300 4G: internal = 'sdcard',
+    // removable = 'sdcard1'), 'default' flag as a last resort.
+    function rankOf(st) {
+      var n = String((st && (st.storageName || st.name)) || '').toLowerCase();
+      var p = '';
+      try { p = String(st.path || ''); } catch (e) {}
+      if (n === 'sdcard1' || n === 'sdcard2' || /ext|remov/.test(n) || /\/sdcard1\//.test(p)) return 0;
+      if (n === 'sdcard') return 1;
+      return (st && st['default']) ? 0 : 1;
+    }
+    var ordered = vols.slice().sort(function (a, b) { return rankOf(a) - rankOf(b); });
+
+    // Export = write ONE file to others/. No StorageSel.detect / freeSpace /
+    // probe chains (those park on the shared boot-gate while the permission
+    // prompt settles and made this take ~12s+). A direct addNamed answers
+    // fast on a healthy, granted build; we fail over across volumes.
+    var done = false;
+    var vi = 0;        // volume index into ordered[]
+    var attempt = 0;   // filename suffix attempt on the CURRENT volume
+    var lastErr = '';
+    var lastErrCount = 0;
+
+    function nextVolume() {
+      if (vi + 1 < ordered.length && !done) {
+        vi++;
+        attempt = 0;
+        tryWrite();
+      } else if (!done) {
+        done = true;
+        say('Log export failed: ' + (lastErr || 'all storage volumes unavailable'));
       }
-      if (!use || use.free < 0 || use.free < need) {
-        if (!use || use.free < 0) {
-          say('Storage free space unknown — allow device-storage:sdcard permission and retry.');
-        } else {
-          say('Not enough free space to export the log.');
+    }
+
+    function tryWrite() {
+      if (done) return;
+      var st = ordered[vi];
+      if (!st) { done = true; say('Log export failed: no writable storage volume.'); return; }
+      var nm = (attempt === 0) ? name : name.replace(/\.log$/, '_' + attempt + '.log');
+      var req;
+      try { req = st.addNamed(new Blob([out], { type: 'text/plain' }), 'others/' + nm); }
+      catch (e) { lastErr = String(e); nextVolume(); return; }
+      var t = setTimeout(function () {
+        if (done) return;
+        lastErr = 'addNamed timed out';
+        nextVolume();
+      }, 6000);
+      req.onsuccess = function () {
+        if (done) return;
+        clearTimeout(t);
+        done = true;
+        console.log('[Export] wrote others/' + nm);
+        say('Log exported:\nothers/' + nm);
+      };
+      req.onerror = function () {
+        if (done) return;
+        clearTimeout(t);
+        var en = (req.error && req.error.name) || '';
+        if (en === 'SecurityError' || en === 'NotAllowedError' || en === 'PermissionDeniedError') {
+          done = true;
+          say('Log export blocked: allow device-storage:sdcard permission, then retry.');
+          return;
         }
-        return;
-      }
-      // addNamed refuses to OVERWRITE (NoModificationAllowed) — retry with a
-      // fresh suffix so exporting twice in the same minute still works.
-      var attempt = 0;
-      function tryWrite() {
-        var nm = (attempt === 0) ? name : name.replace(/\.log$/, '_' + attempt + '.log');
-        var req = use.st.addNamed(new Blob([out], { type: 'text/plain' }), 'others/' + nm);
-        var t = setTimeout(function () { say('Log export timed out.'); }, 8000);
-        req.onsuccess = function () {
-          clearTimeout(t);
-          say('Log exported:\nothers/' + nm);
-        };
-        req.onerror = function () {
-          clearTimeout(t);
-          var en = (req.error && req.error.name) || '';
-          if (en === 'SecurityError' || en === 'NotAllowedError' || en === 'PermissionDeniedError') {
-            say('Log export blocked: allow device-storage:sdcard permission, then retry.');
-            return;
-          }
-          if (attempt < 5 && en === 'NoModificationAllowedError') {
-            attempt++;
-            tryWrite();
-            return;
-          }
-          say('Log export failed: ' + en + (attempt ? ' (tried ' + (attempt + 1) + ' names)' : ''));
-        };
-      }
-      tryWrite();
-    });
+        lastErr = en;
+        lastErrCount++;
+        // addNamed refuses to overwrite (NoModificationAllowed) — bump the
+        // filename first (exporting twice in one minute still works);
+        // anything else means this volume is unusable → try the next one.
+        if (en === 'NoModificationAllowedError' && attempt < 5) {
+          attempt++;
+          tryWrite();
+          return;
+        }
+        nextVolume();
+      };
+    }
+
+    tryWrite();
   }
   _devHookOnce();
 // ── Storage raw diagnostic (Developer → Storage Test) ────────────────
@@ -2515,8 +2693,7 @@ vols.forEach(function (vol) {
   window.loadMIDIData = loadMIDIData;
   window.analyzeAndLoadMIDI = _analyzeAndLoadMIDI;
   window.routeMidiBlob = _routeMidiBlob;
-  window.isDemoActive = isDemoActive;
-  window.isPlaybackLocked = isPlaybackLocked;
+  window.isDemoActive = isDemoActive;  window.isPlaybackLocked = isPlaybackLocked;
   window.demoVisualValue = demoVisualValue;
   window.clearDemo = clearDemo;
   window.startDemo = startDemo;

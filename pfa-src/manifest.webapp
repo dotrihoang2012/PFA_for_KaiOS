@@ -1,23 +1,28 @@
 {
-  "name": "PFA (BETA)",
-  "description": "PFA (Piano From Above) MIDI Player with keyboard visualization.",
+  "name": "Piano From Above (BETA)",
+  "description": "MIDI player with keyboard visualization.",
   "launch_path": "/index.html",
   "developer": {
     "name": "T.Hoang",
     "url": "https://github.com/dotrihoang2012"
   },
   "icons": {
-    "56": "/icons/piano_56.png",
-    "112": "/icons/piano_112.png",
-    "128": "/icons/piano_128.png"
+    "46": "/icons/piano_56.png",
+    "112": "/icons/piano_112.png"
   },
-  "origin": "app://pfa.midiplayer.dotrihoang2012",
   "default_locale": "en-US",
   "fullscreen": false,
   "orientation": ["portrait-primary", "portrait-secondary", "landscape-primary", "landscape-secondary"],
   "version": "1.0.1",
   "type": "privileged",
-  "theme_color": "#320374",
+  "theme_color": "#0a9bf5",
+  "locales": {
+    "en-US": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI Player with keyboard Visualization",
+      "description": "A MIDI player with live piano visuals. Open any .mid or .note and watch the keys as it plays."
+    }
+  },
   "chrome": {
     "navigation": false
   },

@@ -14,10 +14,17 @@
   <canvas id="main-canvas"></canvas>
   <div id="dev-osd" class="hidden"></div>
 <div id="hud">
-<span id="hud-note-count" class="hud-stat">0 notes</span>
-<span id="hud-speed" class="hud-stat">1.0x</span>
-<span id="hud-time" class="hud-stat">00:00</span>
-<span id="hud-fps" class="hud-stat">0 FPS</span>
+<span id="hud-note-count" class="hud-stat">NPS: 0</span>
+<span id="hud-nc" class="hud-stat">NC: 0</span>
+<span id="hud-passed" class="hud-stat">Passed: 0</span>
+<span id="hud-speed" class="hud-stat">Speed: 1.0x</span>
+<span id="hud-fps" class="hud-stat">FPS: 0</span>
+<span id="hud-time" class="hud-stat">Time: --:-- / --:--</span>
+<span id="hud-polyphony" class="hud-stat">Polyphony: 0</span>
+<span id="hud-rendered" class="hud-stat">Rendered Notes: 0</span>
+<span id="hud-audio-buffer" class="hud-stat">Audio Buffer: 0</span>
+<span id="hud-tick" class="hud-stat">Tick: 0</span>
+<span id="hud-bpm" class="hud-stat">BPM: 0</span>
 <span id="hud-osd"></span>
    <span id="now-playing" class="hidden"></span>
 </div>
@@ -39,7 +46,7 @@
      <div tabindex="-1" class="kai-om-item" data-action="clear-midi">Clear</div>
      <div tabindex="-1" class="kai-om-item" data-action="fullscreen">Full Screen</div>
      <div tabindex="-1" class="kai-om-item" data-action="volume">Volume</div>
-     <div tabindex="-1" class="kai-om-item has-submenu" data-action="midi-output">MIDI-OUT Settings</div>
+     <div tabindex="-1" class="kai-om-item has-submenu beta-locked" data-action="midi-output">MIDI-OUT Settings</div>
      <div tabindex="-1" class="kai-om-item has-submenu" data-action="visual">Visual Settings</div>
      <div tabindex="-1" class="kai-om-item has-submenu" data-action="dev">Developer Options</div>
      <div tabindex="-1" class="kai-om-item" data-action="random-colors">Random note color track</div>

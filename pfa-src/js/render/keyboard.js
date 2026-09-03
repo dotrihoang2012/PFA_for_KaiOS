@@ -154,24 +154,23 @@ var Keyboard = (function () {
       ctx.drawImage(cacheCanvas, x0, 0, sw, kbH, 0, y, w, kbH);
     }
 
-    // Note labels (C/D/E/F/G/A/B) above each white key — opt-in via settings
+    // Note labels (C/D/E/F/G/A/B) on white keys — opt-in via settings.
+    // Text is scaled to each key's width and drawn at the BOTTOM of the
+    // key (below the overhanging black-key region so nothing overlaps).
     try {
       var nl = state.noteLabels;
       // Store object can be a getter default bool false
       if (nl) {
         ctx.fillStyle = 'rgba(60,60,60,0.85)';
-        ctx.font = 'bold 8px Arial, sans-serif';
         ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        var kw2 = kw;
+        ctx.textBaseline = 'bottom';
         // Walk only the visible range [startN..endN]; emit label ONLY on
         // natural C..B white notes.
         for (var nn = startN; nn <= endN; nn++) {
           var bn = Constants.isBlackKey(nn % 12);
           if (bn) continue;
-          // Only C explicitly (or could emit all natural notes — here we
-          // emit the octave letter for every white key so users can pick
-          // any scale quickly).
+          // Emit the octave letter for every white key so users can pick
+          // any scale quickly; octave number only on C.
           var noteName = NOTE_NAMES[nn % 12];
           var nm = noteName;
           if (showOctaveOnC(nn)) {
@@ -179,9 +178,14 @@ var Keyboard = (function () {
           }
           var klbl = keyLayout[nn];
           if (!klbl) continue;
+          // Font scales with the key's width — narrower keys draw smaller
+          // text so labels never overflow onto neighbours.
+          var fs = Math.max(5, Math.min(9, Math.floor(klbl.w * 0.5)));
+          ctx.font = 'bold ' + fs + 'px Arial, sans-serif';
           var px = klbl.x - x0 + Math.floor(klbl.w / 2);
           if (px < 0 || px > w) continue;
-          ctx.fillText(nm, px, y + 2);
+          // Draw at the bottom of the white key (2px above the strip edge).
+          ctx.fillText(nm, px, y + kbH - 2);
         }
       }
     } catch (e) {}

@@ -417,7 +417,12 @@
         } catch (e) { console.error('[Ctrl] random-colors failed', e); }
         return;
       case 'midi-output':
-        openSettingsGroup('midi');
+        // BETA: MIDI-OUT is under construction. Show an informational dialog
+        // instead of opening the (not yet built) settings group.
+        closeMenuOverlay();
+        if (typeof showErrorDialog === 'function') {
+          showErrorDialog('This is BETA version, MIDI-OUT is under construction.', null, 'PFA');
+        }
         return;
       case 'visual':
         openSettingsGroup('visual');
@@ -1009,9 +1014,15 @@
       // focused item is locked (Note Color Randomise while demo / no file),
       // hide SELECT so it cannot be activated.
       var focusedItem = document.querySelector('#menu-list .kai-om-item.focused');
-      var fLocked = focusedItem && focusedItem.classList.contains('demo-locked');
-      // A perm-locked item keeps its SELECT: pressing it routes to the
-      // grant-path dialog instead of the picker (see 'load-midi' handler).
+      // Hide SELECT when the focused item is locked (Note Color Randomise
+      // while demo / no file) OR beta-locked (MIDI-OUT under construction) —
+      // those rows can't be activated via the center key, so advertising a
+      // SELECT label on them would be misleading. perm-locked keeps its
+      // SELECT: pressing it routes to the grant-path dialog instead of the
+      // picker (see 'load-midi' handler).
+      var fLocked = focusedItem &&
+        (focusedItem.classList.contains('demo-locked') ||
+         focusedItem.classList.contains('beta-locked'));
       if (leftE)  leftE.textContent  = '';
       if (ctrE)   ctrE.textContent   = fLocked ? '' : 'SELECT';
       if (rightE) rightE.textContent = '';
@@ -1149,7 +1160,7 @@
       }
       Store.setState({ menu: { open: true, focus: _focusedItemIndex } });
       if (appEl) appEl.classList.add('menu-open');
-      var its = m ? m.querySelectorAll('.kai-om-item') : [];
+      var its = m ? m.querySelectorAll('.kai-om-item:not(.hidden)') : [];
       if (its.length) focusOverlayItem(its, _focusedItemIndex);
       if (typeof refreshMenuLabels === 'function') refreshMenuLabels();
       if (typeof updateSoftkeys === 'function') updateSoftkeys();
