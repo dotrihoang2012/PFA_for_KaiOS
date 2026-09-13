@@ -556,3 +556,93 @@
   background: #0066cc;
   color: #ffffff;
 }
+
+/* ── SoundFont rows (Settings → Synth → Load Soundfont) ─────────────── */
+
+/* Square CHECKBOX glyph — kai-icons font radio set, unselected state. */
+.sf-check {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  margin-left: 1rem;
+  font-family: 'kai-icons';
+  font-size: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  color: var(--color-gs70);
+}
+.sf-check::before {
+  content: '\e90f'; /* kai-icon-radio-button-unselected */
+  display: block;
+  width: 100%;
+}
+.sf-check.selected::before {
+  content: '\e906'; /* kai-icon-radio-button-selected */
+  color: #0066cc;
+}
+.sf-row.focused .sf-check.selected::before {
+  color: #ffffff;
+}
+
+/* Scan-page rows (subsettings): checkbox + name + partition/path meta. */
+.sf-row {
+  display: flex;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  font-size: 1.5rem;
+  color: var(--color-gs90);
+  box-sizing: border-box;
+  min-height: 4.5rem;
+}
+.sf-row.focused {
+  background: #0066cc;
+  color: #ffffff;
+}
+.sf-row-label {
+  flex: 1 1 auto;
+  margin: 0 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 400;
+}
+.sf-row-meta {
+  flex-shrink: 0;
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1.2rem;
+  color: var(--color-gs70);
+}
+
+/* Scan-page hint (scanning… / nothing found). */
+.sf-hint {
+  padding: 1.2rem 1.6rem;
+  font-size: 1.5rem;
+  color: var(--color-gs90);
+  white-space: pre-wrap;
+}
+
+/* Loaded-SoundFont rows inside the Synth group view blink with the
+   group accent: a matching .sf-row here just reuses .setting-row, but a
+   small blue strip is drawn on the left so the bank list reads as a
+   different section than plain settings rows. */
+.setting-row.sf-row {
+  position: relative;
+}
+.setting-row.sf-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0.3rem;
+  background: #0066cc;
+}
+.setting-row.sf-row.selected::before {
+  background: #ffffff;
+}
+.setting-row.sf-row .sf-check {
+  margin-left: 0.8rem;
+}

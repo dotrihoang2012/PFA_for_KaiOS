@@ -119,10 +119,12 @@ var Settings = (function () {
   //            'color' (drill-in to swatch grid + R/G/B/A sliders)
   var SCHEMA = {
     midi: [
-      { key: 'audio',        label: 'Audio',            type: 'bool' },
-      { key: 'engine',       label: 'Sound Engine',    type: 'enum',
+      { key: 'audio',     label: 'Audio',        type: 'bool' },
+      { key: 'engine',    label: 'Sound Engine', type: 'enum',
         choices: [['synth','Synth'],['soundbank','Soundbank']] },
-      { key: 'waveform',     label: 'Waveform',        type: 'enum',
+      { key: 'soundfont', label: 'Load Soundfont', type: 'sub', subkind: 'soundfonts',
+        labelFn: sfLoadLabel },
+      { key: 'waveform',  label: 'Waveform',      type: 'enum',
         choices: [['sine','Sine'],['square','Square'],['saw','Saw'],['triangle','Triangle']] },
       { key: 'skipSlowOpen', label: 'Skip Slow Intro', type: 'bool' },
     ],
@@ -194,6 +196,16 @@ visual: [
     } catch (e) { return 'Load MIDI/Note File'; }
   }
 
+  // Dynamic label for the Synth → Load Soundfont action: once at least one
+  // bank is loaded it reads "Load more" (the loaded list renders below it).
+  function sfLoadLabel() {
+    try {
+      if (typeof Soundbank !== 'undefined' && Soundbank.getBanks &&
+          Soundbank.getBanks().length) return 'Load more';
+    } catch (e) {}
+    return 'Load Soundfont';
+  }
+
   // ── Local state ──
   var _values = clone(DEFAULTS);
   var _openGroup = null;     // 'hub' | 'midi' | 'visual' | 'dev' | null
@@ -225,6 +237,9 @@ visual: [
   //   items    : flat focus model [{type:'def'|'swatch'|'slider', part?, idx?}]
   //   focusIdx : index into items
   var _sub = null;
+  // SoundFont move mode in the Synth group list (RSK enters, ▲▼ reorders,
+  // OK/RSK leaves). Only meaningful while an sf-row holds focus.
+  var _sfMove = false;
 
   /** Number of swatch cells per visual row (flex-wrap column stride). */
   var SWATCH_COLS = 5;
@@ -735,6 +750,11 @@ visual: [
     } else if (kind === 'graphics') {
       // Graphics settings — Render Mode (4 radio) + 3D View (4 radio).
       buildGraphicsPage(list);
+    } else if (kind === 'soundfonts') {
+      // SoundFont loader — scans both partitions (internal + SD) and lets
+      // the user tick square checkboxes to load one or several banks.
+      if (header) header.textContent = 'Load SoundFont';
+      buildSoundFontPage(list);
     } else {
       // Working color from persisted value (or resolved theme color).
       var cur = _values.visual[key];
@@ -1087,7 +1107,7 @@ visual: [
     var cells = overlay.querySelectorAll('.swatch');
     for (var i = 0; i < cells.length; i++) cells[i].classList.remove('focused');
 
-    var rows = overlay.querySelectorAll('.setting-row-slider, .setting-row, .kai-text-input');
+    var rows = overlay.querySelectorAll('.setting-row-slider, .setting-row, .sf-row, .kai-text-input');
     for (var j = 0; j < rows.length; j++) rows[j].classList.remove('focused');
 
     // Palette rows + loadmore
@@ -1122,6 +1142,14 @@ visual: [
         _sub.ui.loadMore.classList.add('focused');
         try { _sub.ui.loadMore.scrollIntoView({ block: 'nearest' }); }
         catch (e) { try { _sub.ui.loadMore.scrollIntoView(false); } catch (e2) {} }
+      }
+    } else if (item.type === 'sfcheck') {
+      // SoundFont scan checkbox row — focus highlights the square.
+      var s = _sub.ui.sfRowEls && _sub.ui.sfRowEls[item.path];
+      if (s && s.row) {
+        s.row.classList.add('focused');
+        try { s.row.scrollIntoView({ block: 'nearest' }); }
+        catch (e) { try { s.row.scrollIntoView(false); } catch (e2) {} }
       }
     } else if (item.type === 'swatch') {
       // cells[] includes the DEF cell at index 0 → swatch idx i lives at
@@ -1718,6 +1746,331 @@ visual: [
     addActionRow(listEl, 'memory', 'Memory Stats');
     addActionRow(listEl, 'exportLog', 'Export Log');
     addActionRow(listEl, 'storageTest', 'Storage Test');
+  }
+
+  // ── SoundFont loader page (Synth → Load Soundfont) ────────────────
+  // Scans BOTH partitions via SfScan; each found file renders as a square
+  // CHECKBOX row (LSK = All/Deselect, OK = select, RSK = Finish to load).
+  // Loading never writes to a partition — banks + selection are persisted
+  // in the Soundbank registry (localStorage).
+
+  /**
+   * Build the SoundFont discovery page. Scanning is async: the page first
+   * shows a "Scanning…" hint + a picker fallback row, then replaces the
+   * list with the found files once SfScan.list() resolves.
+   */
+  function buildSoundFontPage(listEl) {
+    _sub.items = [];
+    _sub.ui.boolRows = {};
+    _sub.focusIdx = 0;
+    _sub.ui.scanning = true;
+    _sub.ui.found = [];
+    _sub.ui.selected = {};
+    _sub.ui.sfRowEls = {};
+
+    var hint = document.createElement('div');
+    hint.className = 'sf-hint';
+    hint.textContent = 'Scanning both partitions\u2026';
+    listEl.appendChild(hint);
+    _sub.items.push({ type: 'sfhint' });
+
+    // Fallback when the scan finds nothing (or enumerate is broken on a
+    // given KaiOS build): the system File Manager picker reads ANY file.
+    addActionRow(listEl, 'sfPick', 'Open via File Picker', function () { return ''; });
+
+    if (typeof SfScan === 'undefined' || !SfScan.list) {
+      hint.textContent = 'SoundFont scanner unavailable — use File Picker';
+      return;
+    }
+    SfScan.list(function (entries) {
+      if (!_sub || _sub.kind !== 'soundfonts') return; // page closed meanwhile
+      _sub.ui.scanning = false;
+      _sub.ui.found = entries || [];
+      if (listEl) {
+        while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+        _renderFoundRows(listEl);
+      }
+      paintSubFocus();
+      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+    });
+  }
+
+  /** Rebuild the scan list DOM once SfScan answered. */
+  function _renderFoundRows(listEl) {
+    _sub.items = [];
+    _sub.ui.boolRows = {};
+    _sub.ui.sfRowEls = {};
+    _sub.focusIdx = 0;
+
+    // Picker fallback row always stays on top.
+    addActionRow(listEl, 'sfPick', 'Open via File Picker', function () { return ''; });
+
+    var entries = _sub.ui.found || [];
+    if (!entries.length) {
+      var none = document.createElement('div');
+      none.className = 'sf-hint';
+      none.textContent = 'No .sf2 / .sf3 / .soundbank files found.\nPut one on the card, then scan again — or use Open via File Picker.';
+      listEl.appendChild(none);
+      _sub.items.push({ type: 'sfhint' });
+      return;
+    }
+
+    var sep = document.createElement('div');
+    sep.className = 'kai-separator';
+    var st = document.createElement('span');
+    st.className = 'kai-separator-text';
+    st.textContent = 'SoundFonts found (' + entries.length + ')';
+    sep.appendChild(st);
+    listEl.appendChild(sep);
+
+    for (var i = 0; i < entries.length; i++) {
+      var ent = entries[i];
+      var row = document.createElement('div');
+      row.className = 'sf-row';
+      row.setAttribute('tabindex', '-1');
+
+      var check = document.createElement('span');
+      check.className = 'sf-check';
+      row.appendChild(check);
+
+      var lbl = document.createElement('span');
+      lbl.className = 'sf-row-label';
+      lbl.textContent = ent.name;
+      row.appendChild(lbl);
+
+      var meta = document.createElement('span');
+      meta.className = 'sf-row-meta';
+      meta.textContent = (ent.volName === 'sdcard1' ? 'SD' : 'Internal') + ' \u00B7 ' + ent.path;
+      row.appendChild(meta);
+
+      listEl.appendChild(row);
+      _sub.ui.sfRowEls[ent.path] = { row: row, check: check };
+      _sub.items.push({
+        type: 'sfcheck',
+        path: ent.path,
+        name: ent.name,
+        volName: ent.volName,
+        st: ent.st
+      });
+    }
+  }
+
+  /** Re-paint which scan rows are ticked (square checkbox highlight). */
+  function refreshSfChecks() {
+    for (var p in _sub.ui.sfRowEls) {
+      if (!_sub.ui.sfRowEls.hasOwnProperty(p)) continue;
+      var ref = _sub.ui.sfRowEls[p];
+      var on = !!_sub.ui.selected[p];
+      ref.row.classList.toggle('selected', on);
+      ref.check.classList.toggle('selected', on);
+    }
+  }
+
+  /** Move scan focus by ±1 over tickable rows (wrap-around). */
+  function sfStep(dir) {
+    var n = _sub.items.length;
+    if (!n) return;
+    for (var k = 0; k < n; k++) {
+      _sub.focusIdx = (_sub.focusIdx + (dir > 0 ? 1 : n - 1)) % n;
+      var it = _sub.items[_sub.focusIdx];
+      if (it && (it.type === 'sfcheck' || (it.type === 'action' && it.part === 'sfPick'))) break;
+    }
+    paintSubFocus();
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+
+  /** LSK on the scan page: select all / deselect all (whichever is needed). */
+  function sfSelectAll() {
+    var checked = 0, total = 0;
+    for (var i = 0; i < _sub.items.length; i++) {
+      if (_sub.items[i].type !== 'sfcheck') continue;
+      total++;
+      if (_sub.ui.selected[_sub.items[i].path]) checked++;
+    }
+    var toAll = (checked !== total);
+    for (var j = 0; j < _sub.items.length; j++) {
+      if (_sub.items[j].type === 'sfcheck') _sub.ui.selected[_sub.items[j].path] = toAll;
+    }
+    refreshSfChecks();
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+    if (typeof showToast === 'function') showToast(toAll ? 'All selected' : 'Selection cleared');
+  }
+
+  /** RSK on the scan page: load every ticked file into its own bank. */
+  function sfFinish() {
+    if (_sub.ui.scanning) {
+      if (typeof showToast === 'function') showToast('Still scanning\u2026');
+      return;
+    }
+    var selected = [];
+    for (var i = 0; i < _sub.items.length; i++) {
+      var it = _sub.items[i];
+      if (it.type === 'sfcheck' && _sub.ui.selected[it.path]) selected.push(it);
+    }
+    if (!selected.length) {
+      if (typeof showToast === 'function') showToast('Nothing selected to load');
+      return;
+    }
+    if (typeof showToast === 'function') showToast('Loading ' + selected.length + ' soundfont(s)\u2026');
+    var done = 0, failed = 0;
+    var chain = Promise.resolve();
+    selected.forEach(function (sel) {
+      chain = chain.then(function () {
+        if (typeof SfScan === 'undefined' || !SfScan.readFile) return;
+        return SfScan.readFile({ st: sel.st, path: sel.path, name: sel.name, volName: sel.volName })
+          .then(function (ab) {
+            if (typeof Soundbank === 'undefined' || !Soundbank.loadFromFile) throw new Error('Soundbank unavailable');
+            return Soundbank.loadFromFile(sel.name, sel.path, sel.volName, ab);
+          })
+          .then(function () { done++; }, function () { failed++; });
+      });
+    });
+    chain.then(function () {
+      // Auto-select the soundbank engine now that banks exist.
+      try {
+        _values.midi.engine = 'soundbank';
+        Store.setState({ engine: 'soundbank' });
+        save();
+      } catch (e) {}
+      closeSub();
+      var parent = document.getElementById('settings-overlay');
+      if (parent && _openGroup) {
+        rebuildRows(parent, _openGroup);
+        var rows = parent.querySelectorAll('.setting-row, .setting-row-slider');
+        if (rows.length) focusRow(rows, 0);
+      }
+      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      var msg = failed ? (done + ' loaded, ' + failed + ' failed') : ('Loaded ' + done + ' soundfont(s)');
+      if (typeof showToast === 'function') showToast(msg);
+    });
+  }
+
+  /** Blob → ArrayBuffer (promise) — same shapes as the other pickers. */
+  function _blobArrayBuffer(blob) {
+    return new Promise(function (resolve, reject) {
+      function legacy() {
+        var fr = new FileReader();
+        fr.onload = function () { resolve(fr.result); };
+        fr.onerror = function () { reject(new Error('FileReader failed')); };
+        fr.readAsArrayBuffer(blob);
+      }
+      if (blob && typeof blob.arrayBuffer === 'function') {
+        try {
+          blob.arrayBuffer().then(resolve, legacy);
+          return;
+        } catch (e) { legacy(); return; }
+      }
+      legacy();
+    });
+  }
+
+  /** MozActivity File-Manager picker — shows ALL files, so any .sf2/.sf3
+   *  on the card can be loaded even where the scan came up empty. */
+  function _launchSfPicker() {
+    function extractBlob(res) {
+      if (!res) return null;
+      if (res.blob) return res.blob;
+      if (res.blobs && res.blobs.length) return res.blobs[0];
+      if (res.data) {
+        if (res.data.blob) return res.data.blob;
+        if (res.data.blobs && res.data.blobs.length) return res.data.blobs[0];
+      }
+      return null;
+    }
+    function extractName(res) {
+      if (!res) return '';
+      var n = res.name
+        || (res.blob && res.blob.name)
+        || (res.data && (res.data.name || (res.data.blob && res.data.blob.name)))
+        || '';
+      return String(n || '');
+    }
+    try {
+      window._pickerOpen = true;
+      var activity = new MozActivity({ name: 'pick' });
+      activity.onsuccess = function () {
+        window._pickerOpen = false;
+        var blob = extractBlob(this.result);
+        var name = extractName(this.result) || (blob && blob.name) || 'SoundFont';
+        if (blob) {
+          _blobArrayBuffer(blob).then(function (ab) {
+            _loadPickedSoundfont(name, ab);
+          }, function () {
+            if (typeof showToast === 'function') showToast('Cannot read that file');
+          });
+        } else if (typeof showToast === 'function') {
+          showToast('Cannot read that file');
+        }
+      };
+      activity.onerror = function () { window._pickerOpen = false; };
+    } catch (e) {
+      window._pickerOpen = false;
+      if (typeof showToast === 'function') showToast('File picker not available');
+    }
+  }
+
+  /** Load a picked blob into its own bank + switch the engine. */
+  function _loadPickedSoundfont(name, arrayBuffer) {
+    if (typeof Soundbank === 'undefined' || !Soundbank.loadFromFile) {
+      if (typeof showToast === 'function') showToast('Soundbank unavailable');
+      return;
+    }
+    if (typeof showToast === 'function') showToast('Loading ' + name + '\u2026');
+    Soundbank.loadFromFile(name, '', '', arrayBuffer).then(function () {
+      try {
+        _values.midi.engine = 'soundbank';
+        Store.setState({ engine: 'soundbank' });
+        save();
+      } catch (e) {}
+      closeSub();
+      var parent = document.getElementById('settings-overlay');
+      if (parent && _openGroup) {
+        rebuildRows(parent, _openGroup);
+        var rows = parent.querySelectorAll('.setting-row, .setting-row-slider');
+        if (rows.length) focusRow(rows, 0);
+      }
+      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      if (typeof showToast === 'function') showToast('Loaded ' + name);
+    }, function (err) {
+      if (typeof showToast === 'function') {
+        showToast('Failed to load ' + name + ': ' + ((err && err.message) || 'parse error'));
+      }
+    });
+  }
+
+  /**
+   * Keyboard for the SoundFont scan sub-page.
+   *   ▲▼ / ◀▶  move focus      OK        toggle the ticked checkbox
+   *   LSK       All / Deselect all
+   *   RSK       Finish → load everything ticked
+   *   Back      back to the Synth group (nothing loads)
+   */
+  function sfScanKey(key) {
+    var isBack = (key === 'Backspace' || key === Constants.KEY.BACKSPACE);
+    if (isBack) { closeSub(); return true; }
+
+    var focused = _sub.items[_sub.focusIdx];
+
+    if (key === 'ArrowUp' || key === Constants.KEY.ARROW_UP) { sfStep(-1); return true; }
+    if (key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN) { sfStep(+1); return true; }
+    if (key === 'ArrowLeft' || key === Constants.KEY.ARROW_LEFT) { sfStep(-1); return true; }
+    if (key === 'ArrowRight' || key === Constants.KEY.ARROW_RIGHT) {
+      if (focused && focused.type === 'action' && focused.part === 'sfPick') { _launchSfPicker(); return true; }
+      sfStep(+1);
+      return true;
+    }
+    if (key === Constants.KEY.ENTER || key === 13 || key === 'Enter') {
+      if (focused && focused.type === 'action' && focused.part === 'sfPick') { _launchSfPicker(); return true; }
+      if (focused && focused.type === 'sfcheck') {
+        _sub.ui.selected[focused.path] = !_sub.ui.selected[focused.path];
+        refreshSfChecks();
+      }
+      return true;
+    }
+    if (key === 'SoftLeft' || key === Constants.KEY.SOFT_LEFT) { sfSelectAll(); return true; }
+    if (key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT) { sfFinish(); return true; }
+
+    return true; // modal page swallows everything else
   }
 
   /**
@@ -2347,6 +2700,11 @@ visual: [
   function handleSubKey(key) {
     if (!_sub) return false;
 
+    // SoundFont scan page has its own key map (LSK All/Deselect, RSK
+    // Finish, OK toggles the square checkbox). Runs before the generic
+    // sub-page handling so softkeys are usable inside this one page.
+    if (_sub.kind === 'soundfonts') return sfScanKey(key);
+
     // Back → back to the group page. ONLY the hardware Back key exits —
     // LSK/RSK are strictly forbidden inside sub-pages.
     if (key === 'Backspace' || key === Constants.KEY.BACKSPACE) {
@@ -2534,6 +2892,148 @@ visual: [
         list.appendChild(row);
       }
     }
+
+    // Synth group extra: the loaded-SoundFont list (a checkbox row per
+    // imported bank) renders BELOW the schema rows. Own navigation —
+    // LSK = Delete, OK = select, RSK = Move (▲▼ reorder). The rows are
+    // regular .setting-row elements, so group ArrowUp/Down wrap through
+    // them like any other row.
+    if (group === 'midi') appendLoadedSfRows(list);
+  }
+
+  /**
+   * Append the loaded-SoundFont checkbox rows under the Synth (midi) group.
+   * Each row reflects a bank in Soundbank.getBanks(): ticked = the bank is
+   * SELECTED and therefore plays (layered) when the soundbank engine is on.
+   */
+  function appendLoadedSfRows(list) {
+    var banks;
+    try {
+      if (typeof Soundbank === 'undefined' || !Soundbank.getBanks) return;
+      banks = Soundbank.getBanks();
+    } catch (e) { return; }
+    if (!banks || !banks.length) return;
+
+    var sep = document.createElement('div');
+    sep.className = 'kai-separator';
+    var st = document.createElement('span');
+    st.className = 'kai-separator-text';
+    st.textContent = 'Loaded SoundFonts';
+    sep.appendChild(st);
+    list.appendChild(sep);
+
+    for (var i = 0; i < banks.length; i++) {
+      var b = banks[i];
+      var row = document.createElement('div');
+      row.className = 'setting-row sf-row';
+      if (b.selected) row.classList.add('selected');
+      row.setAttribute('tabindex', '-1');
+      row.setAttribute('data-type', 'sfrow');
+      row.setAttribute('data-id', String(b.id));
+
+      var check = document.createElement('span');
+      check.className = 'sf-check';
+      if (b.selected) check.classList.add('selected');
+      row.appendChild(check);
+
+      var lbl = document.createElement('span');
+      lbl.className = 'setting-row-label';
+      lbl.textContent = b.name;
+      if (b.path) lbl.title = b.path;
+      row.appendChild(lbl);
+
+      var val = document.createElement('span');
+      val.className = 'setting-row-value';
+      val.textContent = b.selected ? 'On' : 'Off';
+      row.appendChild(val);
+
+      list.appendChild(row);
+    }
+  }
+
+  // ── Loaded-SoundFont list navigation (Synth group rows) ────────────
+
+  function sfRowFor(row) {
+    return !!(row && row.getAttribute && row.getAttribute('data-type') === 'sfrow');
+  }
+  function sfRowId(row) {
+    return row ? row.getAttribute('data-id') : null;
+  }
+  function _sfBankIndexById(id) {
+    if (typeof Soundbank === 'undefined' || !Soundbank.getBanks) return -1;
+    var banks;
+    try { banks = Soundbank.getBanks(); } catch (e) { return -1; }
+    for (var i = 0; i < banks.length; i++) if (String(banks[i].id) === String(id)) return i;
+    return -1;
+  }
+  function _rebuildGroupRows() {
+    var parent = document.getElementById('settings-overlay');
+    if (!parent || !_openGroup) return;
+    rebuildRows(parent, _openGroup);
+    var rows = parent.querySelectorAll('.setting-row, .setting-row-slider');
+    if (rows.length) focusRow(rows, Math.min(_focusIdx, rows.length - 1));
+  }
+
+  /** OK on a loaded-SoundFont row: toggle its layering selection. */
+  function toggleSfRow(id) {
+    if (typeof Soundbank === 'undefined' || !Soundbank.toggleSelect) return;
+    // Banks carry NUMERIC ids internally (uid counter; strict === in
+    // Soundbank.bankById) — the DOM etched them as strings via data-id.
+    try { Soundbank.toggleSelect(Number(id)); } catch (e) { return; }
+    _rebuildGroupRows();
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+
+  /** LSK on a loaded-SoundFont row: delete every selected bank (falling
+   *  back to the focused one when nothing is ticked). */
+  function deleteSfRows(focusedRow) {
+    var banks = (typeof Soundbank !== 'undefined' && Soundbank.getBanks) ? Soundbank.getBanks() : [];
+    var selected = [];
+    banks.forEach(function (b) { if (b.selected) selected.push(b.id); });
+    var focusId = focusedRow ? sfRowId(focusedRow) : null;
+    var target = selected.length ? selected : (focusId ? [focusId] : []);
+    if (!target.length) {
+      if (typeof showToast === 'function') showToast('No soundfont to delete');
+      return;
+    }
+    target.forEach(function (id) {
+      try { if (Soundbank.removeBank) Soundbank.removeBank(Number(id)); } catch (e) {}
+    });
+    _rebuildGroupRows();
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+    if (typeof showToast === 'function') showToast('Deleted ' + target.length + ' soundfont(s)');
+  }
+
+  /** LSK / RSK while a loaded-SoundFont row (or move mode) is active. */
+  function handleSfSoftKey(key, row) {
+    var isLeft = (key === 'SoftLeft' || key === Constants.KEY.SOFT_LEFT);
+    var isRight = (key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT);
+    if (!isLeft && !isRight) return false;
+    if (_sub) return false; // sub-page owns its own LSK/RSK (scan page)
+    if (!row || !sfRowFor(row)) {
+      // Focus not on a soundfont row: cancel any stale move mode, keep
+      // the softkeys inert (matches the "LSK/RSK forbidden" group rule).
+      _sfMove = false;
+      return false;
+    }
+    if (isLeft) {
+      if (_sfMove) _sfMove = false;
+      else deleteSfRows(row);
+      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      return true;
+    }
+    if (isRight) {
+      if (_sfMove) {
+        _sfMove = false;
+        if (typeof showToast === 'function') showToast('Arrangement saved');
+      } else {
+        _sfMove = true;
+        if (typeof showToast === 'function') showToast('Move: \u25B2\u25BC to reorder, OK to finish');
+      }
+      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      return true;
+    }
+    return true;
   }
 
   function formatValue(def, val) {
@@ -2621,6 +3121,10 @@ visual: [
       return true;
     }
 
+    // SoftLeft / SoftRight with focus on a loaded-SoundFont row are NOT
+    // forbidden — they run the row's own actions (Delete / Move).
+    if (handleSfSoftKey(key, rows[_focusIdx])) return true;
+
     // Enter on a drill-in row opens its sub-page. Plain rows cycle
     // values with Left/Right only — Enter is intentionally inert.
     // SoftLeft must NEVER open sub-pages (LSK forbidden in settings).
@@ -2646,17 +3150,40 @@ visual: [
         runDevAction(rowE);
         return true;
       }
+      if (t === 'sfrow') {
+        // Loaded-SoundFont row: Enter toggles layering, or — in Move
+        // mode (RSK) — finishes the arrangement ("OK to finish").
+        if (_sfMove) {
+          _sfMove = false;
+          if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+        } else {
+          toggleSfRow(sfRowId(rowE));
+        }
+        return true;
+      }
       return true; // consumed but no-op for plain rows
     }
 
-    // ArrowUp/Down: nav with WRAP-AROUND (bottom ↔ top)
+    // ArrowUp/Down: nav with WRAP-AROUND (bottom ↔ top). In SoundFont
+    // Move mode the arrows reorder the focused bank instead of moving
+    // the cursor, and leaving the sf rows cancels move mode.
     if (key === 'ArrowUp' || key === Constants.KEY.ARROW_UP) {
+      if (_sfMove && sfRowFor(rows[_focusIdx])) { _sfMoveRows(rows[_focusIdx], -1); return true; }
       _focusIdx = (_focusIdx - 1 + rows.length) % rows.length;
+      if (_sfMove && !sfRowFor(rows[_focusIdx])) {
+        _sfMove = false;
+        if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      }
       focusRow(rows, _focusIdx);
       return true;
     }
     if (key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN) {
+      if (_sfMove && sfRowFor(rows[_focusIdx])) { _sfMoveRows(rows[_focusIdx], +1); return true; }
       _focusIdx = (_focusIdx + 1) % rows.length;
+      if (_sfMove && !sfRowFor(rows[_focusIdx])) {
+        _sfMove = false;
+        if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      }
       focusRow(rows, _focusIdx);
       return true;
     }
@@ -2677,15 +3204,51 @@ visual: [
         runDevAction(rowR);
         return true;
       }
+      if (tR === 'sfrow') {
+        if (_sfMove) { _sfMove = false; }
+        else { toggleSfRow(sfRowId(rowR)); return true; }
+        if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+        return true;
+      }
       cycleValue(rowR, +1);
       return true;
     }
     if (key === 'ArrowLeft' || key === Constants.KEY.ARROW_LEFT) {
-      cycleValue(rows[_focusIdx], -1);
+      var rowL = rows[_focusIdx];
+      if (rowL && rowL.getAttribute('data-type') === 'sfrow') {
+        if (_sfMove) { _sfMove = false; }
+        else { toggleSfRow(sfRowId(rowL)); return true; }
+        if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+        return true;
+      }
+      cycleValue(rowL, -1);
       return true;
     }
 
     return false; // not consumed
+  }
+
+  /** Move mode ▲▼: swap the focused bank one step up/down the loaded
+   *  SoundFont list, then re-render and keep focus on that same bank. */
+  function _sfMoveRows(row, dir) {
+    if (typeof Soundbank === 'undefined' || !Soundbank.getBanks || !Soundbank.moveBank) return;
+    var id = sfRowId(row);
+    var idx = _sfBankIndexById(id);
+    if (idx < 0) return;
+    var banks = Soundbank.getBanks();
+    var ni = idx + dir;
+    if (ni < 0 || ni >= banks.length) return;
+    try { Soundbank.moveBank(idx, ni); } catch (e) { return; }
+    _rebuildGroupRows();
+    var overlay = document.getElementById('settings-overlay');
+    if (!overlay) return;
+    var rows2 = overlay.querySelectorAll('.setting-row, .setting-row-slider');
+    for (var i = 0; i < rows2.length; i++) {
+      if (sfRowFor(rows2[i]) && sfRowId(rows2[i]) === String(banks[ni].id)) {
+        focusRow(rows2, i);
+        break;
+      }
+    }
   }
 
   function cycleValue(row, dir) {
@@ -3122,5 +3685,20 @@ visual: [
     applyVisual:    applyVisual,
     setKbPreset:    setKbPreset,
     refreshCurrentRows: refreshCurrentRows,
+    // Read-only helpers for controls.js softkeys: whether a sub-page is
+    // open (+ which kind), SoundFont Move mode, and the scan page's
+    // all-ticked state (drives the LSK All/Deselect label).
+    subKind:        function () { return _sub ? _sub.kind : null; },
+    isMoveMode:     function () { return _sfMove; },
+    sfAllChecked:   function () {
+      if (!_sub || _sub.kind !== 'soundfonts') return false;
+      var total = 0, checked = 0;
+      for (var i = 0; i < _sub.items.length; i++) {
+        if (_sub.items[i].type !== 'sfcheck') continue;
+        total++;
+        if (_sub.ui.selected[_sub.items[i].path]) checked++;
+      }
+      return total > 0 && checked === total;
+    },
   };
 })();

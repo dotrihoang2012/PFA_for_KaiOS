@@ -541,6 +541,16 @@
     // Developer → On-screen verbose status: restore the persisted toggle.
     try { pfaSetDevOsd(!!Store.getState().osdLog); } catch (e) {}
 
+    // Restore the soundfont banks registry (localStorage) at boot so the
+    // Synth → Load Soundfont list and layered playback survive restarts.
+    // Runs after Settings.load() so the persisted engine ('soundbank')
+    // is already in Store when the first notes try to play.
+    try {
+      if (typeof Soundbank !== 'undefined' && Soundbank.restore) {
+        Soundbank.restore();
+      }
+    } catch (e) { console.error('[Main] Soundbank.restore failed', e); }
+
     // System → Auto Full Screen / Auto Rotate on launch (reads the Sys
     // toggles Settings.load() just pushed into Store).
     try {
@@ -2129,6 +2139,13 @@
       }
       return;
     }
+    // Binary SoundFont (.sf2 / .sf3) picked from the File Manager: read
+    // the whole file and import it as a bank (same path the Settings scan
+    // uses, minus the scanning).
+    if (filePath && (filePath.endsWith('.sf2') || filePath.endsWith('.sf3'))) {
+      _loadSfPicked(filePath);
+      return;
+    }
     _activityBusy = true;
 
     // Handle .mid files with caching
@@ -2218,6 +2235,76 @@
       xhr.send();
     }
   };
+
+  // ── SoundFont import from the File Manager ──
+  // triggerLoadFile route for .sf2 / .sf3: resolve the volume by path
+  // prefix (/sdcard… = SD card, /internal… = internal storage), read the
+  // file whole, then import it as a Soundbank bank. Falls back to XHR for
+  // desktop debug like every other loader.
+  function _loadSfPicked(path) {
+    var sfName = path.split('/').pop();
+    if (typeof Soundbank === 'undefined' || !Soundbank.loadFromFile) {
+      if (typeof window.showToast === 'function') window.showToast('Soundbank unavailable');
+      return;
+    }
+    var volName = (path.indexOf('/sdcard') === 0) ? 'sdcard1' : 'internal';
+
+    function readBlobToArrayBuffer(blob, cb) {
+      var fr = new FileReader();
+      fr.onload = function () { cb(fr.result); };
+      fr.onerror = function () { cb(null); };
+      fr.readAsArrayBuffer(blob);
+    }
+
+    function importAB(ab) {
+      if (!ab) {
+        if (typeof window.showToast === 'function') window.showToast('Failed to read ' + sfName);
+        return;
+      }
+      Soundbank.loadFromFile(sfName, path, volName, ab).then(function () {
+        try { Store.setState({ engine: 'soundbank' }); } catch (e) {}
+        if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+        if (typeof window.showToast === 'function') window.showToast('Loaded ' + sfName);
+      }, function (err) {
+        if (typeof window.showToast === 'function') {
+          window.showToast('Failed to load ' + sfName + ': ' + ((err && err.message) || 'parse error'));
+        }
+      });
+    }
+
+    if (typeof navigator !== 'undefined' && navigator.getDeviceStorage) {
+      // Try the volume hinted by the path prefix, else the other one.
+      var tries = [volName];
+      if (volName === 'sdcard1') tries.push('internal');
+      else tries.push('sdcard');
+      var attempt = 0;
+      (function next() {
+        if (attempt >= tries.length) {
+          if (typeof window.showToast === 'function') window.showToast('Failed to read ' + sfName);
+          return;
+        }
+        var storageKey = tries[attempt++];
+        var ds = navigator.getDeviceStorage(storageKey);
+        var rel = path.replace(/^\/(sdcard|sdcard1|internal|internal\/storage|volume)\//, '');
+        var req = ds.get(rel);
+        req.onsuccess = function () { readBlobToArrayBuffer(this.result, importAB); };
+        req.onerror = function () { next(); };
+      })();
+    } else {
+      // Desktop debug: XHR as arrayBuffer (mozSystem not needed there).
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', path, true);
+      xhr.responseType = 'arraybuffer';
+      xhr.onload = function () {
+        if (xhr.status === 200 && xhr.response) importAB(xhr.response);
+        else if (typeof window.showToast === 'function') window.showToast('Failed to read ' + sfName);
+      };
+      xhr.onerror = function () {
+        if (typeof window.showToast === 'function') window.showToast('Failed to read ' + sfName);
+      };
+      xhr.send();
+    }
+  }
 
   // ── HASH FUNCTION FOR CACHING ---
   // Computes a hash of a string, returns a hex string (32-bit truncated)

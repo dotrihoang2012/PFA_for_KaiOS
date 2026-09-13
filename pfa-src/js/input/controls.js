@@ -1491,6 +1491,25 @@
       // mirroring the Options menu. Plain value rows keep labels blank.
       var subOv = document.getElementById('subsettings-overlay');
       var subOpen = !!(subOv && !subOv.classList.contains('hidden'));
+
+      // ── SoundFont loader ───────────────────────────────────────────
+      // Scan sub-page (subkind 'soundfonts'): LSK = All / Deselect All,
+      // center = Select (Scan checkbox rows), RSK = Finish. Replaces the
+      // generic settings softkeys on that ONE page.
+      var sfSub = (subOpen && typeof Settings.subKind === 'function' &&
+                   Settings.subKind() === 'soundfonts');
+      if (sfSub) {
+        var sfSel = !!document.querySelector('#subsettings-list .sf-row.focused') ||
+                    (function () {
+                      var sfA = document.querySelector('#subsettings-list .setting-row.focused');
+                      return !!(sfA && sfA.getAttribute && sfA.getAttribute('data-type') === 'action');
+                    })();
+        if (leftE)  leftE.textContent  = Settings.sfAllChecked() ? 'Deselect All' : 'Select All';
+        if (ctrE)   ctrE.textContent   = sfSel ? 'Select' : '';
+        if (rightE) rightE.textContent = 'Finish';
+        return;
+      }
+
       var selT = null;
       if (subOpen) {
         // Inside a sub-page: SELECT on any row that drills in further
@@ -1513,6 +1532,15 @@
       } else {
         var selRow = document.querySelector('#settings-list .setting-row.focused');
         if (selRow) selT = selRow.getAttribute('data-type');
+        // Loaded-SoundFont row in the Synth group: LSK = Delete,
+        // center = Select, RSK = Move / Done (Move mode toggle).
+        if (selRow && selT === 'sfrow') {
+          var moveMode = (typeof Settings.isMoveMode === 'function' && Settings.isMoveMode());
+          if (leftE)  leftE.textContent  = 'Delete';
+          if (ctrE)   ctrE.textContent   = 'Select';
+          if (rightE) rightE.textContent = moveMode ? 'Done' : 'Move';
+          return;
+        }
       }
       // Drill-in ('sub' / 'color') AND one-shot action rows (Developer:
       // Memory Stats / Export Log / Storage Test) AND palette/loadmore
