@@ -15,6 +15,11 @@ var Sequencer = (function () {
   var timer   = null;
   var ctxBase = 0;
   var tickStart = 0;
+  // Pre-roll offset (seconds): when non-zero the clock starts at
+  // nowSec = -offset so the first notes enter from the TOP of the band and
+  // nothing touches the bottom (or fires audio) until `offset` seconds in.
+  // Used by the bundled demo (1s pre-roll); reset to 0 on every load().
+  var _startOffsetSec = 0;
   var active  = [];   // visual list (LK lookahead)
   var audioActive = []; // keyboard/audio list (current notes only)
   var passedCount = 0;  // cumulative notes that have hit the band and moved on
@@ -39,9 +44,10 @@ var Sequencer = (function () {
     notes = noteList || [];
     isStr = !!(notes && typeof notes.at === 'function');
     _seekPending = null; _resumeSeek = false;
-    Tempo.map = tempoList || [{ t: 0, u: 500000 }];
-    Tempo.div = division || 480;
+    var _sso = (typeof Store !== 'undefined' && Store.getState) ? Store.getState().skipSlowOpen : true;
+    Tempo.setMap(tempoList, division, _sso);
     cursor = 0; tick = 0; active = []; audioActive = []; passedCount = 0; _ended = false; stopPlay();
+    _startOffsetSec = 0;  // pre-roll is demo-only; cleared when any file loads
   }
 
   // Streaming provider: return a resolved note object for index i (must have
@@ -54,7 +60,7 @@ var Sequencer = (function () {
   }
 
   function _beginTimer() {
-    playing = true; ctxBase = audioNow(); tickStart = tick;
+    playing = true; ctxBase = audioNow() + _startOffsetSec; tickStart = tick;
     if (isStr && notes.prefetch) { try { notes.prefetch(cursor); } catch (e) {} }
     timer = setInterval(pulse, 33);
   }
@@ -153,9 +159,26 @@ var Sequencer = (function () {
           auCnt++;
         }
         active.push({ note: n.n, channel: n.c, tick: n.t, endTick: etk,
-                      startSec: ss, endSec: esSec, velocity: n.v });
+                      startSec: ss, endSec: esSec, velocity: n.v,
+                      fired: (delay <= 0.05 && fireOn) });
       }
       cursor++;
+    }
+
+    // Catch-up fire: a note first encountered beyond the 50ms window is
+    // never revisited by the drain loop above, so it would sit unvoiced
+    // forever (→ no audio). Once its start enters the imminent ±50ms
+    // window, fire it here; respects the same per-pulse budget.
+    if (fireOn) {
+      for (var ci = 0; ci < active.length; ci++) {
+        var ca = active[ci];
+        if (ca.fired || ca.startSec > nowSec + 0.05) continue;
+        if (auCnt >= AUDIO_PER_PULSE) break;
+        fireOn(ca.note, ca.channel, ca.velocity,
+               Math.max(0, ca.startSec - nowSec), ca.endSec - ca.startSec);
+        ca.fired = true;
+        auCnt++;
+      }
     }
 
     // Cleanup: remove notes outside window [nowSec-0.5, nowSec+LK]
@@ -212,10 +235,11 @@ var Sequencer = (function () {
     // Recalibrate tick reference to avoid position jump on speed change
     if (playing && s !== speed) {
       tickStart = tick;
-      ctxBase = audioNow();
+      ctxBase = audioNow() + _startOffsetSec;
     }
     speed = s;
   },
+  setStartOffset: function(s){ _startOffsetSec = (isFinite(s) && s > 0) ? s : 0; },
     noteDown: function(fn){fireOn=fn;},
     noteUp: function(fn){fireOff=fn;},
     onEnd: function(fn){fireEnd=fn;},

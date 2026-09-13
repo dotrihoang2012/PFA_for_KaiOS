@@ -146,12 +146,26 @@ var MidiParser = (function () {
     // Sort notes by start tick
     notes.sort(function (a, b) { return a.t - b.t; });
 
-    // Ensure tempo array has at least one event (default 120 BPM = 500000 us)
-    if (tempo.length === 0) {
-      tempo.push({ t: 0, u: 500000 });
-    } else {
-      tempo.sort(function (a, b) { return a.t - b.t; });
+    // Ensure tempo array is sane: sorted ascending, deduped at equal ticks
+    // (FIRST event at a tick wins — the conductor track's value, independent
+    // of how many later tracks repeat the tick), invalid zero/usec rows
+    // dropped, and a guaranteed entry at tick 0 (spec default when the first
+    // tempo change happens later in the song).
+    var valid = [];
+    for (var ti = 0; ti < tempo.length; ti++) {
+      if (tempo[ti].u > 0) valid.push(tempo[ti]);
     }
+    var sorted = valid.slice().sort(function (a, b) { return a.t - b.t; });
+    var dedup = [];
+    var seenTick = null;
+    for (var di = 0; di < sorted.length; di++) {
+      if (seenTick !== null && sorted[di].t === seenTick) continue;
+      seenTick = sorted[di].t;
+      dedup.push(sorted[di]);
+    }
+    if (!dedup.length) dedup.push({ t: 0, u: 500000 });
+    else if (dedup[0].t > 0) dedup.unshift({ t: 0, u: 500000 });
+    tempo = dedup;
 
     return {
       notes: notes,

@@ -19,7 +19,6 @@
   var width, height;
   var rafId;
   var lastFrameTime = 0, fpsCounter = 0, fpsAcc = 0;
-var _peakActive = 0, _peakAcc = 0;
 
   // Pending activity payload — MozActivity may fire before boot()
   // has registered the canvas / wired the Synth. Park it here and
@@ -340,11 +339,15 @@ var _peakActive = 0, _peakAcc = 0;
       var er = document.querySelector('#settings-list .setting-row[data-key="exportLog"]');
       if (er) er.classList.toggle('perm-locked', !granted);
 
-      // Allow: refresh storage scan once, dismiss any stale error dialog
+      // Allow: dismiss the stale PERMISSION dialog only — leave any other
+      // modal (e.g. the background-image-missing dialog raised at boot)
+      // alone. Tracked via window._pfaAuthDialog.
       if (granted && !_permGrantedHandled) {
         _permGrantedHandled = true;
         _permDeniedShown = true; // block any stale deny dialog
-        if (typeof hideErrorDialog === 'function') hideErrorDialog();
+        if (window._pfaAuthDialog && typeof hideErrorDialog === 'function') {
+          hideErrorDialog();
+        }
         if (typeof StorageSel !== 'undefined' && StorageSel.scanStorages) {
           try { StorageSel.scanStorages(); } catch (e) {}
         }
@@ -357,6 +360,7 @@ var _peakActive = 0, _peakAcc = 0;
       if (denied && !_permDeniedShown && !window.pfaHandledHotOpen) {
         _permDeniedShown = true;
         showErrorDialog(_grantHint(), _pfaExit, 'Error');
+        window._pfaAuthDialog = true; // tag this dialog as the permission one
       }
 
       if (typeof window.updateSoftkeys === 'function') {
@@ -387,6 +391,7 @@ var _peakActive = 0, _peakAcc = 0;
       if (_permDialogShownOnce && !force) return;
       _permDialogShownOnce = true;
       showErrorDialog(_grantHint(), _pfaExit, 'Error');
+      window._pfaAuthDialog = true; // tag this dialog as the permission one
     };
     // Close the app cleanly on OK. On KaiOS 2.5 window.close() closes the
     // dedicated appwindow; the setTimeout fallbacks cover builds that block it.
@@ -479,15 +484,13 @@ var _peakActive = 0, _peakAcc = 0;
     // Audio context lazy — only on user gesture (Chrome autoplay policy)
     // Synth.noteOn will bootstrap on first note dispatch
 
-    // TEMP: disable audio render (both engines) — no notes are voiced.
-    window._audioMute = true;
-
-    // Wire Sequencer → active engine (Synth or PicoSynth, swappable at runtime)
-    // _engine() returns the live engine reference; _switchEngine() re-wires
-    // these callbacks when the user changes synthesizer in Settings.
+    // Wire Sequencer → Synth (only built-in oscillator engine; Pico and
+    // WildWebMIDI are removed). _engine() returns the live engine ref so
+    // HUD and controls can ask it for voices without knowing the concrete
+    // engine.
     _activeEngine = Synth; // default engine until Settings.load() runs
     Sequencer.noteDown(function (note, ch, vel, delay, dur) {
-      if (!window._audioMute) _engine().noteOn(note, ch, vel, delay, dur);
+      _engine().noteOn(note, ch, vel, delay, dur);
       // Feed NoteBuffer for O(1) render
     var st = Store.getState();
 
@@ -501,7 +504,7 @@ var _peakActive = 0, _peakAcc = 0;
       }
     });
     Sequencer.noteUp(function (note, ch) {
-      if (!window._audioMute) _engine().noteOff(note, ch);
+      _engine().noteOff(note, ch);
     });
     Sequencer.onEnd(function () {
       Store.setState({ play: 'stop' });
@@ -509,6 +512,14 @@ var _peakActive = 0, _peakAcc = 0;
       // PLAY/PAUSE return to normal, but hot keys and Note Color Randomise
       // stay LOCKED until a real .mid/.note is loaded (loadMIDIData unlocks).
       try { if (isDemoActive()) endDemoPlayback(); } catch (e) {}
+      // KaiAds: a naturally finished track is a completed session (skip the
+      // bundled demo). Fullscreen ads fire only at launch + every 5 sessions.
+      try {
+        if (typeof KaiAds !== 'undefined' && KaiAds.onSession) {
+          var _demoA = (typeof isDemoActive === 'function') ? isDemoActive() : false;
+          if (!_demoA) KaiAds.onSession();
+        }
+      } catch (e) {}
     });
 
     // Wire Store subscription → engine
@@ -529,6 +540,29 @@ var _peakActive = 0, _peakAcc = 0;
 
     // Developer → On-screen verbose status: restore the persisted toggle.
     try { pfaSetDevOsd(!!Store.getState().osdLog); } catch (e) {}
+
+    // System → Auto Full Screen / Auto Rotate on launch (reads the Sys
+    // toggles Settings.load() just pushed into Store).
+    try {
+      if (typeof window.applySystemSettings === 'function') window.applySystemSettings();
+    } catch (e) { console.error('[Main] applySystemSettings failed', e); }
+
+    // Restore a persisted background image (survives app restarts) — must
+    // run after Settings.load() seeded Store. The render loop hides it for
+    // the demo lock exactly like bgColor. If the saved image won't load
+    // (corrupt/truncated entry) OR its source file was deleted / renamed
+    // / moved, raise a DIALOG immediately at launch and drop the broken
+    // entry so it can't silently sit there every boot.
+    try {
+      var _st0 = Store.getState();
+      if (_st0 && _st0.bgImageUrl && typeof window.pfaSetBgImage === 'function') {
+        window.pfaSetBgImage(_st0.bgImageUrl, reportBgImageMissing);
+      }
+      if (_st0 && _st0.bgImagePath && typeof checkBgImageFile === 'function') {
+        try { checkBgImageFile(_st0.bgImagePath, reportBgImageMissing); }
+        catch (eF) { console.error('[Main] bg image check failed', eF); }
+      }
+    } catch (e) { console.error('[Main] restore bgImage failed', e); }
 
     // Softkey labels — let controls.js manage them
     if (typeof updateSoftkeys === 'function') updateSoftkeys();
@@ -563,6 +597,26 @@ var _peakActive = 0, _peakAcc = 0;
                                 Store.getState().keyWidth || 16);
     }
     console.log('[Main] booted. Canvas ' + width + 'x' + height);
+
+    // KaiAds fullscreen integration (no-op when the SDK is unavailable:
+    // desktop browser / simulator / missing ads-sdk dependency).
+    try {
+      if (typeof KaiAds !== 'undefined' && KaiAds) {
+        KaiAds.setPauseHooks(function () {
+          var _adSt = Store.getState();
+          if (_adSt.play === 'play' && typeof Sequencer !== 'undefined' && Sequencer.pause) {
+            try { Sequencer.pause(); } catch (e) {}
+            Store.setState({ play: 'pause' });
+          }
+        }, function () {});
+        KaiAds.init();
+        window.setTimeout(function () {
+          try { if (KaiAds && KaiAds.launch) KaiAds.launch(); } catch (e) {}
+        }, 2500);
+      }
+    } catch (e) {
+      console.warn('[Main] KaiAds init failed', e);
+    }
 
     // If MozActivity fired while we were still booting (script parse
     // raced ahead of the DOMContentLoaded handler), flush the queued
@@ -672,6 +726,90 @@ var _peakActive = 0, _peakAcc = 0;
   // True while the "Analyzing MIDI Data..." pill/bar is live — used to
   // re-show it when the user returns to the piano screen mid-analysis.
   var _parseIndicatorActive = false;
+  var _parseMode = '';   // 'indet' (sweep) | 'pct' (determinate growth) — live across overlay switches
+  var _parsePct = 0;
+
+  // ── Loading-bar presentation (Visual → Loading Bar) ──
+  // pctBarVisible : hide/show the whole #parse-bar strip
+  // loadAnimated  : sliding sweep vs gradual fill when BOTH % toggles agree
+  // loadBarColor  : RGBA color of the bar fill (default blue)
+  // pctColor      : RGBA color of the % readout text (default white)
+  // pctAnalyze/pctMerge : per-phase % readout. A phase with its % OFF
+  //   slides; a phase with its % ON grows 0→100%. When both toggles agree
+  //   (both ON or both OFF) the master loadAnimated toggle decides.
+  function _phaseShowPct(stage) {
+    try {
+      return (stage === 'merge')
+        ? Store.getState().pctMerge !== false
+        : Store.getState().pctAnalyze !== false;
+    } catch (e) { return false; }
+  }
+  function _phaseAnimated(stage) {
+    var showThis  = _phaseShowPct(stage);
+    var showOther = _phaseShowPct(stage === 'merge' ? 'parse' : 'merge');
+    var animated  = true;
+    try { animated = Store.getState().loadAnimated !== false; } catch (e) {}
+    // Mixed toggles — the hidden-% phase slides, the shown-% phase grows.
+    if (showThis !== showOther) return !showThis;
+    // Both toggles agree — follow the master Sliding Animation switch.
+    return animated;
+  }
+  function _pctBarVisible() {
+    try { return Store.getState().pctBarVisible !== false; }
+    catch (e) { return true; }
+  }
+  function _loadBarColor() {
+    var c = null;
+    try { c = Store.getState().loadBarColor; } catch (e) {}
+    return c || '#0088FF';
+  }
+  function _pctColor() {
+    var c = null;
+    try { c = Store.getState().pctColor; } catch (e) {}
+    return c || '#FFFFFF';
+  }
+  function applyParseBarStyle() {
+    var bar  = document.getElementById('parse-bar');
+    var fill = document.getElementById('parse-bar-fill');
+    var pctE = document.getElementById('parse-pct');
+    if (fill) fill.style.background = _loadBarColor();
+    if (pctE) pctE.style.color = _pctColor();
+    if (bar) {
+      // The strip appears ONLY while a MIDI/.note file is actually being
+      // analyzed/merged — never persistently on idle. The toggle just
+      // controls that show (a parse is active AND pctBarVisible is on).
+      if (_pctBarVisible() && _parseIndicatorActive) bar.classList.remove('hidden');
+      else bar.classList.add('hidden');
+    }
+  }
+  window.applyParseBarStyle = applyParseBarStyle;
+
+  // ── Center-pill (Dialog) presentation (Visual → Dialog) ──
+  // showDialog     : master show/hide toggle (read live by showParsing /
+  //                  now-playing paths; no DOM work needed here)
+  // dialogTextColor: RGBA text color of #now-playing-text
+  // dialogBgColor  : RGBA background of #now-playing-text
+  function _dialogTextColor() {
+    var c = null;
+    try { c = Store.getState().dialogTextColor; } catch (e) {}
+    return c || '#FFFFFF';
+  }
+  function _dialogBgColor() {
+    var c = null;
+    try { c = Store.getState().dialogBgColor; } catch (e) {}
+    return c || '#000000';
+  }
+  function applyDialogStyle() {
+    var t = document.getElementById('now-playing-text');
+    if (t) {
+      t.style.color = _dialogTextColor();
+      t.style.background = _dialogBgColor();
+    }
+  }
+  window.applyDialogStyle = applyDialogStyle;
+  // Which pipeline stage the current determinate progress belongs to — drives
+  // the Developer→"Show % while analyzing / merging" toggles in settings.
+  var _pctStage = 'parse';   // 'parse' (analysis) | 'merge'
 
   /**
    * Route a picked MIDI Blob. For files >= HUGE_MIDI_BYTES we hand the Blob
@@ -703,13 +841,18 @@ var _peakActive = 0, _peakAcc = 0;
   function _showParseProgress(label, indeterminate) {
     _devActive = true;
     _parseIndicatorActive = true;
+    var animated = _phaseAnimated(_pctStage);
+    _parseMode = animated ? 'indet' : 'pct';
     // Piano-only indicator: skip all DOM writes while the user is browsing
     // Options/menu/settings/about; it resumes when back on the player.
     if (!_onPlayerScreen()) return;
     var bar = document.getElementById('parse-bar');
     if (bar) {
+      // Drop any determinate fill remnants so the sweep always restarts clean.
+      var fill0 = document.getElementById('parse-bar-fill');
+      if (fill0) { fill0.style.left = ''; fill0.style.width = ''; }
       bar.classList.remove('hidden');
-      if (indeterminate) bar.classList.add('indeterminate');
+      if (animated) bar.classList.add('indeterminate');
       else bar.classList.remove('indeterminate');
     }
     ensureParsePill();
@@ -718,16 +861,51 @@ var _peakActive = 0, _peakAcc = 0;
     if (textEl && Store.getState().showDialog !== false) {
       _setParseText(label || 'Analyzing MIDI Data...');
     }
+    // No percentage known yet (phase just started) — hide the readout until
+    // the first onProgress determinate update arrives.
+    var pctEl0 = document.getElementById('parse-pct');
+    if (pctEl0) { pctEl0.textContent = ''; pctEl0.classList.add('hidden'); }
+    applyParseBarStyle();
   }
   function _updateParseProgress(pct) {
-    // Piano-only indicator (same rule as _showParseProgress).
+    if (pct > 100) pct = 100; else if (pct < 0) pct = 0;
+    // Track the latest value even while off-piano, so re-entering the player
+    // screen restores the bar at the current completion, not a stale one.
+    var animated = _phaseAnimated(_pctStage);
+    _parseMode = animated ? 'indet' : 'pct';
+    _parsePct = pct;
+    // Piano-only indicator (same rule as _showParseProgress): DOM writes are
+    // deferred while browsing Options/menu/settings/about.
     if (!_onPlayerScreen()) return;
     ensureParsePill();
+    var bar = document.getElementById('parse-bar');
     var fill = document.getElementById('parse-bar-fill');
-    if (fill) fill.style.width = pct.toFixed(1) + '%';
-    var textEl = document.getElementById('now-playing-text');
-    if (textEl) {
-      _setParseText('Analyzing MIDI Data... ' + pct + '%');
+    if (bar) {
+      if (animated) {
+        // Sliding sweep — keep the animation, drop stale determinate growth.
+        bar.classList.add('indeterminate');
+        if (fill) { fill.style.left = ''; fill.style.width = ''; }
+      } else {
+        // Gradual fill 0→100% driven by the live progress value.
+        bar.classList.remove('indeterminate');
+        if (fill) {
+          fill.style.left = '0%';
+          fill.style.width = pct.toFixed(1) + '%';
+        }
+      }
+    }
+    applyParseBarStyle();
+    // Percentage readout — shown for the phase only when ITS % toggle is on.
+    var pctEl = document.getElementById('parse-pct');
+    var wantPct = _phaseShowPct(_pctStage);
+    if (pctEl) {
+      if (!wantPct) {
+        pctEl.textContent = '';
+        pctEl.classList.add('hidden');
+      } else {
+        pctEl.textContent = Math.round(pct) + '%';
+        pctEl.classList.remove('hidden');
+      }
     }
   }
 
@@ -750,7 +928,7 @@ var _peakActive = 0, _peakAcc = 0;
   // while a conversion runs) and from SoftRight/Enter on the piano (see
   // controls.js). Stops the pipeline at ANY point — a few slices in or on
   // the last merge group. Stopping also clears the partial tmp files
-  // written so far ("và clear nhé"): StreamParser/NoteWriter delete each
+  // written so far ("and clean up"): StreamParser/NoteWriter delete each
   // tracked path by exact name before reporting onCancel.
   function _cancelAnalyze() {
     if (!_pipelineBusy) return;
@@ -822,8 +1000,8 @@ var _peakActive = 0, _peakAcc = 0;
       _setPipelineBusy(true);
       StreamParser.midiToNote(blob, name, {
         onStage: function (s) {
-          if (s === 'parse') { _showParseProgress('Parsing MIDI data...', true); }
-          else if (s === 'merge') { _showParseProgress('Merging events...', true); }
+          if (s === 'parse') { _pctStage = 'parse'; _showParseProgress('Parsing MIDI data...', true); }
+          else if (s === 'merge') { _pctStage = 'merge'; _showParseProgress('Merging events...', false); }
         },
         onProgress: function (pct) { _updateParseProgress(pct); },
         onDone: function (path) {
@@ -870,6 +1048,7 @@ var _peakActive = 0, _peakAcc = 0;
 
     console.log('[NoteWriter] large MIDI ' + arrayBuffer.byteLength +
       ' bytes, ' + (midiData.notes ? midiData.notes.length : 0) + ' notes → incremental .note');
+    _pctStage = 'parse';
     _showParseProgress();
     _setPipelineBusy(true);
 
@@ -905,8 +1084,13 @@ var _peakActive = 0, _peakAcc = 0;
 
   var _prevSpeed      = null;
   var _prevWave       = null;
-  var _prevSynth      = null;   // 'osc' | 'pico'
-  var _activeEngine   = null;   // live reference: Synth or PicoSynth
+  var _prevAudio      = null;
+  var _prevPctBarVis  = null;
+  var _prevLoadAnim   = null;
+  var _prevLoadColor  = null;
+  var _prevDlgText     = null;
+  var _prevDlgBg       = null;
+  var _activeEngine   = null;   // live reference: Synth (built-in oscillator)
 
   /** Return the currently-selected engine object. */
   function _engine() {
@@ -916,50 +1100,15 @@ var _peakActive = 0, _peakAcc = 0;
   // (number of actually-sounding voices) instead of the note-event window.
   window._engine = _engine;
 
-  /** Switch to the engine indicated by synthKey ('osc' | 'pico'). */
-  function _switchEngine(synthKey) {
-    if (synthKey === _prevSynth) return;
-    _prevSynth = synthKey;
-
-    // Silence whatever was playing before swapping
-    try { _engine().silence(); } catch (e) {}
-
-    if (synthKey === 'pico' && typeof PicoSynth !== 'undefined') {
-      _activeEngine = PicoSynth;
-      PicoSynth.ensure();
-      console.log('[Main] engine → PicoSynth');
-    } else {
-      _activeEngine = Synth;
-      Synth.ensure();
-      console.log('[Main] engine → Synth (oscillator)');
-    }
-
-    // Re-wire Sequencer callbacks to the new engine
-    Sequencer.noteDown(function (note, ch, vel, delay, dur) {
-      if (!window._audioMute) _engine().noteOn(note, ch, vel, delay, dur);
-      var st2 = Store.getState();
-      if (typeof NoteBuffer !== 'undefined' && NoteBuffer.isReady()) {
-        NoteBuffer.onNote(note, ch, vel, delay, dur,
-          st2.kbStart || 21, st2.keyWidth || 16);
-      }
-    });
-    Sequencer.noteUp(function (note, ch) {
-      if (!window._audioMute) _engine().noteOff(note, ch);
-    });
-  }
-
   function onStoreChange(state) {
     // Playback control (avoid re-trigger from onEnd cycle)
     var prevPlay = Store._prevPlay;
     Store._prevPlay = state.play;
 
-    // Synthesizer engine switch (must happen BEFORE play commands below)
-    if (state.synthesizer && state.synthesizer !== _prevSynth) {
-      _switchEngine(state.synthesizer);
-    }
-
     if (state.play === 'play' && prevPlay !== 'play') {
-      // Bootstrap audio context (no-op if already running)
+      // Mark audible FIRST so ensure() (gated on the flag) actually boots
+      // the context; otherwise the first Play would no-op the bootstrap.
+      try { if (typeof _engine().setActive === 'function') _engine().setActive(true); } catch (eA) {}
       _engine().ensure();
       Sequencer.play();
       acquireCpuWakeLock();
@@ -967,6 +1116,8 @@ var _peakActive = 0, _peakAcc = 0;
     } else if (state.play === 'pause' && prevPlay !== 'pause') {
       Sequencer.pause();
       _engine().silence();
+      // No audible output → release the status-bar play indicator.
+      try { if (typeof _engine().setActive === 'function') _engine().setActive(false); } catch (eA) {}
     } else if (state.play === 'stop' && prevPlay !== 'stop') {
       // Natural song end: the sequencer already soft-stopped with its
       // counters intact (Passed + Time stay on screen). A user Stop (or
@@ -975,6 +1126,10 @@ var _peakActive = 0, _peakAcc = 0;
       try { seqEnded = typeof Sequencer !== 'undefined' && Sequencer.isEnded && Sequencer.isEnded(); } catch (e) {}
       if (!seqEnded) { try { Sequencer.stop(); } catch (e) {} }
       _engine().silence();
+      // Nothing sounding anymore → suspend AudioContext so the OS status-bar
+      // play icon disappears (a latent 'content'-channel context keeps showing
+      // "playing" even after the song ends).
+      try { if (typeof _engine().setActive === 'function') _engine().setActive(false); } catch (eA) {}
       releaseCpuWakeLock();
       releaseScreenWakeLock();
       hideNowPlayingNotification();
@@ -988,7 +1143,34 @@ var _peakActive = 0, _peakAcc = 0;
     // Waveform change (only when actually changed — setWave iterates 48 oscillators)
     if (state.waveform && state.waveform !== _prevWave) {
       _prevWave = state.waveform;
-      Synth.setWave(state.waveform);   // only Synth uses waveform; PicoSynth ignores it
+      Synth.setWave(state.waveform);
+    }
+
+    // Audio on/off (Settings → Synth → Audio). _prevAudio guards so the
+    // toggle only fires Synth.mute on an actual change (mute() silences
+    // instantly; the master gain write is direct, no param events).
+    if (state.audio !== _prevAudio) {
+      _prevAudio = state.audio;
+      Synth.mute(!state.audio);
+    }
+
+    // Loading-bar presentation (Visual → Loading Bar): re-apply live when
+    // any of the three keys changes (only the .hidden + fill color shift).
+    if (state.pctBarVisible !== _prevPctBarVis ||
+        state.loadAnimated  !== _prevLoadAnim ||
+        state.loadBarColor  !== _prevLoadColor) {
+      _prevPctBarVis = state.pctBarVisible;
+      _prevLoadAnim  = state.loadAnimated;
+      _prevLoadColor = state.loadBarColor;
+      try { applyParseBarStyle(); } catch (e) {}
+    }
+
+    // Center-pill colors (Visual → Dialog): re-apply on change.
+    if (state.dialogTextColor !== _prevDlgText ||
+        state.dialogBgColor   !== _prevDlgBg) {
+      _prevDlgText = state.dialogTextColor;
+      _prevDlgBg   = state.dialogBgColor;
+      try { applyDialogStyle(); } catch (e) {}
     }
 
     // Speed (only when actually changed — avoids recalibration churn).
@@ -1051,23 +1233,24 @@ var _peakActive = 0, _peakAcc = 0;
       } catch (e) { st._activeList = []; }
     }
 
-    // Track peak activeList length (RAM diagnostic): log once per second.
-    if (liveCount > _peakActive) _peakActive = liveCount;
-    _peakAcc += dt;
-    if (_peakAcc >= 1000) {
-      _peakAcc = 0;
-      var _heap = 0;
-      try { if (performance && performance.memory) _heap = performance.memory.usedJSHeapSize; } catch (e) {}
-      if (_heap) { try { console.log('[Peak] heapKB=' + Math.round(_heap / 1024) + ' activeList=' + _peakActive); } catch (e) {} }
-      else if (_peakActive > 0) { try { console.log('[Peak] activeList=' + _peakActive + ' (~' + Math.round(_peakActive * 121 / 1048576) + 'MB objects)'); } catch (e) {} }
-    }
-
     // 1. Background — Visual → Background Color overrides the theme token
     //    when set; otherwise fall back to CSS var --theme-bg / dark gray.
+    //    A loaded Background Image (Visual → Load Background Image) wins
+    //    over both, stretched to fill — same demo lock as bgColor: while
+    //    _demoActive / _lockNoFile the image is ignored (theme stays).
     var cs = getComputedStyle(document.documentElement);
     var themeBg = cs.getPropertyValue('--theme-bg').trim() || '#0a0a0a';
-    ctx.fillStyle = st.bgColor || themeBg;
-    ctx.fillRect(0, 0, width, height);
+    // Demo lock: keep the demo background on the theme default (black) no
+    // matter what Visual → Background Color says — until a real file loads.
+    var bgImg = (_demoActive || _lockNoFile) ? null : _bgImage;
+    if (bgImg) {
+      try { ctx.drawImage(bgImg, 0, 0, width, height); }
+      catch (e) { bgImg = null; }
+    }
+    if (!bgImg) {
+      ctx.fillStyle = demoVisualValue('bgColor', st.bgColor) || themeBg;
+      ctx.fillRect(0, 0, width, height);
+    }
 
     // 2. Falling notes
     Notes.draw(st, ctx, width, height);
@@ -1082,8 +1265,8 @@ var _peakActive = 0, _peakAcc = 0;
     if (kbH > 0) {
       var lineY = height - kbH;
       if (lineY < 0) lineY = 0;
-      ctx.strokeStyle = st.barColor || '#00ccff';
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = st.barColor || '#8B0000';
+      ctx.lineWidth = 5;
       ctx.globalAlpha = 0.6;
       ctx.beginPath();
       ctx.moveTo(0, lineY);
@@ -1093,6 +1276,24 @@ var _peakActive = 0, _peakAcc = 0;
 
       // 4. Keyboard strip (on top, just above the softkey overlay)
       Keyboard.draw(st, ctx, width, height);
+
+      // Middle C marker — a small gray dot centered on the Middle C (C4)
+      // white key, sitting in the white-key area below the black keys
+      // (like the reference 88-key strip). Controlled by Visual →
+      // Piano Settings → Middle C Marker. Dot FLEXES with the keys
+      // (size follows keyWidth: bigger keys → bigger dot).
+      var showMid = !(st.middleMarker === false);
+      if (showMid && typeof Keyboard !== 'undefined' && Keyboard.middleCX) {
+        var midX = Keyboard.middleCX(st, width);
+        if (midX != null) {
+          var dotSize = Math.max(2, Math.min(4, Math.round((st.keyWidth || 16) * 0.65)));
+          var bhMid = (Keyboard.blackHeight) ? Keyboard.blackHeight(kbH) : Math.round(kbH * 0.6);
+          var stripTop = height - kbH;
+          var midY = stripTop + bhMid + Math.round((kbH - bhMid) / 2);
+          ctx.fillStyle = '#888';
+          ctx.fillRect(midX - Math.floor(dotSize / 2), midY - Math.floor(dotSize / 2), dotSize, dotSize);
+        }
+      }
     }
 
     // 5. HUD overlay (throttled DOM writes — internal 250ms interval)
@@ -1280,14 +1481,86 @@ var _peakActive = 0, _peakAcc = 0;
     }, 3000);
   };
 
+  // ── Background image (Visual → Load Background) ──
+  // Persisted as a downscaled JPEG data URL that survives app restarts.
+  // pfaSetBgImage(url, onFail) loads + shows it; pfaSetBgImage(null) clears
+  // it. The render loop draws it stretched over the canvas behind the notes,
+  // gated by the same demo lock as bgColor (hidden while the demo runs —
+  // visible once a real file loads, without needing a reload).
+  var _bgImage = null;
+  window.pfaSetBgImage = function (url, onFail) {
+    _bgImage = null;
+    if (!url) return;
+    var im = new Image();
+    im.onload = function () {
+      _bgImage = im;
+    };
+    im.onerror = function () {
+      _bgImage = null;
+      if (typeof onFail === 'function') onFail();
+      else if (typeof showToast === 'function') showToast('Not a valid image file');
+    };
+    im.src = url;
+  };
+
+  // Verify the background image's SOURCE FILE still exists at boot
+  // (deleted / renamed / moved elsewhere). DeviceStorage lookup; if the
+  // API is unavailable the check is skipped silently. `missing` fires
+  // only when every candidate path resolves to nothing on every storage.
+  function checkBgImageFile(path, missing) {
+    var storages = [];
+    try {
+      if (typeof navigator !== 'undefined' && navigator.getDeviceStorages) {
+        storages = navigator.getDeviceStorages('sdcard');
+      } else if (typeof navigator !== 'undefined' && navigator.getDeviceStorage) {
+        storages = [navigator.getDeviceStorage('sdcard')];
+      }
+    } catch (e) { storages = []; }
+    if (!storages || !storages.length) return; // can't check — silent
+    var p0 = String(path);
+    var candidates = [p0];
+    var mStripped = p0.match(/^\/[^/]+\/(.+)$/);
+    if (mStripped) candidates.push(mStripped[1]); // strip '/sdcard' prefix
+    var pending = 0, found = false, doneCalled = false;
+    function settle() {
+      pending--;
+      if (pending <= 0 && !found && !doneCalled) {
+        doneCalled = true;
+        if (typeof missing === 'function') { try { missing(); } catch (e) {} }
+      }
+    }
+    candidates.forEach(function (p) {
+      storages.forEach(function (st) {
+        pending++;
+        var req;
+        try { req = st.get(p); } catch (e) { settle(); return; }
+        req.onsuccess = function (e) {
+          if (e && e.target && e.target.result) found = true;
+          settle();
+        };
+        req.onerror = function () { settle(); };
+      });
+    });
+    if (pending === 0 && !found && !doneCalled) {
+      doneCalled = true;
+      if (typeof missing === 'function') { try { missing(); } catch (e) {} }
+    }
+  }
+
   window.addEventListener('blur', function () {
-    // Background play: if a real file is playing, keep Sequencer + audio running
-    // and surface the notification (Back already did, but Home/minimize also lands here).
+    // Background play: while anything is playing (real file OR demo), keep
+    // Sequencer + audio running so no notes are lost and the song stays
+    // exactly in place when the user returns. The notification is only
+    // surfaced for real files on a genuine background exit (Back already
+    // did, but Home/minimize also lands here) — not for our own activity
+    // picker (the user is still effectively inside the app).
     var st = null; try { st = Store.getState(); } catch (eB) {}
     var hasFile = !!(st && st.fileName);
     var isDemo = false; try { isDemo = isDemoActive(); } catch (eD) {}
-    if (hasFile && !isDemo && st && st.play === 'play') {
-      try { showNowPlayingNotification(st.fileName); } catch (eN) {}
+    if (st && st.play === 'play') {
+      if (hasFile && !isDemo && !window._pickerOpen) {
+        try { showNowPlayingNotification(st.fileName); } catch (eN) {}
+      }
       try { acquireCpuWakeLock(); } catch (eW) {}
       try { releaseScreenWakeLock(); } catch (eS) {}
       // Do NOT silence/pause — let content-channel audio continue in background.
@@ -1295,9 +1568,20 @@ var _peakActive = 0, _peakAcc = 0;
     }
     try { _engine().silence(); } catch (e) {}
     if (typeof Sequencer !== 'undefined' && Sequencer.pause) Sequencer.pause();
+    // Idle in background: suspend so the status-bar play icon also clears
+    // behind other apps (not just when the song ends in the foreground).
+    try { if (typeof _engine().setActive === 'function') _engine().setActive(false); } catch (eBS) {}
   }, false);
   window.addEventListener('focus', function () {
     try { _engine().resume(); } catch (e) {}
+    // Re-sync the audible flag: if we're not actually playing, keep the
+    // AudioContext suspended so the OS status-bar play icon stays hidden.
+    try {
+      var _sf = Store.getState();
+      if (_sf && _sf.play !== 'play' && typeof _engine().setActive === 'function') {
+        _engine().setActive(false);
+      }
+    } catch (eS) {}
     // If Store still says 'play' but blur's direct Sequencer.pause() stopped the pulse,
     // restart it. (Background-play blur does NOT pause, so this is a no-op in that case.)
     try {
@@ -1399,10 +1683,20 @@ var _peakActive = 0, _peakAcc = 0;
 
     Sequencer.load(notes, tempo, div);
 
+    // Store the NORMALISED map (deduped, sorted, guaranteed tick-0 entry) —
+    // the loader's values may contain duplicates/unsorted rows/gaps that
+    // would otherwise make BPM and playback speed disagree across files.
+    var _nMap = (typeof Tempo !== 'undefined' && Array.isArray(Tempo.map)) ? Tempo.map.slice() : tempo;
+    var _nDiv = (typeof Tempo !== 'undefined' && Tempo.div > 0) ? Tempo.div : div;
+
+    console.log('[BPM] midiData tempo#' + (midiData.tempo ? midiData.tempo.length : 0) +
+      ' -> norm#' + _nMap.length + ' ' + JSON.stringify(_nMap.slice(0, 8)) +
+      ( _nMap.length > 8 ? ' ...total ' + _nMap.length : '') + ' div=' + _nDiv);
+
     Store.setState({
       notes:     notes,
-      tempoMap:  tempo,
-      division:  div,
+      tempoMap:  _nMap,
+      division:  _nDiv,
       format:    midiData.fmt || 1,
       timeSec:   0,
       play:      'stop',
@@ -1484,7 +1778,7 @@ var _peakActive = 0, _peakAcc = 0;
       resetLoadOnError();
       // Keep demo locked after the error (no restart) — unlock only on
       // a successful .mid/.note load via loadMIDIData -> clearDemo().
-      showErrorDialog('Could not read this file. It may not be a valid MIDI-JSON (.note) export.');
+      showErrorDialog('Could not read this file. It may not be a valid MIDI or (.note) export.');
       return false;
     }
   }
@@ -1537,10 +1831,17 @@ var _peakActive = 0, _peakAcc = 0;
 
     Sequencer.load(ns, ns.tempoMap, ns.div);
 
+    var _nMap = (typeof Tempo !== 'undefined' && Array.isArray(Tempo.map)) ? Tempo.map.slice() : ns.tempoMap;
+    var _nDiv = (typeof Tempo !== 'undefined' && Tempo.div > 0) ? Tempo.div : ns.div;
+
+    console.log('[BPM] noteStream tempo#' + (ns.tempoMap ? ns.tempoMap.length : 0) +
+      ' -> norm#' + _nMap.length + ' ' + JSON.stringify(_nMap.slice(0, 8)) +
+      ( _nMap.length > 8 ? ' ...total ' + _nMap.length : '') + ' div=' + _nDiv);
+
     Store.setState({
       notes:     ns,
-      tempoMap:  ns.tempoMap,
-      division:  ns.div,
+      tempoMap:  _nMap,
+      division:  _nDiv,
       format:    1,
       timeSec:   0,
       play:      'stop',
@@ -1689,9 +1990,15 @@ var _peakActive = 0, _peakAcc = 0;
   // overrides only matter once a real file is loaded. Returns `current` when
   // not locked.
   var DEMO_VISUAL_DEFAULTS = {
+    bgColor:      null,     // demo background stays on the theme token (black)
     renderMode: 'buffer',
     speed:      1.0,
-    trail:      0.7,
+    // Buffer-mode fall time = 1/trail (see notebuffer.js effectiveLK).
+    // trail 1.0 → a note takes exactly 1.0s from the top of the band to
+    // the bottom. Kept in sync with the 1s demo pre-roll so the opening
+    // notes start at the top edge and reach the bottom 1s in.
+    trail:      1.0,
+    view3d:     'both',    // demo always renders 3D notes on
     kbStart:    21,
     kbEnd:      108,
     pianoSize:  'none',   // demo shows notes only — no piano keyboard
@@ -1714,10 +2021,20 @@ var _peakActive = 0, _peakAcc = 0;
   function clearDemo() {
     _demoActive = false;
     _lockNoFile = false;
+    // A real file is in — the demo's fixed track colors no longer apply;
+    // the user's Note Color palette takes over.
+    if (typeof Notes !== 'undefined' && Notes.setDemoOverride) {
+      try { Notes.setDemoOverride(false); } catch (e) {}
+    }
     if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
     // Un-grey the Note Color Randomise Options item.
     if (typeof window.refreshDemoLock === 'function') {
       try { window.refreshDemoLock(); } catch (e) {}
+    }
+    // A real file just loaded — un-hide the Info card and apply the Info
+    // Card appearance settings that were dormant during the demo.
+    if (typeof Settings !== 'undefined' && Settings.applyInfoCard) {
+      try { Settings.applyInfoCard(); } catch (e) {}
     }
   }
 
@@ -1762,6 +2079,16 @@ var _peakActive = 0, _peakAcc = 0;
         loadMIDIData(midi);          // load notes/tempo/div, resets sequencer
         _demoActive = true;          // set AFTER load so clearDemo isn't triggered
         _lockNoFile = true;          // hot keys + Note Color Randomise stay locked
+        // Force the two demo tracks' fixed colors (yellow + water blue),
+        // overriding any Note Color palette until a real file loads.
+        if (typeof Notes !== 'undefined' && Notes.setDemoOverride) {
+          try { Notes.setDemoOverride(true); } catch (e) {}
+        }
+        // Demo is active now — force-hide the Info card and ignore Info Card
+        // appearance until a real file loads.
+        if (typeof Settings !== 'undefined' && Settings.applyInfoCard) {
+          try { Settings.applyInfoCard(); } catch (e) {}
+        }
         // The demo always plays at its fixed default 1.0x regardless of any
         // persisted / changed speed setting. (At boot, onStoreChange may have
         // already applied a saved speed before the demo became active — reset
@@ -1770,6 +2097,14 @@ var _peakActive = 0, _peakAcc = 0;
           try { Sequencer.setSpeed(1.0); } catch (e) {}
         }
         _prevSpeed = 1.0;
+        // 1s pre-roll: the clock starts at -1s so the first notes begin at
+        // the TOP edge of the band and fall down over exactly 1 second
+        // (matching the demo trail 1.0 → 1s fall) instead of spawning
+        // already at the bottom the instant the demo opens. Nothing touches
+        // the bottom until 1 second in.
+        if (typeof Sequencer !== 'undefined' && Sequencer.setStartOffset) {
+          try { Sequencer.setStartOffset(1.0); } catch (e) {}
+        }
         HUD.setTotal(0);             // HUD shows 0/0
         Sequencer.play();            // self-play with audio + visuals
         Store.setState({ play: 'play', npPending: false });
@@ -1931,6 +2266,7 @@ var _peakActive = 0, _peakAcc = 0;
         bar0.classList.add('indeterminate');
       }
       _parseIndicatorActive = true;
+      applyParseBarStyle();
       return;
     }
     _parseIndicatorActive = true;
@@ -1943,6 +2279,7 @@ var _peakActive = 0, _peakAcc = 0;
       bar.classList.remove('hidden');
       bar.classList.add('indeterminate');
     }
+    applyParseBarStyle();
   }
 
   // Reconcile the parse indicator when the user leaves/re-enters the player
@@ -1957,6 +2294,8 @@ var _peakActive = 0, _peakAcc = 0;
         bar.classList.add('hidden');
         bar.classList.remove('indeterminate');
       }
+      var pctH = document.getElementById('parse-pct');
+      if (pctH) pctH.classList.add('hidden');
       return;
     }
     if (_parseIndicatorActive && _onPlayerScreen()) {
@@ -1965,18 +2304,54 @@ var _peakActive = 0, _peakAcc = 0;
           ov2.classList.contains('np-hide')) {
         ov2.classList.remove('np-hide');
       }
+      // Restore the BAR too (the hide branch stacked it to .hidden) — back on
+      // the piano the indicator must reappear in the mode analysis is in.
+      var bar2 = document.getElementById('parse-bar');
+      if (bar2 && bar2.classList.contains('hidden')) {
+        bar2.classList.remove('hidden');
+        var f2 = document.getElementById('parse-bar-fill');
+        if (_parseMode === 'indet') {
+          bar2.classList.add('indeterminate');
+          if (f2) { f2.style.left = ''; f2.style.width = ''; }
+        } else {
+          bar2.classList.remove('indeterminate');
+          if (f2) { f2.style.left = '0%'; f2.style.width = _parsePct.toFixed(1) + '%'; }
+        }
+      }
+      // Loading-bar visibility + color (Settings → Visual → Loading Bar).
+      applyParseBarStyle();
+      // Restore the percentage readout to the live value.
+      var pctR = document.getElementById('parse-pct');
+      if (pctR) {
+        var wantPct2 = _phaseShowPct(_pctStage);
+        // Hide only when the phase toggle is off, or when the sweep is
+        // running before the first progress value arrives (no real number).
+        if (!wantPct2 || (_parseMode === 'indet' && _parsePct <= 0)) {
+          pctR.textContent = ''; pctR.classList.add('hidden');
+        } else {
+          pctR.textContent = Math.round(_parsePct) + '%';
+          pctR.classList.remove('hidden');
+        }
+      }
     }
   }
 
   function hideParsing() {
     _parseIndicatorActive = false;
+    _parseMode = '';
+    _parsePct = 0;
     _devActive = false; _lastAnalyzeLog = '';
     var overlay = document.getElementById('now-playing-overlay');
     var bar     = document.getElementById('parse-bar');
+    var pctE    = document.getElementById('parse-pct');
     if (overlay) overlay.classList.add('np-hide');
     if (bar) {
       bar.classList.remove('indeterminate');
       bar.classList.add('hidden');
+    }
+    if (pctE) {
+      pctE.textContent = '';
+      pctE.classList.add('hidden');
     }
   }
 
@@ -2013,6 +2388,7 @@ var _peakActive = 0, _peakAcc = 0;
   }
 
   function hideErrorDialog() {
+    window._pfaAuthDialog = false; // dialog gone → permission tag irrelevant
     var dlg = document.getElementById('error-dialog');
     var cb  = _errorOnClose;
     _errorOnClose = null;
@@ -2034,6 +2410,20 @@ var _peakActive = 0, _peakAcc = 0;
     dlg.addEventListener('click', function (e) {
       if (e.target === dlg) hideErrorDialog();
     });
+  }
+
+  var _bgMissingFired = false;
+  // One dialog + one silent clear even if both the data-URL load AND the
+  // source-file probe fail on the same boot.
+  function reportBgImageMissing() {
+    if (_bgMissingFired) return;
+    _bgMissingFired = true;
+    if (typeof window.showErrorDialog === 'function') {
+      try { window.showErrorDialog('Background image is missing — reload it in Settings.', null, 'PFA'); } catch (eI) {}
+    }
+    if (typeof window.clearBgImageAction === 'function') {
+      try { window.clearBgImageAction(); } catch (eC) {}
+    }
   }
 
   // ── Now Playing background notification (desktop-notification) ──
@@ -2296,10 +2686,24 @@ vols.forEach(function (vol) {
       var hasFile = !!st.fileName;
       var isDemo = false; try { isDemo = isDemoActive(); } catch (e4) {}
       if (hidden) {
+        // Anything playing (real file OR demo) keeps running in the background —
+        // exactly like the demo's real-file counterpart: the CPU wake lock keeps
+        // the Sequencer pulse and audio alive while covered, so no notes are
+        // lost and playback is mid-song, seamless, when the user returns.
+        if (st.play === 'play') {
+          try { acquireCpuWakeLock(); } catch (eW2) {}
+          try { releaseScreenWakeLock(); } catch (eS2) {}
+        }
+        // Our own activity picker (file picker / palette picker) is covering
+        // the window — the user is effectively still inside the app, so no
+        // notification; audio + wake lock stay up exactly like above.
+        if (window._pickerOpen) {
+          hideNowPlayingNotification();
+          return;
+        }
+        // Home/minimize/FM with a real file: surface the notification too.
         if (hasFile && !isDemo && st.play === 'play') {
           showNowPlayingNotification(st.fileName);
-          acquireCpuWakeLock();
-          releaseScreenWakeLock();
         }
       } else {
         try { if (st.play === 'play') _engine().ensure(); } catch (e5) {}

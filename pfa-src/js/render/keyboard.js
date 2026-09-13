@@ -23,6 +23,7 @@ var Keyboard = (function () {
   var _lastKeyW     = -1;
   var _lastSize     = null;
   var _lastPianoHex = null;
+  var _lastView3d   = null; // 3D depth flag baked into the sprite
 
   // Note-label state (only painted when Visual → noteLabels=true and theme labels on)
   var NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
@@ -53,7 +54,7 @@ var Keyboard = (function () {
     return x;
   }
 
-  function build(keyW, kbH) {
+  function build(keyW, kbH, is3d) {
     // Defensive default — external callers may omit the strip height.
     if (!kbH) kbH = height(null);
     var bh = blackHeight(kbH);
@@ -104,6 +105,24 @@ var Keyboard = (function () {
         c.fillRect(bm.x + 1, bh * 0.05, bm.w - 2, bh * 0.9);
       } catch(e) {}
     }
+
+    // 3D depth (Graphics → 3D View 'keyboard'/'both'): white keys carry a
+    // soft shadow tucked under the bar; black keys catch a 1px light on
+    // the top edge. Baked into the cached sprite — zero per-frame cost.
+    if (is3d) {
+      c.fillStyle = 'rgba(0,0,0,0.28)';
+      for (var s3 = 0; s3 < 128; s3++) {
+        var ks3 = keyLayout[s3];
+        if (ks3.black) continue;
+        c.fillRect(ks3.x, 0, ks3.w - 1, 3);
+      }
+      c.fillStyle = 'rgba(255,255,255,0.20)';
+      for (var s4 = 0; s4 < 128; s4++) {
+        var ks4 = keyLayout[s4];
+        if (!ks4.black) continue;
+        c.fillRect(ks4.x + 1, 0, ks4.w - 2, 1);
+      }
+    }
   }
 
   function draw(state, ctx, w, h) {
@@ -113,13 +132,20 @@ var Keyboard = (function () {
     var kbH = height(state);
     if (!kbH) return;
 
-    // Rebuild the spritesheet whenever keyWidth, strip size or color changed.
+    // 3D keyboard gate — Graphics → 3D View 'keyboard' or 'both'.
+    var v3d = (state.view3d != null) ? state.view3d : 'both';
+    try { if (typeof window.demoVisualValue === 'function') v3d = window.demoVisualValue('view3d', v3d); } catch (e) {}
+    var kb3d = (v3d === 'keyboard' || v3d === 'both');
+
+    // Rebuild the spritesheet whenever keyWidth, strip size, color or the
+    // 3D depth flag changed.
     var hexChanged = ((state.pianoColorHex || '#f2f2f2') !== _lastPianoHex);
     if (!cacheCanvas || !keyLayout.length ||
-        _lastKeyW !== kw || _lastSize !== kbH || hexChanged) {
-      build(kw, kbH);
+        _lastKeyW !== kw || _lastSize !== kbH || hexChanged || kb3d !== _lastView3d) {
+      build(kw, kbH, kb3d);
       _lastKeyW = kw;
       _lastSize = kbH;
+      _lastView3d = kb3d;
     }
 
     // Visible window — Keyboard Range [kbStart..kbEnd] replaces the old
@@ -198,7 +224,7 @@ var Keyboard = (function () {
           live = (typeof Sequencer.audioList === 'function')
             ? Sequencer.audioList()
             : Sequencer.activeList();
-          // audioList rỗng → dùng activeList nhưng chỉ lấy tối đa 128 notes gần nowSec
+          // audioList empty → use activeList but only take up to 128 notes near nowSec
           // Fallback: audioList empty (Black MIDI notes too short)
           if (!live || !live.length) {
             var all = Sequencer.activeList();
@@ -248,12 +274,21 @@ var Keyboard = (function () {
         // below so a lit white key's glow never washes over the black key
         // that overlaps it).
         if (wh.length > 0) {
-          ctx.globalAlpha = 0.75;
+          ctx.globalAlpha = kb3d ? 0.92 : 0.75;
           for (var wi = 0; wi < wh.length; wi++) {
             ctx.fillStyle = wh[wi].col;
             ctx.fillRect(wh[wi].dx, y, wh[wi].w, kbH);
           }
           ctx.globalAlpha = 1;
+          // 3D pop: bright rim where the lit key meets the bar.
+          if (kb3d) {
+            ctx.fillStyle = '#ffffff';
+            ctx.globalAlpha = 0.85;
+            for (var wr = 0; wr < wh.length; wr++) {
+              ctx.fillRect(wh[wr].dx, y, wh[wr].w, 2);
+            }
+            ctx.globalAlpha = 1;
+          }
         }
 
         // Re-blit EVERY black key in the visible window whenever a white
@@ -272,12 +307,21 @@ var Keyboard = (function () {
 
         // Black highlights (on top of the re-blitted black keys).
         if (bhl.length > 0) {
-          ctx.globalAlpha = 0.75;
+          ctx.globalAlpha = kb3d ? 0.92 : 0.75;
           for (var bj = 0; bj < bhl.length; bj++) {
             ctx.fillStyle = bhl[bj].col;
             ctx.fillRect(bhl[bj].dx, y, bhl[bj].w, bh2);
           }
           ctx.globalAlpha = 1;
+          // 3D pop: bright rim where the lit key meets the bar.
+          if (kb3d) {
+            ctx.fillStyle = '#ffffff';
+            ctx.globalAlpha = 0.85;
+            for (var br = 0; br < bhl.length; br++) {
+              ctx.fillRect(bhl[br].dx, y, bhl[br].w, 1);
+            }
+            ctx.globalAlpha = 1;
+          }
         }
       }
     } catch(e) {}
@@ -288,7 +332,68 @@ var Keyboard = (function () {
     _lastKeyW     = -1; // invalidates the cache check in main.js + draw()
     _lastSize     = null;
     _lastPianoHex = null;
+    _lastView3d   = null;
     cacheCanvas   = null;
+  }
+
+  /**
+   * Effective visible range [startN..endN] — same math as draw()
+   * (demo self-play forces 21..108 via demoVisualValue).
+   */
+  function _visibleRange(state) {
+    var startN = (state && state.kbStart != null) ? state.kbStart : 21;
+    var endN   = (state && state.kbEnd   != null) ? state.kbEnd   : 108;
+    try {
+      if (typeof window.demoVisualValue === 'function') {
+        startN = window.demoVisualValue('kbStart', startN);
+        endN   = window.demoVisualValue('kbEnd', endN);
+      }
+    } catch (e) {}
+    startN = Math.max(0, Math.min(127, startN));
+    endN   = Math.max(startN + 1, Math.min(127, endN));
+    return { startN: startN, endN: endN };
+  }
+
+  /**
+   * Return the canvas x-coordinate of the CENTER of a MIDI note within
+   * the currently visible range, or null if the note is outside it.
+   * When `width` is given the slice is stretched to full canvas width
+   * (same math as draw()'s blit), so the returned x FLEXES with the
+   * keyboard layout — used by main.js to position the middle marker dot
+   * dead-center on its key at any zoom.
+   */
+  function keyX(note, state, width) {
+    if (!keyLayout.length) return null;
+    var vr = _visibleRange(state);
+    var startN = vr.startN, endN = vr.endN;
+    if (note < startN || note > endN) return null;
+    var x0 = keyLayout[startN].x;
+    var off = keyLayout[note].x - x0;
+    var kw2 = keyLayout[note].w / 2;
+    // Horizontal scale draw() applies: source slice sw → canvas width.
+    if (width != null && width > 0) {
+      var lastK = keyLayout[endN];
+      var sw = (lastK.x + lastK.w) - x0;
+      if (sw > 0) {
+        var scale = width / sw;
+        return (off + kw2) * scale;
+      }
+    }
+    return off + kw2;
+  }
+
+  /**
+   * Canvas x-center of MIDDLE C (MIDI 60) within the visible range, or
+   * null when C4 is outside it. Middle C is the conventional "middle of
+   * the piano" mark (like the gray dot on real 88-key strips) — the
+   * single source of truth for the middle marker dot.
+   */
+  var MIDDLE_C = 60;
+  function middleCX(state, width) {
+    if (!keyLayout.length) return null;
+    var vr = _visibleRange(state);
+    if (MIDDLE_C < vr.startN || MIDDLE_C > vr.endN) return null;
+    return keyX(MIDDLE_C, state, width);
   }
 
   // Only show octave number on C (so the label is compact and not all-over)
@@ -296,5 +401,5 @@ var Keyboard = (function () {
     return SHOW_OCTAVE && (nn % 12) === 0;
   }
 
-  return { draw: draw, build: build, rebuild: rebuild, height: height };
+  return { draw: draw, build: build, rebuild: rebuild, height: height, blackHeight: blackHeight, keyX: keyX, middleCX: middleCX };
 })();

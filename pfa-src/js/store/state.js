@@ -28,6 +28,8 @@ var Store = (function () {
     // Audio
     waveform:   'square',
     voiceLimit: 32,
+    skipSlowOpen: true,      // skip an absurdly slow opening tempo (< 30 BPM)
+    audio:      true,        // master audio on/off toggle (Settings → Synth → Audio)
 
     // MIDI Output settings (mirrored from localStorage by settings.js)
     engine:     'synth',     // 'synth' | 'soundbank'
@@ -39,18 +41,37 @@ var Store = (function () {
     kbStart: 21,
     kbEnd:   108,
 
+    // Keyboard Range preset: '88' | '128' | 'custom'.
+    // 'custom' keeps kbStart/kbEnd as-is and shows the Start/End sliders.
+    kbSize:   '88',
+
     // Piano strip size: 'big' (60px) | 'small' (32px) | 'none' (hidden)
     pianoSize: 'big',
+
+    // 3D view mode: 'keyboard' | 'notefall' | 'both' | 'none'
+    view3d: 'both',
+
+    // Active note color palette id ('random' | 'randomAlpha' | etc.)
+    palette: 'random',
 
     // Custom colors. Hex ('#rrggbb'), rgba(...) string, or null.
     // bgColor null = fall back to the active --theme-bg CSS token.
     bgColor:       null,       // canvas background override
-    barColor:      '#00ccff',  // separator/playhead line above the piano
+    barColor:      '#8B0000',  // separator/playhead line above the piano
     pianoColorHex: '#f2f2f2',  // white-key fill (replaces enum pianoColor)
+
+    // Background image — PERSISTED data URL (downscaled JPEG from the file
+    // picker), survives app restarts. bgImagePath keeps the source file
+    // path so main.js can verify the file still exists at boot and raise
+    // a dialog when it was deleted/renamed/moved.
+    bgImageUrl:    null,       // data URL of the picked image
+    bgImageName:   '',         // source file name, shown in Settings
+    bgImagePath:   '',         // source file path (empty = not checkable)
 
     // Visual settings
     theme:        'dark',    // 'dark' | 'light' | 'blue' | 'purple'
     noteLabels:   false,     // draw C/D/E labels above white keys
+    middleMarker: true,      // square dot on the white keys marking middle note
     // Info card (HUD) toggles — master gate + per-stat switches
     infoCard:      true,
     infoNps:       true,
@@ -64,6 +85,13 @@ var Store = (function () {
     infoAudioBuffer:  true,
     infoTick:         true,
     infoBpm:          true,
+    // Info card (HUD) appearance
+    infoFloating:     false,    // detached "floating" style (gap from screen edge)
+    infoBorder:       false,    // border around the card
+    infoBorderColor:  '#ffffff',// border colour RGBA (only when infoBorder On)
+    infoBgColor:      '#000000',// background RGBA (default black)
+    infoTextColor:    '#ffffff',// text RGBA (default white)
+    infoPos:          'left',   // 'left' | 'right'
 
     // Playback helpers
     autoPlay:     false,   // start playing automatically after a MIDI load
@@ -74,6 +102,18 @@ var Store = (function () {
     // Developer options (mirrored from localStorage by settings.js)
     osdLog:         false, // On-screen verbose status overlay
     verboseAnalyze: false, // show [LOG] detail in analysis progress
+    pctAnalyze:     false, // show the percentage readout during analysis (parse)
+    pctMerge:       false, // show the percentage readout during the merge stage
+    pctBarVisible:  true,  // show/hide the loading bar itself (Visual → Loading Bar)
+    loadAnimated:   true,  // sliding sweep vs. gradual 0→100% fill (Visual → Loading Bar)
+    loadBarColor:   '#0088FF', // loading bar color, RGBA string (default blue)
+    pctColor:       '#FFFFFF', // % readout text color, RGBA string (default white)
+    dialogTextColor:'#FFFFFF', // center pill text color, RGBA string (default white)
+    dialogBgColor:  '#000000', // center pill background color, RGBA string (default black)
+
+    // System settings (auto fullscreen / rotate on launch)
+    autoFullscreen: false,
+    autoRotate:     false,
 
     // Start Delay countdown (HUD time shows -0:05 → 0:00 while active)
     startCountdown: null,  // seconds remaining (null = inactive)

@@ -1,6 +1,6 @@
 /**
- * gendemo.js — Tạo file MIDI test đơn giản để kiểm tra converter.
- * Tạo 1 track với vài nốt: C4, D4, E4, F4, G4 (mỗi nốt dài 240 ticks ở 120BPM)
+ * gendemo.js — Generates a simple test MIDI file to check the converter.
+ * Generates 1 track with a few notes: C4, D4, E4, F4, G4 (each note 240 ticks long at 120BPM)
  */
 var fs   = require('fs');
 var path = require('path');

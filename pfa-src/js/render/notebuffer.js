@@ -9,7 +9,6 @@
  *
  * For Buffer mode: wire NoteBuffer.drawFrame() instead of Notes.draw()
  * It still scans activeList but renders to offscreen first then blits.
- * For massive note counts, combine with heatmap threshold.
  */
 var NoteBuffer = (function () {
   'use strict';
@@ -19,6 +18,14 @@ var NoteBuffer = (function () {
   var _w = 0, _h = 0;
 
   var _keyCache = null, _keyCacheW = -1, _keyCacheKey = -1;
+
+  // 3D note-fall (mirrors notes.js): STOP = unlit head barrier above the
+  // bar (5px stroke covers ±2.5px, so 6 leaves a clear ~3.5px gap),
+  // LIP = black-note tongue onto the bar. SLACK = extra offscreen
+  // rows so the lip's 2px over-poke past fbBot survives the blit.
+  var NB_STOP = 6;
+  var NB_LIP = 2;
+  var NB_SLACK = 6;
 
   function ensureKeyCache(camKey, keyW) {
     if (_keyCache && _keyCacheKey === camKey && _keyCacheW === keyW) return;
@@ -52,6 +59,27 @@ var NoteBuffer = (function () {
   function onNote() {} // not used in this design
 
   /**
+   * Per-frame RGB table rebuilt from the shared Notes palette.
+   * Needed for the left→right darkening fade (see draw()). 16 hex
+   * parses per frame is negligible; palette changes just take effect
+   * on the next frame automatically.
+   */
+  function _nbRgbTable() {
+    var tbl = [];
+    for (var i = 0; i < 16; i++) {
+      var hex = (typeof Notes !== 'undefined' && Notes.channelColor)
+        ? Notes.channelColor(i) : '#CCCCCC';
+      var h = hex.charAt(0) === '#' ? hex.substring(1) : hex;
+      tbl[i] = {
+        r: parseInt(h.substring(0, 2), 16),
+        g: parseInt(h.substring(2, 4), 16),
+        b: parseInt(h.substring(4, 6), 16)
+      };
+    }
+    return tbl;
+  }
+
+  /**
    * draw() — renders activeList into offscreen then blits to screen.
    * Called from Notes.draw() when renderMode='buffer'.
    * Same inputs as Notes.draw() but uses offscreen canvas for speed.
@@ -77,8 +105,6 @@ var NoteBuffer = (function () {
     } } catch (e) {}
     ck    = Math.max(0, Math.min(127, ck));
     ckEnd = Math.max(ck + 1, Math.min(127, ckEnd));
-    var sp = state.speed    || 1.0;
-    try { if (typeof window.demoVisualValue === 'function') sp = window.demoVisualValue('speed', sp); } catch (e) {}
     var ns = 0;
     try { ns = Sequencer.getTime(); } catch(e) { return; }
 
@@ -90,14 +116,20 @@ var NoteBuffer = (function () {
     ensureKeyCache(ck, kw);
     var camOffset = _keyCache[ck] ? _keyCache[ck].x : 0;
 
-    // Resize offscreen if needed
-    if (_offscreen.width !== screenW || _offscreen.height !== fbH) {
+    // 3D fall gate — Graphics → 3D View 'notefall' or 'both'.
+    var nbV3d = (state.view3d != null) ? state.view3d : 'both';
+    try { if (typeof window.demoVisualValue === 'function') nbV3d = window.demoVisualValue('view3d', nbV3d); } catch (e) {}
+    var nbFall3d = (nbV3d === 'notefall' || nbV3d === 'both');
+    var nbStop = fbBot - NB_STOP; // unlit head barrier
+
+    // Resize offscreen if needed (SLACK rows hold the lip over-poke).
+    if (_offscreen.width !== screenW || _offscreen.height !== fbH + NB_SLACK) {
       _offscreen.width  = screenW;
-      _offscreen.height = fbH;
+      _offscreen.height = fbH + NB_SLACK;
     }
 
     // Clear offscreen
-    _offCtx.clearRect(0, 0, screenW, fbH);
+    _offCtx.clearRect(0, 0, screenW, fbH + NB_SLACK);
 
     var live = [];
     try { live = Sequencer.activeList(); } catch(e) {}
@@ -125,41 +157,101 @@ var NoteBuffer = (function () {
       if (es < ns - 0.1) continue;
       if (ss > ns + effectiveLK) continue;
 
-      var nyBottom = fbBot - (ss - ns) * FALL * sp;
-      var nh = Math.max(2, (es - ss) * FALL * sp);
+      var nyBottom = fbBot - (ss - ns) * FALL;
+      var nh = Math.max(2, (es - ss) * FALL);
       var ny = nyBottom - nh;
       if (nyBottom < 0) continue;
       if (ny > fbBot) continue;
 
       var entry = { nx: nx, ny: ny, nw: pos.w, nh: nh,
-                    ch: a.channel, black: pos.black };
+                    ch: a.channel, black: pos.black, lit: (ns >= ss && ns <= es) };
       if (pos.black) blacks.push(entry);
       else           whites.push(entry);
     }
 
-    var lastCh = -1;
+    // ── Draw with per-note horizontal gradient ──
+    // Per-note horizontal gradient: full palette color at the note's left
+    // edge → near-black at its right edge, WITHIN each note (not a
+    // screen-wide fade). Gradients are cached per frame in a local map —
+    // note x/width is fixed per key column, so the palette only affects
+    // colors that were just created.
+    var rgbTbl = _nbRgbTable();
+    var gradMap = {};
+    var lastCh = -1, lastGrad = null, lastFlat = null;
     for (var wi = 0; wi < whites.length; wi++) {
       var e = whites[wi];
-      if (e.ch !== lastCh) {
-        _offCtx.fillStyle = (typeof Notes !== 'undefined' && Notes.channelColor)
-          ? Notes.channelColor(e.ch) : '#CCCCCC';
-        lastCh = e.ch;
+      // 3D: unlit heads stop short of the bar (gap); lit notes fill to it.
+      if (nbFall3d && !e.lit) {
+        var wBot = e.ny + e.nh;
+        if (wBot > nbStop && e.ny < nbStop) e.nh = nbStop - e.ny;
+      }
+      var rgb = rgbTbl[e.ch % 16] || { r: 204, g: 204, b: 204 };
+      if (nbFall3d) {
+        var gkey = e.ch + ':' + e.nx + ':' + e.nw;
+        var grad = gradMap[gkey] || (function () {
+          var g = _offCtx.createLinearGradient(e.nx, 0, e.nx + e.nw, 0);
+          g.addColorStop(0, 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')');
+          g.addColorStop(1, 'rgb(' + Math.round(rgb.r * 0.12) + ',' +
+            Math.round(rgb.g * 0.12) + ',' + Math.round(rgb.b * 0.12) + ')');
+          gradMap[gkey] = g;
+          return g;
+        })();
+        if (e.ch !== lastCh || grad !== lastGrad) {
+          _offCtx.fillStyle = grad;
+          lastCh = e.ch;
+          lastGrad = grad;
+        }
+      } else {
+        // 3D off ('keyboard'/'none'): flat solid channel color, no fade.
+        var flatS = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
+        if (flatS !== lastFlat) { _offCtx.fillStyle = flatS; lastFlat = flatS; }
       }
       _offCtx.fillRect(e.nx, e.ny, e.nw, e.nh);
     }
-    lastCh = -1;
+    lastCh = -1; lastGrad = null; lastFlat = null;
     for (var bi = 0; bi < blacks.length; bi++) {
       var e2 = blacks[bi];
-      if (e2.ch !== lastCh) {
-        _offCtx.fillStyle = (typeof Notes !== 'undefined' && Notes.channelColor)
-          ? Notes.channelColor(e2.ch) : '#CCCCCC';
-        lastCh = e2.ch;
+      // 3D: unlit heads stop short of the bar; an arrived head grows a
+      // centered 2px tongue onto the bar (gone once the note lights).
+      var arrived = (e2.ny + e2.nh) >= nbStop;
+      if (nbFall3d && !e2.lit) {
+        var bBot = e2.ny + e2.nh;
+        if (bBot > nbStop && e2.ny < nbStop) e2.nh = nbStop - e2.ny;
       }
-      _offCtx.fillRect(e2.nx + 1, e2.ny, e2.nw - 2, e2.nh);
+      var rgb = rgbTbl[e2.ch % 16] || { r: 204, g: 204, b: 204 };
+      if (nbFall3d) {
+        var gkey = e2.ch + ':' + e2.nx + ':' + e2.nw;
+        var grad = gradMap[gkey] || (function () {
+          var g = _offCtx.createLinearGradient(e2.nx, 0, e2.nx + e2.nw, 0);
+          g.addColorStop(0, 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')');
+          g.addColorStop(1, 'rgb(' + Math.round(rgb.r * 0.12) + ',' +
+            Math.round(rgb.g * 0.12) + ',' + Math.round(rgb.b * 0.12) + ')');
+          gradMap[gkey] = g;
+          return g;
+        })();
+        if (e2.ch !== lastCh || grad !== lastGrad) {
+          _offCtx.fillStyle = grad;
+          lastCh = e2.ch;
+          lastGrad = grad;
+        }
+      } else {
+        // 3D off ('keyboard'/'none'): flat solid channel color, no fade.
+        var flatS = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
+        if (flatS !== lastFlat) { _offCtx.fillStyle = flatS; lastFlat = flatS; }
+      }
+      var fw = e2.nw - 2;
+      var fx = e2.nx + 1;
+      if (fw < 1) fw = 1; // 128-key black notes are 2px wide — still draw 1px
+      _offCtx.fillRect(fx, e2.ny, fw, e2.nh);
+      if (nbFall3d && !e2.lit && arrived && e2.ny < nbStop) {
+        var lipW = Math.max(2, Math.floor(fw * 0.5));
+        var lipX = fx + Math.floor((fw - lipW) / 2);
+        _offCtx.fillRect(lipX, nbStop, lipW, NB_STOP + NB_LIP);
+      }
     }
 
-    // Single blit to screen
-    ctx.drawImage(_offscreen, 0, 0, screenW, fbH, 0, 0, screenW, fbH);
+    // Single blit to screen (SLACK rows composite transparently over the bar)
+    ctx.drawImage(_offscreen, 0, 0, screenW, fbH + NB_SLACK, 0, 0, screenW, fbH + NB_SLACK);
   }
 
   return {

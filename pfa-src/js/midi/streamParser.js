@@ -35,6 +35,7 @@ var StreamParser = (function () {
                                 // at the cost of ~2× more run files (merge RAM
                                 // stays flat either way).
   var MERGE_K      = 4;          // max files opened at once during merge
+  var MERGE_METRE_BASE = 80;     // parse fills 0-80% of the metre, merge 80-100%
   var FIN_BATCH    = 8192;      // notes packed per final append
   var MERGE_WINDOW = 262140;    // per-run read window during merge (~256KB,
                                 // multiple of NOTE_SIZE so note boundaries never
@@ -45,9 +46,19 @@ var StreamParser = (function () {
                                 // more read/append cycles (device GC is slow and
                                 // SpiderMonkey does NOT return grown heap to the
                                 // OS, so peak heap is what Device Manager shows).
-  var MAX_TEMPO    = 512;        // cap on tempo-change records kept in the .note
-                                 // header (8 bytes each; source MIDIs rarely need
-                                 // more, and it bounds header size to ~4KB)
+  var MAX_TEMPO    = 65536;     // cap on tempo-change records kept in the .note
+                                // header (8 bytes each; 65536 ≈ 512KB header).
+                                // Black MIDIs carry tempo "ramps" — thousands of
+                                // adjacent FF 51 events drifting ~1 BPM apart —
+                                // and a low cap froze the song at the LAST kept
+                                // tempo forever (e.g. a 100 BPM section read as
+                                // 180). Above the cap the ramp is RESAMPLED, not
+                                // truncated (see finalizeTempo), so late-song
+                                // tempos stay correct even for 10M-event files.
+  var TEMPO_MIN_TICK_GAP = 10; // discard tempo changes closer than this many
+                                // ticks (< ~3ms of music) — inaudible, but
+                                // collapses 1-2-tick spam and duplicated value
+                                // runs that would explode RAM during parsing.
 
   // Single-flight conversion guard + per-conversion file token.
   // Two overlapping conversions share the same tmp dir on device; without this
@@ -378,7 +389,9 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
     return {
       off: 0, curTick: 0, runningStatus: 0, runningChannel: 0,
       active: {}, batch: [], noteCount: 0, maxTick: 0, closed: false, atEnd: false,
-      tempo: []   // FF 51 set-tempo records {t, u} gathered for this track
+      tempo: [],           // FF 51 set-tempo records {t, u} gathered for this track
+      tempoLastU: 0,       // last tempo (usec/qn) kept for this track
+      tempoLastT: -Infinity// tick of the last tempo kept for this track
     };
   }
 
@@ -460,7 +473,13 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
       // All required bytes verified in-window → commit this event atomically.
       curTick += vlq.value;
       if (curTick > maxTick) maxTick = curTick;
-      if (tempoUsec > 0) state.tempo.push({ t: curTick, u: tempoUsec });
+      if (tempoUsec > 0 &&
+          tempoUsec !== state.tempoLastU &&
+          curTick - state.tempoLastT >= TEMPO_MIN_TICK_GAP) {
+        state.tempo.push({ t: curTick, u: tempoUsec });
+        state.tempoLastU = tempoUsec;
+        state.tempoLastT = curTick;
+      }
       off = p + skip;
 
       if (status === 0x90 && d1 > 0) {
@@ -758,6 +777,13 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
     function stage(s) {
       if (opts.onStage) { try { opts.onStage(s); } catch (e) {} }
     }
+    function progress(p) {
+      if (opts.onProgress) { try { opts.onProgress(p); } catch (e) {} }
+    }
+    // One continuous 0-100 metre across the whole conversion: parsing fills
+    // 0-80%, the (optional) merge fills 80-100%. Keeping it monotonic means
+    // the user never sees the bar jump backwards at the parse→merge switch.
+    // Shares live at module scope so mergeTree reads the same constants.
     var stem = sanitize(name);
 
     return pickStorage(blob.size * 3).then(function (stInfo) {
@@ -865,6 +891,14 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
           console.log('[StreamParser] readHeader done: ' + hdr.tracks.length + ' tracks');
           stage('parse');
           meta.div = hdr.div;
+          // Parse progress = bytes read so far ÷ total track bytes (stream
+          // parser stream:, monotonic). Only emitted per finished track, so
+          // a single giant run inside one track pauses the bar — accept.
+          var totalBytes = 0;
+          for (var bi = 0; bi < hdr.tracks.length; bi++) { totalBytes += hdr.tracks[bi].len; }
+          if (!(totalBytes > 0)) totalBytes = 1;
+          var doneBytes = 0;
+          progress(0);
           var ti = 0;
           function oneTrack() {
             if (ti >= hdr.tracks.length) return Promise.resolve();
@@ -872,6 +906,8 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
             console.log('[StreamParser] parse track ' + ti + '/' + hdr.tracks.length + ' len=' + t.len);
             return processTrackBlob(t.start, t.len).then(function () {
               console.log('[StreamParser] track ' + ti + ' done, runs=' + runs.length + ', mem=' + heapKB() + 'KB');
+              doneBytes += t.len;
+              progress(Math.round(Math.min(1, doneBytes / totalBytes) * MERGE_METRE_BASE));
               return oneTrack();
             });
           }
@@ -901,6 +937,8 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
             out.set(head, 0);
             out.set(payload, head.length);
             runBuf = [];
+            // No merge phase follows — close the metre at 100% before the write.
+            progress(100);
             // addNamed refuses to overwrite an existing file (NoModification
             // allowed) — drop the old .note first.
             return dsDelete(st, finalPath)
@@ -953,6 +991,16 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
   // Merge per-track FF 51 tempo records into one sorted, deduped map for the
   // .note header. Default (no tempo in the source) → the MIDI spec default of
   // 120 BPM (500000 usec/qn).
+  //
+  // Same-tick conflicts resolve FIRST-wins: the track order is the file order
+  // (conductor track first), and a stable sort keeps it, so a stray different
+  // tempo meta carried by a later track can never override the conductor's
+  // value. (Sorting only by t also means a later 10-BPM "default" at tick 0
+  // no longer clobbers the composer's 171; the previous code sorted by u as a
+  // tie-break and then kept overwriting the tick's entry → the LARGEST usec,
+  // i.e. the SLOWEST tempo, always won.)
+  // The loop below keeps up to MAX_TEMPO records (a generous ceiling double as
+  // a safety net against pathological inputs).
   function finalizeTempo(lists, defU) {
     var all = [];
     for (var i = 0; i < lists.length; i++) {
@@ -960,14 +1008,31 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
       for (var j = 0; j < el.length; j++) all.push(el[j]);
     }
     if (!all.length) return [{ t: 0, u: defU }];
-    all.sort(function (a, b) { return a.t - b.t || (a.u - b.u); });
+    // Stable sort by tick ONLY — equal ticks keep insertion (track) order.
+    all.sort(function (a, b) { return a.t - b.t; });
     var out = [];
     if (all[0].t > 0) out.push({ t: 0, u: defU }); // spec default until first change
-    for (var k = 0; k < all.length && out.length < MAX_TEMPO; k++) {
+    var seenTick = null;
+    for (var k = 0; k < all.length; k++) {
       var c = all[k], u = (c.u > 0) ? c.u : defU;
-      if (out.length && out[out.length - 1].t === c.t) { out[out.length - 1].u = u; continue; }
+      if (seenTick !== null && c.t === seenTick) continue; // first-wins dedupe
+      seenTick = c.t;
       if (out.length && out[out.length - 1].u === u) continue; // redundant repeat
       out.push({ t: c.t, u: u });
+    }
+    // Pathological tempo maps (millions of events, e.g. a ramp repeated in
+    // every black-MIDI track): never let the map end early — that froze the
+    // song at the last kept tempo. Instead, when the budget is exhausted,
+    // RESAMPLE the remainder: keep evenly spaced entries AND the final one,
+    // so the whole song's tempo trend stays correct (each dropped step is a
+    // few ticks — inaudible).
+    if (out.length > MAX_TEMPO) {
+      var stride = Math.ceil(out.length / MAX_TEMPO);
+      var keep = [];
+      for (var si = 0; si < out.length; si += stride) keep.push(out[si]);
+      var lastKeep = keep[keep.length - 1];
+      if (lastKeep !== out[out.length - 1]) keep.push(out[out.length - 1]);
+      out = keep;
     }
     return out;
   }
@@ -975,9 +1040,33 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
   // Merge run files into the final .note. To avoid opening too many files at
   // once, merge groups of MERGE_K runs into one bigger intermediate run, then
   // repeat until a single (final) run remains.
+  // Number of merge operations a run count n collapses through: at each level
+  // ceil(n/k) groups are merged (one step each), then the k-way tree is re-fed
+  // until a single (final) group — written by the last step — remains.
+  function mergeSteps(n, k) {
+    var s = 0;
+    while (n > k) { var g = Math.ceil(n / k); s += g; n = g; }
+    return s + 1;
+  }
+
+  // Merge stage fills the tail of the shared conversion metre (80%..100%).
+  function mergeMetrePct(stepFrac) {
+    return MERGE_METRE_BASE + stepFrac * (100 - MERGE_METRE_BASE);
+  }
+
   function mergeTree(st, runs, finalPath, meta, opts, k, dir, token, swept) {
     console.log('[StreamParser] mergeTree start: ' + runs.length + ' runs, k=' + k);
     var level = 0;
+    // Merge progress = merge operations done ÷ total (each k-way group merge
+    // counts as one step, plus the final write — deterministic, so the merge
+    // stage gets a real percentage instead of an endless sweep). Rendered via
+    // the shared metre defined in midiToNote (mergePct: 80%..100%).
+    var mergeTotal = mergeSteps(runs.length, k);
+    var mergeDone = 0;
+    function step() {
+      mergeDone = Math.min(mergeDone + 1, mergeTotal);
+      if (opts && opts.onProgress) { try { opts.onProgress(mergeMetrePct(mergeDone / mergeTotal)); } catch (e) {} }
+    }
     function bail() {
       console.log('[StreamParser] merge cancelled');
       if (swept) { var ps = swept.slice(); swept.length = 0; return Promise.all(ps.map(function (p) { return dsDelete(st, p).then(function () { wForget(p); }); })); }
@@ -988,7 +1077,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
       // Last level, single group → merge STRAIGHT into the final file (writes
       // header + notes directly, no intermediate .bin, no copy).
       if (paths.length > 1 && paths.length <= k) {
-        return mergeToFinal(st, paths, finalPath, meta, swept);
+        return mergeToFinal(st, paths, finalPath, meta, swept).then(step);
       }
       if (paths.length === 1) {
         console.log('[StreamParser] mergeTree single run → copy to final');
@@ -1000,7 +1089,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
         }).then(function () {
           if (swept) swept.push(finalPath);
           return copyRun(st, paths[0], finalPath, swept);
-        }).then(function () { console.log('[StreamParser] mergeTree final copy done'); return dsDelete(st, paths[0]); });
+        }).then(function () { console.log('[StreamParser] mergeTree final copy done'); return dsDelete(st, paths[0]); }).then(step);
       }
       var groups = [];
       for (var i = 0; i < paths.length; i += k) groups.push(paths.slice(i, i + k));
@@ -1016,6 +1105,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
         var group = groups[gi++];
         var outPath = dir + '/m' + token + '_' + (level++) + '_' + gi + '.bin';
         return mergeRuns(st, group, outPath, null, swept).then(function () {
+          step();
           // remove the consumed run files
           return Promise.all(group.map(function (p) { return dsDelete(st, p); }))
             .then(function () { mergedPaths.push(outPath); return nextGroup(); });
@@ -1023,7 +1113,17 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
       }
       return nextGroup();
     }
+    if (opts && opts.onProgress) { try { opts.onProgress(mergeMetrePct(0)); } catch (e) {} }
     return body(runs);
+  }
+
+  // Number of merge operations a run count n collapses through: at each level
+  // ceil(n/k) groups are merged (one step each), then the k-way tree is re-fed
+  // until a single (final) group — written by the last step — remains.
+  function mergeSteps(n, k) {
+    var s = 0;
+    while (n > k) { var g = Math.ceil(n / k); s += g; n = g; }
+    return s + 1;
   }
 
   function copyRun(st, src, dst, swept) {
@@ -1054,6 +1154,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
     cancel: cancel,
     readHeader: readHeader,
     parseTrack: parseTrack,
+    finalizeTempo: finalizeTempo,
     packNotes: packNotes,
     buildHeader: buildHeader,
     pickStorage: pickStorage

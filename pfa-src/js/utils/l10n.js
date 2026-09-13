@@ -1,7 +1,7 @@
 /**
  * l10n.js — Simple locale loader for KaiOS.
  * Loads /locales/{lang}/app.json. Falls back to key if missing.
- * Usage: L10n.t('softkey_menu') → hoặc 'Menu'
+ * Usage: L10n.t('softkey_menu') → or 'Menu'
  */
 var L10n = (function () {
   'use strict';

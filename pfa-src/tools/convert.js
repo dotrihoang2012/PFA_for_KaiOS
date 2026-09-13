@@ -1,5 +1,5 @@
 /**
- * convert.js — Chuyển đổi MIDI (.mid) → JSON (.json) cho Black MIDI Player KaiOS.
+ * convert.js — Converts MIDI (.mid) → JSON (.json) for the Black MIDI Player KaiOS app.
  *
  * Usage:  node tools/convert.js input.mid [output.json]
  *

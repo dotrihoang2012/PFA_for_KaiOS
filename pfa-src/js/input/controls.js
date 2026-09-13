@@ -6,7 +6,8 @@
  *   Backspace → back / exit overlay
  *   ArrowLeft/Right → seek -1s / +1s
  *   ArrowUp/Down    → OS media volume up / down
- *   Key 1 / Key 3   → playback speed -0.1x / +0.1x
+ *   Key 1..9 / * / # / Call → piano size, render mode, rotate, load MIDI,
+ *   fullscreen, key range, clear, auto play, note trail, info card
  *   EndCall   → quit app
  *
  *   MozActivity picker for file loading (native KaiOS)
@@ -17,9 +18,22 @@
   'use strict';
 
   var _focusedItemIndex = 0;
+  var _devOkCount = 0;
+  var _devOkTmr = null;
 
   function init() {
     window.addEventListener('keydown', onKeyDown, false);
+    // Some KaiOS builds only surface the Star/Hash digits via the keypress
+    // event (keydown gives keyCode 0 / empty e.key). Route those here too.
+    window.addEventListener('keypress', onKeyPress, false);
+  }
+
+  function onKeyPress(e) {
+    var k = e.keyCode || e.key;
+    if (k !== 42 && k !== '*' && k !== 35 &&
+        k !== '#' && k !== 'Star' && k !== 'Hash') return;
+    e.preventDefault();
+    dispatchAction(k === 42 || k === '*' || k === 'Star' ? 'trailDown' : 'trailUp');
   }
 
   function onKeyDown(e) {
@@ -27,7 +41,7 @@
     try { if (typeof _engine === 'function') _engine().ensure(); else Synth.ensure(); } catch (ign) {}
 
     var key = e.keyCode || e.key;
-    if (!key) return;
+    if (key === undefined || key === null || key === '') return;
 
     var st = Store.getState();
     var menuOpen = st.menu && st.menu.open;
@@ -77,16 +91,76 @@
       return;
     }
 
-    // ── About panel: modal; Back / SoftRight / Enter dismiss it back
+    // ── Reset-confirm dialog: modal; LSK = OK, RSK / Back = Cancel.
+    //    Checked right after the error dialog so it blocks menu/play too.
+    if (isResetConfirmOpen()) {
+      e.preventDefault();
+      if (key === 'SoftLeft' || key === Constants.KEY.SOFT_LEFT ||
+          key === 13 || key === Constants.KEY.ENTER || key === 'Enter') {
+        doResetAll();
+        return;
+      }
+      if (key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+          key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
+          key === 'Back' || key === Constants.KEY.BACK) {
+        hideResetConfirm();
+        return;
+      }
+      return;
+    }
+
+    // ── Developer-menu dialogs (stack above About). Confirm: OK on LSK,
+    //    Cancel on RSK/Back. Acknowledgment: single centre-OK.
+    if (isDevConfirmOpen()) {
+      e.preventDefault();
+      if (key === 'SoftLeft' || key === Constants.KEY.SOFT_LEFT ||
+          key === 13 || key === Constants.KEY.ENTER || key === 'Enter') {
+        optInDeveloperMenu();
+      } else if (key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+          key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
+          key === 'Back' || key === Constants.KEY.BACK) {
+        hideDevConfirm();
+      }
+      return;
+    }
+    if (isDevDoneOpen()) {
+      e.preventDefault();
+      if (key === 13 || key === Constants.KEY.ENTER || key === 'Enter' ||
+          key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+          key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
+          key === 'Back' || key === Constants.KEY.BACK) {
+        hideDevDone();
+      }
+      return;
+    }
+
+    // ── About panel: modal; Back / SoftRight dismiss it back
     //    to the piano screen. ArrowUp/Down SCROLL the content — KaiOS
     //    handsets have no touch input, so the D-pad must do it.
+    //    The centre OK key counts presses: 5 in a row reveal the hidden
+    //    Developer menu (easter egg).
     if (aboutOpen()) {
       e.preventDefault();
       if (key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
           key === 'Back' || key === Constants.KEY.BACK ||
-          key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
-          key === Constants.KEY.ENTER || key === 13) {
+          key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT) {
         hideAbout();
+        return;
+      }
+      if (key === 13 || key === Constants.KEY.ENTER || key === 'Enter') {
+        _devOkCount++;
+        if (_devOkTmr) { clearTimeout(_devOkTmr); _devOkTmr = null; }
+        if (_devOkCount >= 5) {
+          _devOkCount = 0;
+          openDevConfirm();
+        } else {
+          // Incomplete streak — if the user stops pressing for 5s the
+          // count resets and the next OK starts over from 1.
+          _devOkTmr = setTimeout(function () {
+            _devOkCount = 0;
+            _devOkTmr = null;
+          }, 5000);
+        }
         return;
       }
       if (key === 'ArrowUp' || key === Constants.KEY.ARROW_UP ||
@@ -152,6 +226,60 @@
     // Sits ABOVE gameplay so user can navigate settings while a MIDI
     // is loaded. handleKey returns true when it consumed the key.
     if (typeof Settings !== 'undefined' && Settings.isOpen && Settings.isOpen()) {
+      // KaiOS hardware VOLUME ROCKER stays LIVE inside System settings.
+      // The rocker is keyCode 175 (VolumeUp) / 174 (VolumeDown) with e.key
+      // 'VolumeUp'/'VolumeDown' — NOT ArrowUp/Down (38/40), which Settings
+      // uses to navigate its list. Swallowing the rocker here would leave
+      // ONLY the OSD showing with no actual step (exactly the bug: "it just
+      // brings up the volume display, but doesn't raise/lower the volume").
+      // Bypass the guard and let adjustVolume() step the OS media volume
+      // (requestUp/Down slides the OSD AND changes the level).
+      if (key === 'VolumeUp' || key === Constants.KEY.VOLUME_UP ||
+          key === 'VolumeDown' || key === Constants.KEY.VOLUME_DOWN) {
+        e.preventDefault();
+        adjustVolume(key === 'VolumeUp' || key === Constants.KEY.VOLUME_UP ? +1 : -1);
+        return;
+      }
+      // Many KaiOS handsets do NOT have a separate hardware volume rocker
+      // (keyCode 175/174) — only a D-pad. On those devices the bypass branch
+      // above never runs. Desired behavior: only once the user actually
+      // PRESSES (Enter/OK) the "Volume" row — i.e. showOSDVolume() has run —
+      // do we enter "volume-adjust mode" (_volumeAdjustActive = true); only
+      // then do Up/Down adjust the volume. Just having FOCUS on that row
+      // (without pressing Enter) still moves focus like any other row.
+      if (_volumeAdjustActive) {
+        if (key === 'ArrowUp' || key === Constants.KEY.ARROW_UP ||
+            key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN) {
+          e.preventDefault();
+          adjustVolume((key === 'ArrowUp' || key === Constants.KEY.ARROW_UP) ? +1 : -1);
+          // More activity → extend the timeout another 3s from this press.
+          _armVolumeAdjustTimeout();
+          return;
+        }
+        // On some KaiOS handsets, each physical volume-key press fires 2
+        // keydown events back to back: a harmless "MicrophoneToggle" event
+        // (does nothing) RIGHT BEFORE the real ArrowUp/ArrowDown event. This
+        // must be ignored (not treated as exiting volume-adjust mode),
+        // otherwise this spurious event would turn off _volumeAdjustActive
+        // before the real Up/Down event gets a chance to run.
+        if (key === 'MicrophoneToggle') {
+          e.preventDefault();
+          return;
+        }
+        // The first Back press only EXITS volume-adjust mode (back to normal
+        // list browsing) — it doesn't close the Settings page as well.
+        if (key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
+            key === 'Back' || key === Constants.KEY.BACK) {
+          e.preventDefault();
+          _volumeAdjustActive = false;
+          _clearVolumeAdjustTimeout();
+          return;
+        }
+        // Any other key (Enter, Left/Right, changing row…) → exit
+        // volume-adjust mode and let that key fall through to normal handling.
+        _volumeAdjustActive = false;
+        _clearVolumeAdjustTimeout();
+      }
       // While a settings text field holds focus (KaiUI-style text entry),
       // printable keys must reach the input NATIVELY — preventDefault
       // here would silently kill typing. Only editing-control keys
@@ -188,10 +316,28 @@
         return;
       }
     }
-    var action = Constants.KEY_MAP[key];
+    var action = normalizeAction(key, e);
     if (!action) return;
     e.preventDefault();
     dispatchAction(action);
+  }
+
+  // Normalise the raw key code to an action name, with extra tolerance for
+  // KaiOS quirks on the Star/Hash hardware keys (some builds report
+  // keyCode 0, some report '8'/'9' with Alt/shift set, most populate e.key).
+  function normalizeAction(key, ev) {
+    // eager string forms
+    var m = Constants.KEY_MAP[key];
+    if (m) return m;
+    // Star → '*'/'Star'; Hash → '#'/'Hash'
+    if (key === 42 || key === '*' || key === 'Star') return 'trailDown';
+    if (key === 35 || key === '#' || key === 'Hash') return 'trailUp';
+    // Tolerate a shifted Key8 (56) that some builds use for '*'
+    if (key === 56 && ev && (ev.altKey || ev.shiftKey)) key = 42;
+    // Tolerate a shifted Key9 (57) used for '#'
+    if (key === 57 && ev && (ev.altKey || ev.shiftKey)) key = 35;
+    // Re-look-up after the shift-tolerant translation
+    return Constants.KEY_MAP[key];
   }
 
   // ── Quit app ──
@@ -330,7 +476,13 @@
   }
 
   function showAbout() {
-    closeMenuOverlay();
+    // Menu path (legacy): close the menu so About reads as a modal.
+    // Nested path (Settings → System → About): the menu is already
+    // hidden by openSettingsGroup — closing it here would reset
+    // _focusedItemIndex to -1 and lose the focus restore on return.
+    var settingsOpen = !!(typeof Settings !== 'undefined' &&
+                          Settings.isOpen && Settings.isOpen());
+    if (!settingsOpen) closeMenuOverlay();
     var ov = document.getElementById('about-overlay');
     if (ov) {
       // Reset scroll so long content starts from the top every time.
@@ -338,13 +490,137 @@
       if (nav) nav.scrollTop = 0;
       ov.classList.remove('hidden');
     }
+    // Fresh press-count for the Developer easter egg each time About opens.
+    if (_devOkTmr) { clearTimeout(_devOkTmr); _devOkTmr = null; }
+    _devOkCount = 0;
     updateSoftkeys();
   }
 
   function hideAbout() {
+    if (_devOkTmr) { clearTimeout(_devOkTmr); _devOkTmr = null; }
+    _devOkCount = 0;
     var ov = document.getElementById('about-overlay');
     if (ov) ov.classList.add('hidden');
     updateSoftkeys();
+  }
+
+  // ── Developer-menu easter egg ──
+  // Options → About This App → press the centre OK key 5× in a row → a
+  // confirm dialog ("Enable developer menu mode?") pops over About. OK
+  // reveals the Developer settings entry (menu + settings hub) and shows
+  // a second acknowledgment dialog (About stays open). Cancel aborts and
+  // keeps the Developer row hidden. Persisted in localStorage.
+  var DEV_STORAGE_KEY = 'midiPlayer.devEnabled';
+  function devEnabled() {
+    try { return localStorage.getItem(DEV_STORAGE_KEY) === '1'; }
+    catch (e) { return false; }
+  }
+  function setDevEnabled(on) {
+    try {
+      if (on) localStorage.setItem(DEV_STORAGE_KEY, '1');
+      else localStorage.removeItem(DEV_STORAGE_KEY);
+    } catch (e) {}
+    if (typeof window !== 'undefined') window.__devEnabled = !!on;
+    refreshDevVisibility();
+    if (typeof updateSoftkeys === 'function') updateSoftkeys();
+  }
+  function refreshDevVisibility() {
+    var m = document.getElementById('menu-list');
+    if (!m) return;
+    var row = m.querySelector('.kai-om-item[data-action="open-dev"]');
+    if (row) {
+      if (devEnabled()) row.classList.remove('hidden');
+      else row.classList.add('hidden');
+    }
+  }
+  function isDevConfirmOpen() {
+    var ov = document.getElementById('devmenu-dialog');
+    return !!(ov && !ov.classList.contains('hidden'));
+  }
+  function openDevConfirm() {
+    var ov = document.getElementById('devmenu-dialog');
+    if (ov) {
+      var msg = ov.querySelector('.kai-dialog-content p');
+      if (msg) msg.textContent = devEnabled()
+        ? 'Disable developer menu mode?'
+        : 'Enable developer menu mode?';
+      ov.classList.remove('hidden');
+    }
+    updateSoftkeys();
+  }
+  function hideDevConfirm() {
+    var ov = document.getElementById('devmenu-dialog');
+    if (ov) ov.classList.add('hidden');
+    updateSoftkeys();
+  }
+  function optInDeveloperMenu() {
+    hideDevConfirm();
+    var wasOn = devEnabled();
+    setDevEnabled(!wasOn);
+    openDevDone(wasOn);
+  }
+  function isDevDoneOpen() {
+    var ov = document.getElementById('devmenu-done-dialog');
+    return !!(ov && !ov.classList.contains('hidden'));
+  }
+  function openDevDone(wasOn) {
+    var ov = document.getElementById('devmenu-done-dialog');
+    if (ov) {
+      var msg = ov.querySelector('.kai-dialog-content p');
+      if (msg) msg.textContent = wasOn
+        ? 'Developer menu disabled in settings'
+        : 'Developer menu enabled in settings';
+      ov.classList.remove('hidden');
+    }
+    updateSoftkeys();
+  }
+  function hideDevDone() {
+    var ov = document.getElementById('devmenu-done-dialog');
+    if (ov) ov.classList.add('hidden');
+    updateSoftkeys();
+  }
+
+  // ── Reset-all confirm dialog ──
+  // Modal asking for confirmation before a factory reset. Unlike the
+  // error dialog (single centre OK), this one exposes OK on the LEFT
+  // softkey and Cancel on the RIGHT softkey / Back so cancel is always
+  // one press away. The menu stays open underneath — cancel drops the
+  // user straight back into the Options list.
+  function isResetConfirmOpen() {
+    var ov = document.getElementById('confirm-dialog');
+    return !!(ov && !ov.classList.contains('hidden'));
+  }
+
+  function openResetConfirm() {
+    var ov = document.getElementById('confirm-dialog');
+    if (ov) ov.classList.remove('hidden');
+    updateSoftkeys();
+  }
+
+  function hideResetConfirm() {
+    var ov = document.getElementById('confirm-dialog');
+    if (ov) ov.classList.add('hidden');
+    updateSoftkeys();
+  }
+
+  function doResetAll() {
+    hideResetConfirm();
+    closeMenuOverlay();
+    try {
+      if (typeof Settings !== 'undefined' && Settings.reset) {
+        Settings.reset();
+        // Reset-from-System-settings: silently drop the settings overlay
+        // too (suppress its onClose so the Options menu does NOT reopen).
+        // Net result — OK on the confirm dialog lands back on the piano.
+        if (typeof Settings.close === 'function') Settings.close(true);
+        if (typeof showToast === 'function') showToast('All settings reset');
+      } else if (typeof showToast === 'function') {
+        showToast('Reset unavailable');
+      }
+    } catch (e) {
+      console.error('[Ctrl] reset-all error', e);
+      if (typeof showToast === 'function') showToast('Reset failed');
+    }
   }
 
   function execMenuAction(action) {
@@ -412,26 +688,35 @@
         try {
           if (typeof Notes !== 'undefined' && Notes.randomizePalette) {
             Notes.randomizePalette();
-            showToast('Track colors randomised');
+            showInfoOsd('Track colors randomised');
           }
         } catch (e) { console.error('[Ctrl] random-colors failed', e); }
         return;
-      case 'midi-output':
-        // BETA: MIDI-OUT is under construction. Show an informational dialog
-        // instead of opening the (not yet built) settings group.
-        closeMenuOverlay();
-        if (typeof showErrorDialog === 'function') {
-          showErrorDialog('This is BETA version, MIDI-OUT is under construction.', null, 'PFA');
-        }
+      case 'settings':
+        openSettingsGroup('hub');
         return;
-      case 'visual':
+      case 'open-synth':
+        openSettingsGroup('midi');
+        return;
+      case 'open-visual':
         openSettingsGroup('visual');
         return;
-      case 'dev':
-        openSettingsGroup('dev');
+      case 'open-dev':
+        // Developer menu stays hidden until the About easter egg unlocks
+        // it — route a stray activation to the hub instead.
+        if (devEnabled()) openSettingsGroup('dev');
+        else openSettingsGroup('hub');
+        return;
+      case 'open-sys':
+        openSettingsGroup('sys');
         return;
       case 'about':
         showAbout();
+        return;
+      case 'reset-all':
+        // Confirm dialog: OK on LSK, Cancel on RSK/Back. Never reset
+        // silently — a factory reset is destructive and hard to undo.
+        openResetConfirm();
         return;
       default:
         console.log('[Ctrl] unknown menu action: ' + action);
@@ -457,8 +742,13 @@
     _focusedItemIndex = -1;
 
     try {
+      // Own activity launched → the system may hide our window meanwhile; keep
+      // the "PFA is running" notification suppressed while the picker is up
+      // (our blur/visibilitychange handlers check window._pickerOpen).
+      window._pickerOpen = true;
       var act = new MozActivity({ name: 'pick' });
       act.onsuccess = function (res) {
+        window._pickerOpen = false;
         // Restore fullscreen chrome state
         updateChromeAfterPicker();
         var blob = null;
@@ -478,10 +768,12 @@
         }
       };
       act.onerror = function () {
+        window._pickerOpen = false;
         updateChromeAfterPicker();
         console.log('[Ctrl] MozActivity pick cancelled');
       };
     } catch (e) {
+      window._pickerOpen = false;
       updateChromeAfterPicker();
       console.error('[Ctrl] MozActivity error:', e);
     }
@@ -598,9 +890,19 @@
        orientType.slice(0, 8) === 'landscape');
 
     var items = document.querySelectorAll('#menu-list .kai-om-item');
+    // "Load MIDI/Note File" → "Change MIDI/Note File" while a real file is
+    // loaded (not during the bundled demo — demo isn't "their" file).
+    var hasRealFile = false;
+    try {
+      var stFile = Store.getState();
+      hasRealFile = !!(stFile.fileName) &&
+                    (typeof window.isDemoActive !== 'function' || !window.isDemoActive());
+    } catch (eF) { hasRealFile = false; }
     for (var i = 0; i < items.length; i++) {
       var a = items[i].getAttribute('data-action');
-      if (a === 'fullscreen') {
+      if (a === 'load-midi') {
+        items[i].textContent = hasRealFile ? 'Change MIDI/Note File' : 'Load MIDI/Note File';
+      } else if (a === 'fullscreen') {
         items[i].textContent = inFS ? 'Exit Full Screen' : 'Full Screen';
       } else if (a === 'rotate') {
         if (!rotSupported) {
@@ -677,9 +979,15 @@
   }
   function refreshAnalyzeCanItem() {
     var el = document.querySelector('#menu-list .kai-om-item[data-action="cancel-analysis"]');
-    if (!el) return;
-    var show = engineBusy();
-    el.classList.toggle('hidden', !show);
+    if (el) {
+      var show = engineBusy();
+      el.classList.toggle('hidden', !show);
+    }
+    // Settings' System group carries its own Cancel Analysis row — rebuild
+    // it live so it appears during an analysis and disappears when one ends.
+    if (typeof Settings !== 'undefined' && Settings.refreshCurrentRows) {
+      try { Settings.refreshCurrentRows(); } catch (e) {}
+    }
   }
   window.refreshAnalyzeCanItem = refreshAnalyzeCanItem;
 
@@ -767,17 +1075,16 @@
     // start right through the end of the demo (HUD 0/0 + 0:00, PLAY/PAUSE
     // hidden) until a real file is loaded (isPlaybackLocked).
     if (typeof window.isPlaybackLocked === 'function' && window.isPlaybackLocked()) {
-      switch (action) {
-        case 'playPause':
-        case 'stop':
-        case 'restart':
-        case 'seekBack':
-        case 'seekForward':
-        case 'speedStepUp':
-        case 'speedStepDown':
-        case 'speedUp':
-        case 'speedDown':
-          return;
+      var lockedActions = {
+        playPause: 1, stop: 1, restart: 1,
+        seekBack: 1, seekForward: 1,
+        speedStepUp: 1, speedStepDown: 1, speedUp: 1, speedDown: 1,
+        trailUp: 1, trailDown: 1,
+        cyclePianoSize: 1, cycleRenderMode: 1, toggleKeyRange: 1
+      };
+      if (lockedActions[action]) {
+        if (typeof showToast === 'function') showToast('Locked until a file loads');
+        return;
       }
     }
     var s = Store.getState();
@@ -838,11 +1145,11 @@
         showSpeedOsd();
         break;
       case 'speedUp':
-        Store.setState({ speed: Math.min(4.0, s.speed * 2) });
+        setVisual('speed', Math.min(4.0, s.speed * 2));
         showSpeedOsd();
         break;
       case 'speedDown':
-        Store.setState({ speed: Math.max(0.25, s.speed / 2) });
+        setVisual('speed', Math.max(0.25, s.speed / 2));
         showSpeedOsd();
         break;
       case 'menuOpen':
@@ -861,6 +1168,96 @@
         Sequencer.stop();
         Sequencer.play();
         if (s.fileName) showInfoOsd('Restart');
+        break;
+      case 'loadMidi':
+        // Same storage-permission guard as the Options menu item.
+        try {
+          if (typeof window.pfaStorageGranted === 'function' && !window.pfaStorageGranted()) {
+            if (typeof window.pfaGuardStorageLoad === 'function') window.pfaGuardStorageLoad(false);
+            break;
+          }
+        } catch (e) {}
+        launchFilePicker();
+        break;
+      case 'clearMidi':
+        // Mirrors execMenuAction('clear-midi'): hard-stop + drop the track.
+        try {
+          Sequencer.stop();
+          Sequencer.load([], [], 480);
+          Store.setState({ play: 'stop', notes: [], fileName: '', timeSec: 0 });
+          if (typeof HUD !== 'undefined' && HUD.setTotal) HUD.setTotal(0);
+          window._midiBlob = null;
+          window._rawMidiBuffer = null;
+          if (typeof window.clearPfaTmp === 'function') {
+            try { window.clearPfaTmp(); } catch (eC) {}
+          }
+          if (s.fileName) showInfoOsd('Clear');
+        } catch (e) { console.error('[Ctrl] clearMidi error', e); }
+        break;
+      case 'toggleFullscreen':
+        var _wasFS = !!(document.fullscreenElement || document.mozFullScreenElement);
+        toggleFullscreen();
+        showInfoOsd(_wasFS ? 'Exit fullscreen' : 'Fullscreen');
+        break;
+      case 'rotateScreen':
+        rotateScreen();
+        showInfoOsd('Rotate');
+        break;
+      case 'cycleRenderMode':
+        _cycleStoreOpts(['auto', 'individual', 'buffer'], 'renderMode', 'Render');
+        break;
+      case 'toggleAutoPlay':
+        var _ap = !s.autoPlay;
+        setVisual('autoPlay', _ap);
+        showInfoOsd('Auto play: ' + (_ap ? 'On' : 'Off'));
+        break;
+      case 'cyclePianoSize':
+        _cycleStoreOpts(['big', 'small', 'none'], 'pianoSize', 'Piano size');
+        break;
+      case 'toggleKeyRange':
+        // 88 keys (A0–C8: 21..108) ↔ 128 keys (0..127). Routed through
+        // Settings.setKbPreset so the Key Count preset in Visual →
+        // Keyboard Range stays in sync with the hotkey.
+        var _is128 = (Number(s.kbStart) <= 0 && Number(s.kbEnd) >= 127);
+        if (typeof Settings !== 'undefined' && Settings.setKbPreset) {
+          Settings.setKbPreset(_is128 ? '88' : '128');
+        } else {
+          if (_is128) {
+            Store.setState({ kbStart: 21, kbEnd: 108 });
+          } else {
+            Store.setState({ kbStart: 0, kbEnd: 127 });
+          }
+        }
+        showInfoOsd(_is128 ? '88 keys' : '128 keys');
+        try { window.dispatchEvent(new Event('resize')); } catch (eR) {}
+        break;
+      case 'toggleInfoCard':
+        var _ic = !s.infoCard;
+        setVisual('infoCard', _ic); // applyInfoCard side-effect runs inside applyVisual
+        // OSD (same style as "+1 sec") — not a toast, not a stat row.
+        showInfoOsd('Info card: ' + (_ic ? 'Show' : 'Hide'));
+        break;
+      case 'trailUp':
+        stepTrail(+0.1);
+        break;
+      case 'trailDown':
+        stepTrail(-0.1);
+        break;
+      case 'randomColors':
+        // Mirrors the Options→Random note color track action: locked until a
+        // real file is loaded, then regenerates all 16 channel colours.
+        try {
+          if (typeof window.isPlaybackLocked === 'function' && window.isPlaybackLocked()) {
+            if (typeof showToast === 'function') showToast('Locked until a file loads');
+            break;
+          }
+        } catch (e) {}
+        try {
+          if (typeof Notes !== 'undefined' && Notes.randomizePalette) {
+            Notes.randomizePalette();
+            showInfoOsd('Track colors randomised');
+          }
+        } catch (e) { console.error('[Ctrl] randomColors failed', e); }
         break;
       case 'back':
         break;
@@ -941,6 +1338,20 @@
     } catch (e) { /* engine hiccup after a rejected seek — ignore */ }
   }
 
+  // Mirror a hotkey value change back into Visual settings (persistence +
+  // the settings module's _values copy), so the Settings overlays show the
+  // live value next time they open. Falls back to a plain Store write if
+  // the settings module isn't ready.
+  function setVisual(key, val) {
+    if (typeof Settings !== 'undefined' && Settings.applyVisual) {
+      Settings.applyVisual(key, val);
+    } else {
+      var p = {};
+      p[key] = val;
+      Store.setState(p);
+    }
+  }
+
   // ── Playback speed stepping ±0.1x (Key 3 up / Key 1 down) ──
   // Round to one decimal so repeated presses never accumulate
   // floating-point drift (0.30000000004-style values).
@@ -948,7 +1359,29 @@
     var s = Store.getState();
     var next = Math.round(((s.speed || 1.0) + delta) * 10) / 10;
     next = Math.min(8.0, Math.max(0.1, next));
-    if (next !== s.speed) Store.setState({ speed: next });
+    if (next !== s.speed) setVisual('speed', next);
+  }
+
+  // Note Trail via Store setState — the render path is polled by the
+  // sequencer/notes every frame, so no extra side-effects needed.
+  function stepTrail(delta) {
+    var s = Store.getState();
+    var next = Math.round(((typeof s.trail === 'number' ? s.trail : 1.0) + delta) * 10) / 10;
+    next = Math.min(8.0, Math.max(0.1, next));
+    if (next !== s.trail) setVisual('trail', next);
+    showInfoOsd('Trail ' + next.toFixed(1));
+  }
+
+  // Cycle an enum Store key forwards through `values`, then show an OSD.
+  // Visual enums are mirrored into the settings module so the General /
+  // Piano pages reflect the hotkey choice.
+  function _cycleStoreOpts(values, key, label) {
+    var s = Store.getState();
+    var idx = values.indexOf(s[key]);
+    idx = (idx < 0 ? -1 : idx);
+    var next = values[(idx + 1) % values.length];
+    setVisual(key, next);
+    showInfoOsd(label + ': ' + next);
   }
 
   // ── Menu open ──
@@ -973,6 +1406,8 @@
     refreshMenuLabels();
     // Grey out Note Color Randomise while the bundled demo self-plays.
     refreshDemoLock();
+    // Keep the Developer row honest (hidden until the About easter egg).
+    refreshDevVisibility();
     updateSoftkeys();
   }
 
@@ -999,6 +1434,30 @@
       return;
     }
 
+    // Developer-menu confirm dialog: LSK = OK, RSK = Cancel.
+    if (isDevConfirmOpen()) {
+      if (leftE)  leftE.textContent  = 'OK';
+      if (ctrE)   ctrE.textContent   = '';
+      if (rightE) rightE.textContent = 'Cancel';
+      return;
+    }
+
+    // Developer-menu acknowledgment dialog: centre OK only.
+    if (isDevDoneOpen()) {
+      if (leftE)  leftE.textContent  = '';
+      if (ctrE)   ctrE.textContent   = 'OK';
+      if (rightE) rightE.textContent = '';
+      return;
+    }
+
+    // Reset-confirm dialog: LSK = OK, RSK = Cancel, centre held idle.
+    if (isResetConfirmOpen()) {
+      if (leftE)  leftE.textContent  = 'OK';
+      if (ctrE)   ctrE.textContent   = '';
+      if (rightE) rightE.textContent = 'Cancel';
+      return;
+    }
+
     var s = Store.getState();
     var menuOpen = s.menu && s.menu.open;
     var settingsOpen = (typeof Settings !== 'undefined' &&
@@ -1015,7 +1474,7 @@
       // hide SELECT so it cannot be activated.
       var focusedItem = document.querySelector('#menu-list .kai-om-item.focused');
       // Hide SELECT when the focused item is locked (Note Color Randomise
-      // while demo / no file) OR beta-locked (MIDI-OUT under construction) —
+      // while demo / no file) OR beta-locked (Synth under construction) —
       // those rows can't be activated via the center key, so advertising a
       // SELECT label on them would be misleading. perm-locked keeps its
       // SELECT: pressing it routes to the grant-path dialog instead of the
@@ -1032,14 +1491,34 @@
       // mirroring the Options menu. Plain value rows keep labels blank.
       var subOv = document.getElementById('subsettings-overlay');
       var subOpen = !!(subOv && !subOv.classList.contains('hidden'));
-      var selRow = (!subOpen)
-        ? document.querySelector('#settings-list .setting-row.focused')
-        : null;
-      var selType = selRow ? selRow.getAttribute('data-type') : null;
-      // Drill-in ('sub' / color) AND one-shot action rows (Developer:
-      // Memory Stats / Export Log / Storage Test) advertise the center
-      // action with a "SELECT" label, mirroring the Options menu.
-      if (ctrE) ctrE.textContent = (selType === 'sub' || selType === 'color' || selType === 'action') ? 'SELECT' : '';
+      var selT = null;
+      if (subOpen) {
+        // Inside a sub-page: SELECT on any row that drills in further
+        // (color page within Info Card Options / sliders are plain rows).
+        var fRow = document.querySelector('#subsettings-list .setting-row.focused');
+        if (fRow) selT = fRow.getAttribute('data-type');
+        // Palette rows and loadmore also accept Enter → SELECT.
+        if (!selT) {
+          var fPal = document.querySelector('#subsettings-list .palette-row.focused');
+          if (fPal) selT = 'palette';
+        }
+        if (!selT) {
+          var fPalAct = document.querySelector('#subsettings-list .palette-action.focused');
+          if (fPalAct) selT = 'action';
+        }
+        if (!selT) {
+          var fLoad = document.querySelector('#subsettings-list .palette-loadmore.focused');
+          if (fLoad) selT = 'action';
+        }
+      } else {
+        var selRow = document.querySelector('#settings-list .setting-row.focused');
+        if (selRow) selT = selRow.getAttribute('data-type');
+      }
+      // Drill-in ('sub' / 'color') AND one-shot action rows (Developer:
+      // Memory Stats / Export Log / Storage Test) AND palette/loadmore
+      // AND Graphics radio rows advertise the center action with a
+      // "SELECT" label.
+      if (ctrE) ctrE.textContent = (selT === 'sub' || selT === 'color' || selT === 'action' || selT === 'palette' || selT === 'radio') ? 'SELECT' : '';
       if (leftE)  leftE.textContent  = '';
       if (rightE) rightE.textContent = '';
     } else {
@@ -1047,16 +1526,16 @@
       // right softkey is the big red button, centre is held idle so PLAY/
       // PAUSE can't be triggered mid-parse.
       if (analyzingNow()) {
-        if (leftE)  leftE.textContent  = 'Options';
+        if (leftE)  leftE.textContent  = 'Settings';
         if (ctrE)   ctrE.textContent   = '';
         if (rightE) rightE.textContent = 'Cancel';
       } else {
       // Demo self-play: hide PLAY/PAUSE and lock speed/stop/restart.
-      // Options stays so a real .mid/.note can stop the demo at any time.
+      // Settings stays so a real .mid/.note can stop the demo at any time.
       var isDemo = false;
       try { isDemo = typeof window.isDemoActive === 'function' && window.isDemoActive(); } catch (igD) {}
       if (isDemo) {
-        if (leftE)  leftE.textContent  = 'Options';
+        if (leftE)  leftE.textContent  = 'Settings';
         if (ctrE)   ctrE.textContent   = '';
         if (rightE) rightE.textContent = '';
       } else {
@@ -1065,12 +1544,32 @@
       // PLAY when idle, held, or stopped.
       var busy = (s.play === 'play') ||
                  (s.startCountdown != null && s.cdRunning);
-      if (leftE)  leftE.textContent  = 'Options';
+      if (leftE)  leftE.textContent  = 'Settings';
       if (ctrE)   ctrE.textContent   = hasFile ? (busy ? 'PAUSE' : 'PLAY') : '';
       if (rightE) rightE.textContent = '';
       }
       }
     }
+  }
+
+  // True only while the user is in "volume-adjust mode" inside Settings —
+  // turned on by showOSDVolume() (when Enter/OK is pressed on the "Volume"
+  // row) and turned off when leaving that mode (see onKeyDown +
+  // openSettingsGroup) or after 3 seconds with no key press (_armVolumeAdjustTimeout).
+  var _volumeAdjustActive = false;
+  var _volumeAdjustTimer = null;
+
+  function _clearVolumeAdjustTimeout() {
+    if (_volumeAdjustTimer) { clearTimeout(_volumeAdjustTimer); _volumeAdjustTimer = null; }
+  }
+  // (Re)start the 3s countdown: once it elapses with no further key press →
+  // auto-cancel volume-adjust mode (the OS's own OSD hides itself too).
+  function _armVolumeAdjustTimeout() {
+    _clearVolumeAdjustTimeout();
+    _volumeAdjustTimer = setTimeout(function () {
+      _volumeAdjustActive = false;
+      _volumeAdjustTimer = null;
+    }, 3000);
   }
 
   function kaiOSVolumeManager() {
@@ -1111,7 +1610,12 @@
   // is no need for a temporary input lock here — the OSD is purely
   // visual feedback for the current level.
   function showOSDVolume() {
-    closeMenuOverlay();
+    // Skip closeMenuOverlay when launched from Settings (menu already
+    // hidden by openSettingsGroup) — closing it here would reset
+    // _focusedItemIndex to -1 and lose the focus restore on return.
+    var settingsOpen = !!(typeof Settings !== 'undefined' &&
+                          Settings.isOpen && Settings.isOpen());
+    if (!settingsOpen) closeMenuOverlay();
     var vm = kaiOSVolumeManager();
     if (!vm) {
       showToast('Volume: KaiOS API unavailable');
@@ -1119,6 +1623,14 @@
     }
     try { vm.requestShow(); } catch (e) {
       showToast('Volume show failed');
+      return;
+    }
+    // The user just ACTIVELY pressed the "Volume" row → turn on
+    // volume-adjust mode so Up/Down (D-pad) adjusts the volume instead of
+    // moving the list focus. After 3s with no further key press, auto-cancel.
+    if (settingsOpen) {
+      _volumeAdjustActive = true;
+      _armVolumeAdjustTimeout();
     }
   }
 
@@ -1151,8 +1663,14 @@
       m.style.transform = '';
     }
 
+    // Starting a fresh Settings session → always begin in list-browsing state.
+    _volumeAdjustActive = false;
+    _clearVolumeAdjustTimeout();
+
     // Open Settings panel. onClose restores Options menu.
     Settings.open(group, function () {
+      _volumeAdjustActive = false;
+      _clearVolumeAdjustTimeout();
       if (m) {
         m.classList.remove('hidden');
         m.style.display = '';
@@ -1169,20 +1687,22 @@
     if (typeof updateSoftkeys === 'function') updateSoftkeys();
   }
 
-  // ── Toast notification ──
-  var _toastTimer = null;
-  function showToast(msg) {
-    var el = document.getElementById('now-playing');
-    if (!el) return;
-    el.textContent = msg;
-    el.classList.remove('fade-out', 'hidden');
-    el.classList.add('fade-in');
-    if (_toastTimer) clearTimeout(_toastTimer);
-    _toastTimer = setTimeout(function () {
-      el.classList.remove('fade-in');
-      el.classList.add('fade-out');
-    }, 2500);
+  // ── Info-card feedback (formerly the bottom-left white-text toast) ──
+  // Every popup-style message ("Locked until a file loads", "Palette: …",
+  // "Rotation not supported", …) now renders INSIDE the info card via the
+  // seek-OSD slot (#hud-osd) and auto-hides after 3s — one feedback surface
+  // instead of a floating white pill. Locked-type warnings show simply as
+  // "Locked". Exposed on window so settings.js shares the same sink.
+  function _toastLabel(msg) {
+    return (/^Locked/i.test(msg)) ? 'Locked' : msg;
   }
+  function showToast(msg) {
+    try {
+      if (typeof HUD === 'undefined' || !HUD.showOsd) return;
+      HUD.showOsd(_toastLabel(String(msg)), 3000);
+    } catch (e) { try { console.error('[Ctrl] toast->osd', e); } catch (e2) {} }
+  }
+  window.showToast = showToast;
 
   // ── "Now Playing" center toast ──
   // Implemented in main.js (window.showNowPlaying) so the MozActivity
@@ -1191,10 +1711,113 @@
   // loads last and would silently override it.
   window.updateSoftkeys = updateSoftkeys;
   window.refreshMenuLabels = refreshMenuLabels;
+  window.devEnabled = devEnabled;
+  window.openDevConfirm = openDevConfirm;
+  window.hideDevConfirm = hideDevConfirm;
+  window.hideDevDone = hideDevDone;
+
+  // ── Hooks for Settings (System group) + boot ──
+  window.showAboutApp = showAbout;
+  window.openResetConfirm = openResetConfirm;
+  window.toggleFullscreen = toggleFullscreen;
+  window.rotateScreen = rotateScreen;
+  window.showOSDVolume = showOSDVolume;
+
+  // Clear the loaded MIDI (System → Clear). Same work as the old Options
+  // "Clear" item, minus overlay manipulation: called from Settings, the
+  // menu isn't open, and resetting _focusedItemIndex would break the
+  // focus restore when the user backs out.
+  window.clearMidiAction = function () {
+    try {
+      Sequencer.stop();
+      Sequencer.load([], [], 480);
+      Store.setState({ play: 'stop', notes: [], fileName: '', timeSec: 0 });
+      if (typeof HUD !== 'undefined' && HUD.setTotal) HUD.setTotal(0);
+      window._midiBlob = null;
+      window._rawMidiBuffer = null;
+      if (typeof window.clearPfaTmp === 'function') {
+        try { window.clearPfaTmp(); } catch (e) { console.error('[Ctrl] clearPfaTmp error', e); }
+      }
+      setTimeout(function () {
+        if (typeof updateSoftkeys === 'function') updateSoftkeys();
+      }, 0);
+    } catch (e) { console.error('[Ctrl] clear-midi error', e); }
+  };
+
+  // Launch the MozActivity file picker (System → Load/Change MIDI/Note
+  // File). Storage-permission guard mirrors the old Options item. When
+  // opened from Settings, the settings overlay is dropped silently so
+  // the user lands back on the piano after the picker returns.
+  window.launchPickerAction = function () {
+    try {
+      if (typeof window.pfaStorageGranted === 'function' && !window.pfaStorageGranted()) {
+        if (typeof window.pfaGuardStorageLoad === 'function') window.pfaGuardStorageLoad(false);
+        return;
+      }
+    } catch (e) {}
+    try {
+      if (typeof Settings !== 'undefined' && Settings.isOpen && Settings.isOpen() &&
+          typeof Settings.close === 'function') {
+        Settings.close(true);
+      }
+    } catch (e) {}
+    launchFilePicker();
+  };
+
+  // Apply launch-time System settings (Auto Full Screen / Auto Rotate).
+  // main.js calls this right after Settings.load() so Store holds the
+  // persisted toggle values. Guarded so a missing API never breaks boot.
+  window.applySystemSettings = function () {
+    var st;
+    try { st = Store.getState(); } catch (e) { return; }
+    if (!st) return;
+    var app = document.getElementById('app');
+    var fsOn = !!(document.fullscreenElement || document.mozFullScreenElement) ||
+               !!(app && app.classList.contains('fullscreen'));
+    if (st.autoFullscreen && !fsOn) {
+      try { toggleFullscreen(); } catch (e) { console.error('[Ctrl] auto-fullscreen failed', e); }
+    }
+    if (st.autoRotate) {
+      try {
+        var t = (screen.orientation && screen.orientation.type) || '';
+        if (t.indexOf('landscape') === -1) rotateScreen();
+      } catch (e) { console.error('[Ctrl] auto-rotate failed', e); }
+    }
+  };
 
   // ── Launch ──
   console.log('[Controls] calling init()');
   init();
+
+  // Desktop click fallback for the reset dialog: tapping the dim overlay
+  // cancels (mirrors the error dialog behaviour in main.js).
+  (function () {
+    var cd = document.getElementById('confirm-dialog');
+    if (cd) {
+      cd.addEventListener('click', function (e) {
+        if (e.target === cd) hideResetConfirm();
+      });
+    }
+  })();
+
+  // Desktop click fallback for the dev-menu dialogs (dim overlay cancels).
+  (function () {
+    var cd1 = document.getElementById('devmenu-dialog');
+    if (cd1) {
+      cd1.addEventListener('click', function (e) {
+        if (e.target === cd1) hideDevConfirm();
+      });
+    }
+    var cd2 = document.getElementById('devmenu-done-dialog');
+    if (cd2) {
+      cd2.addEventListener('click', function (e) {
+        if (e.target === cd2) hideDevDone();
+      });
+    }
+  })();
+
+  // Keep the Developer row honest at boot (persisted unlock state).
+  refreshDevVisibility();
 
   // Keep menu labels honest when the orientation flips outside the menu —
   // hardware key on KaiOS 2.5 (or manual phone rotation) can fire

@@ -11,19 +11,20 @@
   background: #000;
 }
 
-/* Status-bar placeholder — solid black strip at the top mimicking
+/* Status-bar placeholder — transparent strip at the top mimicking
    the KaiOS system status bar zone. Prevents the OS bar from
    overlapping our HUD/canvas when the app window shifts during
    MozActivity wake-up (the shell briefly reports a different
-   viewport height before settling). The strip below pushes all
-   real content below the system bar area. */
+   viewport height before settling). Kept transparent (no black bar)
+   while still reserving the strip so real content sits below the
+   system bar area. */
 #statusbar-placeholder {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 5px;
-  background: #000;
+  background: transparent;
   z-index: 50;
   pointer-events: none;
 }
@@ -54,7 +55,11 @@
   display: block;
 }
 
-/* === HUD (overlay on canvas — vertical stack, pointer-events:none) === */
+/* === HUD (overlay on canvas — vertical stack, pointer-events:none) ===
+   Appearance (bg/text/border/position) is driven by Settings → Info
+   Card Options via inline styles from applyInfoCard(); these rules only
+   provide the base layout + a non-flash fallback (solid black card).
+   The right edge variant is aligned via inline styles (flex-end). */
 #hud {
   position: absolute;
   top: 0;
@@ -63,12 +68,13 @@
   flex-direction: column;
   padding: 2px 5px;
   font-size: 8px;
-  color: #ccc;
-  background: rgba(0,0,0,0.35);
+  color: #ffffff;
+  background: #000000;
   pointer-events: none;
   z-index: 20;
   line-height: 1.25;
   box-sizing: border-box;
+  border-radius: 0;
 }
 
 #hud-note-count { color: #fff; font-weight: bold; }
@@ -105,30 +111,9 @@
 }
 #dev-osd.hidden { display: none; }
 
-/* === NOW PLAYING TOAST === */
-#now-playing {
-  position: absolute;
-  bottom: 38px;
-  left: 8px;
-  color: #fff;
-  font-size: 1.2rem;
-  font-weight: 500;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
-  z-index: 30;
-  text-shadow: 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
-}
-
-#now-playing.fade-in  { opacity: 1; }
-#now-playing.fade-out { opacity: 0; }
-
 /* === FULLSCREEN ADJUSTMENTS === */
 #app.fullscreen #softkey-bar {
   display: none;
-}
-#app.fullscreen #now-playing {
-  bottom: 8px;
 }
 
 /* ===========================================
@@ -191,11 +176,9 @@
   flex-direction: column;
 }
 #subsettings-list {
-  position: relative;
-  flex: 1;
+  flex: 1 1 auto;
   overflow-y: auto;
   background: var(--color-gs00);
-  will-change: scroll-position;
 }
 
 /* Swatch grid — flex-wrap, SWATCH_COLS=5 columns per visual row.
@@ -452,5 +435,124 @@
 .kai-text-input.focused .kai-text-input-input {
   border-color: #ffffff;
   background: transparent;
+  color: #ffffff;
+}
+
+/* ===========================================
+   NOTE COLOR SETTINGS — Separator + Palette Strip
+   Separator styled after KaiUI-master
+   Separator.scss (kai-separator).
+   =========================================== */
+
+/* Separator — matches KaiUI kai-separator: light gray background,
+   centered uppercase text, compact height. */
+.kai-separator {
+  width: 100%;
+  height: 2.4rem;
+  text-align: center;
+  background: var(--color-gs10);
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+.kai-separator-text {
+  margin: 0 1rem;
+  text-align: center;
+  color: var(--color-gs70);
+  text-transform: none;
+  font-size: 1.5rem;
+  line-height: 2.4rem;
+}
+
+/* Palette row — KaiUI radio-button list item (kai-rbl) style: name on
+   left, radio glyph on the right, filled dot when selected. */
+.palette-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.6rem 0 1.6rem;
+  background: var(--color-gs00);
+  min-height: 4.5rem;
+  box-sizing: border-box;
+}
+.palette-row.focused {
+  background: #0066cc;
+}
+.palette-row-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gs90);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.palette-row.focused .palette-row-name {
+  color: #ffffff;
+}
+/* Radio glyph — kai-icons font (like KaiUI kai-rbl). */
+.palette-radio {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  margin-left: 1rem;
+  font-family: 'kai-icons';
+  font-size: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  color: var(--color-gs70);
+}
+.palette-radio::before {
+  content: '\e90f'; /* kai-icon-radio-button-unselected */
+}
+.palette-row.selected .palette-radio::before {
+  content: '\e906'; /* kai-icon-radio-button-selected */
+  color: #0066cc;
+}
+.palette-row.selected.focused .palette-radio::before {
+  color: #ffffff;
+}
+
+/* Radio rows in Graphics settings page (renderMode / view3d) */
+.setting-row.selected .palette-radio::before {
+  content: '\e906'; /* kai-icon-radio-button-selected */
+  color: #0066cc;
+}
+.setting-row.selected.focused .palette-radio::before {
+  color: #ffffff;
+}
+
+/* "Random note color" action row at the top of the palette list. */
+.palette-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 1.6rem;
+  background: var(--color-gs00);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gs90);
+  min-height: 4.5rem;
+  box-sizing: border-box;
+}
+.palette-action.focused {
+  background: #0066cc;
+  color: #ffffff;
+}
+
+/* "Load more" row at the bottom of the palette list. */
+.palette-loadmore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 1.6rem;
+  background: var(--color-gs00);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gs90);
+  min-height: 4.5rem;
+  box-sizing: border-box;
+}
+.palette-loadmore.focused {
+  background: #0066cc;
   color: #ffffff;
 }

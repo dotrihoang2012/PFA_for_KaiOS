@@ -1,5 +1,5 @@
 {
-  "name": "Piano From Above (BETA)",
+  "name": "PFA (BETA)",
   "description": "MIDI player with keyboard visualization.",
   "launch_path": "/index.html",
   "developer": {
@@ -15,6 +15,9 @@
   "orientation": ["portrait-primary", "portrait-secondary", "landscape-primary", "landscape-secondary"],
   "version": "1.0.1",
   "type": "privileged",
+  "dependencies": {
+    "ads-sdk": "1.5.8"
+  },
   "theme_color": "#0a9bf5",
   "locales": {
     "en-US": {
@@ -31,6 +34,7 @@
       "access": "readwrite"
     },
     "audio-channel-content": {},
+    "volumemanager": {},
     "desktop-notification": {}
   },
   "activities": {

@@ -72,6 +72,15 @@ html, body {
   font-weight: 500;
   font-style: normal;
 }
+
+/* Kai icons font — copied from KaiUI-master/kai-font/fonts. Powers the
+   radio-button glyphs on the Note Color palette rows (kai-rbl style). */
+@font-face {
+  font-family: 'kai-icons';
+  src: url('../fonts/kai-icons.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
 .gaia-icon,
 [data-icon]::before {
   font-family: 'gaia-icons';
@@ -260,7 +269,6 @@ html, body {
 .slide-enter-back { animation: slideFromLeft  0.15s ease forwards; }
 .slide-exit-fwd   { animation: slideToLeft    0.15s ease forwards; pointer-events: none; }
 .slide-exit-back  { animation: slideToRight   0.15s ease forwards; pointer-events: none; }
-/* (slide rules removed — menu/settings now show instantly) */
 
 #menu-overlay .kai-om,
 #settings-overlay .kai-om {
@@ -429,14 +437,19 @@ html, body {
 #parse-bar-fill {
   position: absolute;
   top: 0;
-  left: -100%;
-  width: 100%;
+  left: 0;
+  width: 0;
   height: 100%;
-  background: var(--color-purple);
+  background: #0066cc;   /* settings focus blue (kai-om-item.focused) */
+  /* Determinate mode: _updateParseProgress sets width% — grow smoothly.
+     Only width is transitioned so the .indeterminate left-sweep stays raw. */
+  transition: width 0.25s linear;
 }
 
 #parse-bar.indeterminate #parse-bar-fill {
   left: -100%;
+  width: 100%;
+  background: #0066cc;
   animation: kaiParseSweep 1.2s ease-in-out infinite;
 }
 
@@ -444,6 +457,23 @@ html, body {
   0%   { left: -100%; }
   50%  { left: 0%; }
   100% { left: 100%; }
+}
+
+/* Percentage readout under the parse strip — shows the live conversion
+   value for BOTH the parse and merge stages. White with a hard black
+   outline stays readable over any theme/background. */
+#parse-pct {
+  position: absolute;
+  top: 0.45rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 3px #000;
+  pointer-events: none;
+  z-index: 25;
 }
 
 /* ============================================
@@ -457,9 +487,9 @@ html, body {
   height: 0;
   overflow: hidden;
 }
-#app.fullscreen #parse-bar {
-  display: none;
-}
+
+/* Parse bar stays VISIBLE in fullscreen — the slim progress strip runs
+   along the top edge of the piano while a conversion/analysis is running. */
 
 /* Fullscreen: panel needs to span full viewport (no softkey padding)
    AND still slide horizontally. */

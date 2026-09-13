@@ -20,8 +20,8 @@ var Soundbank = (function () {
   /** Initialise AudioContext (or reuse existing one from Synth) */
   function ensureContext() {
     if (ctx) return ctx;
-    if (window.AudioContext) ctx = new AudioContext();
-    else if (window.webkitAudioContext) ctx = new webkitAudioContext();
+    if (window.AudioContext) ctx = new AudioContext('content');
+    else if (window.webkitAudioContext) ctx = new webkitAudioContext('content');
     else throw new Error('Web Audio API not available');
     return ctx;
   }
