@@ -102,6 +102,8 @@ var Store = (function () {
     // Developer options (mirrored from localStorage by settings.js)
     osdLog:         false, // On-screen verbose status overlay
     verboseAnalyze: false, // show [LOG] detail in analysis progress
+    verboseInit:    false, // show text log above % in launch/boot screen (default false/Off)
+    verboseLoadLog: false, // show text log in launch/soundfont loading screen (default false/Off)
     pctAnalyze:     false, // show the percentage readout during analysis (parse)
     pctMerge:       false, // show the percentage readout during the merge stage
     pctBarVisible:  true,  // show/hide the loading bar itself (Visual → Loading Bar)
@@ -114,6 +116,7 @@ var Store = (function () {
     // System settings (auto fullscreen / rotate on launch)
     autoFullscreen: false,
     autoRotate:     false,
+    focusColor:     '#0066cc',
 
     // Start Delay countdown (HUD time shows -0:05 → 0:00 while active)
     startCountdown: null,  // seconds remaining (null = inactive)

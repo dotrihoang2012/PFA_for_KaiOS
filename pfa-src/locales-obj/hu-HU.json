@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Opciók"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Válassza ki"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Vissza"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Játssz"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Szünet"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Állj"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Mégsem"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Befejezés"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Mind"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Egyik sem"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Mozgás"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "RENDBEN"
+  },
+  {
+    "$i": "settings",
+    "$v": "Beállítások elemre"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Szintetizátor"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Vizuális"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Rendszer"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Fejlesztői beállítások"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Hangfont beállítások"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "téma"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "MIDI/Note fájl betöltése"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Módosítsa a MIDI-/jegyzetfájlt"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Soundfont betöltése"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Töltsön be többet"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Elemzés törlése"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Világos"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Hangkimenet"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Hangmotor"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Szintén hullámforma"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Kihagyja a lassú bevezetőt"
+  },
+  {
+    "$i": "speed",
+    "$v": "Sebesség"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Megjegyzés Trail"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Automatikus lejátszás"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Párbeszéd megjelenítése"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "OSD megjelenítése"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Indítási késleltetés"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Billentyűzettartomány"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Középső C marker"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Jegyzetcímkék megjelenítése"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Piano Méret"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Bár színe"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Zongora színe"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Fókusz színe"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Szín betöltése"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Betöltési sáv megjelenítése"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "% megjelenítése elemzés közben"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "% megjelenítése egyesítés közben"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Csúszó animáció"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Szöveg színe"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Háttérszín"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Renderelési mód"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D nézet"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Információs kártya megjelenítése"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Teljes képernyő"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Képernyő elforgatása"
+  },
+  {
+    "$i": "volume",
+    "$v": "kötet"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Beállítások importálása"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Beállítások exportálása"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Automatikus teljes képernyő"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Képernyő automatikus elforgatása"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Minden beállítás visszaállítása"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Erről az alkalmazásról"
+  },
+  {
+    "$i": "developer",
+    "$v": "Fejlesztő"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Bőbeszédű állapot"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Bőbeszédű elemzés közben"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Bőbeszédű init közben"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Memória statisztika"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Napló exportálása"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Tárolási teszt"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Puffer hossza"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Hangok (polifónia)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "A Soundfont FX letiltása"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Már betöltve"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Soundfont betöltése"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Modul betöltése..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Alkalmazás betöltése..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "MIDI elemzése…"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Számok egyesítése…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Most játszik"
+  },
+  {
+    "$i": "paused",
+    "$v": "Szüneteltetve"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Megállt"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Hiba"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "A fájl nem olvasható, vagy hiányzik a fájl."
+  },
+  {
+    "$i": "on",
+    "$v": "Be"
+  },
+  {
+    "$i": "off",
+    "$v": "Ki"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Web Audio"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "Audiovezérlés (bypass)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Automatikus"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (oszcillátor)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sine"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Négyzet"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Fűrészfog"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Háromszög"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Teljes (128 kulcs)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 kulcs"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 kulcs"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 kulcs"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 kulcs"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Intelligens (automatikus zoom)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Kicsi"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Közepes"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Nagy"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Megjegyzés ősz"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Billentyűzet"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Mindkettőt"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Megjegyzés Szám"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Átment"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Sebesség"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Idő"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Többszólamúság"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Renderelt jegyzetek"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Audiopuffer"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Tick"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Lebegő"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Határ"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Információs kártya szegélye"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Pozíció"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Háttér"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Információs kártya szövege"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Balra"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Igaz"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Előbeállítások"
+  },
+  {
+    "$i": "general",
+    "$v": "tábornok"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Betöltési sáv"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Párbeszéd"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafika"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Információs kártya"
+  },
+  {
+    "$i": "piano",
+    "$v": "Zongora"
+  },
+  {
+    "$i": "palette",
+    "$v": "Megjegyzés Szín"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Bőbeszédű állapot"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Bőbeszédű elemzés közben"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Bőbeszédű init közben"
+  },
+  {
+    "$i": "memory",
+    "$v": "Memória statisztika"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Napló exportálása"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Tárolási teszt"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Nagy"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Nincs zongora"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Háttérbeállítások"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "téma"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "kék"
+  },
+  {
+    "$i": "color_white",
+    "$v": "fehér"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Fekete"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statisztika"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Stílus"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Megjegyzések"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Billentyűzet"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Színek"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Hang"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Hatások"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Sikerült:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Sebesség:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Időpont:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Többszólamúság:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Renderelt:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Audio Buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Jelölje be:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Betöltve"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Visszaállítja az összes beállítást a gyári alapértékekre?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "A SoundFont törlése"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Törölni akarod?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Betöltött hangfont(ok)"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Fejlesztői menü"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Engedélyezi a fejlesztői menü módot?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Fejlesztői menü engedélyezve a beállításokban"
+  },
+  {
+    "$i": "about_version",
+    "$v": "1.0.1-es verzió • KaiOS 2.5 • Fekete MIDI támogatott • MIT-licenc"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "Okos telefonokhoz optimalizált MIDI-vizualizáló (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Az optimalizált Canvas renderelő folyamatra összpontosít, hogy zökkenőmentesen jelenítse meg a nagy sűrűségű fekete MIDI-sávokat korlátozott hardveren."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Főbb jellemzők"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Fekete MIDI optimalizálás – a könnyű algoritmusok több tízezer hangot kezelnek komoly FPS-esések nélkül."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Fizikai billentyűzet támogatás – zökkenőmentes navigáció D-Pad és számbillentyűk segítségével."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Nagymértékben testreszabható - teljes 128 billentyűs zongorakijelző, testreszabható sávszínek, állítható hangok esési sebessége."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio szintetizátor – a beépített könnyű szintetizátor minimalizálja a RAM-használatot az alsó kategóriás eszközökön."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Kulcsok"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > keresés ±1s • ^ v hangerő • OK lejátszás/szünet"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1x sebesség • 2 renderelési mód • 3 -0,1x sebesség • 4 elforgatás"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 betöltés MIDI • 6 teljes képernyő • 7 gomb 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 tiszta MIDI (felszabadítja a RAM-ot) • 9 zongoraméret • 0 stop"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Hívásinfó kártya • * nyomvonal -0,1 • # nyomvonal +0,1 • Hívás befejezése kilépés"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Kredit és hozzájárulás"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Fejlesztője: T.Hoang • KaiUI tervezési komponensek"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PR-ok szívesen: fork -> feature branch -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Forráskód: github.com/dotrihoang2012/PFA_for_KaiOS. MIT licenc alatt jelent meg."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Zárolva, amíg a fájl betöltődik"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Színpaletta"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Indításkésleltetés"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Minden hangbetűtípus ki van választva"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Kijelölés törölve"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "A betöltés félbeszakadt"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Folyamatban van a beolvasás..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Semmi nincs kiválasztva!"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Egyéni paletta aktív"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Érvénytelen kép"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Színválasztó nem elérhető"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Nem olvasható a fájl"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Nem kép"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "A kép túl nagy!"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Háttér mentve"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Háttér törölve"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Elérte a hangkorlátot"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Vászon puffer mód"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Nincs törölhető SoundFont"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Törölt"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Áthelyezés megszak"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Elrendezés mentve"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Használja a fel/le gombot a mozgatáshoz, az OK gombot az elhelyezéshez"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Nincs betöltve SoundFont"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Alkalmazva a következő indításkor"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Letiltva a következő indításkor"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "A beállítások importálva."
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Zárolva a demó során"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Minden beállítás alaphelyzetbe állítása."
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Visszaállítás nem elérhető"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Visszaállítás sikertelen!"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "A forgatás nem támogatott"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Kötet: A KaiOS API nem érhető el"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Vol up sikertelen"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Vol Down sikertelen"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Kötet megjelenítése sikertelen"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Fűrész"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Puffer hossza"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Tervezési puffer a mintákban (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Hangok"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Egyidejű jegyzetek max. száma (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Háttérbeállítások"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Párbeszédablak megjelenítése"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Szövegszín"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Háttérszín"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Százalékos szín"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Memória API nem elérhető"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Tárolás OK"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Napló exportálva ide:"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "A művelet nem sikerült"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Nincs elérhető tárhely a napló exportálásához."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Megjelenítési mód:"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Egyedi megjegyzések"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Vászonpuffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D-s nézet"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Véletlenszerű megjegyzés színe"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Színpaletta"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Több betöltése"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Betöltött SoundFontok"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Nincs betöltve SoundFonts"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Beolvasás…"
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "A szkenner nem érhető el"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Nem található soundfont fájl (.sf2, .sf3, .dls, .sfz) az eszközön"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Adatok beolvasása:"
+  },
+  {
+    "$i": "load_background",
+    "$v": "Háttér betöltése"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Háttér törlése"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Előnézet"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Kulcsok száma"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Rakodás:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Kilépés a teljes képernyős módból"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Elforgatás álló helyzetbe"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Elforgatás fekvőre"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Kikapcsolja a fejlesztői menü módot?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Fejlesztői menü letiltva a beállításokban"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Alkalmazásmag inicializálása..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Beállítások és preferenciák betöltése..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Hangmotor inicializálása..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Modul betöltése: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Bankok előkészítése folyamatban..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Szintetikus kész"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Képernyő és vászon inicializálása..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Kész"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Minták dekódolása ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Minták dekódolása..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Lejátszás előtti késleltetés másodpercben (0 = KI)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Hiba a betöltés közben"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "soundfont(s)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "A Soundbank nem érhető el"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "A leolvasás sikertelen."
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Betöltve"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Most nem törölhető - egy konverzió még folyamatban van.\nA befejezés után nyomja meg ismét a Clear (Törlés) gombot."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Nincs szabad tárhely a törléshez."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "(#Cleared:#)"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "fájl(ok) a konverziós gyorsítótárból."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Törlés befejezve hibákkal."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Az összes hiba törlése"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Véletlenszerűen kiválasztott színek"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Törlés"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Adatok beolvasása:"
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS halom (használt/összes):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS objektumok:"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "megjegyzések a RAM-ban:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Fájl neve:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp write-log:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "nem elérhető"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Ehhez az alkalmazáshoz SD-kártya-hozzáférésre van szükség.\n\nEnnek engedélyezéséhez:\nBeállítások -> Adatvédelem és biztonság -> Alkalmazásengedélyek -> PFA -> Memóriakártya-tárolás -> Engedélyezés.\n\nEzután nyissa meg újra az alkalmazást / töltse be újra a fájlt.\n\nOK bezárja az alkalmazást."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Még elemezzük az előző fájlt - kérjük, várjon."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "A MIDI-elemzés streamingje sikertelen:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "A fájl olvasása nem sikerült. Lehet, hogy nem érvényes MIDI vagy (.note) export."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "SoundFont olvasása sikertelen \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". A fájl áthelyezhető, törölhető vagy megsérülhet."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "fájlhiba, áthelyezés vagy törlés."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Hiányzik a háttérkép - töltse be újra a Beállításokban."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Nincs exportálandó elem!"
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Egy konverzió már fut"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Tárolási engedély megtagadva - SD-kártyához való hozzáférés megadása a konvertáláshoz"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Nem található írható tárhely."
+  },
+  {
+    "$i": "error",
+    "$v": "Hiba"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Általános tudnivalók"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Rakodósáv"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Párbeszédablak stílusa"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafika"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Zongora"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Színpaletta"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Ismeretlen"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS=nail patella syndrome"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NB"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Megfelelt"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Sebesség: 1.0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Ideje:"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polifónia"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Renderelt jegyzetek: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Hangpuffer: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Megjelöl"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "Ütem/ perc&apos; Comment &apos;playlist column name and token for playlist layouts"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Az összes beállítás visszaállítása"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Kijárat"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 gomb"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Egyedi"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Oszcilláció"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Sötét"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Fény"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Kék"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Lila"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Véletlenszerű"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Véletlenszerű alfa gradiensek"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Véletlenszerű színátmenetek"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Véletlenszerű az Alfával"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 paletta"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Synthesia 9-0.8 Paletta"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "saját paletta"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Hanghatások letiltása"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Nincs elérhető tárhely a beállítások exportálásához."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "A beállítások exportálása sikertelen:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "az összes tárhely nem érhető el"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "A beállítások exportálása sikertelen: nincs írható tárhely."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Exportált beállítások:\negyéb/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Beállítások exportálása blokkolva: engedélyezze az eszköz tárolását:sdcard engedély, majd próbálja újra."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Ez a .note egy bináris MIDI export,\nnem beállítási konfiguráció.\n\nCsak az Exportálási beállítások segítségével exportált beállításfájlok importálása."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "A fájl olvasása nem sikerült.\n\nEz nem egy Beállítások exportálás."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Ez a .note nem Beállítások exportálás\n(hiányzik a Beállítások jelölő)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Nem sikerült alkalmazni az importált beállításokat."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Nem olvasható a fájl"
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Csak a .note beállítások konfigurációi importálhatók.\n\nFelvéve:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "A fájlválasztó nem indítható el."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "betöltve"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "sikertelen"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Nem sikerült betölteni a SoundFont(ok) at (a fájl áthelyezve, törölve vagy megsérülve):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Betöltve"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Lejátszás"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Szünet"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Leállítás"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Újraindítás"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Törlés"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Teljes képernyő"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Forgatás"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Automatikus lejátszás"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Be"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Ki"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Infókártya"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Megjelenítés"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Elrejtés"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Nyom"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Renderelés"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Zongora mérete"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "MIDI/Hangjegy fájl módosítása"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "MIDI/Hangjegy fájl betöltése"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Forgatás portréba"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Forgatás tájképbe"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "RENDBEN"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Vissza"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Beállítások"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Mégse"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Kiválaszt"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Töröl"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Mozgat"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Kész"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Összes kijelölése"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Kijelölés megszüntetése"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Befejezés"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Infókártya megjelenítése"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Hangjegycímkék megjelenítése"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Billentyűzet tartomány"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Középső C jelölő"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Sáv színe"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Zongora színe"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Automatikus lejátszás"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "OSD megjelenítése"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Háttér beállítások"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Betöltősáv megjelenítése"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "% megjelenítése elemzéskor"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "% megjelenítése egyesítéskor"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Betöltés színe"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "% Szöveg színe"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Csúszó animáció"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Párbeszédablak megjelenítése"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Szöveg színe"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Háttérszín"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Részletes állapot"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Részletes elemzéskor"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Részletes inicializáláskor"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Fókusz színe"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Háttér"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Kezdési késleltetés"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Késleltetés a lejátszás előtt másodpercben (0 = Ki)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Kezdés"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Befejezés"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Névtelen"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Némítva"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "HIBA"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Bőbeszédű hangfontok olvasása közben"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "MIDI adatok elemzése..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Események egyesítése..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "Read Header kész:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "pályák"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Lemondás..."
+  },
+  {
+    "$i": "language",
+    "$v": "Nyelv"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Automatikus nyelvváltás"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Nyelvi elválasztó"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Hang"
+  }
+]

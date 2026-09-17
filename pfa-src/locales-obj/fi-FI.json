@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Vaihtoehdot"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Valitse"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Takaisin"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Pelaa"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Tauko"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Pysähdy"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Peruuta"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Valmis"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Kaikki"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Ei mitään"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Siirrä"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "Selvä."
+  },
+  {
+    "$i": "settings",
+    "$v": "Asetukset"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Syntetisaattori"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Visuaalinen"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Järjestelmä"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Kehittäjäasetukset"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Äänifontin asetukset"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Teema"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Lataa MIDI/Note-tiedosto"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Muuta MIDI/Note-tiedostoa"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Lataa Soundfont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Lataa lisää"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Peruuta analyysi"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Selkeä"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Äänilähtö"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Äänimoottori"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Syntetisaattorin aaltomuoto"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Ohita hidas johdanto"
+  },
+  {
+    "$i": "speed",
+    "$v": "Nopeus"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Huomautus Trail"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Automaattinen toisto"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Näytä valintaikkuna"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Näytä OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Aloitusviive"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Näppäimistövalikoima"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Keskimmäinen C-merkki"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Näytä muistiinpanot"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Pianon koko"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Palkin väri"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Pianon väri"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Tarkennusväri"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Ladataan väriä"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Näytä latauspalkki"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Näytä % analysoinnin aikana"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Näytä % yhdistämisen aikana"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Liukuva animaatio"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Tekstin väri"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Taustaväri"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Renderöintitila"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D-näkymä"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Näytä tietokortti"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Koko näyttö"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Kierrä näyttöä"
+  },
+  {
+    "$i": "volume",
+    "$v": "Äänenvoimakkuus"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Tuo asetukset"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Vie asetukset"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Automaattinen koko näyttö"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Kierrä näyttöä automaattisesti"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Palauta kaikki asetukset"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Tietoja tästä sovelluksesta"
+  },
+  {
+    "$i": "developer",
+    "$v": "Kehittäjä"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Monisanainen tila"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Monisanainen analysoinnin aikana"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Monisanainen init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Muistin tilastot"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Vie loki"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Säilytystesti"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Puskurin pituus"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Äänet (polyfonia)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Poista Soundfont FX käytöstä"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Jo ladattu"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Ladataan äänifonttia"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Ladataan moduulia..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Ladataan sovellusta..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Analysoidaan MIDI:tä…"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Yhdistetään kappaleita…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Nyt pelaa"
+  },
+  {
+    "$i": "paused",
+    "$v": "Keskeytetty"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Pysähtynyt"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Virhe"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Tiedostoa ei voi lukea tai tiedosto puuttuu."
+  },
+  {
+    "$i": "on",
+    "$v": "Päällä"
+  },
+  {
+    "$i": "off",
+    "$v": "Pois päältä"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Web Audio"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "AudioControl (ohitus)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Automaattinen"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (oskillaattori)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sine"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Neliö"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Sahahammas"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Kolmio"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Täysi (128 avainta)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 avainta"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 avainta"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 avainta"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 avainta"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Älykäs (automaattinen zoom)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Pieni"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Keskikokoinen"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Suuri"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Huomautus Syksy"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Näppäimistö"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Molemmat"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Huomautus Count"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Läpäisty"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Nopeus"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Aika"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polyfonia"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Renderoidut muistiinpanot"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Äänipuskuri"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "rasti"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Kelluva"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Raja"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Tietokortin reuna"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "asema"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Tausta"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Tietokortin teksti"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Vasen"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Oikein"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Esiasetukset"
+  },
+  {
+    "$i": "general",
+    "$v": "Kenraali"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Latauspalkki"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Dialogi"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafiikka"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Tietokortti"
+  },
+  {
+    "$i": "piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "palette",
+    "$v": "Huomautus Väri"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Monisanainen tila"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Monisanainen analysoinnin aikana"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Monisanainen init"
+  },
+  {
+    "$i": "memory",
+    "$v": "Muistin tilastot"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Vie loki"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Säilytystesti"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Iso"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Ei Pianoa"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Taustaasetukset"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Teema"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Sininen"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Valkoinen"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Musta"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Tilastot"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Tyyli"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Huomautuksia"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Näppäimistö"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "värit"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Ääni"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Tehosteet"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Läpäisty:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Nopeus:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Aika:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polyfonia:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Renderöity:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Audio Buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Rasti:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Ladattu"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Palautetaanko kaikki asetukset tehdasasetuksiin?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Poista SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Haluatko poistaa?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Ladatut äänifontit"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Kehittäjävalikko"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Otetaanko kehittäjävalikkotila käyttöön?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Kehittäjävalikko käytössä asetuksissa"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Versio 1.0.1 • KaiOS 2.5 • Musta MIDI tuettu • MIT-lisenssi"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "MIDI-visualisoija, joka on optimoitu älypuhelimille (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Keskittyy optimoituun Canvas-renderöintiputkilinjaan, joka näyttää sujuvasti tiheät mustat MIDI-kappaleet rajoitetuilla laitteistoilla."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Tärkeimmät ominaisuudet"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Black MIDI Optimization - kevyet algoritmit käsittelevät kymmeniä tuhansia nuotteja ilman vakavia FPS-pudotuksia."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Fyysisen näppäimistön tuki - sujuva navigointi D-Padilla ja numeronäppäimillä."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Erittäin muokattavissa - täydellinen 128-näppäimen pianonäyttö, mukautettavat raidan värit, säädettävät nuotin putoamisnopeudet."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Synthesizer - sisäänrakennettu kevyt syntetisaattori minimoi RAM-muistin käytön halvemmissa laitteissa."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Avaimet"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > haku ±1 s • ^ v äänenvoimakkuus • OK toisto/tauko"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1x nopeus • 2 renderöintitila • 3 -0,1x nopeus • 4 kiertoa"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 latausta MIDI • 6 koko näyttöä • 7 näppäintä 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 selkeää MIDIä (vapaa RAM-muistia) • 9 pianon kokoa • 0 stop"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Puhelutietokortti • * jälki -0,1 • # jälki +0,1 • Lopeta puhelu"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Tekijät ja osallistuminen"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Kehittäjä: T.Hoang • KaiUI-suunnittelukomponentit"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PR:t tervetulleita: haarukka -> ominaisuus haara -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Lähdekoodi: github.com/dotrihoang2012/PFA_for_KaiOS. Julkaistu MIT-lisenssillä."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Lukittu, kunnes tiedosto latautuu"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Väripaletti"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Aloitusviive"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Kaikki äänifontit valittu"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Valinta tyhjennetty"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Lataus peruutettu"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Skannataan edelleen..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "mitään ei ole valittu"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Mukautettu paletti aktiivinen"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Virheellinen kuva"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Värinvalitsin ei ole käytettävissä"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Tiedostoa ei voida lukea"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Ei kuvatiedosto"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Kuva on liian suuri"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Tausta tallennettu"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Tausta tyhjennetty"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Ääniraja saavutettu"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Canvas-puskuritila"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Ei poistettavaa SoundFontia"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Poistettu"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Siirto peruutettu"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Järjestely tallennettu"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Käytä ylös/alas liikkuaksesi, OK sijoittaaksesi"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "SoundFonttia ei ole ladattu"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Käytetään seuraavassa julkaisussa"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Pois käytöstä seuraavalla käynnistyskerralla"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Asetukset tuotu"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Lukittu esittelyn aikana"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Asetusten palauttaminen"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Nollaus ei ole käytettävissä"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Nollaus epäonnistui"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Kiertoa ei tueta"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Määrä: KaiOS API ei ole käytettävissä"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Vol up epäonnistui"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Vol Down epäonnistui"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Äänenvoimakkuuden esitys epäonnistui"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Saha"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "&Puskurin pituus:"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Suunnittelupuskuri näytteissä (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Keskustelijat"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Samanaikaisten muistiinpanojen enimmäismäärä (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Taustan asetukset"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Näytä ikkuna"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Tekstin väri"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Taustaväri"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Prosenttiosuuden väri"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Muistin sovellusliittymä ei ole käytettävissä"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Tallennus OK"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Loki viety kohteeseen"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Toiminto epäonnistui"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Lokin vientiin ei ole käytettävissä tallennustilaa."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Renderöintitila"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Yksittäiset muistiinpanot"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Suunnittelupuskuri"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D näkymä"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Satunnaisen muistiinpanon väri"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Väripaletti"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Lataa lisää"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Ladatut SoundFontit"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "SoundFontsia ei ole ladattu"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Skannataan…"
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Skanneri ei ole käytettävissä"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Laitteesta ei löytynyt äänifonttitiedostoja (.sf2, .sf3, .dls, .sfz)"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Luetaan tiedostoa..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Lataa tausta"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Poista tausta"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Esikatselu"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Avainten määrä"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Ladataan"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Poistu kokonäyttötilasta"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Kierrä muotokuvaan"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Kierrä vaakasuoraan"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Poistetaanko kehittäjän valikkotila käytöstä?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Kehittäjävalikko poistettu käytöstä asetuksissa"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Alustetaan sovelluksen ydintä..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Ladataan asetuksia ja oletusarvoja..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Alustetaan äänimoottoria..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Latausmoduuli: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Valmistellaan pankkeja..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Syntetisointi valmis"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Alustetaan näyttöä ja suunnittelupöytää..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Valmis"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Näytteiden dekoodaus ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Näytekoodeja puretaan..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Viive ennen toistoa sekunteina (0 = pois päältä)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Sivun lataaminen epäonnistui"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "soundfontti(a)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank ei ole käytettävissä"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Tiedostoa ei voitu luoda"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Ladattu "
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Ei voida tyhjentää nyt - muunnos on edelleen käynnissä.\nPaina Clear (Tyhjennä) uudelleen, kun se on valmis."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Tyhjennettävää tallennustilaa ei ole."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Tyhjennetty"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "tiedosto(a) tulosvälimuistista."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Tyhjennä ja viimeistele virheillä."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Tyhjennys epäonnistui:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Satunnaistetut värit"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Poista"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Luetaan tietoja..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS-kasa (käytetty/yhteensä):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS-objektit:"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "muistiinpanot RAM-muistiin:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Tiedosto:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp kirjoitusloki:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "ei käytettävissä"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Tämä sovellus tarvitsee SD-kortin käyttöoikeuden.\n\nSalliaksesi sen:\nSettings -> Privacy & Security -> App Permissions -> PFA -> Memory Card Storage -> Grant.\n\nAvaa sitten sovellus uudelleen/ lataa tiedosto uudelleen.\n\nOK sulkee sovelluksen."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Analysoidaan edelleen edellistä tiedostoa - odota."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Suoratoiston MIDI-analyysi epäonnistui:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Tätä tiedostoa ei voitu lukea. Se ei välttämättä ole kelvollinen MIDI- tai (.note) -vienti."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "SoundFontin lukeminen epäonnistui \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". Tiedosto voidaan siirtää, poistaa tai vioittaa."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "tiedostovirhe, siirretty tai poistettu."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Taustakuva puuttuu - lataa se uudelleen asetuksista."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Ei Vietävää!"
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Tulos on jo käynnissä"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Tallennuslupa evätty - anna SD-kortin käyttöoikeus muuntamiseen"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Kirjoitettavaa tallennustilaa ei löytynyt."
+  },
+  {
+    "$i": "error",
+    "$v": "Virhe"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Yleistä"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Latauspalkki"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Dialogin tyyli"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafiikat"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Väripaletti"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Tuntematon"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "Kynsi-polvilumpio-oireyhtymä"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "ET"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Läpäisty"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Nopeus: 1,0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Aika:"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Moniäänisyys"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Renderöidyt muistiinpanot: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Äänipuskuri: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tikkaa"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Nollaa kaikki asetukset"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Poistu"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 avainta"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Mukautettu"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Oskillaattori"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Tumma"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Kevyt"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Sininen"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "violetti"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Satunnainen"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Satunnaiset alfa-gradientit"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Satunnaiset liukuvärit"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Satunnainen alfalla"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 -paletti"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Synthesia 9-0.8 Paletti"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "mukautettu värivalikoima"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Poista äänitehosteet käytöstä"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Asetusten vientiin ei ole käytettävissä tallennustilaa."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Asetusten vienti epäonnistui:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "kaikki tallennustilat eivät ole käytettävissä"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Asetusten vienti epäonnistui: ei kirjoitettavaa tallennustilaa."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Asetukset viety:\nmuut/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Asetusten vienti estetty: salli laitteen tallennus:sdcard-käyttöoikeus, yritä sitten uudelleen."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Tämä .note on binäärinen MIDI-vienti,\nei ole asetusten määritys.\n\nTuo vain Vientiasetusten kautta viedyt asetustiedostot."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Tätä tiedostoa ei voitu lukea.\n\nSe ei ole asetusten vienti."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Tämä .note ei ole asetusten vienti\n(puuttuu Asetukset-merkki)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Tuotuja asetuksia ei voitu ottaa käyttöön."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Tiedostoa ei voida lukea."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Vain .note-asetusten konfigurointeja voidaan tuoda.\n\nPoimittu:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Tiedostonvalitsinta ei voi käynnistää."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "ladattu"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "ei läpäisty"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "SoundFonttien lataaminen epäonnistui (tiedosto siirretty, poistettu tai vioittunut):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Ladattu "
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Toista"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Keskeytä"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Pysäytä"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Käynnistä uudelleen"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Tyhjennä"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Koko näyttö"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Kierrä"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Automaattinen toisto"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Päällä"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Pois"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Tietokortti"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Näytä"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Piilota"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Jälki"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Renderöinti"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Pianon koko"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Vaihda MIDI/Nuottitiedosto"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Lataa MIDI/Nuottitiedosto"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Kierrä pystyyn"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Kierrä vaakaan"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "Selvä."
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Takaisin"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Asetukset"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Peruuta"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Valitse"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Poista"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Siirrä"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Valmis"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Valitse kaikki"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Poista kaikki valinnat"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Lopeta"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Näytä infokortti"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Näytä nuottien nimet"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Koskettimiston laajuus"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Keski-C -merkki"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Palkin väri"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Pianon väri"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Automaattinen toisto"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Näytä OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Tausta-asetukset"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Näytä latauspalkki"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Näytä % analysoitaessa"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Näytä % yhdistettäessä"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Latausväri"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "% tekstin väri"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Liukuva animaatio"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Näytä valintaikkuna"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Tekstin väri"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Taustaväri"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Yksityiskohtainen tila"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Yksityiskohtainen analysointi"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Yksityiskohtainen alustus"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Tarkennusväri"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Tausta"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Aloitusviive"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Viive ennen toistoa sekunteina (0 = Pois)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Alku"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Loppu"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Nimetön"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Mykistetty"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "VIRHE"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Monisanainen äänifontteja luettaessa"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Jäsennetään MIDI-tietoja..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Yhdistetään tapahtumia..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "readHeader valmis:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "kappaleita"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Peruutetaan..."
+  },
+  {
+    "$i": "language",
+    "$v": "Kieli"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Vaihda kieli automaattisesti"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Kielen erotin"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Ääni"
+  }
+]

@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Opções"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Selecione"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Voltar"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Jogar"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Pausa"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Pare"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Cancelar"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Concluir"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Todos"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Nenhum"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Mover"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "Está bem"
+  },
+  {
+    "$i": "settings",
+    "$v": "Configurações"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Sintetizador"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Visuais"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Sistema"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Configurações do desenvolvedor"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Configurações de fonte de som"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Tema"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Carregar arquivo MIDI/nota"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Alterar arquivo MIDI/nota"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Carregar fonte de som"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Carregar mais"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Cancelar análise"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Limpar"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Saída de áudio"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Motor de som"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Forma de onda sintetizada"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Pular introdução lenta"
+  },
+  {
+    "$i": "speed",
+    "$v": "Velocidade"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Trilha de notas"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Reprodução automática"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Mostrar caixa de diálogo"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Mostrar OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Atraso de início"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Alcance do teclado"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Marcador Dó Médio"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Mostrar rótulos de notas"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Tamanho do piano"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Cor da barra"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Cor do piano"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Cor do foco"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Carregando Cor"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Mostrar barra de carregamento"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Mostrar% durante a análise"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Mostrar% durante a fusão"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Animação deslizante"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Cor do texto"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Cor de fundo"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Modo de renderização"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "Visualização 3D"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Mostrar cartão de informações"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Tela cheia"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Girar tela"
+  },
+  {
+    "$i": "volume",
+    "$v": "Volume"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Configurações de importação"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Exportar configurações"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Tela cheia automática"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Tela de rotação automática"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Redefinir todas as configurações"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Sobre este aplicativo"
+  },
+  {
+    "$i": "developer",
+    "$v": "Desenvolvedor"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Status detalhado"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Verboso durante a análise"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Detalhado durante inicialização"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Estatísticas de memória"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Exportar registro"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Teste de armazenamento"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Comprimento do buffer"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Vozes (polifonia)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Desativar SoundFont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Já carregado"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Carregando fonte de som"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Carregando módulo..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Carregando aplicativo..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Analisando MIDI…"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Mesclando faixas…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Agora jogando"
+  },
+  {
+    "$i": "paused",
+    "$v": "Pausado"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Parado"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Erro"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Não é possível ler o arquivo ou o arquivo está faltando."
+  },
+  {
+    "$i": "on",
+    "$v": "Ligado"
+  },
+  {
+    "$i": "off",
+    "$v": "Desligado"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Áudio da Web"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "Controle de áudio (desvio)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Automático"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "Sintetizador JS (oscilador)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "Fonte de som"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Seno"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Quadrado"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Dente de serra"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Triângulo"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Completo (128 teclas)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 chaves"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 chaves"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 chaves"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 chaves"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Inteligente (zoom automático)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Pequeno"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Médio"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Grande"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Nota Outono"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Teclado"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Ambos"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Contagem de notas"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Aprovado"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Velocidade"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Hora"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polifonia"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Notas renderizadas"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Buffer de áudio"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Marque"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Flutuante"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Fronteira"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Borda do cartão de informações"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Posição"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Plano de fundo"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Texto do cartão de informações"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Esquerda"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Certo"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Predefinições"
+  },
+  {
+    "$i": "general",
+    "$v": "Geral"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Barra de carregamento"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Diálogo"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Gráficos"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Cartão de informações"
+  },
+  {
+    "$i": "piano",
+    "$v": "piano"
+  },
+  {
+    "$i": "palette",
+    "$v": "Cor da nota"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Status detalhado"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Verboso durante a análise"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Detalhado durante inicialização"
+  },
+  {
+    "$i": "memory",
+    "$v": "Estatísticas de memória"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Exportar registro"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Teste de armazenamento"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Grande"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Sem piano"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Configurações de plano de fundo"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Tema"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Azul"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Branco"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Preto"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Estatísticas"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Estilo"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Notas"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Teclado"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Cores"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "Fonte de som"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Áudio"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Efeitos"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Aprovado:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Velocidade:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Hora:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polifonia:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Renderizado:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Áudio Buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Marque:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Carregado"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Redefinir todas as configurações para os padrões de fábrica?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Excluir SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Você deseja excluir?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Fonte(s) de som carregada(s)"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Menu do desenvolvedor"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Ativar o modo de menu do desenvolvedor?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Menu do desenvolvedor ativado nas configurações"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Versão 1.0.1 • KaiOS 2.5 • Suporte Black MIDI • Licença MIT"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "Um visualizador MIDI otimizado para smartphones (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Concentra-se em um pipeline de renderização Canvas otimizado para exibir suavemente faixas Black MIDI de alta densidade em hardware restrito."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Principais recursos"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Otimização Black MIDI - algoritmos leves lidam com dezenas de milhares de notas sem quedas severas de FPS."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Suporte para teclado físico - navegação suave via D-Pad e teclas numéricas."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Altamente personalizável - display de piano completo com 128 teclas, cores de faixa personalizáveis, velocidades de queda de notas ajustáveis."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "Sintetizador WebAudio - sintetizador leve integrado que minimiza o uso de RAM em dispositivos de baixo custo."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Chaves"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > busca ±1s • ^ v volume • OK reproduzir/pausar"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 velocidade +0,1x • 2 modos de renderização • 3 velocidade -0,1x • 4 rotação"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 carregar MIDI • 6 tela cheia • 7 teclas 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 MIDI limpo (libera RAM) • 9 tamanho de piano • 0 pontos"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Cartão de informações de chamada • * trilha -0,1 • # trilha +0,1 • Encerrar chamada encerrada"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Créditos e contribuições"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Desenvolvido por T.Hoang • Componentes de design KaiUI"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PRs bem-vindos: fork -> feature branch -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Código fonte: github.com/dotrihoang2012/PFA_for_KaiOS. Lançado sob a licença MIT."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Bloqueado até que o ficheiro seja carregado"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "CARTELA DE CORES"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Início Atrasado"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Todas as fontes de som seleccionadas"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Seleção apagada"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Carregamento cancelado"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Ainda a analisar..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Nada selecionado"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Paleta personalizada ativa"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Imagem Invalida!"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Seletor de cores indisponível"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Não é possível ler arquivo"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Não é uma imagem"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Esta imagem é muito grande"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Fundo guardado"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Antecedentes limpos"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Limite de vozes atingido"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Modo buffer do Canvas"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Nenhum SoundFont para excluir"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Eliminado"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Movimento cancelado"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Disposição guardada"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Use para cima/para baixo para mover, OK para colocar"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Nenhum SoundFont carregado"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Aplicado no próximo lançamento"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Desativado no próximo lançamento"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Configurações Importadas"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Bloqueado durante a demonstração"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Configurações redefinidas"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Redefinição indisponível"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Falha ao redefinir."
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Rotação não suportada"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Volume: API KaiOS indisponível"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Falha ao aumentar volume"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Falha na redução de volume"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Falha na apresentação do volume"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Serra"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Extensão do buffer"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Tampão de planeamento em amostras (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Vozes"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Máximo de notas simultâneas (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Definições de fundo"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Mostrar diálogo"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Cor do texto"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Cor do fundo"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Cor percentual"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "API de memória não disponível"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Armazenamento - OK"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Registo exportado para"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "A ação falhou"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Nenhum armazenamento disponível para exportar o log."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Modo de renderização:"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Notas Individuais"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Tampão de lona"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "Exibição 3D"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Cor da nota aleatória"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "CARTELA DE CORES"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Carregue mais"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "SoundFonts Carregados"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Nenhum SoundFonts carregado"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Escaneando..."
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Scanner indisponível"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Nenhum arquivo de fonte sonora (.sf2, .sf3, .dls, .sfz) encontrado no dispositivo"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Lendo arquivo..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Carregar Fundo"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Fundo transparente"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Pré-visualização"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Contagem de chaves"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Carregamento:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Sair do Ecrã CompletoEncodings menu"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Rodar para retrato"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Girar para Paisagem"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Desativar o modo de menu do programador?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Menu do programador desativado nas definições"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "A inicializar o App Core..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "A carregar definições e preferências..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "A inicializar o motor de áudio..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Módulo de carregamento: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "A preparar bancos..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth pronto"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "A inicializar o Ecrã & Canvas..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Preparar"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Amostras de decodificação ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "A decodificar amostras..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Atraso antes da reprodução em segundos (0 = Desligado)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Não foi possível carregar"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "soundfont(s)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank indisponível"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Falha ao ler"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Carregado"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Não é possível limpar agora - uma conversão ainda está em execução.\nPressione Limpar novamente assim que terminar."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Nenhum armazenamento disponível para limpar."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Limpo"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "arquivo(s) do cache de conversão."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Limpar finalizado com erros."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Limpar todos que falharam"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Cores Randomizadas"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Excluir"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Lendo dados..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS heap (usado/total):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "Objetos JS"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "notas na RAM:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Nome do arquivo:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp write-log:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "indisponível"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Esta aplicação precisa de acesso ao cartão SD.\n\nPara permitir:\nConfigurações -> Privacidade e Segurança -> Permissões do Aplicativo -> PFA -> Armazenamento do Cartão de Memória -> Conceder.\n\nEm seguida, reabra o aplicativo / recarregue o arquivo.\n\nOK fecha a aplicação."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Ainda analisando o arquivo anterior - aguarde."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Falha na análise de MIDI de streaming:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Não foi possível ler este ficheiro. Pode não ser uma exportação MIDI ou (.note) válida."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Falha ao ler SoundFont \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". O arquivo pode ser movido, excluído ou corrompido."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "erro de arquivo, movido ou excluído."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "A imagem de fundo está em falta. Recarregue-a nas Definições."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Nada para exportar."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Uma conversão já está em execução"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Permissão de armazenamento negada - conceder acesso ao cartão SD para converter"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Nenhum armazenamento gravável encontrado."
+  },
+  {
+    "$i": "error",
+    "$v": "Erro"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Disposições Gerais"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Barra de progresso"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Estilo da caixa de diálogo"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Gráficos"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Paleta de cores"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Desconhecido(a)"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Aprovado:"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Velocidade: 1,0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Hora:"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polifonia"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Notas Prestadas: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Buffer de áudio: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Assinalar"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Redefinir todas as configurações"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Sair"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 Chaves"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Personalizado"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "\n\t\t\t\tOscilador\t\t\t"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Escuro"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Claro"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Azul"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Roxo"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Aleatório"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Gradientes Alfa Aleatórios"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Gradientes Aleatórios"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Aleatório com Alfa"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Paleta Synthesia 10"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Paleta Synthesia 9-0.8"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "paleta personalizada"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Desativar efeitos sonoros"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Nenhum armazenamento disponível para exportar configurações."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Falha ao exportar configurações:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "todos os volumes de armazenamento indisponíveis"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Falha na exportação de configurações: nenhum volume de armazenamento gravável."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Definições exportadas:\noutros/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Exportação de configurações bloqueada: permitir armazenamento do dispositivo: permissão sdcard e, em seguida, tente novamente."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Este .note é uma exportação MIDI binária,\nnão uma configuração de Definições.\n\nImportar apenas ficheiros de Definições exportados através de Definições de Exportação."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Não foi possível ler este ficheiro.\n\nNão é uma exportação de Definições."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Esta .note não é uma exportação de Definições\n(faltando o marcador Settings)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Não foi possível aplicar as configurações importadas."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Não é possível ler arquivo"
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Apenas as configurações .note Settings podem ser importadas.\n\nEscolhido:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Não é possível iniciar o seletor de ficheiros."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "carregado"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "Falha"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Falha ao carregar SoundFont(s) (arquivo movido, excluído ou corrompido):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Carregado"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Reproduzir"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Pausar"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Parar"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Reiniciar"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Limpar"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Ecrã inteiro"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Rodar"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Reprodução automática"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Ligado"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Desligado"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Cartão de informações"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Mostrar"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Ocultar"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Rasto"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Renderização"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Tamanho do Piano"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Alterar Ficheiro MIDI/Nota"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Carregar Ficheiro MIDI/Nota"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Rodar para Retrato"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Rodar para Paisagem"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "Está bem"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Voltar"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Definições"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Cancelar"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Selecionar"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Eliminar"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Mover"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Concluído"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Selecionar Tudo"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Desmarcar Tudo"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Terminar"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Mostrar Cartão de Informação"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Mostrar Etiquetas das Notas"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Alcance do Teclado"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Marcador do Dó Central"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Cor da Barra"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Cor do Piano"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Reprodução Automática"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Mostrar OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Definições de Fundo"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Mostrar Barra de Carregamento"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Mostrar % ao analisar"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Mostrar % ao fundir"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Cor de Carregamento"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "Cor do Texto de %"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Animação Deslizante"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Mostrar Diálogo"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Cor do Texto"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Cor de Fundo"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Estado Detalhado"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Detalhado ao analisar"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Detalhado ao iniciar"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Cor de Foco"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Fundo"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Atraso Inicial"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Atraso antes da reprodução em segundos (0 = Desligado)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Início"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Fim"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Sem título"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Mudo"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "ERRO"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Verbose ao ler fontes sonoras"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Analisando dados MIDI..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Mesclando eventos..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "readHeader concluído:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "faixas"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Cancelando..."
+  },
+  {
+    "$i": "language",
+    "$v": "Linguagem"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Alterar idioma automaticamente"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Separador de idioma"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Áudio"
+  }
+]

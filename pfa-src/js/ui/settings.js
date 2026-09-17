@@ -1,5 +1,5 @@
 /**
- * settings.js — Settings sub-page renderer + persistence.
+ * settings.js: Settings sub-page renderer + persistence.
  *
  * Two groups of settings, both surfaced as overlays reachable from
  * the Options menu:
@@ -12,25 +12,91 @@
  *                    Export log)
  *
  * Level-2 sub-pages (drilled from Visual rows):
- *   - Keyboard Range → two sliders (Start / End note), live-applied.
- *   - Color pickers  → preset swatch grid + R/G/B/A sliders, live-applied.
+ *   - Keyboard Range â†’ two sliders (Start / End note), live-applied.
+ *   - Color pickers  â†’ preset swatch grid + R/G/B/A sliders, live-applied.
  *
  * Persistence: localStorage.midiPlayer.settings = { midi:{...}, visual:{...} }
  * (per plan: avoids polluting Store's runtime state shape with persist-specific
  * fields; Store holds only the live values.)
  *
- * Navigation model — same as Options menu (see controls.js):
- *   ArrowUp/Down → move focus
- *   Enter / SoftLeft / ArrowRight → cycle value forward
- *   ArrowLeft → cycle value backward
- *   Enter / ArrowRight on 'sub'/'color' rows → drill into the sub-page
- *   Backspace / SoftRight → exit (sub-page back to group, group to menu)
+ * Navigation model â€” same as Options menu (see controls.js):
+ *   ArrowUp/Down â†’ move focus
+ *   Enter / SoftLeft / ArrowRight â†’ cycle value forward
+ *   ArrowLeft â†’ cycle value backward
+ *   Enter / ArrowRight on 'sub'/'color' rows â†’ drill into the sub-page
+ *   Backspace / SoftRight â†’ exit (sub-page back to group, group to menu)
  *
  * Live-apply: every change pushes to Store via setState and triggers the
  * CSS-variable / sprite-rebuild subsystems in main.js + keyboard.js.
  */
 var Settings = (function () {
   'use strict';
+
+  var keyMap = {
+    verboseSfLoad: 'verbose_while_reading_soundfonts',
+    verboseAnalyze: 'verbose_while_analyzing',
+    verboseInit: 'verbose_while_init',
+    osdLog: 'verbose_status',
+    exportLog: 'export_log',
+    memory: 'memory_stats',
+      // Visual
+      kbRange: 'keyboard_range',
+      barColor: 'bar_color',
+      pianoColorHex: 'piano_color',
+      bgColor: 'background_color',
+      focusColor: 'focus_color',
+      loadBarColor: 'loading_color',
+      noteLabels: 'show_note_labels',
+      pianoSize: 'piano_size',
+      middleMarker: 'middle_c_marker',
+      autoPlay: 'auto_play',
+      showOsd: 'show_osd',
+      pctBarVisible: 'show_loading_bar',
+      pctAnalyze: 'show_pct_analyzing',
+      pctMerge: 'show_pct_merging',
+      loadAnimated: 'sliding_animation',
+      infoCard: 'show_info_card',
+      bgSettings: 'background_settings',
+      bgImage: 'load_background',
+      bgImageClear: 'clear_background',
+      showDialog: 'show_dialog_screen',
+      dialogTextColor: 'dialog_text_color',
+      dialogBgColor: 'dialog_bg_color',
+      pctColor: 'pct_text_color',
+      osdLog: 'verbose_status',
+      verboseAnalyze: 'verbose_while_analyzing',
+      verboseInit: 'verbose_while_init',
+      // Hub
+      system: 'system_settings',
+      visual: 'visual_settings',
+      synth: 'synth_settings',
+      // Synth
+      audio: 'audio_output',
+      engine: 'sound_engine',
+      sfsettings: 'soundfont_settings',
+      waveform: 'synth_waveform',
+      skipSlowOpen: 'skip_slow_intro',
+      // System & Dev
+      memory: 'memory_stats',
+      exportLog: 'export_log',
+      storageTest: 'storage_test',
+      loadMidi: 'load_midi_file',
+      cancelAnalysis: 'cancel_analysis',
+      clearMidi: 'clear_midi',
+      themeSettings: 'theme_settings',
+      languageSettings: 'language',
+      autoLang: 'auto_change_language',
+      fullscreen: 'full_screen',
+      rotate: 'rotate_screen',
+      volume: 'volume',
+      importSettings: 'import_settings',
+      exportSettings: 'export_settings',
+      autoFullscreen: 'auto_fullscreen',
+      autoRotate: 'auto_rotate',
+      resetAll: 'reset_all_settings',
+      about: 'about_this_app',
+      developer: 'developer'
+    };
 
   console.log('[Settings] module loaded');
 
@@ -42,22 +108,25 @@ var Settings = (function () {
       waveform:     'square',  // 'sine' | 'square' | 'saw' | 'triangle'
       audio:        true,      // master audio on/off toggle
       skipSlowOpen: true,      // skip an absurdly slow opening tempo (< 30 BPM)
+      sfBuffer:     1024,      // Soundfont planning buffer length (samples) â€” text input
+      sfVoices:     32,        // max simultaneous Soundfont voices â€” text input
+      sfNoFx:       false,     // Soundfont: bypass post FX chain (persisted; engine reads)
     },
     visual: {
       renderMode:   'auto',    // 'auto' | 'individual' | 'buffer'
       speed:        1.0,       // 0.1 .. 8.0 (slider)
       trail:        1.0,       // Note Trail, 0.1 .. 8.0 (moved from MIDI group)
       autoPlay:     false,     // start playback automatically after load
-      showDialog:   true,      // show "Analyzing MIDI…" / "Now playing" pills
-      showOsd:      true,      // show the info-bar action OSD (+1 sec / 1.1x…)
-      pctAnalyze:   false,     // show the % readout during analysis (parse) — Loading Bar page
-      pctMerge:     false,     // show the % readout during the merge stage — Loading Bar page
-      pctBarVisible: true,     // show/hide the loading bar itself — Loading Bar page
-      loadAnimated: true,      // sliding sweep (true) vs. gradual 0→100% fill (false) — Loading Bar page
-      loadBarColor: '#0088FF', // RGBA color of the loading bar (default blue) — Loading Bar page
-      pctColor:     '#FFFFFF', // RGBA color of the % readout text (default white) — Loading Bar page
-      dialogTextColor: '#FFFFFF', // center pill text RGBA (default white) — Dialog page
-      dialogBgColor:   '#000000', // center pill background RGBA (default black) — Dialog page
+      showDialog:   true,      // show "Analyzing MIDIâ€¦" / "Now playing" pills
+      showOsd:      true,      // show the info-bar action OSD (+1 sec / 1.1xâ€¦)
+      pctAnalyze:   false,     // show the % readout during analysis (parse) â€” Loading Bar page
+      pctMerge:     false,     // show the % readout during the merge stage â€” Loading Bar page
+      pctBarVisible: true,     // show/hide the loading bar itself â€” Loading Bar page
+      loadAnimated: true,      // sliding sweep (true) vs. gradual 0â†’100% fill (false) â€” Loading Bar page
+      loadBarColor: '#0088FF', // RGBA color of the loading bar (default blue) â€” Loading Bar page
+      pctColor:     '#FFFFFF', // RGBA color of the % readout text (default white) â€” Loading Bar page
+      dialogTextColor: '#FFFFFF', // center pill text RGBA (default white) â€” Dialog page
+      dialogBgColor:   '#000000', // center pill background RGBA (default black) â€” Dialog page
       startDelay:   0,         // Start Delay seconds (0 = Off, slider 0..10)
       theme:        'dark',    // 'dark' | 'light' | 'blue' | 'purple'
       noteLabels:   false,
@@ -96,12 +165,18 @@ var Settings = (function () {
       palette:      'random',  // active note color palette id
     },
     dev: {
-      osdLog:         false,   // On-screen verbose status overlay
+        osdLog:         false,   // On-screen verbose status overlay
+        verboseSfLoad:  false,
       verboseAnalyze: false,   // show [LOG] detail in analysis progress
+      verboseInit:    false,   // show text log above % in launch/boot screen (default false/Off)
+      verboseLoadLog: false,   // show text log in launch/soundfont loading screen (default false/Off)
     },
     sys: {
       autoFullscreen: false,   // enter fullscreen automatically on launch
       autoRotate:     false,   // rotate to landscape automatically on launch
+      focusColor:     '#0066cc', // focus highlight RGBA color
+      autoLang:       true,    // follow the system language (true) or a fixed one
+      language:       '',      // chosen locale code (used only when autoLang is false)
     }
   };
 
@@ -109,26 +184,29 @@ var Settings = (function () {
   var SWATCHES = [
     '#FFFFFF','#CCCCCC','#999999','#666666','#333333',
     '#000000','#FF4477','#FF0000','#FF8800','#FFDD00',
-    '#88DD00','#00CC44','#00DDAA','#00CCFF','#0088FF',
-    '#3355FF','#6644EE','#9933FF','#DD33AA','#FF66AA',
-    '#AA5500','#886600','#116655','#007799','#223377'
+    '#FFFF00','#AAEE00','#00FF00','#00FFCC','#00FFFF',
+    '#0088FF','#0000FF','#9900FF','#FF00FF','#FF88CC'
   ];
 
-  // ── Schema for each group (label, key, type, choices/values, fmt) ──
-  // Row types: 'enum' | 'number' | 'bool' | 'sub' (drill-in page) |
-  //            'color' (drill-in to swatch grid + R/G/B/A sliders)
+  /**
+   * Static settings hierarchy: schema of every option row across all 4
+   * top-level groups (Midi, Visual, Dev, System).
+   */
   var SCHEMA = {
     midi: [
-      { key: 'audio',     label: 'Audio',        type: 'bool' },
-      { key: 'engine',    label: 'Sound Engine', type: 'enum',
-        choices: [['synth','Synth'],['soundbank','Soundbank']] },
-      { key: 'soundfont', label: 'Load Soundfont', type: 'sub', subkind: 'soundfonts',
-        labelFn: sfLoadLabel },
-      { key: 'waveform',  label: 'Waveform',      type: 'enum',
+      { key: 'audio',       l10nKey: 'audio_output',     label: 'Audio Output', type: 'bool' },
+      { key: 'engine',      l10nKey: 'sound_engine',     label: 'Sound Engine', type: 'enum',
+        choices: [['synth','Oscillator'],['soundbank','SoundFont']] },
+      { key: 'sfsettings',  l10nKey: 'soundfont_settings', label: 'Soundfont Settings', type: 'sub', subkind: 'sfsettings',
+        // Soundfont engine options — only meaningful while the engine is
+        // Soundbank. Hidden on the Synth option list when engine === 'synth'
+        // (the group re-renders from applyChange on the engine row).
+        hidden: function () { return _values.midi.engine !== 'soundbank'; } },
+      { key: 'waveform',    l10nKey: 'synth_waveform',   label: 'Synth Waveform', type: 'enum',
         choices: [['sine','Sine'],['square','Square'],['saw','Saw'],['triangle','Triangle']] },
-      { key: 'skipSlowOpen', label: 'Skip Slow Intro', type: 'bool' },
+      { key: 'skipSlowOpen', l10nKey: 'skip_slow_intro', label: 'Skip Slow Intro', type: 'bool' },
     ],
-visual: [
+    visual: [
       { key: 'general',     label: 'General',         type: 'sub', subkind: 'general' },
       { key: 'loadingBar',  label: 'Loading Bar',      type: 'sub', subkind: 'loadingBar' },
       { key: 'dialog',      label: 'Dialog',           type: 'sub', subkind: 'dialog' },
@@ -138,24 +216,36 @@ visual: [
       { key: 'palette',     label: 'Note Color',       type: 'sub', subkind: 'palettes' },
     ],
     dev: [
-      { key: 'osdLog',         label: 'Verbose Status', type: 'bool' },
-      { key: 'verboseAnalyze', label: 'Verbose while analyzing',  type: 'bool' },
-      { key: 'memory',         label: 'Memory Stats',             type: 'action' },
-      { key: 'exportLog',      label: 'Export Log',               type: 'action' },
-      { key: 'storageTest',    label: 'Storage Test',             type: 'action' },
+      { key: 'osdLog',         l10nKey: 'verbose_status',           label: 'Verbose Status', type: 'bool' },
+      { key: 'verboseAnalyze', l10nKey: 'verbose_while_analyzing',  label: 'Verbose while analyzing',  type: 'bool' },
+      { key: 'verboseSfLoad', l10nKey: 'verbose_while_reading_soundfonts', label: 'Verbose while reading soundfonts', type: 'bool' },
+        { key: 'verboseInit',    l10nKey: 'verbose_while_init',       label: 'Verbose while init',       type: 'bool' },
+      { key: 'memory',         l10nKey: 'memory_stats',             label: 'Memory Stats',             type: 'action' },
+      { key: 'exportLog',      l10nKey: 'export_log',               label: 'Export Log',               type: 'action' },
+      { key: 'storageTest',    l10nKey: 'storage_test',             label: 'Storage Test',             type: 'action' },
     ],
     sys: [
-      { key: 'loadMidi',       label: 'Load MIDI/Note File', type: 'action', labelFn: sysLoadLabel },
-      { key: 'cancelAnalysis', label: 'Cancel Analysis',     type: 'action', hidden: function () { return !_analysisBusy(); } },
-      { key: 'clearMidi',      label: 'Clear',               type: 'action' },
-      { key: 'fullscreen',     label: 'Full Screen',         type: 'action' },
-      { key: 'rotate',         label: 'Rotate Screen',       type: 'action' },
-      { key: 'volume',         label: 'Volume',              type: 'action' },
-      { key: 'autoFullscreen', label: 'Auto Full Screen',    type: 'bool' },
-      { key: 'autoRotate',     label: 'Auto Rotate Screen',  type: 'bool' },
-      { key: 'resetAll',       label: 'Reset All Settings',  type: 'action' },
-      { key: 'about',          label: 'About This App',      type: 'action' },
-      { key: 'developer',      label: 'Developer',           type: 'sub', subkind: 'developer',
+      { key: 'loadMidi',       l10nKey: 'load_midi_file',    label: 'Load MIDI/Note File', type: 'action', labelFn: sysLoadLabel },
+      { key: 'cancelAnalysis', l10nKey: 'cancel_analysis',   label: 'Cancel Analysis',     type: 'action', hidden: function () { return !_analysisBusy(); } },
+      { key: 'clearMidi',      l10nKey: 'clear_midi',        label: 'Clear',               type: 'action' },
+      { key: 'themeSettings',  l10nKey: 'theme_settings',    label: 'Theme',               type: 'sub', subkind: 'themeSettings' },
+      { key: 'fullscreen',     l10nKey: 'full_screen',       label: 'Full Screen',         type: 'action' },
+      { key: 'rotate',         l10nKey: 'rotate_screen',     label: 'Rotate Screen',       type: 'action' },
+      { key: 'volume',         l10nKey: 'volume',            label: 'Volume',              type: 'action' },
+      // Language picker — Auto change language On/Off plus a radio list of
+      // all bundled locales. Auto follows the system locale; Off pins the
+      // chosen language until Auto is switched back On.
+      { key: 'languageSettings', l10nKey: 'language', label: 'Language', type: 'sub', subkind: 'languageSettings' },
+      // Backup / restore the whole settings profile as a JSON .note file
+      // in others/. Import validates the file (extension + content marker);
+      // a picked .note that is really a MIDI export is refused with a dialog.
+      { key: 'importSettings', l10nKey: 'import_settings',   label: 'Import Settings', type: 'action' },
+      { key: 'exportSettings', l10nKey: 'export_settings',   label: 'Export Settings', type: 'action' },
+      { key: 'autoFullscreen', l10nKey: 'auto_fullscreen',   label: 'Auto Full Screen',    type: 'bool' },
+      { key: 'autoRotate',     l10nKey: 'auto_rotate',       label: 'Auto Rotate Screen',  type: 'bool' },
+      { key: 'resetAll',       l10nKey: 'reset_all_settings', label: 'Reset All Settings',  type: 'action' },
+      { key: 'about',          l10nKey: 'about_this_app',    label: 'About This App',      type: 'action' },
+      { key: 'developer',      l10nKey: 'developer',         label: 'Developer',           type: 'sub', subkind: 'developer',
         hidden: function () {
           var en = false;
           try { en = !!(window.__devEnabled || (window.devEnabled && window.devEnabled())); } catch (e) {}
@@ -163,13 +253,13 @@ visual: [
         } },
     ],
     hub: [
-      { key: 'system',    label: 'System',    type: 'sub', subkind: 'system' },
-      { key: 'visual',    label: 'Visual',    type: 'sub', subkind: 'visual' },
-      { key: 'synth',     label: 'Synth',     type: 'sub', subkind: 'synth' },
+      { key: 'system',    l10nKey: 'system_settings',  label: 'System',    type: 'sub', subkind: 'system' },
+      { key: 'visual',    l10nKey: 'visual_settings',  label: 'Visual',    type: 'sub', subkind: 'visual' },
+      { key: 'synth',     l10nKey: 'synth_settings',   label: 'Synth',     type: 'sub', subkind: 'synth' },
     ]
   };
 
-  // Hub → real settings group mapping (Options → Settings sub-menu).
+  // Hub â†’ real settings group mapping (Options â†’ Settings sub-menu).
   // subkind of a hub row selects which group its overlay shows. The
   // Developer row inside System opens as a SUBSETTINGS page (list-style),
   // so it intentionally has NO entry here.
@@ -177,36 +267,31 @@ visual: [
 
   /** Overlay header per settings group. */
   function groupHeader(g) {
-    return g === 'hub'  ? 'Settings'
-         : g === 'midi' ? 'Synth Settings'
-         : g === 'dev'  ? 'Developer Settings'
-         : g === 'sys'  ? 'System Settings'
-         : 'Visual Settings';
+    return g === 'hub'  ? L10n.t('settings', 'Settings')
+         : g === 'midi' ? L10n.t('synth_settings', 'Synth Settings')
+         : g === 'dev'  ? L10n.t('developer_settings', 'Developer Settings')
+         : g === 'sys'  ? L10n.t('system_settings', 'System Settings')
+         : L10n.t('visual_settings', 'Visual Settings');
   }
 
-  // Dynamic label for the System → Load/Change MIDI/Note File action,
-  // mirroring the old Options menu wording: "Load" until a real file
-  // exists, "Change" afterwards (the bundled demo never counts).
   function sysLoadLabel() {
     try {
       var st = Store.getState();
       var hasRealFile = !!st.fileName &&
         (typeof window.isDemoActive !== 'function' || !window.isDemoActive());
-      return hasRealFile ? 'Change MIDI/Note File' : 'Load MIDI/Note File';
-    } catch (e) { return 'Load MIDI/Note File'; }
+      return hasRealFile ? L10n.t('change_midi_file', 'Change MIDI/Note File') : L10n.t('load_midi_file', 'Load MIDI/Note File');
+    } catch (e) { return L10n.t('load_midi_file', 'Load MIDI/Note File'); }
   }
 
-  // Dynamic label for the Synth → Load Soundfont action: once at least one
-  // bank is loaded it reads "Load more" (the loaded list renders below it).
   function sfLoadLabel() {
     try {
       if (typeof Soundbank !== 'undefined' && Soundbank.getBanks &&
-          Soundbank.getBanks().length) return 'Load more';
+          Soundbank.getBanks().length) return L10n.t('load_more_soundfont', 'Load more');
     } catch (e) {}
-    return 'Load Soundfont';
+    return L10n.t('load_soundfont', 'Load Soundfont');
   }
 
-  // ── Local state ──
+  // â”€â”€ Local state â”€â”€
   var _values = clone(DEFAULTS);
   var _openGroup = null;     // 'hub' | 'midi' | 'visual' | 'dev' | null
   var _groupReturn = null;   // group to return to on Back (non-hub drill-in)
@@ -214,7 +299,7 @@ visual: [
   var _focusIdx = 0;
   var _onCloseCb = null;     // notification when overlay closes
 
-  // Pipeline busy (MIDI / note analysis running) — drives the System
+  // Pipeline busy (MIDI / note analysis running) â€” drives the System
   // "Cancel Analysis" row: only visible WHILE an analysis is in progress.
   function _analysisBusy() {
     try {
@@ -237,17 +322,18 @@ visual: [
   //   items    : flat focus model [{type:'def'|'swatch'|'slider', part?, idx?}]
   //   focusIdx : index into items
   var _sub = null;
-  // SoundFont move mode in the Synth group list (RSK enters, ▲▼ reorders,
+  // SoundFont move mode in the Synth group list (RSK enters, â–²â–¼ reorders,
   // OK/RSK leaves). Only meaningful while an sf-row holds focus.
   var _sfMove = false;
+  var _sfDeleteTargets = null;
 
   /** Number of swatch cells per visual row (flex-wrap column stride). */
   var SWATCH_COLS = 5;
 
-  // ── Built-in palette definitions ──
+  // â”€â”€ Built-in palette definitions â”€â”€
   // Each palette is an object: { id, label, file, colors }.
-  // `file` is the image filename under css/palettes/ (PNG).
-  // `colors` is the number of distinct color strips in the PNG —
+  // `file` is the image filename under style/palettes/ (PNG).
+  // `colors` is the number of distinct color strips in the PNG â€”
   // sampling this many points (at strip centers) avoids hitting
   // transitions between adjacent colors. The sampled array is then
   // cycled to fill 16 channels.
@@ -260,20 +346,20 @@ visual: [
     { id: 'synth9',             label: 'Synthesia 9-0.8 Palette', file: 'Synthesia 9-0.8 Palette.png', colors: 8 },
   ];
 
-  // ── Loaded palette color caches ──
-  // Keyed by palette id → array of hex strings extracted from the PNG.
+  // â”€â”€ Loaded palette color caches â”€â”€
+  // Keyed by palette id â†’ array of hex strings extracted from the PNG.
   // Populated on demand (first open of the palette sub-page).
   var _paletteColors = {};
 
   // Path prefix for palette images (relative to index.html).
-  var PALETTE_IMG_DIR = 'css/palettes/';
+  var PALETTE_IMG_DIR = 'style/palettes/';
 
   /** Number of color cells to sample from each palette image. */
   var PALETTE_SAMPLE_N = 16;
 
-  // ──────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // Persistence
-  // ──────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   function load() {
     console.log('[Settings] load() invoked');
@@ -281,7 +367,7 @@ visual: [
     try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { raw = null; }
     // Ensure the one-shot migration marker is always present so save()
     // persists it and the migration below never re-runs to clobber a value
-    // the user later sets — even on a brand-new install (raw === null).
+    // the user later sets â€” even on a brand-new install (raw === null).
     _values.__upgraded = true;
     if (raw) {
       try {
@@ -304,13 +390,13 @@ visual: [
               (!parsed.visual || parsed.visual.trail == null)) {
             _values.visual.trail = parsed.midi.trail;
           }
-          // Migration: "Show FPS" became part of Info Card Options —
+          // Migration: "Show FPS" became part of Info Card Options â€”
           // carry the old toggle into infoFps when nothing newer exists.
           if (parsed.visual && parsed.visual.showFps != null &&
               parsed.visual.infoFps == null) {
             _values.visual.infoFps = parsed.visual.showFps;
           }
-          // Migration: NPS / Note Count split — carry the old combined
+          // Migration: NPS / Note Count split â€” carry the old combined
           // infoNoteCount into the new infoNps / infoPassed switches.
           if (parsed.visual && parsed.visual.infoNoteCount != null) {
             if (parsed.visual.infoNps == null)
@@ -319,7 +405,7 @@ visual: [
               _values.visual.infoPassed = parsed.visual.infoNoteCount;
           }
           // Migration: Start Delay used to allow -1 (= Off); the slider
-          // range is 0..10 with 0 meaning Off — normalize old values.
+          // range is 0..10 with 0 meaning Off â€” normalize old values.
           if (_values.visual.startDelay == null ||
               _values.visual.startDelay < 0) {
             _values.visual.startDelay = 0;
@@ -335,6 +421,9 @@ visual: [
       waveform:      _values.midi.waveform,
       engine:        _values.midi.engine,
       audio:         _values.midi.audio,
+      sfBuffer:      _values.midi.sfBuffer,
+      sfVoices:      _values.midi.sfVoices,
+      sfNoFx:        _values.midi.sfNoFx,
       renderMode:    _values.visual.renderMode,
       speed:         _values.visual.speed,
       trail:         _values.visual.trail,
@@ -385,10 +474,20 @@ visual: [
       palette:       _values.visual.palette,
       osdLog:        _values.dev.osdLog,
       verboseAnalyze: _values.dev.verboseAnalyze,
+        verboseSfLoad:  _values.dev.verboseSfLoad,
+      verboseInit:    _values.dev.verboseInit || _values.dev.verboseLoadLog || false,
+      verboseLoadLog: _values.dev.verboseInit || _values.dev.verboseLoadLog || false,
       autoFullscreen: _values.sys.autoFullscreen,
       autoRotate:     _values.sys.autoRotate,
+      autoLang:       _values.sys.autoLang !== false,
+      language:       _values.sys.language || '',
+      focusColor:     _values.sys.focusColor || '#0066cc',
     });
     applyTheme(_values.visual.theme);
+    applyFocusColor(_values.sys.focusColor || '#0066cc');
+    // Re-assert the language preference (Auto = follow system; Off = pin the
+    // saved code). Keeps the chosen language across resets and imports too.
+    applyLanguagePreference();
     applyInfoCard();
     // Apply the persisted palette colors to the live channel palette
     // (16 colors from the chosen PNG, or randomized for 'random').
@@ -421,6 +520,9 @@ visual: [
     if (typeof Keyboard !== 'undefined' && Keyboard.rebuild) {
       try { Keyboard.rebuild(); } catch (e) {}
     }
+    if (typeof window !== 'undefined' && window.Soundbank && window.Soundbank.unload) {
+      try { window.Soundbank.unload(); } catch (e) {}
+    }
     var overlay = document.getElementById('settings-overlay');
     if (overlay && _openGroup && !overlay.classList.contains('hidden')) {
       rebuildRows(overlay, _openGroup);
@@ -428,9 +530,9 @@ visual: [
     return _values;
   }
 
-  // ──────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // Overlay open/close
-  // ──────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   /**
    * Open the settings overlay for one group.
@@ -452,7 +554,7 @@ visual: [
     _focusIdx = 0;
     _hubReturn = false;
     _hubFocusIdx = 0;
-    _groupReturn = null;   // fresh open — no pending group-nav return
+    _groupReturn = null;   // fresh open â€” no pending group-nav return
     _onCloseCb = onClose || null;
 
     var overlay = document.getElementById('settings-overlay');
@@ -468,7 +570,7 @@ visual: [
     // if storage was edited externally between sessions.
     rebuildRows(overlay, group);
 
-    // Instant show — visibility toggle only, no slide animation.
+    // Instant show â€” visibility toggle only, no slide animation.
     overlay.classList.remove('hidden');
 
     var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider');
@@ -508,8 +610,8 @@ visual: [
 
   function isOpen() { return !!_openGroup; }
 
-  // ── Settings-hub navigation ──
-  // Options → Settings is a hub listing Synth/Visual/Developer. Selecting
+  // â”€â”€ Settings-hub navigation â”€â”€
+  // Options â†’ Settings is a hub listing Synth/Visual/Developer. Selecting
   // one swaps the overlay to that group's rows IN PLACE (same overlay,
   // rebuilt). Back then returns to the hub (same overlay, rebuilt) before
   // closing all the way back to the Options menu.
@@ -517,10 +619,10 @@ visual: [
   function switchToGroup(group) {
     _hubReturn = true;
     // The hub index is only meaningful when leaving the hub itself; a
-    // nested System → Developer switch must NOT clobber it (Back from
+    // nested System â†’ Developer switch must NOT clobber it (Back from
     // Developer goes System, Back from System goes to this saved hub row).
     if (_openGroup === 'hub') _hubFocusIdx = _focusIdx;
-    // When leaving a non-hub group for another group (e.g. System →
+    // When leaving a non-hub group for another group (e.g. System â†’
     // Developer), remember where to Back-return. Coming from the hub,
     // Back already goes to the hub, so nothing is recorded.
     if (_openGroup && _openGroup !== 'hub') {
@@ -541,7 +643,7 @@ visual: [
   }
 
   // Back out of a drilled group: return to the recorded non-hub group
-  // (Developer opened inside System → System) or to the hub.
+  // (Developer opened inside System â†’ System) or to the hub.
   function switchBack() {
     var target = _groupReturn || 'hub';
     var idx = _groupReturn ? _groupReturnIdx : ((_hubFocusIdx >= 0) ? _hubFocusIdx : 0);
@@ -575,27 +677,29 @@ visual: [
   }
   function openGroup() { return _openGroup; }
 
-  // ──────────────────────────────────────────────────────────────────
-  // Level-2 sub-pages — Keyboard Range (2 sliders) and Color pickers
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // Level-2 sub-pages â€” Keyboard Range (2 sliders) and Color pickers
   // (swatch grid + R/G/B/A sliders). Both apply live to the Store and
   // persist through the same save() path as regular rows.
-  // ──────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   /** Default value of a color key; Background defaults to theme (null). */
   function colorDefault(key) {
     if (key === 'barColor')      return DEFAULTS.visual.barColor;
     if (key === 'pianoColorHex') return DEFAULTS.visual.pianoColorHex;
     if (key === 'loadBarColor')  return DEFAULTS.visual.loadBarColor;
+    if (key === 'focusColor')    return DEFAULTS.sys.focusColor;
     if (key === 'pctColor')      return DEFAULTS.visual.pctColor;
     if (key === 'dialogTextColor') return DEFAULTS.visual.dialogTextColor;
     if (key === 'dialogBgColor')   return DEFAULTS.visual.dialogBgColor;
     return null;
   }
 
-  /** Resolve the effective CSS color for a key (null → --theme-bg). */
+  /** Resolve the effective CSS color for a key (null â†’ --theme-bg). */
   function colorCurrentValue(key) {
-    var v = _values.visual[key];
+    var v = (key === 'focusColor') ? (_values.sys.focusColor || _values.visual.focusColor) : _values.visual[key];
     if (v) return v;
+    if (key === 'focusColor') return '#0066cc';
     try {
       return getComputedStyle(document.documentElement)
         .getPropertyValue('--theme-bg').trim() || '#0a0a0a';
@@ -604,7 +708,7 @@ visual: [
     }
   }
 
-  /** '#rgb'/'#rrggbb' → {r,g,b,a:100}. */
+  /** '#rgb'/'#rrggbb' â†’ {r,g,b,a:100}. */
   function hexToRgbObj(hex) {
     // Accept 'rgba(r, g, b, a)' / 'rgb(r, g, b)' persisted strings too.
     if (hex && /^rgba?\(/i.test(hex)) {
@@ -633,7 +737,7 @@ visual: [
     };
   }
 
-  /** {r,g,b,a%} → '#rrggbb' (opaque) or 'rgba(...)' string. */
+  /** {r,g,b,a%} â†’ '#rrggbb' (opaque) or 'rgba(...)' string. */
   function rgbToCss(rgb) {
     if (!rgb) return null;
     if (rgb.a >= 100) {
@@ -712,55 +816,70 @@ visual: [
     _sub = { kind: kind, key: key, items: [], focusIdx: 0, ui: {}, rgb: null };
 
     var def = findDef(_openGroup, key);
-    if (header) header.textContent = label || (def ? def.label : 'Settings');
+    if (header) header.textContent = label || (def ? L10n.t(def.l10nKey || def.key, def.label) : getDrillLabel(key));
 
     if (kind === 'range') {
-      // Keyboard range — Key Count preset enum row + Start/End sliders
+      // Keyboard range â€” Key Count preset enum row + Start/End sliders
       // (the sliders render only in 'custom' mode).
       buildRangePage(list);
     } else if (kind === 'bools') {
-      // Boolean list page (Info Card Options) — built by buildBoolPage
+      // Boolean list page (Info Card Options) â€” built by buildBoolPage
       // so the master toggle can collapse/expand it in place.
       buildBoolPage(list);
     } else if (kind === 'palettes') {
-      // Note Color Settings — palette selection page.
+      // Note Color Settings â€” palette selection page.
       buildPalettePage(list);
     } else if (kind === 'piano') {
-      // Piano Settings — grouped Show Note Labels / Keyboard Range /
+      // Piano Settings â€” grouped Show Note Labels / Keyboard Range /
       // Bar Color / Piano Color / Piano Size page.
       buildPianoPage(list);
     } else if (kind === 'general') {
-      // General settings — Speed / Note Trail / Start Delay / Auto Play /
+      // General settings â€” Speed / Note Trail / Start Delay / Auto Play /
       // Show Dialog / Show OSD / Background.
       buildGeneralPage(list);
     } else if (kind === 'loadingBar') {
-      // Loading Bar settings — bar visibility / % readouts / color / animation.
+      // Loading Bar settings â€” bar visibility / % readouts / color / animation.
       buildLoadingBarPage(list);
     } else if (kind === 'dialog') {
-      // Dialog settings — the center "Analyzing…/Now playing" pill.
+      // Dialog settings â€” the center "Analyzingâ€¦/Now playing" pill.
       buildDialogPage(list);
     } else if (kind === 'developer') {
       // Developer Settings — list-style page (System Settings → Developer):
       // Verbose toggles + one-shot dev actions.
-      if (header) header.textContent = 'Developer Settings';
+      if (header) header.textContent = L10n.t('developer_settings', 'Developer Settings');
       buildDeveloperPage(list);
+    } else if (kind === 'themeSettings') {
+      // Theme Settings — Focus Color + Loading Color RGBA pickers.
+      if (header) header.textContent = L10n.t('theme_settings', 'Theme');
+      buildThemePage(list);
+    } else if (kind === 'languageSettings') {
+      // Language Settings — Auto change language toggle + a radio list of
+      // every bundled locale (hidden while Auto is On).
+      if (header) header.textContent = L10n.t('language', 'Language');
+      buildLanguagePage(list);
     } else if (kind === 'background') {
-      // Background Settings — Background color + Load/Clear image actions.
+      // Background Settings â€” Background color + Load/Clear image actions.
       buildBackgroundSubPage(list);
     } else if (kind === 'graphics') {
-      // Graphics settings — Render Mode (4 radio) + 3D View (4 radio).
+      // Graphics settings â€” Render Mode (4 radio) + 3D View (4 radio).
       buildGraphicsPage(list);
     } else if (kind === 'soundfonts') {
-      // SoundFont loader — scans both partitions (internal + SD) and lets
+      // SoundFont loader â€” scans both partitions (internal + SD) and lets
       // the user tick square checkboxes to load one or several banks.
-      if (header) header.textContent = 'Load SoundFont';
+      if (header) header.textContent = L10n.t('load_soundfont', 'Load SoundFont');
       buildSoundFontPage(list);
+    } else if (kind === 'sfsettings') {
+      // Soundfont Settings â€” Buffer length + Voices (numeric text boxes,
+      // KaiUI kai-text-input style) and the Disable Soundfont FX toggle,
+      // grouped by separators.
+      if (header) header.textContent = L10n.t('soundfont_settings', 'Soundfont Settings');
+      buildSfSettingsPage(list);
     } else {
       // Working color from persisted value (or resolved theme color).
       var cur = _values.visual[key];
       _sub.rgb = hexToRgbObj(cur || colorCurrentValue(key));
 
-      // Swatch grid — first cell restores the default/theme color.
+      // Swatch grid â€” first cell restores the default/theme color.
       var grid = document.createElement('div');
       grid.className = 'swatch-grid';
 
@@ -780,7 +899,7 @@ visual: [
       list.appendChild(grid);
       _sub.ui.grid = grid;
 
-      // R/G/B/A sliders — live-mix on top of any selected swatch.
+      // R/G/B/A sliders â€” live-mix on top of any selected swatch.
       _sub.ui.r = buildSubSliderRow(list, 'R', 0, 255, 8, _sub.rgb.r, function (v) { return String(Math.round(v)); });
       _sub.ui.g = buildSubSliderRow(list, 'G', 0, 255, 8, _sub.rgb.g, function (v) { return String(Math.round(v)); });
       _sub.ui.b = buildSubSliderRow(list, 'B', 0, 255, 8, _sub.rgb.b, function (v) { return String(Math.round(v)); });
@@ -794,8 +913,8 @@ visual: [
       var prow = document.createElement('div');
       prow.className = 'color-preview-row';
       var plbl = document.createElement('span');
-      plbl.textContent = 'Preview';
-      var pchip = document.createElement('span');
+      plbl.textContent = L10n.t('color_preview', 'Preview');
+      prow.appendChild(plbl);var pchip = document.createElement('span');
       pchip.className = 'color-chip color-preview-chip';
       prow.appendChild(plbl);
       prow.appendChild(pchip);
@@ -808,20 +927,20 @@ visual: [
     paintSubFocus();
   }
 
-  /** Keyboard Range Key Count presets — 88 keys (A0..C8), 128 (full MIDI), custom. */
+  /** Keyboard Range Key Count presets â€” 88 keys (A0..C8), 128 (full MIDI), custom. */
   var KB_SIZE_CHOICES = [['88', '88 Keys'], ['128', '128 Keys'], ['custom', 'Custom']];
 
   /** Human label for a Key Count preset id. */
   function kbSizeLabel(size) {
     for (var i = 0; i < KB_SIZE_CHOICES.length; i++) {
-      if (KB_SIZE_CHOICES[i][0] === size) return KB_SIZE_CHOICES[i][1];
+      if (KB_SIZE_CHOICES[i][0] === size) return L10n.t('opt_' + KB_SIZE_CHOICES[i][0], KB_SIZE_CHOICES[i][1]);
     }
-    return 'Custom';
+    return L10n.t('opt_custom', 'Custom');
   }
 
   /**
    * Build the Keyboard Range page: a Key Count preset enum row
-   * (88 Keys / 128 Keys / Custom — Left/Right cycles) plus, ONLY in
+   * (88 Keys / 128 Keys / Custom â€” Left/Right cycles) plus, ONLY in
    * Custom mode, the Start/End note sliders.
    */
   function buildRangePage(listEl) {
@@ -829,7 +948,7 @@ visual: [
     _sub.ui.boolRows = {};
     _sub.focusIdx = 0;
 
-    // Key Count preset row — cycling it rebuilds the page so the sliders
+    // Key Count preset row â€” cycling it rebuilds the page so the sliders
     // appear (custom) or vanish (88/128) right away.
     var sizeRow = document.createElement('div');
     sizeRow.className = 'setting-row';
@@ -838,7 +957,7 @@ visual: [
     sizeRow.setAttribute('data-key', 'kbSize');
     var sLbl = document.createElement('span');
     sLbl.className = 'setting-row-label';
-    sLbl.textContent = 'Key Count';
+    sLbl.textContent = L10n.t('key_count', 'Key Count');
     var sVal = document.createElement('span');
     sVal.className = 'setting-row-value';
     sVal.textContent = kbSizeLabel(_values.visual.kbSize);
@@ -850,15 +969,15 @@ visual: [
 
     // Start/End sliders exist only in Custom mode.
     if (_values.visual.kbSize !== 'custom') return;
-    _sub.ui.start = buildSubSliderRow(listEl, 'Start', 0, 127, 1, _values.visual.kbStart, noteFmt);
-    _sub.ui.end   = buildSubSliderRow(listEl, 'End',   0, 127, 1, _values.visual.kbEnd,   noteFmt);
+    _sub.ui.start = buildSubSliderRow(listEl, L10n.t('opt_kbStart', 'Start'), 0, 127, 1, _values.visual.kbStart, noteFmt);
+    _sub.ui.end   = buildSubSliderRow(listEl, L10n.t('opt_kbEnd', 'End'),   0, 127, 1, _values.visual.kbEnd,   noteFmt);
     _sub.items.push({ type: 'slider', part: 'start' });
     _sub.items.push({ type: 'slider', part: 'end' });
   }
 
   /**
-   * Apply a Keyboard Range preset: '88' → A0..C8 (21..108), '128' → full
-   * MIDI 0..127, 'custom' → keep kbStart/kbEnd and reveal the Start/End
+   * Apply a Keyboard Range preset: '88' â†’ A0..C8 (21..108), '128' â†’ full
+   * MIDI 0..127, 'custom' â†’ keep kbStart/kbEnd and reveal the Start/End
    * sliders. Rebuilds the page in place so sliders appear/disappear per
    * the current mode and focus lands back on the Key Count row.
    */
@@ -877,7 +996,7 @@ visual: [
     save();
     // If the Keyboard Range page is open, rebuild it so the Start/End
     // sliders appear or disappear per the current mode. During gameplay
-    // (hotkey-toggled) the settings overlays are hidden — stay out of the way.
+    // (hotkey-toggled) the settings overlays are hidden â€” stay out of the way.
     var ov = document.getElementById('subsettings-overlay');
     if (ov && !ov.classList.contains('hidden')) {
       var list = document.getElementById('subsettings-list');
@@ -893,7 +1012,7 @@ visual: [
   /**
    * Drill from the Info Card Options page into a color sub-page.
    * Marks the sub-page to return to the bools list on close (Back),
-   * so the user lands back in Info Card Options — not the Visual group.
+   * so the user lands back in Info Card Options â€” not the Visual group.
    */
   function openInfoColor(key) {
     openSub('color', key);
@@ -902,12 +1021,38 @@ visual: [
   }
 
   /** Header labels for drill-in rows whose keys are not in SCHEMA. */
-  var DRILL_LABELS = {
-    kbRange:       'Keyboard Range',
-    barColor:      'Bar Color',
-    pianoColorHex: 'Piano Color',
-    bgColor:       'Background'
-  };
+  function getDrillLabel(key) {
+    var map = {
+      kbRange:          'keyboard_range',
+      barColor:         'bar_color',
+      pianoColorHex:    'piano_color',
+      bgColor:          'background_color',
+      focusColor:       'focus_color',
+      loadBarColor:     'loading_color',
+      infoBorderColor:  'infoBorderColor',
+      infoBgColor:      'infoBgColor',
+      infoTextColor:    'infoTextColor',
+      dialogTextColor:  'dialog_text_color',
+      dialogBgColor:    'dialog_bg_color',
+      pctColor:         'pct_text_color'
+    };
+    var fallbacks = {
+      kbRange:          'Keyboard Range',
+      barColor:         'Bar Color',
+      pianoColorHex:    'Piano Color',
+      bgColor:          'Background Color',
+      focusColor:       'Focus Color',
+      loadBarColor:     'Loading Color',
+      infoBorderColor:  'Info Card Border',
+      infoBgColor:      'Background',
+      infoTextColor:    'Info Card Text',
+      dialogTextColor:  'Text Color',
+      dialogBgColor:    'Background Color',
+      pctColor:         'Percentage Color'
+    };
+    var l10nKey = map[key] || key;
+    return L10n.t(l10nKey, fallbacks[key] || key);
+  }
 
   /**
    * Open the drill-in target of a focused sub-page row. 'color' rows
@@ -923,7 +1068,7 @@ visual: [
       return true;
     }
     if (item.type === 'sub' && item.part === 'bgSettings') {
-      // Visual → General → Background Settings: dedicated image/color page.
+      // Visual â†’ General â†’ Background Settings: dedicated image/color page.
       openSub('background', 'bgSettings', 'Background Settings');
       if (_sub) _sub.returnTo = 'general';
       if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
@@ -935,9 +1080,17 @@ visual: [
         : (_sub.kind === 'background') ? 'background'
         : (_sub.kind === 'loadingBar') ? 'loadingBar'
         : (_sub.kind === 'dialog') ? 'dialog'
+        : (_sub.kind === 'themeSettings') ? 'themeSettings'
         : 'piano';
-      openSub(item.type === 'sub' ? 'range' : 'color', item.key, DRILL_LABELS[item.key] || null);
+      openSub(item.type === 'sub' ? 'range' : 'color', item.key, getDrillLabel(item.key));
       if (_sub) _sub.returnTo = retKind;
+      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      return true;
+    }
+    if (item.type === 'sfaction' && item.part === 'loadSf') {
+      // Drill into the SoundFont scanner from Soundfont Settings.
+      openSub('soundfonts', 'soundfont');
+      if (_sub) _sub.returnTo = 'sfsettings';
       if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
       return true;
     }
@@ -954,7 +1107,7 @@ visual: [
     if (overlay) overlay.classList.add('hidden');
 
     // When the color page was opened from INSIDE Info Card Options
-    // (a "color" row), Back should land back on that list — not on
+    // (a "color" row), Back should land back on that list â€” not on
     // the Visual group page.
     var _subReturn = _sub ? _sub.returnTo : null;
     var wasFromBools = _subReturn === 'bools';
@@ -1054,26 +1207,58 @@ visual: [
       return;
     }
 
-    // A color page opened from INSIDE Loading Bar / Dialog settings returns
-    // to that list too (Back lands back in the sub-page, not the Visual group).
+    // A color page opened from INSIDE Loading Bar / Dialog / Theme settings returns
+    // to that list too (Back lands back in the sub-page, not the parent group).
     var wasFromLoadBar = _subReturn === 'loadingBar';
     var wasFromDialog  = _subReturn === 'dialog';
-    if (wasFromLoadBar || wasFromDialog) {
+    var wasFromTheme   = _subReturn === 'themeSettings';
+    if (wasFromLoadBar || wasFromDialog || wasFromTheme) {
       var listLb = document.getElementById('subsettings-list');
       if (listLb) {
         while (listLb.firstChild) listLb.removeChild(listLb.firstChild);
         if (wasFromLoadBar) {
           _sub = { kind: 'loadingBar', key: 'loadingBar', items: [], focusIdx: 0, ui: {} };
           buildLoadingBarPage(listLb);
-        } else {
+        } else if (wasFromDialog) {
           _sub = { kind: 'dialog', key: 'dialog', items: [], focusIdx: 0, ui: {} };
           buildDialogPage(listLb);
+        } else {
+          _sub = { kind: 'themeSettings', key: 'themeSettings', items: [], focusIdx: 0, ui: {} };
+          buildThemePage(listLb);
         }
         var ovLb = document.getElementById('subsettings-overlay');
         if (ovLb) ovLb.classList.remove('hidden');
         if (returnFocusKey) {
           for (var lbi = 0; lbi < _sub.items.length; lbi++) {
             if (_sub.items[lbi].part === returnFocusKey) { _sub.focusIdx = lbi; break; }
+          }
+        }
+        paintSubFocus();
+      }
+      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      return;
+    }
+
+    // A soundfonts page opened from INSIDE Soundfont Settings returns to
+    // that list too (Back lands in Soundfont Settings, not the Synth group).
+    var wasFromSfSettings = _subReturn === 'sfsettings';
+    if (wasFromSfSettings) {
+      var listSf = document.getElementById('subsettings-list');
+      if (listSf) {
+        while (listSf.firstChild) listSf.removeChild(listSf.firstChild);
+        _sub = { kind: 'sfsettings', key: 'sfSettings', items: [], focusIdx: 0, ui: {} };
+        _sub.ui.boolRows = {};
+        _sub.ui.text = null;
+        buildSfSettingsPage(listSf);
+        var ovSf = document.getElementById('subsettings-overlay');
+        if (ovSf) {
+          ovSf.classList.remove('hidden');
+          var header = ovSf.querySelector('header');
+          if (header) header.textContent = L10n.t('soundfont_settings', 'Soundfont Settings');
+        }
+        if (returnFocusKey) {
+          for (var sfi = 0; sfi < _sub.items.length; sfi++) {
+            if (_sub.items[sfi].part === returnFocusKey) { _sub.focusIdx = sfi; break; }
           }
         }
         paintSubFocus();
@@ -1093,7 +1278,7 @@ visual: [
           focusRow(rows, _focusIdx);
         }
       }
-      // The refocused row may be a drill-in row — refresh the SELECT
+      // The refocused row may be a drill-in row â€” refresh the SELECT
       // softkey label NOW instead of waiting for the next key press.
       if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
     }
@@ -1103,6 +1288,12 @@ visual: [
     if (!_sub) return;
     var overlay = document.getElementById('subsettings-overlay');
     if (!overlay) return;
+
+    var listEl = document.getElementById('subsettings-list');
+    if (listEl) {
+      if (_sfMove) listEl.classList.add('sf-move-mode');
+      else listEl.classList.remove('sf-move-mode');
+    }
 
     var cells = overlay.querySelectorAll('.swatch');
     for (var i = 0; i < cells.length; i++) cells[i].classList.remove('focused');
@@ -1144,15 +1335,45 @@ visual: [
         catch (e) { try { _sub.ui.loadMore.scrollIntoView(false); } catch (e2) {} }
       }
     } else if (item.type === 'sfcheck') {
-      // SoundFont scan checkbox row — focus highlights the square.
+      // SoundFont scan checkbox row â€” focus highlights the square.
       var s = _sub.ui.sfRowEls && _sub.ui.sfRowEls[item.path];
       if (s && s.row) {
         s.row.classList.add('focused');
         try { s.row.scrollIntoView({ block: 'nearest' }); }
         catch (e) { try { s.row.scrollIntoView(false); } catch (e2) {} }
       }
+    } else if (item.type === 'sfaction' || item.type === 'sfrow') {
+      // Soundfont Settings drill-in or loaded sfrow action row â€” highlight directly from item.row.
+      if (item.row) {
+        item.row.classList.add('focused');
+        try { item.row.scrollIntoView({ block: 'nearest' }); }
+        catch (e) { try { item.row.scrollIntoView(false); } catch (e2) {} }
+      }
+    } else if (item.type === 'sftext') {
+      // Soundfont Settings numeric text box â€” highlight + open the native
+      // keyboard so digits can be typed straight away.
+      if (item.row) {
+        item.row.classList.add('focused');
+        try { item.row.scrollIntoView({ block: 'nearest' }); }
+        catch (e) { try { item.row.scrollIntoView(false); } catch (e2) {} }
+      }
+      if (item.input) {
+        _sub.ui.text = { input: item.input };
+        try { item.input.focus(); } catch (e) {}
+      }
+    } else if (item.type === 'gentext') {
+      // General Settings numeric text box — same as sftext.
+      if (item.row) {
+        item.row.classList.add('focused');
+        try { item.row.scrollIntoView({ block: 'nearest' }); }
+        catch (e) { try { item.row.scrollIntoView(false); } catch (e2) {} }
+      }
+      if (item.input) {
+        _sub.ui.text = { input: item.input };
+        try { item.input.focus(); } catch (e) {}
+      }
     } else if (item.type === 'swatch') {
-      // cells[] includes the DEF cell at index 0 → swatch idx i lives at
+      // cells[] includes the DEF cell at index 0 â†’ swatch idx i lives at
       // cells[i + 1]. (An off-by-one here highlighted the wrong cell.)
       var cell = cells[item.idx + 1];
       if (cell) {
@@ -1168,10 +1389,11 @@ visual: [
         catch (e) { try { dc.scrollIntoView(false); } catch (e2) {} }
       }
     } else if (item.type === 'radio') {
-      // Radio row (Graphics page — renderMode / view3d group).
-      var rArr = (item.key === 'renderMode')
-        ? (_sub.ui.renderModeRows || [])
-        : (_sub.ui.view3dRows || []);
+      // Radio row (Graphics page â€” renderMode / view3d group).
+      var rArr = (_sub.ui.radioGroups && _sub.ui.radioGroups[item.key])
+        || ((item.key === 'renderMode')
+              ? (_sub.ui.renderModeRows || [])
+              : (_sub.ui.view3dRows || []));
       var rRow = null;
       for (var rri = 0; rri < rArr.length; rri++) {
         if (rArr[rri].value === item.value) { rRow = rArr[rri].row; break; }
@@ -1191,12 +1413,33 @@ visual: [
     }
   }
 
+  /** Dynamically apply custom focus highlight color to CSS variable. */
+  function applyFocusColor(color) {
+    var c = color || (_values.sys && _values.sys.focusColor) || '#0066cc';
+    try {
+      document.documentElement.style.setProperty('--color-focus', c);
+    } catch (e) {}
+  }
+  window.applyFocusColor = applyFocusColor;
+
   /** Live-apply the working color to Store + persistence. */
   function applyColorLive() {
     if (!_sub || _sub.kind !== 'color') return;
     var css = rgbToCss(_sub.rgb);
+    if (_openGroup === 'sys' || _sub.key === 'focusColor') {
+      if (!_values.sys) _values.sys = {};
+      _values.sys[_sub.key] = css;
+    }
     _values.visual[_sub.key] = css;
     Store.setState(_mapToStore(_openGroup, _sub.key, css));
+    if (_sub.key === 'focusColor') {
+      applyFocusColor(css);
+    }
+    if (_sub.key === 'loadBarColor' || _sub.key === 'pctBarVisible' || _sub.key === 'loadAnimated' || _sub.key === 'pctColor') {
+      if (typeof window.applyParseBarStyle === 'function') {
+        try { window.applyParseBarStyle(); } catch (e) {}
+      }
+    }
     if (_sub.key === 'pianoColorHex' &&
         typeof Keyboard !== 'undefined' && Keyboard.rebuild) {
       Keyboard.rebuild();
@@ -1259,7 +1502,7 @@ visual: [
         var cur = (item.part === 'start') ? _values.visual.kbStart : _values.visual.kbEnd;
         applyRangeValue(item.part, cur + dir);
       } else if (_sub.kind === 'general') {
-        // Speed / Note Trail / Start Delay — walk the numeric value
+        // Speed / Note Trail / Start Delay â€” walk the numeric value
         // (same stepping/snap as the old group-page number rows).
         var gsl = _sub.ui[item.part];
         if (!gsl) return;
@@ -1298,15 +1541,42 @@ visual: [
     var item = _sub.items[_sub.focusIdx];
     if (!item) return;
 
+    if (item.type === 'sftext') {
+      // Soundfont Settings text box â€” Enter commits the typed number.
+      sfCommitText(item);
+      return;
+    }
+    if (item.type === 'gentext') {
+      // General Settings text box — Enter commits the typed number.
+      genCommitText(item);
+      return;
+    }
+    if (item.type === 'sfrow') {
+      if (_sfMove) {
+        _sfMove = false;
+        if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      } else {
+        toggleSfRow(item.id);
+      }
+      return;
+    }
+    if (item.type === 'sfaction' && item.part === 'loadSf') {
+      // Load Soundfont action inside Soundfont Settings â€” drill into the
+      // SoundFont scanner page; Back returns here (sfsettings).
+      openSub('soundfonts', 'soundfont');
+      if (_sub) _sub.returnTo = 'sfsettings';
+      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      return;
+    }
     if (item.type === 'bool') {
-      // Booleans are Left/Right only — Enter never toggles them.
+      // Booleans are Left/Right only â€” Enter never toggles them.
       return;
     }
     if (item.type === 'action') {
-      // One-shot actions (General → Full Screen / Rotate Screen).
+      // One-shot actions (General â†’ Full Screen / Rotate Screen).
       if (item.row && (item.part === 'memory' || item.part === 'exportLog' ||
                        item.part === 'storageTest')) {
-        // Developer Settings action rows — reuse the group-page dispatcher.
+        // Developer Settings action rows â€” reuse the group-page dispatcher.
         runDevAction(item.row);
         return;
       }
@@ -1322,34 +1592,39 @@ visual: [
       return;
     }
     if (item.type === 'randomaction') {
-      // Regenerate all 16 channel colours — mirrors the hotkey-4 action.
+      // Regenerate all 16 channel colours â€” mirrors the hotkey-4 action.
       try {
         if (typeof window.isPlaybackLocked === 'function' && window.isPlaybackLocked()) {
-          if (typeof showToast === 'function') showToast('Locked until a file loads');
+          if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_locked', 'Locked until a file loads'));
           return;
         }
       } catch (e) {}
       try {
         if (typeof Notes !== 'undefined' && Notes.randomizePalette) {
           Notes.randomizePalette();
-          if (typeof HUD !== 'undefined' && HUD.showOsd) HUD.showOsd('Track colors randomised', 2000);
+          if (typeof HUD !== 'undefined' && HUD.showOsd) HUD.showOsd(L10n.t('osd_colors_randomised', 'Track colors randomised'), 2000);
         }
       } catch (e2) { if (typeof console !== 'undefined') console.error('[Settings] randomColors failed', e2); }
       return;
     }
     if (item.type === 'palette') {
-      // Select this palette — persist, update radio highlight, and apply
+      // Select this palette â€” persist, update radio highlight, and apply
       // its colors to the live channel palette.
       _values.visual.palette = item.part;
       Store.setState({ palette: item.part });
       save();
       _highlightPalette();
       _applyStoredPalette(item.part);
-      if (typeof showToast === 'function') showToast('Palette: ' + _paletteLabel(item.part));
+      if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_palette', 'Palette: ') + _paletteLabel(item.part));
+      return;
+    }
+    if (item.type === 'radio' && item.key === 'language') {
+      // Language row — pin the chosen locale (radio, exactly one selected).
+      selectLanguage(item.value);
       return;
     }
     if (item.type === 'radio') {
-      // Radio row in Graphics page (renderMode / view3d) — set value,
+      // Radio row in Graphics page (renderMode / view3d) â€” set value,
       // update radio highlight, persist to Store + localStorage.
       var rKey = item.key;
       var rVal = item.value;
@@ -1357,7 +1632,7 @@ visual: [
       Store.setState(_mapToStore(_openGroup, rKey, rVal));
       save();
       _highlightGraphicsRadio(rKey);
-      if (typeof showToast === 'function') {
+      if (typeof window.showToast === 'function') {
         var rLabel = (rKey === 'renderMode') ? 'Render Mode' : '3D View';
         showToast(rLabel + ': ' + item.value.charAt(0).toUpperCase() + item.value.slice(1));
       }
@@ -1376,7 +1651,7 @@ visual: [
       syncSubSlider(_sub.ui.a, _sub.rgb.a);
       applyColorLive();
     } else if (item.type === 'def') {
-      // Restore the factory default (Background → Auto/theme).
+      // Restore the factory default (Background â†’ Auto/theme).
       var dflt = colorDefault(_sub.key);
       if (dflt) {
         _sub.rgb = hexToRgbObj(dflt);
@@ -1403,16 +1678,21 @@ visual: [
   /** Jump to an absolute sub-page index with wrap-around. */
   function setSubFocus(idx) {
     if (!_sub) return;
+    // Leaving a Soundfont text box commits its value (and blurs it) so
+    // the keyboard closes and nothing typed is dropped on the floor.
+    var cur = _sub.items[_sub.focusIdx];
+    if (cur && cur.type === 'sftext') sfCommitText(cur);
+    if (cur && cur.type === 'gentext') genCommitText(cur);
     var n = _sub.items.length;
     if (!n) return;
     _sub.focusIdx = ((idx % n) + n) % n;
     paintSubFocus();
-    // Focus moved — refresh the softkey label (SELECT on drill-in rows,
+    // Focus moved â€” refresh the softkey label (SELECT on drill-in rows,
     // blank on bool/enum/slider rows so the bar mirrors the focused row).
     if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
   }
 
-  /** Move sub-page focus by ±step with WRAP-AROUND (bottom ↔ top). */
+  /** Move sub-page focus by Â±step with WRAP-AROUND (bottom â†” top). */
   function moveSubFocus(step) {
     if (!_sub) return;
     setSubFocus(_sub.focusIdx + step);
@@ -1421,35 +1701,35 @@ visual: [
   /**
    * Vertical navigation for the COLOR page.
    *   Grid (DEF + swatches): Up/Down stride by column (5 cells).
-   *   Top row cols 1-4 ↑  → bottom cell of the SAME column.
-   *   DEF ↑               → A slider (wrap to the very bottom).
-   *   ANY grid cell at the bottom edge ↓ → R (first slider).
-   *   Sliders stack linearly: A ↑ → B → G → R; R ↑ → S24
-   *   (bottom of DEF's column). A ↓ → DEF (wrap to the very top).
+   *   Top row cols 1-4 â†‘  â†’ bottom cell of the SAME column.
+   *   DEF â†‘               â†’ A slider (wrap to the very bottom).
+   *   ANY grid cell at the bottom edge â†“ â†’ R (first slider).
+   *   Sliders stack linearly: A â†‘ â†’ B â†’ G â†’ R; R â†‘ â†’ S24
+   *   (bottom of DEF's column). A â†“ â†’ DEF (wrap to the very top).
    * (dir: -1 = up, +1 = down)
    */
   function moveColorVertical(dir) {
-    var gLast = SWATCHES.length;        // 25 — last grid cell (S24)
-    var firstSlider = gLast + 1;        // 26 — R
-    var last = _sub.items.length - 1;   // 29 — A
+    var gLast = SWATCHES.length;        // 25 â€” last grid cell (S24)
+    var firstSlider = gLast + 1;        // 26 â€” R
+    var last = _sub.items.length - 1;   // 29 â€” A
     var i = _sub.focusIdx;
     var t;
     if (dir > 0) { // Down
       if (i <= gLast) {
         t = i + SWATCH_COLS;
-        setSubFocus(t <= gLast ? t : firstSlider); // grid bottom edge → R
+        setSubFocus(t <= gLast ? t : firstSlider); // grid bottom edge â†’ R
       } else {
-        setSubFocus(i === last ? 0 : i + 1);       // A → DEF (wrap)
+        setSubFocus(i === last ? 0 : i + 1);       // A â†’ DEF (wrap)
       }
     } else {       // Up
       if (i === 0) {
-        setSubFocus(last);                          // DEF → A (bottom)
+        setSubFocus(last);                          // DEF â†’ A (bottom)
       } else if (i <= gLast) {
         t = i - SWATCH_COLS;
-        setSubFocus(t >= 0 ? t : i + 20);           // top row → same column
+        setSubFocus(t >= 0 ? t : i + 20);           // top row â†’ same column
       } else {
         t = i - 1;
-        if (t < firstSlider) t = gLast;             // R ↑ → S24 (DEF column)
+        if (t < firstSlider) t = gLast;             // R â†‘ â†’ S24 (DEF column)
         setSubFocus(t);
       }
     }
@@ -1458,9 +1738,9 @@ visual: [
   /**
    * (Re)build the Info Card Settings list. The MASTER "Show Info Card"
    * row always sits first. When it is Off, the stat/behaviour rows are
-   * REMOVED entirely — focus locks onto the master row alone; flipping
+   * REMOVED entirely â€” focus locks onto the master row alone; flipping
    * it back On restores the full list. Rows are split by separators:
-   *   — Stats —  NPS … BPM           — Style —  Floating … Info Card Text
+   *   â€” Stats â€”  NPS â€¦ BPM           â€” Style â€”  Floating â€¦ Info Card Text
    *
    * Row kinds: 'bool' (Left/Right toggle), 'enum' (Left/Right cycle),
    *            'color' (drill-in to the R/G/B/A page).
@@ -1499,7 +1779,7 @@ visual: [
       s.className = 'kai-separator';
       var st = document.createElement('span');
       st.className = 'kai-separator-text';
-      st.textContent = text;
+      st.textContent = L10n.t('sep_' + text.toLowerCase().replace(/ /g, '_'), text);
       s.appendChild(st);
       listEl.appendChild(s);
     }
@@ -1520,10 +1800,10 @@ visual: [
 
   /**
    * Append one row to a sub-page list. Kinds:
-   *   'bool'  → On/Off label (Left/Right toggles, never Enter)
-   *   'enum'  → cycled value label (choices = [[value,label],..])
-   *   'sub'   → drill-in row showing getVal() (e.g. Keyboard Range window)
-   *   'color' → drill-in row with a color chip + getVal() hex label
+   *   'bool'  â†’ On/Off label (Left/Right toggles, never Enter)
+   *   'enum'  â†’ cycled value label (choices = [[value,label],..])
+   *   'sub'   â†’ drill-in row showing getVal() (e.g. Keyboard Range window)
+   *   'color' â†’ drill-in row with a color chip + getVal() hex label
    * Rows register in _sub.ui.boolRows so value labels + focus paint work.
    */
   function addSubRow(listEl, kind, key, label, choices, getVal) {
@@ -1533,16 +1813,21 @@ visual: [
     r.setAttribute('data-type', kind);
     r.setAttribute('data-key', key);
 
+    // Map internal JS keys to their standard localization keys if they exist
+        var l10nKey = keyMap[key] || key;
+
     var lbl = document.createElement('span');
     lbl.className = 'setting-row-label';
-    lbl.textContent = label;
+    lbl.textContent = L10n.t(l10nKey, label);
     r.appendChild(lbl);
 
     var valEl = null;
     if (kind === 'bool') {
       valEl = document.createElement('span');
       valEl.className = 'setting-row-value';
-      valEl.textContent = getVal ? (getVal() ? 'On' : 'Off') : (_values.visual[key] ? 'On' : 'Off');
+      var st = Store.getState();
+      var val = st[key] !== undefined ? st[key] : _values.visual[key];
+      valEl.textContent = getVal ? (getVal() ? L10n.t('on', 'On') : L10n.t('off', 'Off')) : (val ? L10n.t('on', 'On') : L10n.t('off', 'Off'));
       r.appendChild(valEl);
     } else if (kind === 'enum') {
       valEl = document.createElement('span');
@@ -1570,7 +1855,7 @@ visual: [
     return item;
   }
 
-  /** One-shot action row (Enter fires, Right moves focus) — same look as
+  /** One-shot action row (Enter fires, Right moves focus) â€” same look as
    *  the addSubRow rows so paintSubFocus highlights it the same way. */
   function addActionRow(listEl, part, label, getVal) {
     var r = document.createElement('div');
@@ -1581,7 +1866,8 @@ visual: [
 
     var l = document.createElement('span');
     l.className = 'setting-row-label';
-    l.textContent = label;
+    var l10nKey = keyMap[part] || part;
+    l.textContent = L10n.t(l10nKey, label);
     r.appendChild(l);
 
     var v = document.createElement('span');
@@ -1599,18 +1885,18 @@ visual: [
   function choiceLabel(choices, val) {
     if (!choices) return '';
     for (var i = 0; i < choices.length; i++) {
-      if (choices[i][0] === val) return choices[i][1];
+      if (choices[i][0] === val) return L10n.t('opt_' + choices[i][0], choices[i][1]);
     }
-    return (choices[0] && choices[0][1]) || '';
+    return (choices[0] && choices[0][1]) ? L10n.t('opt_' + choices[0][0], choices[0][1]) : '';
   }
 
   /**
    * Build the Piano Settings page.
    * Groups Show Note Labels, Keyboard Range, Piano Size, Bar Color and
    * Piano Color into separators (like the Note Color Settings page):
-   *   — Notes —      Show Note Labels (bool)
-   *   — Keyboard —   Keyboard Range (drill-in range), Piano Size (enum)
-   *   — Colors —     Bar Color (drill-in), Piano Color (drill-in)
+   *   â€” Notes â€”      Show Note Labels (bool)
+   *   â€” Keyboard â€”   Keyboard Range (drill-in range), Piano Size (enum)
+   *   â€” Colors â€”     Bar Color (drill-in), Piano Color (drill-in)
    * Row refs live in _sub.ui.boolRows so bool/enum value labels, focus
    * paint and toggles reuse the existing sub-page machinery.
    */
@@ -1624,7 +1910,7 @@ visual: [
       s.className = 'kai-separator';
       var st = document.createElement('span');
       st.className = 'kai-separator-text';
-      st.textContent = text;
+      st.textContent = L10n.t('sep_' + text.toLowerCase().replace(/ /g, '_'), text);
       s.appendChild(st);
       listEl.appendChild(s);
     }
@@ -1645,10 +1931,10 @@ visual: [
     // Colors section
     sepsis('Colors');
     addSubRow(listEl, 'color', 'barColor', 'Bar Color', null, function () {
-      return _values.visual.barColor || 'Theme';
+      return _values.visual.barColor || L10n.t('color_theme', 'Theme');
     });
     addSubRow(listEl, 'color', 'pianoColorHex', 'Piano Color', null, function () {
-      return _values.visual.pianoColorHex || 'Theme';
+      return _values.visual.pianoColorHex || L10n.t('color_theme', 'Theme');
     });
   }
 
@@ -1665,17 +1951,20 @@ visual: [
     // Number sliders — same style as Note Trail in the main group.
     var sliderDefs = {
       speed:      { min: 0.1, max: 8.0, step: 0.1, fmt: function (v) { return v.toFixed(1) + 'x'; } },
-      trail:      { min: 0.1, max: 8.0, step: 0.1, fmt: function (v) { return v.toFixed(1); } },
-      startDelay: { min: 0, max: 10, step: 1, fmt: function (v) { return (v > 0) ? v + ' sec' : 'Off'; } }
+      trail:      { min: 0.1, max: 8.0, step: 0.1, fmt: function (v) { return v.toFixed(1); } }
     };
-    var sliderKeys = ['speed', 'trail', 'startDelay'];
+    var sliderKeys = ['speed', 'trail'];
     for (var si = 0; si < sliderKeys.length; si++) {
       var sk = sliderKeys[si];
       var sd = sliderDefs[sk];
-      var sdLabel = (sk === 'speed') ? 'Speed' : (sk === 'trail') ? 'Note Trail' : 'Start Delay';
+      var sdLabel = L10n.t(sk === 'speed' ? 'speed' : 'opt_' + sk, (sk === 'speed') ? 'Speed' : 'Note Trail');
       _sub.ui[sk] = buildSubSliderRow(listEl, sdLabel, sd.min, sd.max, sd.step, _values.visual[sk], sd.fmt);
       _sub.items.push({ type: 'slider', part: sk });
     }
+
+    // Start Delay — text box (seconds, 0 = Off)
+    addGeneralTextRow(listEl, 'startDelay', 'Start Delay',
+      'Delay before playback in seconds (0 = Off)', 0, 9999999);
 
     addSubRow(listEl, 'bool', 'autoPlay', 'Auto Play');
     addSubRow(listEl, 'bool', 'showOsd', 'Show OSD');
@@ -1684,6 +1973,79 @@ visual: [
     addSubRow(listEl, 'sub', 'bgSettings', 'Background Settings', null, function () {
       return _values.visual.bgImageName || '';
     });
+  }
+
+  /** One numeric text box row for the General settings page (kai-text-input layout). */
+  function addGeneralTextRow(listEl, key, label, hint, min, max) {
+    var w = document.createElement('div');
+    w.className = 'kai-text-input';
+    w.setAttribute('tabindex', '-1');
+    w.setAttribute('data-type', 'gentext');
+    w.setAttribute('data-key', key);
+
+    var lab = document.createElement('label');
+    lab.className = 'kai-text-input-label';
+    var l10nKey = key; lab.textContent = L10n.t(l10nKey, label);
+    w.appendChild(lab);
+
+    var input = document.createElement('input');
+    input.className = 'kai-text-input-input';
+    input.type = 'tel';
+    var curVal = _values.visual[key];
+    var initVal = (curVal != null && !isNaN(Number(curVal))) ? Number(curVal) : 0;
+    input.value = String(initVal);
+    w.appendChild(input);
+
+    var hintEl = document.createElement('div');
+    hintEl.className = 'kai-text-input-hint';
+    var hintKey = key + '_hint'; hintEl.textContent = L10n.t(hintKey, hint);
+    w.appendChild(hintEl);
+
+    listEl.appendChild(w);
+    var item = { type: 'gentext', part: key, row: w, input: input, min: min, max: max, lastValidValue: initVal };
+    _sub.items.push(item);
+
+    input.addEventListener('input', function () {
+      var digits = input.value.replace(/[^0-9]/g, '');
+      if (digits.length > 0) {
+        var num = parseInt(digits, 10);
+        if (!isNaN(num)) {
+          item.lastValidValue = num;
+        }
+      }
+    });
+
+    _sub.ui[key + 'Text'] = { row: w, input: input };
+    return { row: w, input: input };
+  }
+
+  /** Commit a General-page text box: parse, clamp, persist. Preserves last valid number if input is cleared. */
+  function genCommitText(item) {
+    if (!item || item.type !== 'gentext') return;
+    if (item.input && document.activeElement === item.input) {
+      try { item.input.blur(); } catch (e) {}
+    }
+    var raw = item.input ? item.input.value : '';
+    var digits = String(raw).replace(/[^0-9]/g, '');
+    var n;
+    if (digits.length === 0) {
+      n = (item.lastValidValue != null) ? item.lastValidValue : (_values.visual[item.part] != null ? _values.visual[item.part] : 0);
+    } else {
+      n = parseInt(digits, 10);
+      if (isNaN(n)) {
+        n = (item.lastValidValue != null) ? item.lastValidValue : 0;
+      }
+    }
+    n = Math.max(item.min, Math.min(item.max, n));
+    item.lastValidValue = n;
+    if (item.input) item.input.value = String(n);
+    _values.visual[item.part] = n;
+    Store.setState(_mapToStore('visual', item.part, n));
+    save();
+    if (typeof window.showToast === 'function') {
+      var display = (n > 0) ? n + ' sec' : 'Off';
+      window.showToast(L10n.t('toast_start_delay', 'Start Delay: ') + display);
+    }
   }
 
   /**
@@ -1700,17 +2062,17 @@ visual: [
     addSubRow(listEl, 'bool', 'pctAnalyze', 'Show % while analyzing');
     addSubRow(listEl, 'bool', 'pctMerge', 'Show % while merging');
     addSubRow(listEl, 'color', 'loadBarColor', 'Loading Color', null, function () {
-      return _values.visual.loadBarColor || 'Blue';
+      return _values.visual.loadBarColor || L10n.t('color_blue', 'Blue');
     });
     addSubRow(listEl, 'color', 'pctColor', '% Text Color', null, function () {
-      return _values.visual.pctColor || 'White';
+      return _values.visual.pctColor || L10n.t('color_white', 'White');
     });
     addSubRow(listEl, 'bool', 'loadAnimated', 'Sliding Animation');
   }
 
   /**
-   * Build the Dialog settings page: the center pill ("Analyzing…" /
-   * "Now playing: …") master toggle plus its text + background colors.
+   * Build the Dialog settings page: the center pill ("Analyzingâ€¦" /
+   * "Now playing: â€¦") master toggle plus its text + background colors.
    */
   function buildDialogPage(listEl) {
     _sub.items = [];
@@ -1719,15 +2081,15 @@ visual: [
 
     addSubRow(listEl, 'bool', 'showDialog', 'Show Dialog');
     addSubRow(listEl, 'color', 'dialogTextColor', 'Text Color', null, function () {
-      return _values.visual.dialogTextColor || 'White';
+      return _values.visual.dialogTextColor || L10n.t('color_white', 'White');
     });
     addSubRow(listEl, 'color', 'dialogBgColor', 'Background Color', null, function () {
-      return _values.visual.dialogBgColor || 'Black';
+      return _values.visual.dialogBgColor || L10n.t('color_black', 'Black');
     });
   }
 
   /**
-   * Build the Developer Settings page (System Settings → Developer):
+   * Build the Developer Settings page (System Settings â†’ Developer):
    * the Verbose toggles plus the one-shot dev actions. Dev values live
    * in _values.dev (not .visual), so bool rows carry a getVal callback
    * and toggling routes through the 'dev' group mapping.
@@ -1743,20 +2105,300 @@ visual: [
     addSubRow(listEl, 'bool', 'verboseAnalyze', 'Verbose while analyzing', null, function () {
       return _values.dev.verboseAnalyze;
     });
+    addSubRow(listEl, 'bool', 'verboseSfLoad', 'Verbose while reading soundfonts', null, function () {
+      return _values.dev.verboseSfLoad;
+    });
+    addSubRow(listEl, 'bool', 'verboseInit', 'Verbose while init', null, function () {
+      return _values.dev.verboseInit || _values.dev.verboseLoadLog;
+    });
     addActionRow(listEl, 'memory', 'Memory Stats');
     addActionRow(listEl, 'exportLog', 'Export Log');
     addActionRow(listEl, 'storageTest', 'Storage Test');
   }
 
-  // ── SoundFont loader page (Synth → Load Soundfont) ────────────────
+  /**
+   * Build the Theme Settings page (System Settings -> Theme):
+   * Focus Color and Loading Color RGBA color pickers.
+   */
+  function buildThemePage(listEl) {
+    _sub.items = [];
+    _sub.ui.boolRows = {};
+    _sub.focusIdx = 0;
+
+    addSubRow(listEl, 'color', 'focusColor', 'Focus Color', null, function () {
+      return _values.sys.focusColor || _values.visual.focusColor || '#0066cc';
+    });
+    addSubRow(listEl, 'color', 'loadBarColor', 'Loading Color', null, function () {
+      return _values.visual.loadBarColor || '#0088FF';
+    });
+  }
+
+  // -- Language Settings --------------------------------------------------
+  // All 68 bundled locales, each shown in its own language. Codes match the
+  // locales-obj/*.json files and the manifest availableLanguages list exactly.
+  var LANGS = [
+    ['af-ZA', 'Afrikaans'],
+    ['ar-SA', '\u0627\u0644\u0639\u0631\u0628\u064A\u0629'],
+    ['az-Latn-AZ', 'Az\u0259rbaycan dili'],
+    ['be-BY', '\u0411\u0435\u043B\u0430\u0440\u0443\u0441\u043A\u0430\u044F'],
+    ['bg-BG', '\u0411\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438'],
+    ['bn-BD', '\u09AC\u09BE\u0982\u09B2\u09BE'],
+    ['bn-IN', '\u09AC\u09BE\u0982\u09B2\u09BE'],
+    ['bs-BA', 'Bosanski'],
+    ['cs-CZ', '\u010Ce\u0161tina'],
+    ['da-DK', 'Dansk'],
+    ['de-DE', 'Deutsch'],
+    ['el-GR', '\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC'],
+    ['en-GB', 'English (UK)'],
+    ['en-NG', 'English (Nigeria)'],
+    ['en-US', 'English (US)'],
+    ['es-ES', 'Espa\u00F1ol (Espa\u00F1a)'],
+    ['es-US', 'Espa\u00F1ol (Estados Unidos)'],
+    ['et-EE', 'Eesti'],
+    ['fa-IR', '\u0641\u0627\u0631\u0633\u06CC'],
+    ['fi-FI', 'Suomi'],
+    ['fil-PH', 'Filipino'],
+    ['fr-CA', 'Fran\u00E7ais (Canada)'],
+    ['fr-FR', 'Fran\u00E7ais'],
+    ['he-IL', '\u05E2\u05D1\u05E8\u05D9\u05EA'],
+    ['hi-IN', '\u0939\u093F\u0928\u094D\u0926\u0940'],
+    ['hr-HR', 'Hrvatski'],
+    ['hu-HU', 'Magyar'],
+    ['hy-AM', '\u0540\u0561\u0575\u0565\u0580\u0565\u0576'],
+    ['id-ID', 'Bahasa Indonesia'],
+    ['is-IS', '\u00CDslenska'],
+    ['it-IT', 'Italiano'],
+    ['ka-GE', '\u10E5\u10D0\u10E0\u10D7\u10E3\u10DA\u10D8'],
+    ['kk-KZ', '\u049A\u0430\u0437\u0430\u049B \u0442\u0456\u043B\u0456'],
+    ['km-KH', '\u1781\u17D2\u1798\u17C2\u179A'],
+    ['lo-LA', '\u0EA5\u0EB2\u0EA7'],
+    ['lt-LT', 'Lietuvi\u0173'],
+    ['lv-LV', 'Latvie\u0161u'],
+    ['mk-MK', '\u041C\u0430\u043A\u0435\u0434\u043E\u043D\u0441\u043A\u0438'],
+    ['mo-RO', 'Moldoveneasc\u0103'],
+    ['ms-MY', 'Bahasa Melayu'],
+    ['nb-NO', 'Norsk bokm\u00E5l'],
+    ['ne-IN', '\u0928\u0947\u092A\u093E\u0932\u0940'],
+    ['nl-NL', 'Nederlands'],
+    ['pl-PL', 'Polski'],
+    ['ps-AF', '\u067E\u069A\u062A\u0648'],
+    ['pt-BR', 'Portugu\u00EAs (Brasil)'],
+    ['pt-PT', 'Portugu\u00EAs'],
+    ['ro-RO', 'Rom\u00E2n\u0103'],
+    ['ru-RU', '\u0420\u0443\u0441\u0441\u043A\u0438\u0439'],
+    ['si-LK', '\u0DC3\u0DD2\u0D82\u0DC4\u0DBD'],
+    ['sk-SK', 'Sloven\u010Dina'],
+    ['sl-SI', 'Sloven\u0161\u010Dina'],
+    ['sq-AL', 'Shqip'],
+    ['sr-Latn-CS', 'Srpski'],
+    ['sv-SE', 'Svenska'],
+    ['sw-ZA', 'Kiswahili'],
+    ['ta-IN', '\u0BA4\u0BAE\u0BBF\u0BB4\u0BCD'],
+    ['th-TH', '\u0E44\u0E17\u0E22'],
+    ['tr-TR', 'T\u00FCrk\u00E7e'],
+    ['uk-UA', '\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430'],
+    ['ur-PK', '\u0627\u0631\u062F\u0648'],
+    ['uz-Cyrl-UZ', '\u040E\u0437\u0431\u0435\u043A'],
+    ['vi-VN', 'Ti\u1EBFng Vi\u1EC7t'],
+    ['xh-ZA', 'isiXhosa'],
+    ['zh-CN', '\u7B80\u4F53\u4E2D\u6587'],
+    ['zh-HK', '\u7E41\u9AD4\u4E2D\u6587\uFF08\u9999\u6E2F\uFF09'],
+    ['zh-TW', '\u7E41\u9AD4\u4E2D\u6587'],
+    ['zu-ZA', 'isiZulu']
+  ];
+
+  /** Native display name for a locale code (falls back to the code). */
+  function langName(code) {
+    for (var i = 0; i < LANGS.length; i++) {
+      if (LANGS[i][0] === code) return LANGS[i][1];
+    }
+    return code || '';
+  }
+
+  /** The locale code currently active in the l10n runtime. */
+  function currentLocaleCode() {
+    try {
+      if (typeof navigator !== 'undefined' && navigator.mozL10n &&
+          navigator.mozL10n.language && navigator.mozL10n.language.code) {
+        return navigator.mozL10n.language.code;
+      }
+    } catch (e) {}
+    return 'en-US';
+  }
+
+  /**
+   * Switch the runtime language. No-op when already on `code` so we never
+   * trigger a redundant locale reload (keeps 'localized' from looping).
+   */
+  function setLanguageRuntime(code) {
+    if (!code) return;
+    try {
+      if (typeof navigator === 'undefined' || !navigator.mozL10n ||
+          !navigator.mozL10n.language) return;
+      if (navigator.mozL10n.language.code === code) return;
+      navigator.mozL10n.language.code = code;
+    } catch (e) {}
+  }
+
+  /** Re-request the runtime locale from the device (Auto change = On). */
+  function syncLanguageToSystem() {
+    try {
+      if (typeof navigator === 'undefined' || !navigator.mozL10n) return;
+      var cur = (navigator.mozL10n.language && navigator.mozL10n.language.code) || '';
+      var langs = (navigator.languages && navigator.languages.length)
+        ? navigator.languages : [navigator.language || 'en-US'];
+      for (var i = 0; i < langs.length; i++) {
+        if (langs[i] === cur) return; // already on a system locale
+      }
+      var ctx = navigator.mozL10n.ctx;
+      if (ctx && typeof ctx.requestLocales === 'function') {
+        ctx.requestLocales.apply(ctx, langs);
+      } else if (navigator.mozL10n.language) {
+        navigator.mozL10n.language.code = langs[0];
+      }
+    } catch (e) {}
+  }
+
+  /**
+   * Re-assert the persisted language preference. Called from load() so the
+   * choice survives boot, reset and settings import. Auto = follow the
+   * system; Off = pin the saved code.
+   */
+  function applyLanguagePreference() {
+    if (_values.sys.autoLang !== false) {
+      syncLanguageToSystem();
+      return;
+    }
+    if (_values.sys.language) setLanguageRuntime(_values.sys.language);
+  }
+
+  /** Read the saved manual language straight from localStorage (pre-boot). */
+  function savedLanguage() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      var p = JSON.parse(raw);
+      if (p && p.sys && p.sys.autoLang === false && p.sys.language) return p.sys.language;
+    } catch (e) {}
+    return null;
+  }
+
+  /** Build the Language Settings page (toggle + separator + 68 radio rows). */
+  function buildLanguagePage(listEl) {
+    _sub.items = [];
+    _sub.ui.boolRows = {};
+    _sub.ui.radioGroups = { language: [] };
+    _sub.focusIdx = 0;
+
+    // Auto change language — always the first row.
+    addSubRow(listEl, 'bool', 'autoLang', 'Auto change language');
+
+    // Auto On: the locale list is hidden; the device language rules.
+    if (_values.sys.autoLang !== false) return;
+
+    // Separator + one radio row per bundled locale.
+    var sep = document.createElement('div');
+    sep.className = 'kai-separator';
+    var st = document.createElement('span');
+    st.className = 'kai-separator-text';
+    st.textContent = L10n.t('language_separator', 'Language separator');
+    sep.appendChild(st);
+    listEl.appendChild(sep);
+
+    var cur = _values.sys.language || '';
+    for (var i = 0; i < LANGS.length; i++) {
+      var code = LANGS[i][0];
+      var row = document.createElement('div');
+      row.className = 'setting-row';
+      row.setAttribute('tabindex', '-1');
+      row.setAttribute('data-type', 'radio');
+      row.setAttribute('data-key', 'language');
+      row.setAttribute('data-value', code);
+
+      var lbl = document.createElement('span');
+      lbl.className = 'setting-row-label';
+      lbl.textContent = LANGS[i][1];
+      row.appendChild(lbl);
+
+      var radioEl = document.createElement('span');
+      radioEl.className = 'palette-radio';
+      row.appendChild(radioEl);
+
+      if (code === cur) row.classList.add('selected');
+
+      listEl.appendChild(row);
+      _sub.ui.radioGroups.language.push({ value: code, row: row });
+      _sub.items.push({ type: 'radio', part: 'language', key: 'language', value: code });
+    }
+  }
+
+  /** Re-render the Language page in place (Auto toggle / locale change). */
+  function rebuildLanguagePage() {
+    if (!_sub || _sub.kind !== 'languageSettings') return;
+    var listEl = document.getElementById('subsettings-list');
+    if (!listEl) return;
+    var oldIdx = _sub.focusIdx;
+    while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+    buildLanguagePage(listEl);
+    // Re-assert the header: a locale switch retranslates the shared
+    // data-l10n-id header back to its generic label.
+    var hdr = document.getElementById('subsettings-header');
+    if (hdr) hdr.textContent = L10n.t('language', 'Language');
+    _sub.focusIdx = Math.min(oldIdx, Math.max(0, _sub.items.length - 1));
+    paintSubFocus();
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+
+  /** Tick the radio of the active manual language. */
+  function _highlightLanguageRadio() {
+    if (!_sub || !_sub.ui.radioGroups) return;
+    var rows = _sub.ui.radioGroups.language || [];
+    var cur = _values.sys.language || '';
+    for (var i = 0; i < rows.length; i++) {
+      if (rows[i].value === cur) rows[i].row.classList.add('selected');
+      else rows[i].row.classList.remove('selected');
+    }
+  }
+
+  /** Select (pin) a language from the radio list. */
+  function selectLanguage(code) {
+    if (!code) return;
+    _values.sys.language = code;
+    if (_values.sys.autoLang !== false) {
+      _values.sys.autoLang = false;
+      Store.setState(_mapToStore('sys', 'autoLang', false));
+    }
+    Store.setState(_mapToStore('sys', 'language', code));
+    save();
+    setLanguageRuntime(code);            // runtime switch (fires 'localized')
+    _highlightLanguageRadio();
+    if (typeof window.showToast === 'function') window.showToast(langName(code));
+  }
+
+  /**
+   * Re-render whatever settings list is open in the new language. Dynamic
+   * rows are built with L10n.t at build time, so they must be rebuilt after
+   * a locale switch (the static data-l10n-id nodes retranslate themselves).
+   */
+  function onLocaleChanged() {
+    if (!isOpen()) return;
+    if (_sub) {
+      if (_sub.kind === 'languageSettings') rebuildLanguagePage();
+    } else {
+      refreshCurrentRows();
+    }
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+
+  // â”€â”€ SoundFont loader page (Synth â†’ Load Soundfont) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // Scans BOTH partitions via SfScan; each found file renders as a square
   // CHECKBOX row (LSK = All/Deselect, OK = select, RSK = Finish to load).
-  // Loading never writes to a partition — banks + selection are persisted
+  // Loading never writes to a partition â€” banks + selection are persisted
   // in the Soundbank registry (localStorage).
 
   /**
    * Build the SoundFont discovery page. Scanning is async: the page first
-   * shows a "Scanning…" hint + a picker fallback row, then replaces the
+   * shows a "Scanningâ€¦" hint, then replaces the
    * list with the found files once SfScan.list() resolves.
    */
   function buildSoundFontPage(listEl) {
@@ -1770,16 +2412,12 @@ visual: [
 
     var hint = document.createElement('div');
     hint.className = 'sf-hint';
-    hint.textContent = 'Scanning both partitions\u2026';
+    hint.textContent = L10n.t('scanning', 'Scanning\u2026');
     listEl.appendChild(hint);
     _sub.items.push({ type: 'sfhint' });
 
-    // Fallback when the scan finds nothing (or enumerate is broken on a
-    // given KaiOS build): the system File Manager picker reads ANY file.
-    addActionRow(listEl, 'sfPick', 'Open via File Picker', function () { return ''; });
-
     if (typeof SfScan === 'undefined' || !SfScan.list) {
-      hint.textContent = 'SoundFont scanner unavailable — use File Picker';
+      hint.textContent = L10n.t('scanner_unavailable', 'SoundFont scanner unavailable');
       return;
     }
     SfScan.list(function (entries) {
@@ -1795,33 +2433,22 @@ visual: [
     });
   }
 
-  /** Rebuild the scan list DOM once SfScan answered. */
+  // Rebuild the scan list DOM once SfScan answered.
   function _renderFoundRows(listEl) {
     _sub.items = [];
     _sub.ui.boolRows = {};
     _sub.ui.sfRowEls = {};
     _sub.focusIdx = 0;
 
-    // Picker fallback row always stays on top.
-    addActionRow(listEl, 'sfPick', 'Open via File Picker', function () { return ''; });
-
     var entries = _sub.ui.found || [];
     if (!entries.length) {
       var none = document.createElement('div');
       none.className = 'sf-hint';
-      none.textContent = 'No .sf2 / .sf3 / .soundbank files found.\nPut one on the card, then scan again — or use Open via File Picker.';
+      none.textContent = L10n.t('no_sf_files_found', 'No .sf2 / .sf3 / .soundbank files found.\nPut one on the card, then scan again.');
       listEl.appendChild(none);
       _sub.items.push({ type: 'sfhint' });
       return;
     }
-
-    var sep = document.createElement('div');
-    sep.className = 'kai-separator';
-    var st = document.createElement('span');
-    st.className = 'kai-separator-text';
-    st.textContent = 'SoundFonts found (' + entries.length + ')';
-    sep.appendChild(st);
-    listEl.appendChild(sep);
 
     for (var i = 0; i < entries.length; i++) {
       var ent = entries[i];
@@ -1837,11 +2464,6 @@ visual: [
       lbl.className = 'sf-row-label';
       lbl.textContent = ent.name;
       row.appendChild(lbl);
-
-      var meta = document.createElement('span');
-      meta.className = 'sf-row-meta';
-      meta.textContent = (ent.volName === 'sdcard1' ? 'SD' : 'Internal') + ' \u00B7 ' + ent.path;
-      row.appendChild(meta);
 
       listEl.appendChild(row);
       _sub.ui.sfRowEls[ent.path] = { row: row, check: check };
@@ -1866,14 +2488,14 @@ visual: [
     }
   }
 
-  /** Move scan focus by ±1 over tickable rows (wrap-around). */
+  /** Move scan focus by Â±1 over tickable rows (wrap-around). */
   function sfStep(dir) {
     var n = _sub.items.length;
     if (!n) return;
     for (var k = 0; k < n; k++) {
       _sub.focusIdx = (_sub.focusIdx + (dir > 0 ? 1 : n - 1)) % n;
       var it = _sub.items[_sub.focusIdx];
-      if (it && (it.type === 'sfcheck' || (it.type === 'action' && it.part === 'sfPick'))) break;
+      if (it && it.type === 'sfcheck') break;
     }
     paintSubFocus();
     if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
@@ -1893,13 +2515,128 @@ visual: [
     }
     refreshSfChecks();
     if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
-    if (typeof showToast === 'function') showToast(toAll ? 'All selected' : 'Selection cleared');
+    if (typeof window.showToast === 'function') window.showToast(toAll ? L10n.t('toast_all_selected', 'All selected') : L10n.t('toast_selection_cleared', 'Selection cleared'));
+  }
+
+  var _sfLoadingActive = false;
+  var _sfLoadingCancel = false;
+  var _sfInitialBankIds = [];
+
+  function isSfLoading() {
+    return _sfLoadingActive;
+  }
+
+  function isSfLoadingCancelled() {
+    return _sfLoadingCancel;
+  }
+
+  function cancelSfLoading() {
+    if (!_sfLoadingActive && !_sfLoadingCancel) return;
+    _sfLoadingCancel = true;
+    _sfLoadingActive = false;
+    var dlg = document.getElementById('sf-loading-dialog');
+    if (dlg) dlg.classList.add('hidden');
+
+    // Rollback any banks added during this cancelled session
+    if (typeof Soundbank !== 'undefined' && Soundbank.getBanks && Soundbank.removeBank) {
+      var currentBanks = Soundbank.getBanks() || [];
+      currentBanks.forEach(function (b) {
+        if (_sfInitialBankIds.indexOf(b.id) === -1) {
+          try { Soundbank.removeBank(b.id); } catch (e) {}
+        }
+      });
+    }
+
+    // Close scanner page if open, or rebuild sfsettings
+    if (_sub && _sub.kind === 'soundfonts') {
+      closeSub();
+    } else if (_sub && _sub.kind === 'sfsettings') {
+      var listEl = document.getElementById('subsettings-list');
+      if (listEl) {
+        while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+        buildSfSettingsPage(listEl);
+        paintSubFocus();
+      }
+    }
+
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+    if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_loading_cancelled', 'Loading cancelled'));
+  }
+
+  function startBootSfLoading(restoreTaskFn) {
+    var dlg = document.getElementById('sf-loading-dialog');
+    var subtitleEl = document.getElementById('sf-loading-subtitle');
+    var listEl = document.getElementById('sf-loading-list');
+    var barEl = document.getElementById('sf-loading-bar');
+    var pctEl = document.getElementById('sf-loading-percent');
+    if (!dlg) {
+      if (typeof restoreTaskFn === 'function') restoreTaskFn(function () {}, function () {});
+      return;
+    }
+
+    _sfLoadingActive = true;
+    _sfLoadingCancel = false;
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+
+    if (subtitleEl) {
+      subtitleEl.textContent = L10n.t('loading_soundfont', 'Loading SoundFont...');
+      subtitleEl.style.display = 'block';
+    }
+    if (listEl) {
+      listEl.textContent = '';
+      listEl.style.display = 'block';
+    }
+    if (barEl) barEl.style.width = '0%';
+    if (pctEl) pctEl.textContent = '0%';
+    dlg.classList.remove('hidden');
+
+    function onProgress(pct, itemLog) {
+      if (_sfLoadingCancel) return;
+      var val = Math.min(100, Math.max(0, Math.round(pct)));
+      if (barEl) barEl.style.width = val + '%';
+      if (pctEl) pctEl.textContent = val + '%';
+      if (itemLog) {
+        if (subtitleEl) subtitleEl.textContent = L10n.t('loading_prefix', 'Loading: ') + itemLog;
+        if (listEl) listEl.textContent = itemLog;
+      }
+    }
+
+    function onDone() {
+      _sfLoadingActive = false;
+      dlg.classList.add('hidden');
+      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+    }
+
+    if (typeof restoreTaskFn === 'function') {
+      restoreTaskFn(onProgress, onDone);
+    }
+  }
+
+  function isSfDoneOpen() {
+    var ov = document.getElementById('sf-done-dialog');
+    return !!(ov && !ov.classList.contains('hidden'));
+  }
+
+  function openSfDoneDialog(msg) {
+    var ov = document.getElementById('sf-done-dialog');
+    if (ov) {
+      var msgEl = document.getElementById('sf-done-msg');
+      if (msgEl && msg) msgEl.textContent = msg;
+      ov.classList.remove('hidden');
+    }
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+
+  function hideSfDoneDialog() {
+    var ov = document.getElementById('sf-done-dialog');
+    if (ov) ov.classList.add('hidden');
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
   }
 
   /** RSK on the scan page: load every ticked file into its own bank. */
   function sfFinish() {
     if (_sub.ui.scanning) {
-      if (typeof showToast === 'function') showToast('Still scanning\u2026');
+      if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_still_scanning', 'Still scanning\u2026'));
       return;
     }
     var selected = [];
@@ -1908,141 +2645,192 @@ visual: [
       if (it.type === 'sfcheck' && _sub.ui.selected[it.path]) selected.push(it);
     }
     if (!selected.length) {
-      if (typeof showToast === 'function') showToast('Nothing selected to load');
+      if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_nothing_selected', 'Nothing selected to load'));
       return;
     }
-    if (typeof showToast === 'function') showToast('Loading ' + selected.length + ' soundfont(s)\u2026');
-    var done = 0, failed = 0;
+
+    // Record initial bank IDs for rollback if cancelled
+    var initialBanks = (typeof Soundbank !== 'undefined' && Soundbank.getBanks) ? Soundbank.getBanks() : [];
+    _sfInitialBankIds = initialBanks.map(function (b) { return b.id; });
+
+    // Filter out items that are ALREADY loaded in initialBanks
+    var alreadyLoaded = [];
+    var toLoad = [];
+
+    selected.forEach(function (it) {
+      var name = it.name || (it.path ? it.path.split('/').pop() : '');
+      var isDup = initialBanks.some(function (b) {
+        return (b.path && b.path === it.path) || (b.name && name && b.name === name);
+      });
+      if (isDup) {
+        alreadyLoaded.push(it);
+      } else {
+        toLoad.push(it);
+      }
+    });
+
+    if (!toLoad.length) {
+      // ALL selected files are ALREADY loaded!
+      var names = alreadyLoaded.map(function (it) {
+        return it.name || (it.path ? it.path.split('/').pop() : 'SoundFont');
+      }).join(', ');
+      openSfDoneDialog(L10n.t('already_loaded', 'already loaded ') + names);
+      return;
+    }
+
+    // ── Show loading dialog ──
+    var dlg = document.getElementById('sf-loading-dialog');
+    var subtitleEl = document.getElementById('sf-loading-subtitle');
+    var listEl = document.getElementById('sf-loading-list');
+    var barEl = document.getElementById('sf-loading-bar');
+    var pctEl = document.getElementById('sf-loading-percent');
+    if (!dlg || !listEl) return;
+
+    var done = 0, failed = 0, failedNames = [];
+    var totalFiles = toLoad.length;
+    var fileIdx = 0;
+
+    var firstFileName = toLoad[0] ? (toLoad[0].name || (toLoad[0].path ? toLoad[0].path.split('/').pop() : '')) : '';
+    if (subtitleEl) {
+      subtitleEl.textContent = firstFileName ? (L10n.t('loading_prefix', 'Loading: ') + firstFileName) : L10n.t('loading_soundfont', 'Loading SoundFont...');
+      subtitleEl.style.display = 'block';
+    }
+    if (listEl) {
+      if (_values.dev && _values.dev.verboseSfLoad) {
+        listEl.textContent = totalFiles > 1 ? ('1 / ' + totalFiles) : L10n.t('reading_file', 'Reading file...');
+        listEl.style.display = 'block';
+      } else {
+        listEl.style.display = 'none';
+      }
+    }
+
+    _sfLoadingActive = true;
+    _sfLoadingCancel = false;
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+
+    if (barEl) barEl.style.width = '0%';
+    if (pctEl) pctEl.textContent = '0%';
+    dlg.classList.remove('hidden');
+
+    function updateOverallProgress(samplesDone, samplesTotal) {
+      if (_sfLoadingCancel) return;
+      var fileBase = fileIdx / totalFiles;
+      var fileFrac = (samplesTotal > 0) ? (samplesDone / samplesTotal) : 1;
+      var overall = Math.min(100, Math.round((fileBase + fileFrac / totalFiles) * 100));
+      if (barEl) barEl.style.width = overall + '%';
+      if (pctEl) pctEl.textContent = overall + '%';
+      var currentName = toLoad[fileIdx] ? (toLoad[fileIdx].name || (toLoad[fileIdx].path ? toLoad[fileIdx].path.split('/').pop() : '')) : '';
+      if (subtitleEl && currentName) {
+        subtitleEl.textContent = (totalFiles > 1 ? ('[' + (fileIdx + 1) + '/' + totalFiles + '] ') : '') + L10n.t('loading_prefix', 'Loading: ') + currentName;
+      }
+      if (listEl) {
+        if (_values.dev && _values.dev.verboseSfLoad) {
+          listEl.textContent = samplesTotal > 0 ? (L10n.t('decoding_samples', 'Decoding samples (') + samplesDone + '/' + samplesTotal + ')') : L10n.t('decoding_samples_dots', 'Decoding samples...');
+        }
+      }
+    }
+
     var chain = Promise.resolve();
-    selected.forEach(function (sel) {
+    toLoad.forEach(function (sel, idx) {
       chain = chain.then(function () {
+        if (_sfLoadingCancel || !_sfLoadingActive) return;
+        fileIdx = idx;
+        var fileName = sel.name || (sel.path ? sel.path.split('/').pop() : 'SoundFont');
+        if (subtitleEl) {
+          subtitleEl.textContent = (totalFiles > 1 ? ('[' + (idx + 1) + '/' + totalFiles + '] ') : '') + L10n.t('loading_prefix', 'Loading: ') + fileName;
+        }
+        if (listEl) {
+          if (_values.dev && _values.dev.verboseSfLoad) {
+            listEl.textContent = L10n.t('reading_file', 'Reading file...');
+          }
+        }
         if (typeof SfScan === 'undefined' || !SfScan.readFile) return;
         return SfScan.readFile({ st: sel.st, path: sel.path, name: sel.name, volName: sel.volName })
           .then(function (ab) {
+            if (_sfLoadingCancel || !_sfLoadingActive) throw new Error('Cancelled');
             if (typeof Soundbank === 'undefined' || !Soundbank.loadFromFile) throw new Error('Soundbank unavailable');
-            return Soundbank.loadFromFile(sel.name, sel.path, sel.volName, ab);
+            return Soundbank.loadFromFile(sel.name, sel.path, sel.volName, ab, updateOverallProgress);
           })
-          .then(function () { done++; }, function () { failed++; });
+          .then(function () {
+            if (_sfLoadingCancel) return;
+            done++;
+          }, function (err) {
+            if (_sfLoadingCancel) return;
+            failed++;
+            failedNames.push(fileName);
+          });
       });
     });
     chain.then(function () {
-      // Auto-select the soundbank engine now that banks exist.
-      try {
-        _values.midi.engine = 'soundbank';
-        Store.setState({ engine: 'soundbank' });
-        save();
-      } catch (e) {}
-      closeSub();
-      var parent = document.getElementById('settings-overlay');
-      if (parent && _openGroup) {
-        rebuildRows(parent, _openGroup);
-        var rows = parent.querySelectorAll('.setting-row, .setting-row-slider');
-        if (rows.length) focusRow(rows, 0);
+      if (_sfLoadingCancel || !_sfLoadingActive) {
+        _sfLoadingActive = false;
+        if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+        return;
       }
-      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
-      var msg = failed ? (done + ' loaded, ' + failed + ' failed') : ('Loaded ' + done + ' soundfont(s)');
-      if (typeof showToast === 'function') showToast(msg);
-    });
-  }
+      _sfLoadingActive = false;
+      // Fill bar to 100%
+      if (barEl) barEl.style.width = '100%';
+      if (pctEl) pctEl.textContent = '100%';
 
-  /** Blob → ArrayBuffer (promise) — same shapes as the other pickers. */
-  function _blobArrayBuffer(blob) {
-    return new Promise(function (resolve, reject) {
-      function legacy() {
-        var fr = new FileReader();
-        fr.onload = function () { resolve(fr.result); };
-        fr.onerror = function () { reject(new Error('FileReader failed')); };
-        fr.readAsArrayBuffer(blob);
-      }
-      if (blob && typeof blob.arrayBuffer === 'function') {
+      // Auto-close dialog after a brief moment
+      setTimeout(function () {
+        dlg.classList.add('hidden');
+
+        // Auto-select the soundbank engine now that banks exist.
         try {
-          blob.arrayBuffer().then(resolve, legacy);
-          return;
-        } catch (e) { legacy(); return; }
-      }
-      legacy();
-    });
-  }
-
-  /** MozActivity File-Manager picker — shows ALL files, so any .sf2/.sf3
-   *  on the card can be loaded even where the scan came up empty. */
-  function _launchSfPicker() {
-    function extractBlob(res) {
-      if (!res) return null;
-      if (res.blob) return res.blob;
-      if (res.blobs && res.blobs.length) return res.blobs[0];
-      if (res.data) {
-        if (res.data.blob) return res.data.blob;
-        if (res.data.blobs && res.data.blobs.length) return res.data.blobs[0];
-      }
-      return null;
-    }
-    function extractName(res) {
-      if (!res) return '';
-      var n = res.name
-        || (res.blob && res.blob.name)
-        || (res.data && (res.data.name || (res.data.blob && res.data.blob.name)))
-        || '';
-      return String(n || '');
-    }
-    try {
-      window._pickerOpen = true;
-      var activity = new MozActivity({ name: 'pick' });
-      activity.onsuccess = function () {
-        window._pickerOpen = false;
-        var blob = extractBlob(this.result);
-        var name = extractName(this.result) || (blob && blob.name) || 'SoundFont';
-        if (blob) {
-          _blobArrayBuffer(blob).then(function (ab) {
-            _loadPickedSoundfont(name, ab);
-          }, function () {
-            if (typeof showToast === 'function') showToast('Cannot read that file');
-          });
-        } else if (typeof showToast === 'function') {
-          showToast('Cannot read that file');
+          _values.midi.engine = 'soundbank';
+          Store.setState({ engine: 'soundbank' });
+          save();
+        } catch (e) {}
+        closeSub();
+        
+        // If we returned to the sfsettings sub-page, we need to rebuild it to show the new banks.
+        if (_sub && _sub.kind === 'sfsettings') {
+          var sfListEl = document.getElementById('subsettings-list');
+          if (sfListEl) {
+            while (sfListEl.firstChild) sfListEl.removeChild(sfListEl.firstChild);
+            buildSfSettingsPage(sfListEl);
+            // Auto-focus the first newly loaded SoundFont so the user sees it immediately
+            for (var i = 0; i < _sub.items.length; i++) {
+              if (_sub.items[i].type === 'sfrow') {
+                _sub.focusIdx = i;
+                break;
+              }
+            }
+            paintSubFocus();
+          }
+        } else {
+          var parent = document.getElementById('settings-overlay');
+          if (parent && _openGroup) {
+            rebuildRows(parent, _openGroup);
+            var rows = parent.querySelectorAll('.setting-row, .setting-row-slider');
+            if (rows.length) focusRow(rows, Math.min(_focusIdx, rows.length - 1));
+          }
         }
-      };
-      activity.onerror = function () { window._pickerOpen = false; };
-    } catch (e) {
-      window._pickerOpen = false;
-      if (typeof showToast === 'function') showToast('File picker not available');
-    }
-  }
-
-  /** Load a picked blob into its own bank + switch the engine. */
-  function _loadPickedSoundfont(name, arrayBuffer) {
-    if (typeof Soundbank === 'undefined' || !Soundbank.loadFromFile) {
-      if (typeof showToast === 'function') showToast('Soundbank unavailable');
-      return;
-    }
-    if (typeof showToast === 'function') showToast('Loading ' + name + '\u2026');
-    Soundbank.loadFromFile(name, '', '', arrayBuffer).then(function () {
-      try {
-        _values.midi.engine = 'soundbank';
-        Store.setState({ engine: 'soundbank' });
-        save();
-      } catch (e) {}
-      closeSub();
-      var parent = document.getElementById('settings-overlay');
-      if (parent && _openGroup) {
-        rebuildRows(parent, _openGroup);
-        var rows = parent.querySelectorAll('.setting-row, .setting-row-slider');
-        if (rows.length) focusRow(rows, 0);
-      }
-      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
-      if (typeof showToast === 'function') showToast('Loaded ' + name);
-    }, function (err) {
-      if (typeof showToast === 'function') {
-        showToast('Failed to load ' + name + ': ' + ((err && err.message) || 'parse error'));
-      }
+        
+        if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+        if (failedNames.length > 0 && typeof window.showErrorDialog === 'function') {
+          var errList = failedNames.map(function (n) { return '• ' + n; }).join('\n');
+          window.showErrorDialog(L10n.t('failed_load_sf', 'Failed to load SoundFont(s) (file moved, deleted, or corrupted):\n') + errList, null, L10n.t('error', 'Error'));
+        } else {
+          var msg = failed ? (done + ' ' + L10n.t('loaded_sf_short', 'loaded, ') + failed + ' ' + L10n.t('failed_sf_short', 'failed')) : (L10n.t('loaded_prefix', 'Loaded ') + done + ' ' + L10n.t('toast_soundfonts', 'soundfont(s)'));
+          if (alreadyLoaded.length > 0) {
+            var alNames = alreadyLoaded.map(function(it){ return it.name || (it.path ? it.path.split('/').pop() : ''); }).join(', ');
+            msg += ' (' + L10n.t('already_loaded', 'already loaded ') + alNames + ')';
+          }
+          openSfDoneDialog(msg);
+        }
+      }, 300);
     });
   }
+
+
 
   /**
    * Keyboard for the SoundFont scan sub-page.
-   *   ▲▼ / ◀▶  move focus      OK        toggle the ticked checkbox
+   *   â–²â–¼ / â—€â–¶  move focus      OK        toggle the ticked checkbox
    *   LSK       All / Deselect all
-   *   RSK       Finish → load everything ticked
+   *   RSK       Finish â†’ load everything ticked
    *   Back      back to the Synth group (nothing loads)
    */
   function sfScanKey(key) {
@@ -2055,12 +2843,10 @@ visual: [
     if (key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN) { sfStep(+1); return true; }
     if (key === 'ArrowLeft' || key === Constants.KEY.ARROW_LEFT) { sfStep(-1); return true; }
     if (key === 'ArrowRight' || key === Constants.KEY.ARROW_RIGHT) {
-      if (focused && focused.type === 'action' && focused.part === 'sfPick') { _launchSfPicker(); return true; }
       sfStep(+1);
       return true;
     }
     if (key === Constants.KEY.ENTER || key === 13 || key === 'Enter') {
-      if (focused && focused.type === 'action' && focused.part === 'sfPick') { _launchSfPicker(); return true; }
       if (focused && focused.type === 'sfcheck') {
         _sub.ui.selected[focused.path] = !_sub.ui.selected[focused.path];
         refreshSfChecks();
@@ -2097,8 +2883,8 @@ visual: [
 
   /**
    * Build the Graphics settings page with two separators:
-   *   — Render Mode — 3 radio-style rows (auto/individual/buffer)
-   *   — 3D View —      4 radio-style rows (keyboard/notefall/both/none)
+   *   â€” Render Mode â€” 3 radio-style rows (auto/individual/buffer)
+   *   â€” 3D View â€”      4 radio-style rows (keyboard/notefall/both/none)
    * Radio rows use the same KaiUI radio-button glyph as the Note Color
    * palette page (kai-rbl icon via .palette-radio + .selected class).
    */
@@ -2114,17 +2900,17 @@ visual: [
       s.className = 'kai-separator';
       var st = document.createElement('span');
       st.className = 'kai-separator-text';
-      st.textContent = text;
+      st.textContent = L10n.t('sep_' + text.toLowerCase().replace(/ /g, '_'), text);
       s.appendChild(st);
       listEl.appendChild(s);
     }
 
-    // ── Render Mode radio group ──
-    sep('Render Mode');
+    // â”€â”€ Render Mode radio group â”€â”€
+    sep(L10n.t('sep_render_mode', 'Render Mode'));
     var renderModes = [
-      ['auto',      'Auto'],
-      ['individual','Individual'],
-      ['buffer',    'Buffer']
+      ['auto', L10n.t('opt_auto', 'Auto')],
+      ['individual', L10n.t('opt_individual', 'Individual')],
+      ['buffer', L10n.t('opt_buffer', 'Buffer')]
     ];
     var curRender = _values.visual.renderMode || 'auto';
     for (var ri = 0; ri < renderModes.length; ri++) {
@@ -2138,7 +2924,7 @@ visual: [
 
       var lbl = document.createElement('span');
       lbl.className = 'setting-row-label';
-      lbl.textContent = rm[1];
+      lbl.textContent = L10n.t('opt_' + rm[0], rm[1]);
       row.appendChild(lbl);
 
       var radioEl = document.createElement('span');
@@ -2152,13 +2938,13 @@ visual: [
       _sub.items.push({ type: 'radio', part: 'renderMode', key: 'renderMode', value: rm[0] });
     }
 
-    // ── 3D View radio group ──
-    sep('3D View');
+    // â”€â”€ 3D View radio group â”€â”€
+    sep(L10n.t('sep_3d_view', '3D View'));
     var view3dModes = [
-      ['keyboard', 'Keyboard'],
-      ['notefall', 'Note fall'],
-      ['both',     'Both'],
-      ['none',     'None']
+      ['keyboard', L10n.t('opt_keyboard', 'Keyboard')],
+      ['notefall', L10n.t('opt_notefall', 'Note fall')],
+      ['both', L10n.t('opt_both', 'Both')],
+      ['none', L10n.t('opt_none', 'None')]
     ];
     var curView = _values.visual.view3d || 'both';
     for (var vi = 0; vi < view3dModes.length; vi++) {
@@ -2172,7 +2958,7 @@ visual: [
 
       var vlbl = document.createElement('span');
       vlbl.className = 'setting-row-label';
-      vlbl.textContent = vm[1];
+      vlbl.textContent = L10n.t('opt_' + vm[0], vm[1]);
       vrow.appendChild(vlbl);
 
       var vradioEl = document.createElement('span');
@@ -2214,23 +3000,23 @@ visual: [
     _sub.ui.paletteRows = [];
     _sub.focusIdx = 0;
 
-    // One-shot "Random note color" action — regenerates all 16 channel
+    // One-shot "Random note color" action â€” regenerates all 16 channel
     // colours. Locked until a real file is loaded (demo/tutorial mode).
     // Placed ABOVE the "Note color palette" separator.
     var rnd = document.createElement('div');
     rnd.className = 'palette-action';
-    rnd.textContent = 'Random note color';
+    rnd.textContent = L10n.t('random_note_color', 'Random note color');
     rnd.setAttribute('tabindex', '-1');
     listEl.appendChild(rnd);
     _sub.ui.paletteRandom = rnd;
     _sub.items.push({ type: 'randomaction' });
 
-    // Separator — matches KaiUI kai-separator style.
+    // Separator â€” matches KaiUI kai-separator style.
     var sep = document.createElement('div');
     sep.className = 'kai-separator';
     var sepText = document.createElement('span');
     sepText.className = 'kai-separator-text';
-    sepText.textContent = 'Note color palette';
+    sepText.textContent = L10n.t('sep_note_color_palette', 'Note color palette');
     sep.appendChild(sepText);
     listEl.appendChild(sep);
 
@@ -2247,10 +3033,10 @@ visual: [
 
       var nameEl = document.createElement('span');
       nameEl.className = 'palette-row-name';
-      nameEl.textContent = pal.label;
+      nameEl.textContent = L10n.t('palette_' + pal.id, pal.label);
       row.appendChild(nameEl);
 
-      // KaiUI radio-button glyph (kai-rbl) — dot appears when selected.
+      // KaiUI radio-button glyph (kai-rbl) â€” dot appears when selected.
       var radioEl = document.createElement('span');
       radioEl.className = 'palette-radio';
       row.appendChild(radioEl);
@@ -2260,10 +3046,10 @@ visual: [
       _sub.items.push({ type: 'palette', part: pal.id, key: 'palette' });
     }
 
-    // "Load more" row — triggers MozActivity image picker.
+    // "Load more" row â€” triggers MozActivity image picker.
     var loadMore = document.createElement('div');
     loadMore.className = 'palette-loadmore';
-    loadMore.textContent = 'Load more';
+    loadMore.textContent = L10n.t('load_more', 'Load more');
     loadMore.setAttribute('tabindex', '-1');
     listEl.appendChild(loadMore);
     _sub.items.push({ type: 'loadmore' });
@@ -2322,7 +3108,7 @@ visual: [
 
   /**
    * Apply a stored palette to the live channel colors.
-   * 'random' → regenerate random hues; others → sample from their
+   * 'random' â†’ regenerate random hues; others â†’ sample from their
    * cached or PNG source and push 16 colors into Notes via setPaletteColors.
    */
   function _applyStoredPalette(id) {
@@ -2336,7 +3122,7 @@ visual: [
       if (Notes.setPaletteColors) Notes.setPaletteColors(_paletteColors[id]);
       return;
     }
-    // Built-in palette — sample from the PNG strip and cache.
+    // Built-in palette â€” sample from the PNG strip and cache.
     // Use def.colors (the actual number of strips in the PNG) rather
     // than PALETTE_SAMPLE_N (16) to avoid sampling at color transitions.
     var def = null;
@@ -2348,7 +3134,7 @@ visual: [
     var img = new Image();
     img.onload = function () {
       var raw = _samplePaletteColors(img, sampleCount);
-      // Cycle to 16 channels — synth10 (10) wraps channels 10-15 to 0-5,
+      // Cycle to 16 channels â€” synth10 (10) wraps channels 10-15 to 0-5,
       // synth9 (8) wraps channels 8-15 to 0-7, etc.
       var colors = [];
       for (var c = 0; c < 16; c++) colors.push(raw[c % raw.length]);
@@ -2383,7 +3169,7 @@ visual: [
         var colors = _samplePaletteColors(img, PALETTE_SAMPLE_N);
         // Generate a unique id for the custom palette.
         var customId = 'custom_' + Date.now();
-        var customLabel = 'Custom Palette';
+        var customLabel = L10n.t('palette_custom_loaded', 'Custom Palette');
         _paletteColors[customId] = colors;
         // Apply the sampled colors to the live channel palette.
         if (typeof Notes !== 'undefined' && Notes.setPaletteColors) {
@@ -2410,10 +3196,10 @@ visual: [
           }
           paintSubFocus();
         }
-        if (typeof showToast === 'function') showToast('Custom palette loaded');
+        if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_custom_palette', 'Custom palette loaded'));
       };
       img.onerror = function () {
-        if (typeof showToast === 'function') showToast('Not a valid image file');
+        if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_invalid_image', 'Not a valid image file'));
       };
       img.src = URL.createObjectURL(blob);
     }
@@ -2421,7 +3207,7 @@ visual: [
     var retried = false;
     function retryWithType() {
       if (retried) {
-        if (typeof showToast === 'function') showToast('Image picker not available');
+        if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_no_picker', 'Image picker not available'));
         return;
       }
       retried = true;
@@ -2440,8 +3226,8 @@ visual: [
           var blob = extractBlob(this.result);
           if (blob) {
             applyBlob(blob);
-          } else if (typeof showToast === 'function') {
-            showToast('Cannot read that file');
+          } else if (typeof window.showToast === 'function') {
+            showToast(L10n.t('toast_cannot_read', 'Cannot read that file'));
           }
         };
         activity.onerror = function (e) {
@@ -2481,18 +3267,18 @@ visual: [
     }
 
     function applyBlob(blob, srcPath) {
-      // The plain pick shows every file type — reject anything that isn't
+      // The plain pick shows every file type â€” reject anything that isn't
       // an image (MIME 'image/*' or a known image extension), so a .mid
       // or other file never becomes the background.
       var mime = String(blob.type || '').toLowerCase();
       var ext = String(blob.name || '').toLowerCase().split('.').pop();
       var IMG_EXT = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
       if (mime.indexOf('image/') !== 0 && IMG_EXT.indexOf(ext) === -1) {
-        if (typeof showToast === 'function') showToast('Not an image file');
+        if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_not_image', 'Not an image file'));
         return;
       }
       // Only keep the source path when it really looks like a storage path
-      // (contains a slash) — a bare file name can't be checked at boot and
+      // (contains a slash) â€” a bare file name can't be checked at boot and
       // must not trigger a false "missing" dialog.
       var path = String(srcPath || '');
       if (path.indexOf('/') === -1 && path.indexOf('\\') === -1) path = '';
@@ -2516,10 +3302,10 @@ visual: [
         try { dataUrl = cv.toDataURL('image/jpeg', 0.8); }
         catch (e) { dataUrl = cv.toDataURL(); }
         if (!dataUrl || dataUrl.length > 2500000) {
-          if (typeof showToast === 'function') showToast('Image too large');
+          if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_image_too_large', 'Image too large'));
           return;
         }
-        // The picker may hand back a full path — keep only the file name.
+        // The picker may hand back a full path â€” keep only the file name.
         _values.visual.bgImageUrl = dataUrl;
         _values.visual.bgImageName = (blob.name || 'Image').split('/').pop().split('\\').pop();
         save();
@@ -2532,10 +3318,10 @@ visual: [
           window.pfaSetBgImage(dataUrl);
         }
         _rebuildSubRows();
-        if (typeof showToast === 'function') showToast('Background image saved');
+        if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_bg_saved', 'Background image saved'));
       };
       img.onerror = function () {
-        if (typeof showToast === 'function') showToast('Not a valid image file');
+        if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_invalid_image', 'Not a valid image file'));
       };
       img.src = URL.createObjectURL(blob);
     }
@@ -2543,7 +3329,7 @@ visual: [
     var retried = false;
     function retryWithType() {
       if (retried) {
-        if (typeof showToast === 'function') showToast('Image picker not available');
+        if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_no_picker', 'Image picker not available'));
         return;
       }
       retried = true;
@@ -2567,8 +3353,8 @@ visual: [
               else if (blob.name) p = String(blob.name);
             } catch (e2) { p = ''; }
             applyBlob(blob, p);
-          } else if (typeof showToast === 'function') {
-            showToast('Cannot read that file');
+          } else if (typeof window.showToast === 'function') {
+            showToast(L10n.t('toast_cannot_read', 'Cannot read that file'));
           }
         };
         activity.onerror = function (e) {
@@ -2582,7 +3368,7 @@ visual: [
       }
     }
 
-    // Plain pick — the format that works on the device:
+    // Plain pick â€” the format that works on the device:
     //   new MozActivity({ name: 'pick' })
     // No type filter data (some builds ignore/fail the image/* hint).
     launch(null);
@@ -2599,7 +3385,7 @@ visual: [
       window.pfaSetBgImage(null);
     }
     _rebuildSubRows();
-    if (!skipToast && typeof showToast === 'function') showToast('Background image cleared');
+    if (!skipToast && typeof window.showToast === 'function') window.showToast(L10n.t('toast_bg_cleared', 'Background image cleared'));
   }
   // Silent clear used at boot to drop a corrupt/unloadable saved image.
   window.clearBgImageAction = function () { _clearBgImage(true); };
@@ -2639,7 +3425,7 @@ visual: [
     save();
     if (_sub.kind === 'bools') applyInfoCard();
     var ref = _sub.ui.boolRows && _sub.ui.boolRows[item.part];
-    if (ref && ref.valEl) ref.valEl.textContent = item.choices[idx][1];
+    if (ref && ref.valEl) ref.valEl.textContent = L10n.t('opt_' + item.choices[idx][0], item.choices[idx][1]);
   }
 
   /**
@@ -2649,7 +3435,39 @@ visual: [
   function toggleSubBool(key) {
     if (!_sub || (_sub.kind !== 'bools' && _sub.kind !== 'piano' && _sub.kind !== 'general' &&
                  _sub.kind !== 'graphics' && _sub.kind !== 'loadingBar' && _sub.kind !== 'dialog' &&
-                 _sub.kind !== 'developer')) return;
+                 _sub.kind !== 'developer' && _sub.kind !== 'sfsettings' &&
+                 _sub.kind !== 'languageSettings')) return;
+    if (_sub.kind === 'sfsettings') {
+      // Soundfont Settings row â€” lives under the MIDI group, not Visual.
+      var next = !_values.midi[key];
+      _values.midi[key] = next;
+      Store.setState(_mapToStore('midi', key, next));
+      save();
+      var sRef = _sub.ui.boolRows && _sub.ui.boolRows[key];
+      if (sRef && sRef.valEl) sRef.valEl.textContent = next ? L10n.t('on', 'On') : L10n.t('off', 'Off');
+      return;
+    }
+    if (_sub.kind === 'languageSettings') {
+      // Language row (autoLang) — persists under the 'sys' group. Flipping it
+      // rebuilds the page (the locale list shows only while Off) and
+      // re-syncs the runtime language (system vs pinned).
+      var nextL = !_values.sys[key];
+      _values.sys[key] = nextL;
+      Store.setState(_mapToStore('sys', key, nextL));
+      save();
+      if (key === 'autoLang') {
+        if (nextL) {
+          syncLanguageToSystem();            // On — follow the system again
+        } else {
+          if (!_values.sys.language) _values.sys.language = currentLocaleCode();
+          setLanguageRuntime(_values.sys.language); // Off — pin it
+        }
+        rebuildLanguagePage();
+      }
+      var lRef = _sub.ui.boolRows && _sub.ui.boolRows[key];
+      if (lRef && lRef.valEl) lRef.valEl.textContent = nextL ? L10n.t('on', 'On') : L10n.t('off', 'Off');
+      return;
+    }
     if (_sub.kind === 'developer') {
       // Dev toggles persist under the 'dev' group, not .visual.
       var next = !_values.dev[key];
@@ -2661,7 +3479,7 @@ visual: [
       }
       save();
       var dRef = _sub.ui.boolRows && _sub.ui.boolRows[key];
-      if (dRef && dRef.valEl) dRef.valEl.textContent = next ? 'On' : 'Off';
+      if (dRef && dRef.valEl) dRef.valEl.textContent = next ? L10n.t('on', 'On') : L10n.t('off', 'Off');
       return;
     }
     var next = !_values.visual[key];
@@ -2671,7 +3489,7 @@ visual: [
     if (_sub.kind === 'bools') {
       applyInfoCard();
       if (key === 'infoCard') {
-        // Master flipped → rebuild the page collapsed/expanded in place.
+        // Master flipped â†’ rebuild the page collapsed/expanded in place.
         // Focus lands back on the master row (idx 0).
         var list = document.getElementById('subsettings-list');
         if (list) {
@@ -2679,18 +3497,18 @@ visual: [
           buildBoolPage(list);
           paintSubFocus();
         }
-        return; // row refs were rebuilt — no stale valEl write
+        return; // row refs were rebuilt â€” no stale valEl write
       }
     } else if (_sub.kind === 'loadingBar') {
-      // Loading-bar presentation changed → live-apply while a parse runs.
+      // Loading-bar presentation changed â†’ live-apply while a parse runs.
       if (typeof window.applyParseBarStyle === 'function') {
         try { window.applyParseBarStyle(); } catch (e) {}
       }
     } else if (_sub.kind === 'dialog') {
-      // showDialog is read live by the pill paths — nothing else to do.
+      // showDialog is read live by the pill paths â€” nothing else to do.
     }
     var ref = _sub.ui.boolRows && _sub.ui.boolRows[key];
-    if (ref && ref.valEl) ref.valEl.textContent = next ? 'On' : 'Off';
+    if (ref && ref.valEl) ref.valEl.textContent = next ? L10n.t('on', 'On') : L10n.t('off', 'Off');
   }
 
   /**
@@ -2705,19 +3523,36 @@ visual: [
     // sub-page handling so softkeys are usable inside this one page.
     if (_sub.kind === 'soundfonts') return sfScanKey(key);
 
-    // Back → back to the group page. ONLY the hardware Back key exits —
-    // LSK/RSK are strictly forbidden inside sub-pages.
+    // Back â†’ back to the group page. ONLY the hardware Back key exits â€”
+    // LSK/RSK are strictly forbidden inside sub-pages. A focused Soundfont
+    // text box commits before closing so typed digits are never lost.
     if (key === 'Backspace' || key === Constants.KEY.BACKSPACE) {
+      if (_sfMove) {
+        cancelSfMove();
+        return true;
+      }
+      if (_sub.kind === 'sfsettings') {
+        var curB = _sub.items[_sub.focusIdx];
+        if (curB && curB.type === 'sftext') sfCommitText(curB);
+      }
+      if (_sub.kind === 'general') {
+        var curG = _sub.items[_sub.focusIdx];
+        if (curG && curG.type === 'gentext') genCommitText(curG);
+      }
       closeSub();
       return true;
     }
 
-    // Vertical: the COLOR page uses a column-aware grid walk (DEF ↕
+    // Vertical: the COLOR page uses a column-aware grid walk (DEF â†•
     // bottom wrap, grid columns mapping onto R/G/B/A). Other pages:
     // swatches AND the DEF cell stride by SWATCH_COLS, rest step by one.
-    // All movement wraps around (bottom ↔ top).
+    // All movement wraps around (bottom â†” top).
     if (key === 'ArrowUp' || key === Constants.KEY.ARROW_UP) {
       var itU = _sub.items[_sub.focusIdx];
+      if (_sfMove && itU && itU.type === 'sfrow') {
+        _sfMoveRows(itU.row, -1);
+        return true;
+      }
       if (_sub.kind === 'color' && itU &&
           (itU.type === 'swatch' || itU.type === 'def' || itU.type === 'slider')) {
         moveColorVertical(-1);
@@ -2725,10 +3560,15 @@ visual: [
         moveSubFocus(itU && (itU.type === 'swatch' || itU.type === 'def')
           ? -SWATCH_COLS : -1);
       }
+      if (_sfMove) { cancelSfMove(); }
       return true;
     }
     if (key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN) {
       var itD = _sub.items[_sub.focusIdx];
+      if (_sfMove && itD && itD.type === 'sfrow') {
+        _sfMoveRows(itD.row, +1);
+        return true;
+      }
       if (_sub.kind === 'color' && itD &&
           (itD.type === 'swatch' || itD.type === 'def' || itD.type === 'slider')) {
         moveColorVertical(+1);
@@ -2736,24 +3576,45 @@ visual: [
         moveSubFocus(itD && (itD.type === 'swatch' || itD.type === 'def')
           ? +SWATCH_COLS : +1);
       }
+      if (_sfMove) { cancelSfMove(); }
       return true;
     }
 
     if (key === 'ArrowLeft' || key === Constants.KEY.ARROW_LEFT) {
+      var itL = _sub.items[_sub.focusIdx];
+      if (_sub.kind === 'sfsettings' && itL && itL.type === 'sftext') {
+        sfCaretStep(itL, -1);
+        return true;
+      }
+      if (_sub.kind === 'general' && itL && itL.type === 'gentext') {
+        sfCaretStep(itL, -1);
+        return true;
+      }
       adjustFocusedSub(-1);
       return true;
     }
     if (key === 'ArrowRight' || key === Constants.KEY.ARROW_RIGHT) {
-      // Color/sub rows drill into their sub-page on Right (like the group page)
       var itR = _sub.items[_sub.focusIdx];
+      if (_sub.kind === 'sfsettings' && itR && itR.type === 'sftext') {
+        sfCaretStep(itR, +1);
+        return true;
+      }
+      if (_sub.kind === 'general' && itR && itR.type === 'gentext') {
+        sfCaretStep(itR, +1);
+        return true;
+      }
       if (drillSubRow(itR)) return true;
       adjustFocusedSub(+1);
       return true;
     }
 
-    // Enter activates drill-in rows / swatch/DEF cells — but NEVER toggles
+    // Enter activates drill-in rows / swatch/DEF cells â€” but NEVER toggles
     // booleans (Info Card / Piano rows are Left/Right only by design).
     if (key === Constants.KEY.ENTER || key === 13 || key === 'Enter') {
+      if (_sfMove) {
+        commitSfMove();
+        return true;
+      }
       var itE = _sub.items[_sub.focusIdx];
       if (drillSubRow(itE)) return true;
       if (itE && itE.type === 'bool') return true; // swallowed on purpose
@@ -2761,10 +3622,14 @@ visual: [
       return true;
     }
 
+    if (key === 'SoftLeft' || key === Constants.KEY.SOFT_LEFT || key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT) {
+      if (handleSfSoftKey(key)) return true;
+    }
+
     return true; // modal page swallows everything else
   }
 
-  // ── Row DOM ──
+  // â”€â”€ Row DOM â”€â”€
 
   function rebuildRows(overlay, group) {
     var list = overlay.querySelector('#settings-list');
@@ -2784,7 +3649,7 @@ visual: [
       row.setAttribute('tabindex', '-1');
       row.setAttribute('data-key', def.key);
       row.setAttribute('data-type', def.type);
-      // Storage permission denied → dim "Export Log" (guard also in
+      // Storage permission denied â†’ dim "Export Log" (guard also in
       // runDevAction, but keep it visibly disabled).
       if (def.key === 'exportLog' && typeof window !== 'undefined' &&
           typeof window.pfaStorageGranted === 'function' && !window.pfaStorageGranted()) {
@@ -2798,7 +3663,7 @@ visual: [
       if (def.type === 'number') {
         // Slider variant: header row + live numeric tracker + range input.
         // CSS for `.setting-row-slider` (and the input[type=range] parts)
-        // is in kaiui.css — it matches KaiUI-master's `--ratio`/`--sx`
+        // is in kaiui.css â€” it matches KaiUI-master's `--ratio`/`--sx`
         // fill calculation so focused/unfocused look matches KaiUI.
         row.className = 'setting-row-slider';
 
@@ -2807,7 +3672,7 @@ visual: [
 
         var hdr = document.createElement('span');
         hdr.className = 'setting-row-slider-header';
-        hdr.textContent = def.label;
+        hdr.textContent = L10n.t(def.l10nKey || def.key, def.label);
         line.appendChild(hdr);
 
         var trk = document.createElement('span');
@@ -2846,14 +3711,14 @@ visual: [
 
         var lbl = document.createElement('span');
         lbl.className = 'setting-row-label';
-        lbl.textContent = (typeof def.labelFn === 'function') ? def.labelFn() : def.label;
+        lbl.textContent = (typeof def.labelFn === 'function') ? def.labelFn() : L10n.t(def.l10nKey || def.key, def.label);
         row.appendChild(lbl);
 
         var valEl = document.createElement('span');
         valEl.className = 'setting-row-value';
 
         if (def.type === 'sub') {
-          // Drill-in row — forward arrow drawn by CSS via
+          // Drill-in row â€” forward arrow drawn by CSS via
           // .setting-row.has-sub::after (gaia-icons 'forward'), the SAME
           // glyph the Options menu uses for MIDI-OUT / Visual Settings.
           row.classList.add('has-sub');
@@ -2862,10 +3727,10 @@ visual: [
           // guards against a stringified value crashing toFixed().
           if (typeof def.fmt === 'function') {
             try { valEl.textContent = def.fmt(Number(val) || 0); }
-            catch (e) { valEl.textContent = 'Off'; }
+            catch (e) { valEl.textContent = L10n.t('off', 'Off'); }
           }
         } else if (def.type === 'color') {
-          // Color drill-in row — small chip previewing the current color;
+          // Color drill-in row â€” small chip previewing the current color;
           // bgColor null renders as 'Auto'. Same forward arrow as above.
           row.classList.add('has-sub');
           if (val) {
@@ -2877,10 +3742,10 @@ visual: [
             hexTxt.textContent = String(val);
             valEl.appendChild(hexTxt);
           } else {
-            valEl.textContent = 'Auto';
+            valEl.textContent = L10n.t('opt_auto', 'Auto');
           }
         } else if (def.type === 'action') {
-          // One-shot action row (Export Log) — arrow glyph, no value text;
+          // One-shot action row (Export Log) â€” arrow glyph, no value text;
           // Enter / ArrowRight fires the action, never cycles a value.
           row.classList.add('has-sub');
         } else {
@@ -2894,11 +3759,10 @@ visual: [
     }
 
     // Synth group extra: the loaded-SoundFont list (a checkbox row per
-    // imported bank) renders BELOW the schema rows. Own navigation —
-    // LSK = Delete, OK = select, RSK = Move (▲▼ reorder). The rows are
+    // imported bank) renders BELOW the schema rows. Own navigation â€”
+    // LSK = Delete, OK = select, RSK = Move (â–²â–¼ reorder). The rows are
     // regular .setting-row elements, so group ArrowUp/Down wrap through
-    // them like any other row.
-    if (group === 'midi') appendLoadedSfRows(list);
+
   }
 
   /**
@@ -2907,20 +3771,32 @@ visual: [
    * SELECTED and therefore plays (layered) when the soundbank engine is on.
    */
   function appendLoadedSfRows(list) {
-    var banks;
+    var banks = [];
     try {
-      if (typeof Soundbank === 'undefined' || !Soundbank.getBanks) return;
-      banks = Soundbank.getBanks();
-    } catch (e) { return; }
-    if (!banks || !banks.length) return;
+      if (typeof Soundbank !== 'undefined' && Soundbank.getBanks) {
+        banks = Soundbank.getBanks() || [];
+      }
+    } catch (e) {}
 
     var sep = document.createElement('div');
     sep.className = 'kai-separator';
     var st = document.createElement('span');
     st.className = 'kai-separator-text';
-    st.textContent = 'Loaded SoundFonts';
+    st.textContent = L10n.t('sep_loaded_soundfonts', 'Loaded Soundfonts');
     sep.appendChild(st);
     list.appendChild(sep);
+
+    if (!banks.length) {
+      var noRow = document.createElement('div');
+      noRow.className = 'setting-row';
+      var noLbl = document.createElement('span');
+      noLbl.className = 'setting-row-label';
+      noLbl.textContent = L10n.t('no_soundfonts_loaded', 'No soundfonts loaded');
+      noLbl.style.opacity = '0.5';
+      noRow.appendChild(noLbl);
+      list.appendChild(noRow);
+      return;
+    }
 
     for (var i = 0; i < banks.length; i++) {
       var b = banks[i];
@@ -2944,14 +3820,178 @@ visual: [
 
       var val = document.createElement('span');
       val.className = 'setting-row-value';
-      val.textContent = b.selected ? 'On' : 'Off';
+      val.textContent = b.selected ? L10n.t('on', 'On') : L10n.t('off', 'Off');
       row.appendChild(val);
 
       list.appendChild(row);
+      if (_sub && _sub.kind === 'sfsettings') {
+        _sub.items.push({ type: 'sfrow', id: b.id, row: row });
+      }
     }
   }
 
-  // ── Loaded-SoundFont list navigation (Synth group rows) ────────────
+  // â”€â”€ Soundfont Settings page (Synth â†’ Soundfont Settings) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // Buffer length + Voices are KaiUI-style numeric text boxes (.kai-text-input
+  // â€” small gray label over a bordered input line): focus opens the native
+  // keyboard, digits type into the box, Enter commits (clamped to range).
+  // "Disable Soundfont effects" is a plain On/Off row grouped by separators.
+
+  function buildSfSettingsPage(listEl) {
+    var prevFocusIdx = (_sub && typeof _sub.focusIdx === 'number') ? _sub.focusIdx : 0;
+    _sub.items = [];
+    _sub.ui.boolRows = {};
+    _sub.ui.text = null;
+
+    function sepsis(text) {
+      var s = document.createElement('div');
+      s.className = 'kai-separator';
+      var st = document.createElement('span');
+      st.className = 'kai-separator-text';
+      st.textContent = L10n.t('sep_' + text.toLowerCase().replace(/ /g, '_'), text);
+      s.appendChild(st);
+      listEl.appendChild(s);
+    }
+
+    // ── Load Soundfont action ──
+    sepsis('SoundFont');
+    addSfActionRow(listEl, 'loadSf', sfLoadLabel());
+
+    // ── Audio ──
+    sepsis('Audio');
+    addSfTextRow(listEl, 'sfBuffer', 'Buffer length',
+      'Planning buffer in samples (512\u20138192)', 512, 8192);
+    addSfTextRow(listEl, 'sfVoices', 'Voices',
+      'Max simultaneous notes (1\u2013256)', 1, 256);
+
+    // ── Effects ──
+    sepsis('Effects');
+    addSfBoolRow(listEl, 'sfNoFx', 'Disable sound effects');
+
+    // ── Loaded SoundFonts ──
+    appendLoadedSfRows(listEl);
+
+    _sub.focusIdx = Math.max(0, Math.min(prevFocusIdx, _sub.items.length - 1));
+  }
+
+  /** One numeric text box row (KaiUI kai-text-input layout). */
+  function addSfTextRow(listEl, key, label, hint, min, max) {
+    var w = document.createElement('div');
+    w.className = 'kai-text-input';
+    w.setAttribute('tabindex', '-1');
+    w.setAttribute('data-type', 'sftext');
+    w.setAttribute('data-key', key);
+
+    var lab = document.createElement('label');
+    lab.className = 'kai-text-input-label';
+    lab.textContent = L10n.t(key === 'sfVoices' ? 'sf_voices' : 'sf_buffer_length', label);
+    w.appendChild(lab);
+
+    var input = document.createElement('input');
+    input.className = 'kai-text-input-input';
+    input.type = 'tel';
+    input.value = String(_values.midi[key] != null ? _values.midi[key] :
+                         (key === 'sfBuffer' ? 1024 : 32));
+    w.appendChild(input);
+
+    var hintEl = document.createElement('div');
+    hintEl.className = 'kai-text-input-hint';
+    hintEl.textContent = L10n.t(key === 'sfVoices' ? 'sf_voices_hint' : 'sf_buffer_hint', hint);
+    w.appendChild(hintEl);
+
+
+    listEl.appendChild(w);
+    _sub.items.push({ type: 'sftext', part: key, row: w, input: input, min: min, max: max });
+    _sub.ui[key] = { row: w, input: input };
+    if (!_sub.ui.text) _sub.ui.text = { input: input };
+    return { row: w, input: input };
+  }
+
+  /** On/Off row backed by a MIDI-group value (mirrors addSubRow bool). */
+  function addSfBoolRow(listEl, key, label) {
+    var r = document.createElement('div');
+    r.className = 'setting-row';
+    r.setAttribute('tabindex', '-1');
+    r.setAttribute('data-type', 'bool');
+    r.setAttribute('data-key', key);
+
+    var lbl = document.createElement('span');
+    lbl.className = 'setting-row-label';
+    lbl.textContent = L10n.t(key, label);
+    r.appendChild(lbl);
+
+    var valEl = document.createElement('span');
+    valEl.className = 'setting-row-value';
+    valEl.textContent = _values.midi[key] ? L10n.t('on', 'On') : L10n.t('off', 'Off');
+    r.appendChild(valEl);
+
+    listEl.appendChild(r);
+    _sub.items.push({ type: 'bool', part: key, key: key });
+    _sub.ui.boolRows[key] = { row: r, valEl: valEl };
+    return { row: r, valEl: valEl };
+  }
+
+  /** Drill-in action row inside Soundfont Settings (opens another sub-page). */
+  function addSfActionRow(listEl, partKey, label) {
+    var r = document.createElement('div');
+    r.className = 'setting-row';
+    r.classList.add('has-sub');
+    r.setAttribute('tabindex', '-1');
+    r.setAttribute('data-type', 'sfaction');
+    r.setAttribute('data-key', partKey);
+
+    var lbl = document.createElement('span');
+    lbl.className = 'setting-row-label';
+    lbl.textContent = label;
+    r.appendChild(lbl);
+
+    var valEl = document.createElement('span');
+    valEl.className = 'setting-row-value';
+    r.appendChild(valEl);
+
+    listEl.appendChild(r);
+    _sub.items.push({ type: 'sfaction', part: partKey, row: r });
+    return { row: r };
+  }
+
+  /** Commit a text box: parse digits, clamp to its min/max, persist, and
+   *  push voices into the running Soundbank engine. Blurs the field so the
+   *  native keyboard closes (Enter / leaving the row / closing the page). */
+  function sfCommitText(item) {
+    if (!item || item.type !== 'sftext') return;
+    if (item.input && document.activeElement === item.input) {
+      try { item.input.blur(); } catch (e) {}
+    }
+    var raw = item.input ? item.input.value : '';
+    var n = parseInt(String(raw).replace(/[^0-9]/g, ''), 10);
+    if (isNaN(n)) n = (item.part === 'sfBuffer') ? 1024 : 32;
+    n = Math.max(item.min, Math.min(item.max, n));
+    if (item.input) item.input.value = String(n);
+    if (_values.midi[item.part] === n) return;
+    _values.midi[item.part] = n;
+    Store.setState(_mapToStore('midi', item.part, n));
+    save();
+    if (item.part === 'sfVoices' && typeof Soundbank !== 'undefined' &&
+        Soundbank.setVoices) {
+      try { Soundbank.setVoices(n); } catch (e) {}
+    }
+    if (typeof window.showToast === 'function') {
+      showToast((item.part === 'sfVoices' ? L10n.t('toast_voices', 'Voices: ') : L10n.t('toast_buffer', 'Buffer: ')) + n);
+    }
+  }
+
+  /** â—€â–¶ on a focused text box: step the caret (typed digits still land
+   *  natively â€” controls.js only blocks Back/Enter on text fields). */
+  function sfCaretStep(item, dir) {
+    if (!item || (item.type !== 'sftext' && item.type !== 'gentext') || !item.input) return;
+    var input = item.input;
+    var pos = input.selectionStart != null ? input.selectionStart : input.value.length;
+    pos += dir;
+    if (pos < 0) pos = 0;
+    if (pos > input.value.length) pos = input.value.length;
+    try { input.setSelectionRange(pos, pos); } catch (e) {}
+  }
+
+  // ——— Loaded-SoundFont list navigation (Synth group rows) ———————————
 
   function sfRowFor(row) {
     return !!(row && row.getAttribute && row.getAttribute('data-type') === 'sfrow');
@@ -2977,31 +4017,98 @@ visual: [
   /** OK on a loaded-SoundFont row: toggle its layering selection. */
   function toggleSfRow(id) {
     if (typeof Soundbank === 'undefined' || !Soundbank.toggleSelect) return;
-    // Banks carry NUMERIC ids internally (uid counter; strict === in
-    // Soundbank.bankById) — the DOM etched them as strings via data-id.
-    try { Soundbank.toggleSelect(Number(id)); } catch (e) { return; }
-    _rebuildGroupRows();
+    try { Soundbank.toggleSelect(id); } catch (e) { return; }
+    
+    if (_sub && _sub.kind === 'sfsettings') {
+      var listEl = document.getElementById('subsettings-list');
+      if (listEl) {
+        var oldIdx = _sub.focusIdx;
+        while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+        buildSfSettingsPage(listEl);
+        _sub.focusIdx = Math.min(oldIdx, Math.max(0, _sub.items.length - 1));
+        paintSubFocus();
+      }
+    } else {
+      _rebuildGroupRows();
+    }
+    
     if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
   }
 
-  /** LSK on a loaded-SoundFont row: delete every selected bank (falling
-   *  back to the focused one when nothing is ticked). */
-  function deleteSfRows(focusedRow) {
+  function openSfDeleteConfirm(focusedRow) {
     var banks = (typeof Soundbank !== 'undefined' && Soundbank.getBanks) ? Soundbank.getBanks() : [];
-    var selected = [];
-    banks.forEach(function (b) { if (b.selected) selected.push(b.id); });
     var focusId = focusedRow ? sfRowId(focusedRow) : null;
-    var target = selected.length ? selected : (focusId ? [focusId] : []);
+    var target = focusId ? [focusId] : (banks.length ? [banks[0].id] : []);
     if (!target.length) {
-      if (typeof showToast === 'function') showToast('No soundfont to delete');
+      if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_no_sf_to_delete', 'No soundfont to delete'));
       return;
     }
-    target.forEach(function (id) {
-      try { if (Soundbank.removeBank) Soundbank.removeBank(Number(id)); } catch (e) {}
-    });
-    _rebuildGroupRows();
+    _sfDeleteTargets = target;
+    var ov = document.getElementById('sf-delete-dialog');
+    if (ov) ov.classList.remove('hidden');
     if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
-    if (typeof showToast === 'function') showToast('Deleted ' + target.length + ' soundfont(s)');
+  }
+
+  function hideSfDeleteConfirm() {
+    _sfDeleteTargets = null;
+    var ov = document.getElementById('sf-delete-dialog');
+    if (ov) ov.classList.add('hidden');
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+
+  function doSfDelete() {
+    var targets = _sfDeleteTargets;
+    hideSfDeleteConfirm();
+    if (!targets || !targets.length) return;
+    targets.forEach(function (id) {
+      try { if (Soundbank.removeBank) Soundbank.removeBank(id); } catch (e) {}
+    });
+    // If the rows are in the sub-page, rebuild it; otherwise rebuild the root group
+    if (_sub && _sub.kind === 'sfsettings') {
+      var listEl = document.getElementById('subsettings-list');
+      if (listEl) {
+        while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+        buildSfSettingsPage(listEl);
+        paintSubFocus();
+      }
+    } else {
+      _rebuildGroupRows();
+    }
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+    if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_deleted', 'Deleted ') + targets.length + L10n.t('toast_soundfonts', ' soundfont(s)'));
+  }
+
+  var _sfPreMoveBankIds = null;
+
+  function cancelSfMove() {
+    if (!_sfMove) return;
+    _sfMove = false;
+    if (_sfPreMoveBankIds && typeof Soundbank !== 'undefined' && Soundbank.setBankOrder) {
+      Soundbank.setBankOrder(_sfPreMoveBankIds);
+    }
+    _sfPreMoveBankIds = null;
+
+    if (_sub && _sub.kind === 'sfsettings') {
+      var listEl = document.getElementById('subsettings-list');
+      if (listEl) {
+        while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+        buildSfSettingsPage(listEl);
+        paintSubFocus();
+      }
+    }
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+    if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_move_cancelled', 'Move cancelled'));
+  }
+
+  function commitSfMove() {
+    if (!_sfMove) return;
+    _sfMove = false;
+    _sfPreMoveBankIds = null;
+    if (_sub && _sub.kind === 'sfsettings') {
+      paintSubFocus();
+    }
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+    if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_arrangement_saved', 'Arrangement saved'));
   }
 
   /** LSK / RSK while a loaded-SoundFont row (or move mode) is active. */
@@ -3009,26 +4116,36 @@ visual: [
     var isLeft = (key === 'SoftLeft' || key === Constants.KEY.SOFT_LEFT);
     var isRight = (key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT);
     if (!isLeft && !isRight) return false;
-    if (_sub) return false; // sub-page owns its own LSK/RSK (scan page)
-    if (!row || !sfRowFor(row)) {
-      // Focus not on a soundfont row: cancel any stale move mode, keep
-      // the softkeys inert (matches the "LSK/RSK forbidden" group rule).
-      _sfMove = false;
-      return false;
+    // Sub-page handles its own sf keys now, so we only bypass if it's NOT sfsettings.
+    if (_sub && _sub.kind !== 'sfsettings') return false; 
+    
+    // In sfsettings, we might pass a null row from handleSubKey. We can find it:
+    if (_sub && _sub.kind === 'sfsettings' && !row) {
+      row = _sub.items[_sub.focusIdx];
     }
-    if (isLeft) {
-      if (_sfMove) _sfMove = false;
-      else deleteSfRows(row);
-      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
-      return true;
+    
+    if (!row || !sfRowFor(row.row || row)) {
+      if (_sfMove) cancelSfMove();
+      return false;
     }
     if (isRight) {
       if (_sfMove) {
-        _sfMove = false;
-        if (typeof showToast === 'function') showToast('Arrangement saved');
+        cancelSfMove();
+      } else {
+        openSfDeleteConfirm(row.row || row);
+      }
+      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      return true;
+    }
+    if (isLeft) {
+      if (_sfMove) {
+        commitSfMove();
       } else {
         _sfMove = true;
-        if (typeof showToast === 'function') showToast('Move: \u25B2\u25BC to reorder, OK to finish');
+        var banks = (typeof Soundbank !== 'undefined' && Soundbank.getBanks) ? Soundbank.getBanks() : [];
+        _sfPreMoveBankIds = banks.map(function (b) { return b.id; });
+        paintSubFocus();
+        if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_move_help', 'Move: \u25B2\u25BC to reorder, OK to save'));
       }
       if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
       return true;
@@ -3038,10 +4155,10 @@ visual: [
 
   function formatValue(def, val) {
     if (def.type === 'action') return '';
-    if (def.type === 'bool') return val ? 'On' : 'Off';
+    if (def.type === 'bool') return val ? L10n.t('on', 'On') : L10n.t('off', 'Off');
     if (def.type === 'enum') {
       for (var i = 0; i < def.choices.length; i++) {
-        if (def.choices[i][0] === val) return def.choices[i][1];
+        if (def.choices[i][0] === val) return L10n.t('opt_' + def.choices[i][0], def.choices[i][1]);
       }
       return String(val);
     }
@@ -3054,6 +4171,11 @@ visual: [
 
   function focusRow(rows, idx) {
     _focusIdx = idx;
+    var listEl = document.getElementById('settings-list');
+    if (listEl) {
+      if (_sfMove) listEl.classList.add('sf-move-mode');
+      else listEl.classList.remove('sf-move-mode');
+    }
     for (var i = 0; i < rows.length; i++) {
       if (i === idx) rows[i].classList.add('focused');
       else          rows[i].classList.remove('focused');
@@ -3089,9 +4211,9 @@ visual: [
     }
   }
 
-  // ──────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // Keyboard navigation when overlay is open
-  // ──────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   /**
    * Handle a key event while overlay is open. Returns true if consumed.
@@ -3101,7 +4223,7 @@ visual: [
   function handleKey(key) {
     if (!_openGroup) return false;
 
-    // Level-2 page open → it owns the keyboard until Back/SoftRight
+    // Level-2 page open â†’ it owns the keyboard until Back/SoftRight
     if (_sub) return handleSubKey(key);
 
     var overlay = document.getElementById('settings-overlay');
@@ -3109,9 +4231,9 @@ visual: [
     var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider');
     if (!rows.length) return false;
 
-    // Back → return to the group we drilled in from (Developer inside
-    // System → System; any hub page → hub), else close.
-    // ONLY the hardware Back key — LSK/RSK are forbidden.
+    // Back â†’ return to the group we drilled in from (Developer inside
+    // System â†’ System; any hub page â†’ hub), else close.
+    // ONLY the hardware Back key â€” LSK/RSK are forbidden.
     if (key === 'Backspace' || key === Constants.KEY.BACKSPACE) {
       if (_hubReturn && _openGroup !== 'hub') {
         switchBack();
@@ -3122,11 +4244,11 @@ visual: [
     }
 
     // SoftLeft / SoftRight with focus on a loaded-SoundFont row are NOT
-    // forbidden — they run the row's own actions (Delete / Move).
+    // forbidden â€” they run the row's own actions (Delete / Move).
     if (handleSfSoftKey(key, rows[_focusIdx])) return true;
 
     // Enter on a drill-in row opens its sub-page. Plain rows cycle
-    // values with Left/Right only — Enter is intentionally inert.
+    // values with Left/Right only â€” Enter is intentionally inert.
     // SoftLeft must NEVER open sub-pages (LSK forbidden in settings).
     if (key === Constants.KEY.ENTER || key === 13 || key === 'Enter') {
       var rowE = rows[_focusIdx];
@@ -3151,8 +4273,8 @@ visual: [
         return true;
       }
       if (t === 'sfrow') {
-        // Loaded-SoundFont row: Enter toggles layering, or — in Move
-        // mode (RSK) — finishes the arrangement ("OK to finish").
+        // Loaded-SoundFont row: Enter toggles layering, or â€” in Move
+        // mode (RSK) â€” finishes the arrangement ("OK to finish").
         if (_sfMove) {
           _sfMove = false;
           if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
@@ -3164,7 +4286,7 @@ visual: [
       return true; // consumed but no-op for plain rows
     }
 
-    // ArrowUp/Down: nav with WRAP-AROUND (bottom ↔ top). In SoundFont
+    // ArrowUp/Down: nav with WRAP-AROUND (bottom â†” top). In SoundFont
     // Move mode the arrows reorder the focused bank instead of moving
     // the cursor, and leaving the sf rows cancels move mode.
     if (key === 'ArrowUp' || key === Constants.KEY.ARROW_UP) {
@@ -3188,7 +4310,7 @@ visual: [
       return true;
     }
 
-    // ArrowRight → drill-in on sub/color rows, otherwise cycle forward
+    // ArrowRight â†’ drill-in on sub/color rows, otherwise cycle forward
     if (key === 'ArrowRight' || key === Constants.KEY.ARROW_RIGHT) {
       var rowR = rows[_focusIdx];
       var tR = rowR && rowR.getAttribute('data-type');
@@ -3228,25 +4350,49 @@ visual: [
     return false; // not consumed
   }
 
-  /** Move mode ▲▼: swap the focused bank one step up/down the loaded
-   *  SoundFont list, then re-render and keep focus on that same bank. */
   function _sfMoveRows(row, dir) {
-    if (typeof Soundbank === 'undefined' || !Soundbank.getBanks || !Soundbank.moveBank) return;
-    var id = sfRowId(row);
-    var idx = _sfBankIndexById(id);
+    var id = (row && typeof sfRowId === 'function') ? sfRowId(row) : null;
+    if (!id && row && row.getAttribute) id = row.getAttribute('data-id');
+    if (!id && _sub && _sub.items && _sub.items[_sub.focusIdx]) id = _sub.items[_sub.focusIdx].id;
+    if (!id) return;
+    var banks = (typeof Soundbank !== 'undefined' && Soundbank.getBanks) ? Soundbank.getBanks() : [];
+    var idx = -1;
+    for (var i = 0; i < banks.length; i++) {
+      if (String(banks[i].id) === String(id)) { idx = i; break; }
+    }
     if (idx < 0) return;
-    var banks = Soundbank.getBanks();
-    var ni = idx + dir;
-    if (ni < 0 || ni >= banks.length) return;
-    try { Soundbank.moveBank(idx, ni); } catch (e) { return; }
-    _rebuildGroupRows();
-    var overlay = document.getElementById('settings-overlay');
-    if (!overlay) return;
-    var rows2 = overlay.querySelectorAll('.setting-row, .setting-row-slider');
-    for (var i = 0; i < rows2.length; i++) {
-      if (sfRowFor(rows2[i]) && sfRowId(rows2[i]) === String(banks[ni].id)) {
-        focusRow(rows2, i);
-        break;
+    var nBanks = banks.length;
+    if (nBanks <= 1) return;
+    var targetIdx = ((idx + dir) % nBanks + nBanks) % nBanks;
+
+    if (typeof Soundbank !== 'undefined' && Soundbank.moveBank) {
+      Soundbank.moveBank(idx, targetIdx);
+    }
+
+    if (_sub && _sub.kind === 'sfsettings') {
+      var listEl = document.getElementById('subsettings-list');
+      if (listEl) {
+        while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+        buildSfSettingsPage(listEl);
+        // Find new focusIdx for the moved bank
+        for (var j = 0; j < _sub.items.length; j++) {
+          if (_sub.items[j].type === 'sfrow' && String(_sub.items[j].id) === String(id)) {
+            _sub.focusIdx = j;
+            break;
+          }
+        }
+        paintSubFocus();
+      }
+    } else {
+      _rebuildGroupRows();
+      var overlay = document.getElementById('settings-overlay');
+      if (!overlay) return;
+      var rows2 = overlay.querySelectorAll('.setting-row, .setting-row-slider');
+      for (var k = 0; k < rows2.length; k++) {
+        if (sfRowFor(rows2[k]) && sfRowId(rows2[k]) === String(id)) {
+          focusRow(rows2, k);
+          break;
+        }
       }
     }
   }
@@ -3307,23 +4453,23 @@ visual: [
     var k = rowE ? rowE.getAttribute('data-key') : '';
     try {
       if (k === 'randomColors') {
-        // Note Color Palette Randomise — locked until a real file is loaded
+        // Note Color Palette Randomise â€” locked until a real file is loaded
         // (demo active or finished but no file yet). Mirrors Key 4 / the old
         // Options menu item.
         try {
           if (typeof window.isPlaybackLocked === 'function' && window.isPlaybackLocked()) {
-            if (typeof showToast === 'function') showToast('Locked until a file loads');
+            if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_locked', 'Locked until a file loads'));
             return;
           }
         } catch (e) {}
         if (typeof Notes !== 'undefined' && Notes.randomizePalette) {
           Notes.randomizePalette();
-          if (typeof HUD !== 'undefined' && HUD.showOsd) HUD.showOsd('Track colors randomised', 2000);
+          if (typeof HUD !== 'undefined' && HUD.showOsd) HUD.showOsd(L10n.t('osd_colors_randomised', 'Track colors randomised'), 2000);
         }
       }
       else if (k === 'exportLog') {
         if (typeof window.pfaStorageGranted === 'function' && !window.pfaStorageGranted()) {
-          // Explicit user action — always respond with the grant path
+          // Explicit user action â€” always respond with the grant path
           // (force), never a silent no-op.
           if (typeof window.pfaGuardStorageLoad === 'function') window.pfaGuardStorageLoad(true);
           return;
@@ -3340,10 +4486,12 @@ visual: [
       else if (k === 'fullscreen' && typeof window.toggleFullscreen === 'function') window.toggleFullscreen();
       else if (k === 'rotate' && typeof window.rotateScreen === 'function') window.rotateScreen();
       else if (k === 'volume' && typeof window.showOSDVolume === 'function') window.showOSDVolume();
+      else if (k === 'exportSettings' && typeof window.pfaExportSettings === 'function') window.pfaExportSettings();
+      else if (k === 'importSettings' && typeof window.pfaImportSettings === 'function') window.pfaImportSettings();
     } catch (e) {
       // Never leave an explicit action unresponsive.
       try {
-        if (typeof window.showDevDialog === 'function') window.showDevDialog('Action failed: ' + e);
+        if (typeof window.showDevDialog === 'function') window.showDevDialog(L10n.t('dev_action_failed', 'Action failed: ') + e);
       } catch (e2) {}
     }
   }
@@ -3380,32 +4528,58 @@ visual: [
       if (key === 'infoCard' || key.indexOf('info') === 0) {
         applyInfoCard();
       } else if (key === 'pianoColorHex') {
-        // White-key fill color changed → rebuild the piano spritesheet
+        // White-key fill color changed â†’ rebuild the piano spritesheet
         if (typeof Keyboard !== 'undefined' && Keyboard.rebuild) {
           Keyboard.rebuild();
         }
       } else if (key === 'kbRange' || key === 'kbStart' || key === 'kbEnd') {
-        // Range changed → re-fit key width to the new visible window
+        // Range changed â†’ re-fit key width to the new visible window
         try { window.dispatchEvent(new Event('resize')); } catch (e) {}
       } else if (key === 'pctBarVisible' || key === 'loadAnimated' || key === 'loadBarColor' ||
                key === 'pctColor' || key === 'pctAnalyze' || key === 'pctMerge') {
-        // Loading-bar presentation changed → live-apply while a parse runs.
+        // Loading-bar presentation changed â†’ live-apply while a parse runs.
         if (typeof window.applyParseBarStyle === 'function') {
           try { window.applyParseBarStyle(); } catch (e) {}
         }
       } else if (key === 'dialogTextColor' || key === 'dialogBgColor') {
-        // Center-pill colors changed → re-apply to the pill.
+        // Center-pill colors changed â†’ re-apply to the pill.
         if (typeof window.applyDialogStyle === 'function') {
           try { window.applyDialogStyle(); } catch (e) {}
         }
       }
-      // pianoSize needs no hook — renderers read Keyboard.height() per frame
+      // pianoSize needs no hook â€” renderers read Keyboard.height() per frame
     }
     if (group === 'midi' && key === 'engine' && next === 'soundbank') {
-      if (typeof window !== 'undefined' && window.Soundbank &&
-          !Soundbank.isReady()) {
-        if (typeof showToast === 'function') showToast('Soundbank not loaded');
+      if (typeof window !== 'undefined' && window.Soundbank && !Soundbank.isReady()) {
+        var entries = (typeof Soundbank.readRegistry === 'function') ? Soundbank.readRegistry() : [];
+        if (entries && entries.length > 0) {
+          if (typeof startBootSfLoading === 'function') {
+            startBootSfLoading(function (onProgress, onDone) {
+              Soundbank.restore(onProgress).then(onDone).catch(onDone);
+            });
+          } else {
+            Soundbank.restore();
+          }
+        } else {
+          if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_no_sf_loaded', 'No soundfont loaded'));
+        }
       }
+    }
+    // Engine row: show/hide the Soundfont Settings row immediately (it only
+    // exists while the engine is 'soundbank') â€” re-render the group in place.
+    if (group === 'midi' && key === 'engine' && !_sub) {
+      var ovE = document.getElementById('settings-overlay');
+      if (ovE && !ovE.classList.contains('hidden')) {
+        rebuildRows(ovE, 'midi');
+        var rowsE = ovE.querySelectorAll('.setting-row, .setting-row-slider');
+        if (rowsE.length) focusRow(rowsE, Math.min(_focusIdx, rowsE.length - 1));
+        if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      }
+    }
+    // Voices change â†’ live-apply the polyphony cap to the soundbank engine.
+    if (group === 'midi' && key === 'sfVoices' &&
+        typeof Soundbank !== 'undefined' && Soundbank.setVoices) {
+      try { Soundbank.setVoices(next); } catch (e) {}
     }
 
     if (group === 'dev' && key === 'osdLog') {
@@ -3418,11 +4592,15 @@ visual: [
 
     if (group === 'sys' && (key === 'autoFullscreen' || key === 'autoRotate')) {
       // Launch-only behaviour — tell the user it takes effect next launch.
-      if (typeof showToast === 'function') {
+      if (typeof window.showToast === 'function') {
         setTimeout(function () {
-          try { showToast(next ? 'Applied on next launch' : 'Off from next launch'); } catch (e) {}
+          try { showToast(next ? L10n.t('toast_applied_next_launch', 'Applied on next launch') : L10n.t('toast_off_next_launch', 'Off from next launch')); } catch (e) {}
         }, 0);
       }
+    }
+
+    if (key === 'focusColor') {
+      applyFocusColor(next);
     }
 
     // Persist
@@ -3435,6 +4613,9 @@ visual: [
       if (key === 'waveform')     return { waveform: val };
       if (key === 'audio')        return { audio: val };
       if (key === 'skipSlowOpen') return { skipSlowOpen: val };
+      if (key === 'sfBuffer')     return { sfBuffer: val };
+      if (key === 'sfVoices')     return { sfVoices: val };
+      if (key === 'sfNoFx')       return { sfNoFx: val };
     } else if (group === 'visual') {
       if (key === 'renderMode')    return { renderMode: val };
       if (key === 'speed')         return { speed: val };
@@ -3484,14 +4665,21 @@ visual: [
     } else if (group === 'dev') {
       if (key === 'osdLog')         return { osdLog: val };
       if (key === 'verboseAnalyze') return { verboseAnalyze: val };
+        if (key === 'verboseSfLoad') return { verboseSfLoad: val };
+      if (key === 'verboseInit')    return { verboseInit: val, verboseLoadLog: val };
+      if (key === 'verboseLoadLog') return { verboseInit: val, verboseLoadLog: val };
     } else if (group === 'sys') {
       if (key === 'autoFullscreen') return { autoFullscreen: val };
       if (key === 'autoRotate')     return { autoRotate: val };
+      if (key === 'autoLang')       return { autoLang: val };
+      if (key === 'language')       return { language: val };
+      if (key === 'focusColor')     return { focusColor: val };
     }
+    if (key === 'focusColor') return { focusColor: val };
     return {};
   }
 
-  // ── Visual theme application ──
+  // â”€â”€ Visual theme application â”€â”€
 
   function applyTheme(theme) {
     // Set data-theme on <html>; CSS in app.css acts on each value.
@@ -3553,7 +4741,7 @@ visual: [
 
     if (!hud) return;
 
-    // Master gate off → hide the entire card (not just each stat).
+    // Master gate off â†’ hide the entire card (not just each stat).
     if (!infoCard) { hud.style.display = 'none'; return; }
     hud.style.display = '';
 
@@ -3587,9 +4775,9 @@ visual: [
     for (var i = 0; i < stats.length; i++) stats[i].style.color = color;
   }
 
-  // ──────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // Internals
-  // ──────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   function findDef(group, key) {
     var arr = SCHEMA[group];
@@ -3649,8 +4837,20 @@ visual: [
   }
 
   /**
+   * Set the master Audio On/Off (Synth → Audio Output) from OUTSIDE the
+   * settings UI — used by the piano RSK audio toggle so the persisted value
+   * and the "Audio Output" row stay in sync with the runtime toggle.
+   */
+  function setAudio(on) {
+    var next = !!on;
+    _values.midi.audio = next;
+    Store.setState(_mapToStore('midi', 'audio', next));
+    save();
+  }
+
+  /**
    * Apply a Keyboard Range preset from outside the settings UI (hotkeys):
-   * '88' | '128' | 'custom' — same path as the in-page Key Count row.
+   * '88' | '128' | 'custom' â€” same path as the in-page Key Count row.
    */
   function setKbPreset(size) {
     applyKbPresetSize(size);
@@ -3658,17 +4858,71 @@ visual: [
 
   /**
    * Rebuild the currently-open group's rows in place (used when a
-   * context-sensitive row's visibility changes — e.g. Cancel Analysis
+   * context-sensitive row's visibility changes â€” e.g. Cancel Analysis
    * appears/disappears when an analysis starts/finishes). Preserves focus.
    */
   function refreshCurrentRows() {
-    if (_sub) return; // level-2 page open — backbone rows not visible
+    if (_sub) return; // level-2 page open â€” backbone rows not visible
     var overlay = document.getElementById('settings-overlay');
     if (!overlay || overlay.classList.contains('hidden') || !_openGroup) return;
     if (_openGroup === 'hub') return;
     rebuildRows(overlay, _openGroup);
     var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider');
     if (rows.length) focusRow(rows, Math.min(_focusIdx, rows.length - 1));
+  }
+
+  /**
+   * Serialize the whole settings profile as the export payload for the
+   * System â†’ Export Settings action. Stored as a `.note` (like the app's
+   * own MIDI exports) but its content is GENERIC JSON â€” distingushed from a
+   * binary MIDI `.note` by the leading `pfaSettings` marker on import.
+   */
+  function exportPayload() {
+    return JSON.stringify({
+      pfaSettings: 1,             // marker: this is a Settings config, not MIDI data
+      version: 1,
+      app: 'midiPlayer',
+      saved: new Date().toISOString(),
+      values: _values
+    });
+  }
+
+  /**
+   * Apply an imported settings profile (from the System â†’ Import Settings
+   * picker). The caller has already validated shape + marker; this merges the
+   * payload over the factory defaults, persists + re-pushes to Store, then
+   * re-applies every runtime side effect (theme, info card, piano sprites,
+   * soundfont engine, auto fullscreen/rotate) and refreshes the open list.
+   * Returns true on success.
+   */
+  function applyImportedSettings(parsed) {
+    if (!parsed || typeof parsed !== 'object') return false;
+    if (parsed.pfaSettings !== 1 || !parsed.values || typeof parsed.values !== 'object') {
+      return false;
+    }
+    try {
+      _values = merge(DEFAULTS, parsed.values);
+      _values.__upgraded = true;
+      save();
+      load(); // re-push Store + re-apply theme / info card / palette / OSD
+      if (typeof Keyboard !== 'undefined' && Keyboard.rebuild) {
+        try { Keyboard.rebuild(); } catch (e) {}
+      }
+      if (typeof Soundbank !== 'undefined' && Soundbank.setVoices &&
+          _values.midi.sfVoices != null) {
+        try { Soundbank.setVoices(_values.midi.sfVoices); } catch (e) {}
+      }
+      if (typeof window.applySystemSettings === 'function') {
+        try { window.applySystemSettings(); } catch (e) {}
+      }
+      refreshCurrentRows();
+      if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+      if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_settings_imported', 'Settings imported'));
+      return true;
+    } catch (e) {
+      if (typeof console !== 'undefined') console.error('[Settings] applyImportedSettings failed', e);
+      return false;
+    }
   }
 
   return {
@@ -3683,12 +4937,19 @@ visual: [
     applyTheme:     applyTheme,
     applyInfoCard:  applyInfoCard,
     applyVisual:    applyVisual,
+    setAudio:       setAudio,
     setKbPreset:    setKbPreset,
     refreshCurrentRows: refreshCurrentRows,
+    exportPayload:      exportPayload,
+    applyImportedSettings: applyImportedSettings,
     // Read-only helpers for controls.js softkeys: whether a sub-page is
     // open (+ which kind), SoundFont Move mode, and the scan page's
     // all-ticked state (drives the LSK All/Deselect label).
     subKind:        function () { return _sub ? _sub.kind : null; },
+    // Language preference helpers for main.js (pre-boot pin + locale guard).
+    savedLanguage:         savedLanguage,
+    applyLanguagePreference: applyLanguagePreference,
+    onLocaleChanged:       onLocaleChanged,
     isMoveMode:     function () { return _sfMove; },
     sfAllChecked:   function () {
       if (!_sub || _sub.kind !== 'soundfonts') return false;
@@ -3700,5 +4961,16 @@ visual: [
       }
       return total > 0 && checked === total;
     },
+    isSfDeleteConfirmOpen: function () { return !!_sfDeleteTargets; },
+    hideSfDeleteConfirm: hideSfDeleteConfirm,
+    doSfDelete: doSfDelete,
+    isSfDoneOpen: isSfDoneOpen,
+    openSfDoneDialog: openSfDoneDialog,
+    hideSfDoneDialog: hideSfDoneDialog,
+    isSfLoading: isSfLoading,
+    isSfLoadingCancelled: isSfLoadingCancelled,
+    cancelSfLoading: cancelSfLoading,
+    startBootSfLoading: startBootSfLoading
   };
 })();
+

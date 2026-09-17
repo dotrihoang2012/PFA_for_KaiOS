@@ -4,8 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,viewport-fit=cover">
 <title>MIDI Player</title>
-<link rel="stylesheet" href="css/kaiui.css">
-<link rel="stylesheet" href="css/app.css">
+<meta name="defaultLanguage" content="en-US">
+<meta name="availableLanguages" content="af-ZA:202107131655, ar-SA:202107131655, az-Latn-AZ:202107131655, be-BY:202107131655, bg-BG:202107131655, bn-BD:202107131655, bn-IN:202107131655, bs-BA:202107131655, cs-CZ:202107131655, da-DK:202107131655, de-DE:202107131655, el-GR:202107131655, en-GB:202107131655, en-US:202107131655, es-ES:202107131655, es-US:202107131655, en-NG:202107131655, et-EE:202107131655, fi-FI:202107131655, fr-FR:202107131655, fr-CA:202107131655, he-IL:202107131655, hi-IN:202107131655, hr-HR:202107131655, hu-HU:202107131655, hy-AM:202107131655, id-ID:202107131655, it-IT:202107131655, km-KH:202107131655, kk-KZ:202107131655, lt-LT:202107131655, lv-LV:202107131655, lo-LA:202107131655, ka-GE:202107131655, mk-MK:202107131655, ms-MY:202107131655, nb-NO:202107131655, ne-IN:202107131655, nl-NL:202107131655, pl-PL:202107131655, pt-BR:202107131655, pt-PT:202107131655, ro-RO:202107131655, ru-RU:202107131655, si-LK:202107131655, sk-SK:202107131655, sl-SI:202107131655, sq-AL:202107131655, sr-Latn-CS:202107131655, sv-SE:202107131655, sw-ZA:202107131655, ta-IN:202107131655, th-TH:202107131655, fil-PH:202107131655, tr-TR:202107131655, uk-UA:202107131655, ur-PK:202107131655, vi-VN:202107131655, xh-ZA:202107131655, zh-CN:202107131655, zh-TW:202107131655, zh-HK:202107131655, is-IS:202107131655, zu-ZA:202107131655, mo-RO:202107131655, fa-IR:202107131655, ps-AF:202107131655, uz-Cyrl-UZ:202107131655">
+<link rel="localization" href="locales-obj/{locale}.json">
+<link rel="stylesheet" href="style/kaiui.css">
+<link rel="stylesheet" href="style/app.css">
 </head>
 <body>
 <div id="app">
@@ -14,17 +17,17 @@
   <canvas id="main-canvas"></canvas>
   <div id="dev-osd" class="hidden"></div>
 <div id="hud">
-<span id="hud-note-count" class="hud-stat">NPS: 0</span>
-<span id="hud-nc" class="hud-stat">NC: 0</span>
-<span id="hud-passed" class="hud-stat">Passed: 0</span>
-<span id="hud-speed" class="hud-stat">Speed: 1.0x</span>
-<span id="hud-fps" class="hud-stat">FPS: 0</span>
-<span id="hud-time" class="hud-stat">Time: --:-- / --:--</span>
-<span id="hud-polyphony" class="hud-stat">Polyphony: 0</span>
-<span id="hud-rendered" class="hud-stat">Rendered Notes: 0</span>
-<span id="hud-audio-buffer" class="hud-stat">Audio Buffer: 0</span>
-<span id="hud-tick" class="hud-stat">Tick: 0</span>
-<span id="hud-bpm" class="hud-stat">BPM: 0</span>
+<span id="hud-note-count" class="hud-stat" data-l10n-id="hud_nps_0">NPS: 0</span>
+<span id="hud-nc" class="hud-stat" data-l10n-id="hud_nc_0">NC: 0</span>
+<span id="hud-passed" class="hud-stat" data-l10n-id="hud_passed_0">Passed: 0</span>
+<span id="hud-speed" class="hud-stat" data-l10n-id="hud_speed_0">Speed: 1.0x</span>
+<span id="hud-fps" class="hud-stat" data-l10n-id="hud_fps_0">FPS: 0</span>
+<span id="hud-time" class="hud-stat" data-l10n-id="hud_time_0">Time: --:-- / --:--</span>
+<span id="hud-polyphony" class="hud-stat" data-l10n-id="hud_polyphony_0">Polyphony: 0</span>
+<span id="hud-rendered" class="hud-stat" data-l10n-id="hud_rendered_0">Rendered Notes: 0</span>
+<span id="hud-audio-buffer" class="hud-stat" data-l10n-id="hud_audio_buffer_0">Audio Buffer: 0</span>
+<span id="hud-tick" class="hud-stat" data-l10n-id="hud_tick_0">Tick: 0</span>
+<span id="hud-bpm" class="hud-stat" data-l10n-id="hud_bpm_0">BPM: 0</span>
 <span id="hud-osd"></span>
 </div>
 <div id="parse-bar" class="hidden">
@@ -33,23 +36,23 @@
 <span id="parse-pct" class="hidden"></span>
 </main>
 <footer id="softkey-bar" class="kai-softkey">
-  <button id="sk-left" class="sk-left">Settings</button>
-  <button id="sk-center" class="sk-center">Select</button>
-  <button id="sk-right" class="sk-right">Back</button>
+  <button id="sk-left" class="sk-left" data-l10n-id="softkey-options">Settings</button>
+  <button id="sk-center" class="sk-center" data-l10n-id="softkey-select">Select</button>
+  <button id="sk-right" class="sk-right" data-l10n-id="softkey-back">Back</button>
 </footer>
 <div id="menu-overlay" class="kai-om-overlay hidden">
  <div class="kai-om">
-   <header>Settings</header>
+   <header data-l10n-id="settings">Settings</header>
  <nav id="menu-list">
-     <div tabindex="-1" class="kai-om-item has-submenu" data-action="open-sys">System</div>
-     <div tabindex="-1" class="kai-om-item has-submenu" data-action="open-visual">Visual</div>
-     <div tabindex="-1" class="kai-om-item has-submenu" data-action="open-synth">Synth</div>
+     <div tabindex="-1" class="kai-om-item has-submenu" data-action="open-sys" data-l10n-id="system_settings">System</div>
+     <div tabindex="-1" class="kai-om-item has-submenu" data-action="open-visual" data-l10n-id="visual_settings">Visual</div>
+     <div tabindex="-1" class="kai-om-item has-submenu" data-action="open-synth" data-l10n-id="synth_settings">Synth</div>
   </nav>
 </div>
 </div>
 <div id="settings-overlay" class="kai-om-overlay hidden" data-group="midi">
  <div class="kai-om">
-   <header>MIDI Output</header>
+   <header data-l10n-id="synth_settings">MIDI Output</header>
    <nav id="settings-list"></nav>
 </div>
 </div>
@@ -57,7 +60,7 @@
      Rendered by settings.js; stacked above #settings-overlay. -->
 <div id="subsettings-overlay" class="kai-om-overlay hidden">
  <div class="kai-om">
-   <header id="subsettings-header">Settings</header>
+   <header id="subsettings-header" data-l10n-id="settings">Settings</header>
    <nav id="subsettings-list"></nav>
 </div>
 </div>
@@ -73,7 +76,7 @@
      Styles + animation live in kaiui.css (#error-dialog). -->
 <div id="error-dialog" class="kai-dialog hidden">
   <div class="kai-dialog-wrapper" tabindex="-1">
-    <div class="kai-dialog-header">Error</div>
+    <div class="kai-dialog-header" data-l10n-id="error_dialog_title">Error</div>
     <div class="kai-dialog-container">
       <div class="kai-dialog-content">
         <p id="error-dialog-msg"></p>
@@ -85,10 +88,64 @@
      reset dialog handlers). Reuses the .kai-dialog layout. -->
 <div id="confirm-dialog" class="kai-dialog hidden">
   <div class="kai-dialog-wrapper" tabindex="-1">
-    <div class="kai-dialog-header">Reset All Settings</div>
+    <div class="kai-dialog-header" data-l10n-id="reset_all_settings">Reset All Settings</div>
     <div class="kai-dialog-container">
       <div class="kai-dialog-content">
-        <p id="confirm-dialog-msg">Reset all settings to factory defaults?</p>
+        <p id="confirm-dialog-msg" data-l10n-id="reset_confirm">Reset all settings to factory defaults?</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Soundfont Delete confirm dialog: OK on RSK, Cancel on LSK. -->
+<div id="sf-delete-dialog" class="kai-dialog hidden">
+  <div class="kai-dialog-wrapper" tabindex="-1">
+    <div class="kai-dialog-header" data-l10n-id="delete_soundfont">Delete SoundFont</div>
+    <div class="kai-dialog-container">
+      <div class="kai-dialog-content">
+        <p data-l10n-id="confirm_delete">Do you want to delete?</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Soundfont Load Done dialog: single OK on centre softkey -->
+<div id="sf-done-dialog" class="kai-dialog hidden">
+  <div class="kai-dialog-wrapper" tabindex="-1">
+    <div class="kai-dialog-header" data-l10n-id="load_soundfont">Load SoundFont</div>
+    <div class="kai-dialog-container">
+      <div class="kai-dialog-content">
+        <p id="sf-done-msg" data-l10n-id="loaded_sf_msg">Loaded soundfont(s)</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fullscreen App Launch Loading Screen (init.png + log + % + progress bar) -->
+<div id="app-boot-dialog" class="sf-loading-fullscreen">
+  <div class="sf-loading-container">
+    <div class="sf-loading-center">
+      <img src="style/icons/init.png" alt="Loading" class="sf-loading-init-icon">
+    </div>
+    <div class="sf-loading-bottom">
+      <div id="app-boot-subtitle" class="sf-loading-log" style="display:none;"></div>
+      <div id="app-boot-list" class="sf-loading-log-detail" style="display:none;"></div>
+      <div class="sf-loading-bar-wrapper">
+        <div id="app-boot-bar" class="sf-loading-bar-fill"></div>
+      </div>
+      <p id="app-boot-percent" class="sf-loading-percent-text">0%</p>
+    </div>
+  </div>
+</div>
+<!-- Soundfont / Module Loading progress modal dialog -->
+<div id="sf-loading-dialog" class="kai-dialog hidden">
+  <div class="kai-dialog-wrapper" tabindex="-1">
+    <div class="kai-dialog-header" data-l10n-id="loading_soundfont">Loading SoundFont</div>
+    <div class="kai-dialog-container">
+      <div class="kai-dialog-content">
+        <p id="sf-loading-subtitle" data-l10n-id="loading_soundfont" style="margin: 0 0 0.4rem 0; font-size: 1.4rem; color: var(--color-gs90, #323232); text-align: center;">Loading SoundFont...</p>
+        <p id="sf-loading-list" style="margin: 0 0 0.4rem 0; font-size: 1.2rem; color: var(--color-gs60, #6a6a6a); text-align: center; max-height: 2.8rem; overflow: hidden;"></p>
+        <div class="sf-loading-bar-wrapper" style="background: #e0e0e0; height: 8px; border-radius: 4px; margin: 0.5rem 0; border: 1px solid #ccc; overflow: hidden;">
+          <div id="sf-loading-bar" class="sf-loading-bar-fill" style="width: 0%; height: 100%; background: #0066cc;"></div>
+        </div>
+        <p id="sf-loading-percent" style="margin: 0.4rem 0 0 0; font-size: 1.5rem; font-weight: 600; color: var(--color-gs90, #323232); text-align: center;">0%</p>
       </div>
     </div>
   </div>
@@ -97,10 +154,10 @@
      Cancel on RSK/Back. Shown after 5 centre-OK presses in About. -->
 <div id="devmenu-dialog" class="kai-dialog hidden">
   <div class="kai-dialog-wrapper" tabindex="-1">
-    <div class="kai-dialog-header">Developer Menu</div>
+    <div class="kai-dialog-header" data-l10n-id="developer_menu">Developer Menu</div>
     <div class="kai-dialog-container">
       <div class="kai-dialog-content">
-        <p>Enable developer menu mode?</p>
+        <p data-l10n-id="enable_dev_menu">Enable developer menu mode?</p>
       </div>
     </div>
   </div>
@@ -108,10 +165,10 @@
 <!-- Developer-menu enabled acknowledgment (About stays open). -->
 <div id="devmenu-done-dialog" class="kai-dialog hidden">
   <div class="kai-dialog-wrapper" tabindex="-1">
-    <div class="kai-dialog-header">Developer Menu</div>
+    <div class="kai-dialog-header" data-l10n-id="developer_menu">Developer Menu</div>
     <div class="kai-dialog-container">
       <div class="kai-dialog-content">
-        <p>Developer menu enabled in settings</p>
+        <p data-l10n-id="dev_menu_enabled">Developer menu enabled in settings</p>
       </div>
     </div>
   </div>
@@ -120,51 +177,48 @@
      Closed by Back / SoftRight / Enter (see controls.js aboutOpen). -->
 <div id="about-overlay" class="kai-om-overlay hidden">
  <div class="kai-om">
-   <header>About</header>
    <nav id="about-list">
     <div class="about-body">
       <h2 class="about-name">Piano From Above <span class="about-beta">BETA</span></h2>
-      <p class="about-ver">Version 1.0.1 · KaiOS 2.5 · Black MIDI supported · MIT License</p>
-      <p class="about-tag">A MIDI visualizer optimized for smart feature
-      phones (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone…).
-      Focuses on an optimized Canvas rendering pipeline to smoothly
-      display high-density Black MIDI tracks on constrained hardware.</p>
+      <p class="about-ver" data-l10n-id="about_version">Version 1.0.1 • KaiOS 2.5 • Black MIDI supported • MIT License</p>
+      <p class="about-tag" data-l10n-id="about_desc">A MIDI visualizer optimized for smart feature phones (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Focuses on an optimized Canvas rendering pipeline to smoothly display high-density Black MIDI tracks on constrained hardware.</p>
 
-      <p class="about-sec">Key Features</p>
+      <p class="about-sec" data-l10n-id="about_features_title">Key Features</p>
       <ul>
-        <li><b>Black MIDI Optimization</b> — lightweight algorithms handle tens of thousands of notes without severe FPS drops.</li>
-        <li><b>Physical Keypad Support</b> — smooth navigation via D-Pad and number keys.</li>
-        <li><b>Highly Customizable</b> — full 128-key piano display, customizable track colors, adjustable note falling speeds.</li>
-        <li><b>WebAudio Synthesizer</b> — built-in lightweight synth minimizes RAM usage on low-end devices.</li>
+        <li data-l10n-id="about_f1"><b>Black MIDI Optimization</b> - lightweight algorithms handle tens of thousands of notes without severe FPS drops.</li>
+        <li data-l10n-id="about_f2"><b>Physical Keypad Support</b> - smooth navigation via D-Pad and number keys.</li>
+        <li data-l10n-id="about_f3"><b>Highly Customizable</b> - full 128-key piano display, customizable track colors, adjustable note falling speeds.</li>
+        <li data-l10n-id="about_f4"><b>WebAudio Synthesizer</b> - built-in lightweight synth minimizes RAM usage on low-end devices.</li>
       </ul>
 
-      <p class="about-sec">Keys</p>
+      <p class="about-sec" data-l10n-id="about_keys_title">Keys</p>
       <ul>
-        <li>◀ ▶ seek ±1s · ▲ ▼ volume · OK play/pause</li>
-        <li>1 +0.1x speed · 2 render mode · 3 −0.1x speed · 4 rotate</li>
-        <li>5 load MIDI · 6 fullscreen · 7 keys 88↔128</li>
-        <li>8 clear MIDI (frees RAM) · 9 piano size · 0 stop</li>
-        <li>Call info card · * trail −0.1 · # trail +0.1 · End call quit</li>
+        <li data-l10n-id="about_k1">&lt; &gt; seek ±1s • ^ v volume • OK play/pause</li>
+        <li data-l10n-id="about_k2">1 +0.1x speed • 2 render mode • 3 -0.1x speed • 4 rotate</li>
+        <li data-l10n-id="about_k3">5 load MIDI • 6 fullscreen • 7 keys 88-128</li>
+        <li data-l10n-id="about_k4">8 clear MIDI (frees RAM) • 9 piano size • 0 stop</li>
+        <li data-l10n-id="about_k5">Call info card • * trail -0.1 • # trail +0.1 • End call quit</li>
       </ul>
 
-      <p class="about-sec">Credits &amp; Contributing</p>
+      <p class="about-sec" data-l10n-id="about_credits_title">Credits &amp; Contributing</p>
       <ul>
-        <li>Developed by T.Hoang · KaiUI design components</li>
-        <li>PRs welcome: fork → feature branch → commit → push → Pull Request</li>
+        <li data-l10n-id="about_c1">Developed by T.Hoang • KaiUI design components</li>
+        <li data-l10n-id="about_c2">PRs welcome: fork -> feature branch -> commit -> push -> Pull Request</li>
       </ul>
 
-      <p class="about-foot">Source code:<br>github.com/dotrihoang2012/PFA_for_KaiOS<br><br>Released under the MIT License.</p>
+      <p class="about-foot" data-l10n-id="about_src">Source code:<br>github.com/dotrihoang2012/PFA_for_KaiOS<br><br>Released under the MIT License.</p>
     </div>
    </nav>
  </div>
 </div>
 <div id="loading-screen" class="loading-overlay hidden">
   <div class="loading-spinner"></div>
-  <p>Loading</p>
+  <p data-l10n-id="loading_app">Loading</p>
 </div>
 </div>
 <script src="js/ads/kaiads.v5.min.js"></script>
 <script src="js/utils/constants.js"></script>
+<script src="js/utils/mozL10n.js"></script>
 <script src="js/utils/l10n.js"></script>
 <script src="js/utils/storage.js"></script>
 <script src="js/utils/writes.js"></script>

@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Pilihan"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Pilih"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Kembali"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Mainkan"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Jeda"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Berhenti"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Batalkan"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Selesai"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Semua"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Tidak ada"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Pindah"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "OKE"
+  },
+  {
+    "$i": "settings",
+    "$v": "Pengaturan"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "penyintesis"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Visual"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Sistem"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Pengaturan Pengembang"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Pengaturan Font Suara"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Tema"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Muat File MIDI/Catatan"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Ubah File MIDI/Catatan"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Muat Soundfont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Muat lebih banyak"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Batalkan Analisis"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Jelas"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Keluaran Audio"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Mesin Suara"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Bentuk Gelombang Synth"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Lewati Intro Lambat"
+  },
+  {
+    "$i": "speed",
+    "$v": "Kecepatan"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Catatan Jejak"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Putar Otomatis"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Tampilkan Dialog"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Tampilkan OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Mulai Penundaan"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Rentang Papan Ketik"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Penanda C Tengah"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Tampilkan Label Catatan"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Ukuran Piano"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Warna Batang"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Warna Piano"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Warna Fokus"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Memuat Warna"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Tampilkan Bilah Pemuatan"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Tampilkan% saat menganalisis"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Tampilkan% saat menggabungkan"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Animasi Geser"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Warna Teks"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Warna Latar Belakang"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Mode Render"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "Tampilan 3D"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Tampilkan Kartu Info"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Layar Penuh"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Putar Layar"
+  },
+  {
+    "$i": "volume",
+    "$v": "Volume"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Pengaturan Impor"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Pengaturan Ekspor"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Layar Penuh Otomatis"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Putar Layar Otomatis"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Atur Ulang Semua Pengaturan"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Tentang Aplikasi Ini"
+  },
+  {
+    "$i": "developer",
+    "$v": "Pengembang"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Status Bertele-tele"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Bertele-tele saat menganalisis"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Bertele-tele saat init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Statistik Memori"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Ekspor Log"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Tes Penyimpanan"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Panjang Penyangga"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Suara (Polifoni)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Nonaktifkan Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Sudah dimuat"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Memuat Soundfont"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Memuat modul..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Memuat Aplikasi..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Menganalisis MIDI…"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Menggabungkan trek…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Sekarang sedang diputar"
+  },
+  {
+    "$i": "paused",
+    "$v": "Dijeda"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Berhenti"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Kesalahan"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Tidak dapat membaca file atau file hilang."
+  },
+  {
+    "$i": "on",
+    "$v": "Aktif"
+  },
+  {
+    "$i": "off",
+    "$v": "Mati"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Audio Web"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "Kontrol Audio (Melewati)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Otomatis"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (Osilator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "Font Suara"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "sinus"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Persegi"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "gigi gergaji"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Segitiga"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Penuh (128 tombol)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 kunci"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 kunci"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 kunci"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 kunci"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Cerdas (Zoom otomatis)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Kecil"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Sedang"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Besar"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Catatan Musim Gugur"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "papan ketik"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Keduanya"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPC"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Jumlah Catatan"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Lulus"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Kecepatan"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Waktu"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polifoni"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Catatan yang Diberikan"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Penyangga Audio"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Centang"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Mengambang"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Perbatasan"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Batas Kartu Info"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Posisi"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Latar Belakang"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Teks Kartu Info"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Kiri"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Benar"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Preset"
+  },
+  {
+    "$i": "general",
+    "$v": "Umum"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Bilah Pemuatan"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Dialog"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafik"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Kartu Informasi"
+  },
+  {
+    "$i": "piano",
+    "$v": "piano"
+  },
+  {
+    "$i": "palette",
+    "$v": "Catatan Warna"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Status Bertele-tele"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Bertele-tele saat menganalisis"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Bertele-tele saat init"
+  },
+  {
+    "$i": "memory",
+    "$v": "Statistik Memori"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Ekspor Log"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Tes Penyimpanan"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Besar"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Tidak ada pianonya"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Pengaturan Latar Belakang"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Tema"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Biru"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Putih"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Hitam"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statistik"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Gaya"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Catatan"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "papan ketik"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Warna"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "Font Suara"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Audio"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Efek"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPC:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "tidak:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Lulus:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Kecepatan:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Waktu:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polifoni:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Diberikan:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Penggemar Audio:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Centang:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Dimuat"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Reset semua pengaturan ke default pabrik?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Hapus SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Apakah Anda ingin menghapus?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Font suara yang dimuat"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Menu Pengembang"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Aktifkan mode menu pengembang?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Menu pengembang diaktifkan di pengaturan"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Versi 1.0.1 • KaiOS 2.5 • Mendukung MIDI Hitam • Lisensi MIT"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "Visualisator MIDI yang dioptimalkan untuk ponsel berfitur pintar (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Berfokus pada pipeline rendering Canvas yang dioptimalkan untuk menampilkan track Black MIDI berdensitas tinggi dengan lancar pada perangkat keras yang terbatas."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Fitur Utama"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Optimasi MIDI Hitam - algoritme ringan menangani puluhan ribu nada tanpa penurunan FPS yang parah."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Dukungan Keypad Fisik - navigasi lancar melalui D-Pad dan tombol angka."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Sangat Dapat Disesuaikan - tampilan piano 128 tuts penuh, warna track yang dapat disesuaikan, kecepatan jatuhnya nada yang dapat disesuaikan."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Synthesizer - synth ringan bawaan meminimalkan penggunaan RAM pada perangkat kelas bawah."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Kunci"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > cari ±1 detik • ^ v volume • OK putar/jeda"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 Kecepatan +0,1x • 2 mode render • 3 kecepatan -0,1x • 4 putaran"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 memuat MIDI • 6 layar penuh • 7 tombol 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 clear MIDI (membebaskan RAM) • 9 ukuran piano • 0 stop"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Kartu info panggilan • * jejak -0,1 • # jejak +0,1 • Akhiri panggilan berhenti"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Kredit & Kontribusi"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Dikembangkan oleh T.Hoang • Komponen desain KaiUI"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "Selamat datang PR: fork -> cabang fitur -> komit -> push -> Permintaan Tarik"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Kode sumber: github.com/dotrihoang2012/PFA_for_KaiOS. Dirilis di bawah Lisensi MIT."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Terkunci sampai file dimuat"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Perhatikan palet warna"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Mulai Penundaan"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Semua font suara dipilih"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Seleksi dihapus"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Memuat dibatalkan"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Masih memindai..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Tidak ada yang dipilih"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Palet khusus aktif"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Gambar tidak valid"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Pemilih warna tidak tersedia"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Tidak dapat membaca file"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Bukan file gambar"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Gambar terlalu besar"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Latar belakang disimpan"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Latar belakang dibersihkan"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Batas suara tercapai"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Mode penyangga kanvas"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Tidak ada SoundFont yang perlu dihapus"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Dihapus"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Pemindahan dibatalkan"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Pengaturan disimpan"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Gunakan atas/bawah untuk bergerak, OK untuk menempatkannya"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Tidak ada SoundFont yang dimuat"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Diterapkan pada peluncuran berikutnya"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Dinonaktifkan pada peluncuran berikutnya"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Pengaturan diimpor"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Terkunci selama demo"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Semua pengaturan diatur ulang"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Setel ulang tidak tersedia"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Penyetelan ulang gagal"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Rotasi tidak didukung"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Volume: KaiOS API tidak tersedia"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Vol naik gagal"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Vol turun gagal"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Pertunjukan volume gagal"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Gergaji"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Panjang buffer"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Merencanakan buffer dalam contoh (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Suara"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Max secara bersamaan mencatat (1- 256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Pengaturan Latar Belakang"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Tampilkan Dialog"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Warna Teks"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Warna Latar Belakang"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Persentase Warna"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "API Memori tidak tersedia"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Penyimpanan oke"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Log diekspor ke"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Tindakan gagal"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Tidak ada penyimpanan yang tersedia untuk mengekspor log."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Mode Render"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Catatan Individu"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Canvas Buffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "Tampilan 3D"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Warna Catatan Acak"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Catatan Palet Warna"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Muat Lebih Banyak"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "SoundFont yang Dimuat"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Tidak Ada SoundFont yang Dimuat"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Memindai…"
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Pemindai tidak tersedia"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Tidak ada file soundfont (.sf2, .sf3, .dls, .sfz) yang ditemukan di perangkat"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Membaca berkas..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Muat Latar Belakang"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Hapus Latar Belakang"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Pratinjau"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Jumlah Kunci"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Memuat:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Keluar dari Layar Penuh"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Putar Ke Potret"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Putar Ke Lanskap"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Nonaktifkan mode menu pengembang?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Menu pengembang dinonaktifkan di pengaturan"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Menginisialisasi Inti Aplikasi..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Memuat Pengaturan & Preferensi..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Menginisialisasi Mesin Audio..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Memuat modul: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Mempersiapkan bank..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth siap"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Menginisialisasi Tampilan & Kanvas..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Siap"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Penguraian kode sampel ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Menguraikan sampel..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Penundaan sebelum pemutaran dalam hitungan detik (0 = Mati)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Gagal memuat"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "font suara."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank tidak tersedia"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Gagal membaca"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Sarat"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Tidak dapat dihapus sekarang - konversi masih berjalan.\nTekan Clear lagi setelah selesai."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Tidak ada penyimpanan yang tersedia untuk dihapus."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Dibersihkan:"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "file dari cache konversi."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Hapus selesai dengan kesalahan."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Hapus gagal:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Warna Diacak"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Menghapus"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Membaca Data..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "Tumpukan JS (bekas/total):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "Objek JS:"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "catatan dalam RAM:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Nama file:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp tulis-log:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "tidak tersedia"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Aplikasi ini memerlukan akses kartu SD.\n\nUntuk mengizinkannya:\nPengaturan -> Privasi & Keamanan -> Izin Aplikasi -> PFA -> Penyimpanan Kartu Memori -> Hibah.\n\nKemudian buka kembali aplikasi/muat ulang file.\n\nOke tutup aplikasinya."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Masih menganalisis file sebelumnya - harap tunggu."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Analisis streaming MIDI gagal:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Tidak dapat membaca file ini. Ini mungkin bukan ekspor MIDI atau (.note) yang valid."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Gagal membaca SoundFont \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". File mungkin dipindahkan, dihapus, atau rusak."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "kesalahan file, dipindahkan, atau dihapus."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Gambar latar belakang tidak ada - muat ulang di Pengaturan."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Tidak ada yang perlu diekspor."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Konversi sudah berjalan"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Izin penyimpanan ditolak - berikan akses kartu SD untuk mengonversi"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Tidak ditemukan penyimpanan yang dapat ditulisi."
+  },
+  {
+    "$i": "error",
+    "$v": "Kesalahan"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Umum"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Bilah Pemuatan"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Gaya Dialog"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafik"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Palet Warna"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Tidak dikenal"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS: 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC: 0"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Lulus: 0"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Kecepatan: 1,0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS: 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Waktu: --:-- / --:--"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polifoni: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Catatan yang Diberikan: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Penyangga Audio: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tick: 0"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM: 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Reset Semua Pengaturan"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Keluar"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 Kunci"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Gubahan"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Osilator"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Gelap"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Terang"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Biru"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Ungu"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Acak"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Gradiasi Alfa Acak"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Gradiasi Acak"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Acak dengan Alpha"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Palet Synthesia 10"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Synthesia 9-0.8 Palet"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Palet Gubahan"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Nonaktifkan efek suara"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Tak ada penyimpanan yang tersedia untuk pengaturan ekspor."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Ekspor pengaturan gagal:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "semua volume penyimpanan tidak tersedia"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Ekspor pengaturan gagal: tidak ada volume penyimpanan yang dapat ditulis."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Pengaturan diekspor:\nlain /"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Ekspor pengaturan diblokir: ijinkan device-storage: ijin sdcard, lalu coba lagi."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": ".note ini adalah ekspor MIDI biner,\nbukan config Pengaturan.\n\nImpor berkas Pengaturan hanya diekspor melalui Pengaturan Ekspor."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Tidak dapat membaca berkas ini.\n\nIni bukan ekspor Pengaturan."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": ".note ini bukan ekspor Pengaturan\n(hilang tanda Pengaturan)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Tak bisa menerapkan pengaturan impor."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Tak bisa membaca berkas itu."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Hanya konfigurasi .note yang dapat diimpor.\n\nDipilih:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Tidak dapat meluncurkan picker berkas."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "dimuat,"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "gagal"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Gagal memuat SoundFont (berkas dipindahkan, dihapus, atau rusak):\n"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Dimuat"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Putar"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Jeda"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Berhenti"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Mulai Ulang"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Bersihkan"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Layar Penuh"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Putar"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Putar Otomatis"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Nyala"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Mati"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Kartu Info"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Tampilkan"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Sembunyikan"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Jejak"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Memberikan"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Ukuran Piano"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Ganti Berkas MIDI/Note"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Muat Berkas MIDI/Note"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Putar ke Potret"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Putar ke Lansekap"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "OKE"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Kembali"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Pengaturan"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Batal"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Pilih"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Hapus"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Pindah"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Selesai"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Pilih Semua"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Batal Pilih Semua"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Selesai"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Tampilkan Kartu Info"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Tampilkan Label Nada"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Rentang Keyboard"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Penanda C Tengah"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Warna Bar"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Warna Piano"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Putar Otomatis"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Tampilkan OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Pengaturan Latar Belakang"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Tampilkan Bar Pemuatan"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Tampilkan % saat menganalisis"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Tampilkan % saat menggabungkan"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Warna Pemuatan"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "Warna Teks %"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Animasi Geser"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Tampilkan Dialog"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Warna Teks"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Warna Latar Belakang"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Status Terperinci"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Terperinci saat menganalisis"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Terperinci saat inisialisasi"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Warna Fokus"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Latar Belakang"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Penundaan Mulai"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Jeda sebelum pemutaran dalam detik (0 = Mati)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Mulai"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Akhir"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Tanpa judul"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Dibisukan"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "KESALAHAN"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Bertele-tele saat membaca font suara"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Mengurai data MIDI..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Menggabungkan acara..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "readHeader selesai:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "trek"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Membatalkan..."
+  },
+  {
+    "$i": "language",
+    "$v": "Bahasa"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Ubah bahasa secara otomatis"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Pemisah bahasa"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Audio"
+  }
+]

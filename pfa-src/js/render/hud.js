@@ -73,7 +73,7 @@ var HUD = (function () {
 
     if (state.startCountdown != null) {
       var cs = Math.max(0, Math.ceil(state.startCountdown));
-      tm = '-' + Math.floor(cs / 60) + ':' + (cs % 60 < 10 ? '0' : '') + (cs % 60);
+      tm = '-' + cs;
     } else if (typeof Sequencer !== 'undefined') {
       var sec = Sequencer.getTime();
       var min = Math.floor(sec / 60);
@@ -100,17 +100,17 @@ var HUD = (function () {
     var demo = ((typeof window.isDemoActive === 'function') && window.isDemoActive())
             || ((typeof window.isPlaybackLocked === 'function') && window.isPlaybackLocked());
     if (demo) {
-      _set(_elCount,     'NPS: 0');
-      _set(_elNC,        'NC: 0');
-      _set(_elPassed,    'Passed: 0');
-      _set(_elSpeed,     'Speed: 1.0x');
-      _set(_elFPS,       'FPS: ' + fp);
-      _set(_elTime,      'Time: 00:00');
-      _set(_elPoly,      'Polyphony: 0');
-      _set(_elRendered,  'Rendered Notes: 0');
-      _set(_elAudioBuf,  'Audio Buffer: 0');
-      _set(_elTick,      'Tick: 0');
-      _set(_elBpm,       'BPM: 0');
+      _set(_elCount,     L10n.t('hud_nps', 'NPS: ') + '0');
+      _set(_elNC,        L10n.t('hud_nc', 'NC: ') + '0');
+      _set(_elPassed,    L10n.t('hud_passed', 'Passed: ') + '0');
+      _set(_elSpeed,     L10n.t('hud_speed', 'Speed: ') + '1.0x');
+      _set(_elFPS,       L10n.t('hud_fps', 'FPS: ') + fp);
+      _set(_elTime,      L10n.t('hud_time', 'Time: ') + '00:00');
+      _set(_elPoly,      L10n.t('hud_polyphony', 'Polyphony: ') + '0');
+      _set(_elRendered,  L10n.t('hud_rendered', 'Rendered Notes: ') + '0');
+      _set(_elAudioBuf,  L10n.t('hud_audio_buffer', 'Audio Buffer: ') + '0');
+      _set(_elTick,      L10n.t('hud_tick', 'Tick: ') + '0');
+      _set(_elBpm,       L10n.t('hud_bpm', 'BPM: ') + '0');
       return;
     }
 
@@ -185,17 +185,17 @@ var HUD = (function () {
     }
 
     // ── Vertical layout: one metric per row ──
-    _set(_elCount,     'NPS: ' + _fmt(nps));
-    _set(_elNC,        'NC: ' + _fmt(nc));
-    _set(_elPassed,    'Passed: ' + _fmt(passed));
-    _set(_elSpeed,     'Speed: ' + sp + 'x');
-    _set(_elFPS,       'FPS: ' + fp);
-    _set(_elTime,      'Time: ' + tm);
-    _set(_elPoly,      'Polyphony: ' + _fmt(poly));
-    _set(_elRendered,  'Rendered Notes: ' + _fmt(rendered));
-    _set(_elAudioBuf,  'Audio Buffer: ' + _fmt(abuf));
-    _set(_elTick,      'Tick: ' + _fmt(tickVal));
-    _set(_elBpm,       'BPM: ' + Math.round(bpmVal));
+    _set(_elCount,     L10n.t('hud_nps', 'NPS: ') + _fmt(nps));
+    _set(_elNC,        L10n.t('hud_nc', 'NC: ') + _fmt(nc));
+    _set(_elPassed,    L10n.t('hud_passed', 'Passed: ') + _fmt(passed));
+    _set(_elSpeed,     L10n.t('hud_speed', 'Speed: ') + sp + 'x');
+    _set(_elFPS,       L10n.t('hud_fps', 'FPS: ') + fp);
+    _set(_elTime,      L10n.t('hud_time', 'Time: ') + tm);
+    _set(_elPoly,      L10n.t('hud_polyphony', 'Polyphony: ') + _fmt(poly));
+    _set(_elRendered,  L10n.t('hud_rendered', 'Rendered Notes: ') + _fmt(rendered));
+    _set(_elAudioBuf,  L10n.t('hud_audio_buffer', 'Audio Buffer: ') + _fmt(abuf));
+    _set(_elTick,      L10n.t('hud_tick', 'Tick: ') + _fmt(tickVal));
+    _set(_elBpm,       L10n.t('hud_bpm', 'BPM: ') + Math.round(bpmVal));
   }
 
   function _fmt(n) {

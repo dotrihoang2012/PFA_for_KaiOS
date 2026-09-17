@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Iespējas"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Izvēlieties"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Atpakaļ"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Spēlēt"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Pauze"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Apturēt"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Atcelt"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Pabeigt"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Visi"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Nav"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Pārvietot"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "Labi"
+  },
+  {
+    "$i": "settings",
+    "$v": "Iestatījumi"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Sintēt"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Vizuāls"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Sistēma"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Izstrādātāja iestatījumi"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Skaņas fonta iestatījumi"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Tēma"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Ielādējiet MIDI/piezīmju failu"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Mainiet MIDI/piezīmju failu"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Ielādējiet skaņas fontu"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Ielādēt vairāk"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Atcelt analīzi"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Skaidrs"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Audio izvade"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Skaņas dzinējs"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Sintēzes viļņu forma"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Izlaist lēno ievadu"
+  },
+  {
+    "$i": "speed",
+    "$v": "Ātrums"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Piezīmju taka"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Automātiskā atskaņošana"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Rādīt dialoglodziņu"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Rādīt OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Starta aizkave"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Tastatūras diapazons"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Vidējais C marķieris"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Rādīt piezīmju etiķetes"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Klavieru izmērs"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Bāra krāsa"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Klavieru krāsa"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Fokusa krāsa"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Krāsas ielāde"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Rādīt ielādes joslu"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Rādīt % analīzes laikā"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Rādīt % sapludināšanas laikā"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Bīdāmā animācija"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Teksta krāsa"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Fona krāsa"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Renderēšanas režīms"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D skats"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Rādīt informācijas kartīti"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Pilnekrāna režīms"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Pagriezt ekrānu"
+  },
+  {
+    "$i": "volume",
+    "$v": "Skaļums"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Importēt iestatījumus"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Eksportēt iestatījumus"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Automātisks pilnekrāna režīms"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Automātiski pagriezt ekrānu"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Atiestatīt visus iestatījumus"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Par šo lietotni"
+  },
+  {
+    "$i": "developer",
+    "$v": "Izstrādātājs"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Runājošs statuss"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Daudznozīmīgs analīzes laikā"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Verbozs, kamēr init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Atmiņas statistika"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Eksportēt žurnālu"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Uzglabāšanas pārbaude"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Bufera garums"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Balsis (polifonija)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Atspējot Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Jau ielādēts"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Notiek skaņas fonta ielāde"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Notiek moduļa ielāde..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Notiek lietotnes ielāde..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Notiek MIDI analīze…"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Notiek ierakstu sapludināšana…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Tagad spēlē"
+  },
+  {
+    "$i": "paused",
+    "$v": "Pauzēts"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Apstājās"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Kļūda"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Nevar nolasīt failu vai trūkst faila."
+  },
+  {
+    "$i": "on",
+    "$v": "Ieslēgts"
+  },
+  {
+    "$i": "off",
+    "$v": "Izslēgts"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Web audio"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "Audio vadība (apvedceļš)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Auto"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (oscilators)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sine"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Kvadrāts"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Zāģa zobs"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Trīsstūris"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Pilna (128 atslēgas)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 atslēgas"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 atslēgas"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 atslēga"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 atslēgas"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Viedā (automātiskā tālummaiņa)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Mazs"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Vidēja"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Liels"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Piezīme Rudens"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Tastatūra"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Abi"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Piezīme Skaits"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Nokārtots"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Ātrums"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Laiks"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polifonija"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Renderētās piezīmes"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Audio buferis"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Atzīmējiet"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Peldošs"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Robeža"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Informācijas kartes apmale"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Pozīcija"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Fons"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Informācijas kartītes teksts"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Pa kreisi"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Pareizi"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Sākotnējie iestatījumi"
+  },
+  {
+    "$i": "general",
+    "$v": "Ģenerālis"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Iekraušanas josla"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Dialogs"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafika"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Informācijas kartīte"
+  },
+  {
+    "$i": "piano",
+    "$v": "Klavieres"
+  },
+  {
+    "$i": "palette",
+    "$v": "Piezīme Krāsa"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Runājošs statuss"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Daudznozīmīgs analīzes laikā"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Verbozs, kamēr init"
+  },
+  {
+    "$i": "memory",
+    "$v": "Atmiņas statistika"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Eksportēt žurnālu"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Uzglabāšanas pārbaude"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Liels"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Nav klavieru"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Fona iestatījumi"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Tēma"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Zils"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Balts"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Melns"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statistika"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Stils"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Piezīmes"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Tastatūra"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Krāsas"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Audio"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Efekti"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Nokārtots:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Ātrums:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Laiks:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polifonija:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Renderēts:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Audio buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Atzīmējiet:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Ielādēts"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Vai atiestatīt visus iestatījumus uz rūpnīcas noklusējuma iestatījumiem?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Dzēst SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Vai vēlaties dzēst?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Ielādēts(-i) skaņas fonts(-i)"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Izstrādātāja izvēlne"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Vai iespējot izstrādātāja izvēlnes režīmu?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Iestatījumos iespējota izstrādātāja izvēlne"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Versija 1.0.1 • KaiOS 2.5 • Atbalstīts melns MIDI • MIT licence"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "MIDI vizualizētājs, kas optimizēts viedtālruņiem (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Koncentrējas uz optimizētu Canvas renderēšanas cauruļvadu, lai vienmērīgi parādītu augsta blīvuma melnus MIDI ierakstus ierobežotā aparatūrā."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Galvenās iezīmes"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Melnā MIDI optimizācija — vieglie algoritmi apstrādā desmitiem tūkstošu nošu bez nopietniem FPS kritumiem."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Fiziskās tastatūras atbalsts - vienmērīga navigācija, izmantojot D-Pad un ciparu taustiņus."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Ļoti pielāgojams - pilns 128 taustiņu klavieru displejs, pielāgojamas celiņu krāsas, regulējami notīšu krišanas ātrumi."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio sintezators — iebūvēts viegls sintezators samazina RAM izmantošanu zemas klases ierīcēs."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Atslēgas"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > meklēt ±1s • ^ v skaļums • Labi atskaņot/pauzēt"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1 x ātrums • 2 renderēšanas režīms • 3 –0,1 x ātrums • 4 pagriešana"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 slodzes MIDI • 6 pilnekrāna režīms • 7 taustiņi 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 skaidrs MIDI (atbrīvo RAM) • 9 klavieru izmērs • 0 stop"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Zvana informācijas karte • * taka -0,1 • # taka +0,1 • Beigt zvanu, beigt"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Kredīti un ieguldījums"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Izstrādāja T.Hoang • KaiUI dizaina komponenti"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "Laipni lūdzam PR: fork -> iezīme filiāle -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Avota kods: github.com/dotrihoang2012/PFA_for_KaiOS. Izlaists saskaņā ar MIT licenci."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Bloķēts līdz faila ielādei"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Piezīmju krāsu palete"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Palaišanas aizture&#x0D;"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Atlasīti visi skaņu fonti"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Atlase notīrīta"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Ielāde atcelta"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Joprojām skenē..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Nekas nav atlasīts"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Pielāgota palete ir aktīva"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Nederīga e-pasta adrese"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Krāsu atlasītājs nav pieejams"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Nevar nolasīt failu% 1."
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Nav attēla fails"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Attēls ir pārāk liels"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Fons saglabāts"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Fons notīrīts"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Sasniegts skaņu ierobežojums"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Audekla bufera režīms"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Nav dzēšama SoundFont"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Dzēsts"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Pārvietošana atcelta"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Vienošanās ir saglabāta"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Izmantojiet augšup/lejup, lai pārvietotos, var novietot"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Nav ielādēts SoundFont"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Izmantots nākamajā palaišanas reizē"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Nākamajā palaišanas reizē atspējots"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Importētie Iestatījumi!"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Bloķēts demonstrācijas laikā"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Atiestatīt visus iestatījumus"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Atiestatīšana nav pieejama"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Atiestatīšana neizdevās"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Rotācija netiek atbalstīta"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Apjoms: KaiOS API nav pieejams"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Neizdevās palielināt skaļumu"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Neizdevās samazināt skaļumu"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Skaļuma izrādīšana neizdevās"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Zāģis"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Bufera garums"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Buferšķīduma plānošana paraugos (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "viedokļus"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Maks. vienlaicīgās notis (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Fona iestatījumi"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Rādīt dialogu"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Teksta krāsa"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Fona krāsa"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Procentuālās daļas krāsa"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Atmiņas API nav pieejams"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Glabāšana kārtībā"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Žurnāls eksportēts uz"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Darbība neizdevās."
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Nav pieejama krātuve žurnāla eksportēšanai."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Renderēšanas režīms"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Atsevišķas piezīmes"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Audekla buferis"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D skats"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Nejaušas piezīmes krāsa"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Piezīmju krāsu palete"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Parādīt vairāk"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Ielādētie SoundFonts"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Nav ielādēts neviens SoundFonts"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Skenēšana"
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Skeneris nav pieejams"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Ierīcē nav atrasti skaņas fonta faili (.sf2, .sf3, .dls, .sfz)"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Notiek datu lasīšana..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Ielādēt fonu"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Notīrīt fonu"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Priekšskatīt"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Atslēgu skaits"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Ielādē:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "& SaglabÄt noklusÄto autoru un autortiesÄ«bas kÄ tagus"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Pagriezt līdz portretam"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Pagriezt uz ainavu"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Vai atspējot izstrādātāja izvēlnes režīmu?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Iestatījumos ir atspējota izstrādātāja izvēlne"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Notiek lietotnes kodola inicializēšana..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Notiek iestatījumu un preferenču ielāde..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Notiek audio dzinēja inicializēšana..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Ielādes modulis: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Notiek banku sagatavošana..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Sintēze gatava"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Inicializē displeja & kanvu..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Gatavs"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Paraugu dekodēšana ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Paraugi tiek dekodēti..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Aizkave pirms atskaņošanas sekundēs (0 = izslēgts)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Neizdevās ielādēt:% 1"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "skaņas fontu (-iem)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank nav pieejama"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Kļūda lasot datus."
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Ielādēts"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Pašlaik nevar notīrīt - reklāmguvums joprojām darbojas.\nKad tas ir pabeigts, vēlreiz nospiediet Clear (Notīrīt)."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Nav pieejama krātuve notīrīšanai."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Notīrīts"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "failu(s) no konvertēšanas kešatmiņas."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Notīrīšana pabeigta ar kļūdām."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Neizdevās notīrīt:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Randomizētās krāsas"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Dzēst"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Notiek datu lasīšana..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS kaudze (izlietota/kopā):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS objekti:"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "piezīmes RAM atmiņā:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Faila nosaukums:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp rakstīšanas žurnāls:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "Nav pieejams"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Šai lietotnei ir nepieciešama piekļuve SD kartei.\n\nLai to atļautu:\nIestatījumi -> Konfidencialitāte un drošība -> Lietotnes atļaujas -> PFA -> Atmiņas karšu krātuve -> Piešķirt.\n\nPēc tam vēlreiz atveriet lietotni / atkārtoti ielādējiet failu.\n\nOK (Labi) - aizver lietotni."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Joprojām analizē iepriekšējo failu - lūdzu, uzgaidiet."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Neizdevās straumēt MIDI analīzi:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Nevarēja nolasīt šo failu. Tas var nebūt derīgs MIDI vai (.note) eksports."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Neizdevās nolasīt SoundFont \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". Fails var tikt pārvietots, dzēsts vai bojāts."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "faila kļūda, pārvietots vai izdzēsts."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Trūkst fona attēla - atkārtoti ielādējiet to sadaļā Iestatījumi."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Nav ko eksportēt."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Konversija jau darbojas"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Krātuves atļauja liegta - piešķiriet piekļuvi SD kartei, lai konvertētu"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Ierakstāma krātuve nav atrasta."
+  },
+  {
+    "$i": "error",
+    "$v": "Kļūda"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Vispārīgi"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Ielādes stienis"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Dialoga stils"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafika"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Klavieres"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Atvērt krāsu paleti"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Nezināms"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS: 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Ieskaitīts"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Ātrums: 1,0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Laiks:"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polifonija: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Atveidotās piezīmes: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Audio buferis: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Atzīmējiet"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM&apos; Comment &apos;playlist column name and token for playlist layouts"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Atiestatīt visus iestatījumus"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Iziet"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 Taustiņi"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Pielāgotais"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Svārstības"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Tumšs"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Gaisma"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Zils"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Violets"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Nejaušs"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Nejauši alfa gradienti"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Nejauši gradienti"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Nejauši ar Alfa"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 palete"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Synthesia 9-0.8 palete"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Pielāgota palete"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Atspējot skaņas efektus"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Nav pieejama krātuve, lai eksportētu iestatījumus."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Iestatījumu eksportēšana neizdevās:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "visi krātuves apjomi nav pieejami"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Iestatījumu eksportēšana neizdevās: nav ierakstāma krātuves apjoma."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Iestatījumi eksportēti:\nciti/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Iestatījumu eksportēšana bloķēta: atļaujiet ierīces saglabāšanu:SD kartes atļauju, pēc tam mēģiniet vēlreiz."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Šī .note ir binārs MIDI eksports,\nnav iestatījumu konfigurācija.\n\nImportējiet tikai Iestatījumu failus, kas eksportēti, izmantojot Eksportēšanas iestatījumus."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Nevarēja nolasīt šo failu.\n\nTas nav iestatījumu eksports."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Šī .note nav iestatījumu eksports\n(trūkst iestatījumu marķiera)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Nevarēja lietot importētos iestatījumus."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Nevar nolasīt šo failu."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Var importēt tikai .note iestatījumu konfigurācijas.\n\nIzvēlēts:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Nevar palaist failu atlasītāju."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "ielādēts"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "Neizdevās"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Neizdevās ielādēt SoundFont (s) (fails pārvietots, dzēsts vai bojāts):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Ielādēts"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Atskaņot"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Pauze"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Apturēt"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Pārstartēt"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Notīrīt"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Pilnekrāns"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Pagriezt"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Automātiska atskaņošana"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Ieslēgts"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Izslēgts"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Informācijas kartīte"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Rādīt"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Slēpt"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Pēdas"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Renderēšana"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Klavieru izmērs"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Mainīt MIDI/Nošu failu"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Ielādēt MIDI/Nošu failu"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Pagriezt uz portretu"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Pagriezt uz ainavu"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "Labi"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Atpakaļ"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Iestatījumi"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Atcelt"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Izvēlēties"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Dzēst"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Pārvietot"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Gatavs"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Izvēlēties visu"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Noņemt visu izvēli"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Pabeigt"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Rādīt info kartīti"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Rādīt nošu nosaukumus"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Klaviatūras diapazons"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Vidējā C marķieris"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Joslas krāsa"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Klavieru krāsa"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Automātiskā atskaņošana"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Rādīt OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Fona iestatījumi"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Rādīt ielādes joslu"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Rādīt % analizējot"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Rādīt % apvienojot"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Ielādes krāsa"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "% teksta krāsa"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Slīdoša animācija"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Rādīt dialogu"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Teksta krāsa"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Fona krāsa"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Detalizēts statuss"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Detalizēti analizējot"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Detalizēti inicializējot"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Fokusa krāsa"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Fons"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Sākuma aizkave"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Aizkave pirms atskaņošanas sekundēs (0 = Izslēgts)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Sākums"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Beigas"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Bez nosaukuma"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Izslēgts"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "KĻŪDA"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Daudzrunīgs, lasot skaņu fontus"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Notiek MIDI datu parsēšana..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Notiek notikumu sapludināšana..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "ReadHeader pabeigts:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "dziesmas"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Notiek atcelšana..."
+  },
+  {
+    "$i": "language",
+    "$v": "Valoda"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Automātiski mainīt valodu"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Valodu atdalītājs"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Audio"
+  }
+]

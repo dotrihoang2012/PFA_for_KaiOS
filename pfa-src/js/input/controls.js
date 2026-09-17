@@ -109,6 +109,22 @@
       return;
     }
 
+    if (typeof Settings !== 'undefined' && Settings.isSfDeleteConfirmOpen && Settings.isSfDeleteConfirmOpen()) {
+      e.preventDefault();
+      if (key === 'SoftLeft' || key === Constants.KEY.SOFT_LEFT ||
+          key === 13 || key === Constants.KEY.ENTER || key === 'Enter') {
+        Settings.doSfDelete();
+        return;
+      }
+      if (key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+          key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
+          key === 'Back' || key === Constants.KEY.BACK) {
+        Settings.hideSfDeleteConfirm();
+        return;
+      }
+      return;
+    }
+
     // ── Developer-menu dialogs (stack above About). Confirm: OK on LSK,
     //    Cancel on RSK/Back. Acknowledgment: single centre-OK.
     if (isDevConfirmOpen()) {
@@ -175,44 +191,26 @@
       return;
     }
 
-    // ── Back: closes menu / Settings if open, otherwise hands control to
-    //    OS so the hardware Back button quits the app. ──
-    if (key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
-        key === 'Back' || key === Constants.KEY.BACK) {
-      if (typeof Settings !== 'undefined' && Settings.isOpen && Settings.isOpen()) {
+    if (typeof Settings !== 'undefined') {
+      if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
         e.preventDefault();
-        // Delegate to Settings.handleKey: while a level-2 sub-page is
-        // open it steps BACK to the group page (Visual Settings);
-        // otherwise it closes the group page. Calling Settings.close()
-        // directly here skipped the sub-page level entirely and dumped
-        // the user out to the Options menu.
-        if (typeof Settings.handleKey === 'function') {
-          Settings.handleKey(key);
-        } else {
-          Settings.close();
+        if (key === 13 || key === Constants.KEY.ENTER || key === 'Enter' ||
+            key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+            key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
+            key === 'Back' || key === Constants.KEY.BACK) {
+          Settings.hideSfDoneDialog();
         }
         return;
       }
-      if (menuOpen) {
+      if (Settings.isSfLoading && Settings.isSfLoading()) {
         e.preventDefault();
-        closeMenuOverlay();
+        if (key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+            key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
+            key === 'Back' || key === Constants.KEY.BACK) {
+          Settings.cancelSfLoading();
+        }
         return;
       }
-      // Piano screen — real .mid/.note playing: keep it running in
-      // background with "Now playing: name.mid/.note" notification (see
-      // main.js showNowPlayingNotification, mirrors upgrade-tool
-      // desktop-notification). Otherwise let Back bubble to OS (quit/minimize).
-      var hasFileBg = !!(st && st.fileName);
-      var isDemoBg = false;
-      try { isDemoBg = typeof window.isDemoActive === 'function' && window.isDemoActive(); } catch (eBg) {}
-      if (hasFileBg && !isDemoBg && st.play === 'play') {
-        try { if (typeof window.showNowPlayingNotification === 'function') window.showNowPlayingNotification(st.fileName); } catch (eN) {}
-        // Don't preventDefault — let system minimize to background so the
-        // Sequencer (performance.now wall-clock) keeps running. Re-opening
-        // restores via visibilitychange without losing position.
-        return;
-      }
-      return;
     }
 
     // ── Overlay navigation (menu) ──
@@ -288,9 +286,11 @@
       var isTextField = !!(ae && ae.tagName === 'INPUT');
       var isEditKey = (key === 8 || key === 'Backspace' ||
                        key === 13 || key === Constants.KEY.ENTER ||
-                       key === 'Back' || key === Constants.KEY.BACK);
+                       key === 'Back' || key === Constants.KEY.BACK ||
+                       key === 'ArrowUp' || key === Constants.KEY.ARROW_UP ||
+                       key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN);
       if (isTextField && !isEditKey) {
-        return; // pass through untouched: digits, '*', '#', caret keys…
+        return; // pass through untouched: digits, '*', '#', caret keys?
       }
       e.preventDefault();
       if (typeof Settings.handleKey === 'function') {
@@ -318,6 +318,13 @@
     }
     var action = normalizeAction(key, e);
     if (!action) return;
+    // Hardware Back (keyCode 8) = run the app in the BACKGROUND. Do NOT
+    // consume it: let KaiOS's native Back background the app while its
+    // process (track + audio) keeps running. End Call is the quit. (The
+    // KEY_MAP now maps 8 -> 'back', so this no longer clears.)
+    if (action === 'back') {
+      return;
+    }
     e.preventDefault();
     dispatchAction(action);
   }
@@ -541,9 +548,15 @@
     var ov = document.getElementById('devmenu-dialog');
     if (ov) {
       var msg = ov.querySelector('.kai-dialog-content p');
-      if (msg) msg.textContent = devEnabled()
-        ? 'Disable developer menu mode?'
-        : 'Enable developer menu mode?';
+      if (msg) {
+        if (devEnabled()) {
+          msg.setAttribute('data-l10n-id', 'disable_dev_menu');
+          msg.textContent = typeof L10n !== 'undefined' ? L10n.t('disable_dev_menu', 'Disable developer menu mode?') : 'Disable developer menu mode?';
+        } else {
+          msg.setAttribute('data-l10n-id', 'enable_dev_menu');
+          msg.textContent = typeof L10n !== 'undefined' ? L10n.t('enable_dev_menu', 'Enable developer menu mode?') : 'Enable developer menu mode?';
+        }
+      }
       ov.classList.remove('hidden');
     }
     updateSoftkeys();
@@ -567,9 +580,15 @@
     var ov = document.getElementById('devmenu-done-dialog');
     if (ov) {
       var msg = ov.querySelector('.kai-dialog-content p');
-      if (msg) msg.textContent = wasOn
-        ? 'Developer menu disabled in settings'
-        : 'Developer menu enabled in settings';
+      if (msg) {
+        if (wasOn) {
+          msg.setAttribute('data-l10n-id', 'dev_menu_disabled');
+          msg.textContent = typeof L10n !== 'undefined' ? L10n.t('dev_menu_disabled', 'Developer menu disabled in settings') : 'Developer menu disabled in settings';
+        } else {
+          msg.setAttribute('data-l10n-id', 'dev_menu_enabled');
+          msg.textContent = typeof L10n !== 'undefined' ? L10n.t('dev_menu_enabled', 'Developer menu enabled in settings') : 'Developer menu enabled in settings';
+        }
+      }
       ov.classList.remove('hidden');
     }
     updateSoftkeys();
@@ -688,7 +707,7 @@
         try {
           if (typeof Notes !== 'undefined' && Notes.randomizePalette) {
             Notes.randomizePalette();
-            showInfoOsd('Track colors randomised');
+            showInfoOsd(L10n.t('osd_colors_randomised', 'Colors Randomised'));
           }
         } catch (e) { console.error('[Ctrl] random-colors failed', e); }
         return;
@@ -901,19 +920,19 @@
     for (var i = 0; i < items.length; i++) {
       var a = items[i].getAttribute('data-action');
       if (a === 'load-midi') {
-        items[i].textContent = hasRealFile ? 'Change MIDI/Note File' : 'Load MIDI/Note File';
+        items[i].textContent = hasRealFile ? L10n.t('menu_change_file', 'Change MIDI/Note File') : L10n.t('menu_load_file', 'Load MIDI/Note File');
       } else if (a === 'fullscreen') {
-        items[i].textContent = inFS ? 'Exit Full Screen' : 'Full Screen';
+        items[i].textContent = inFS ? L10n.t('exit_full_screen', 'Exit Full Screen') : L10n.t('fullscreen', 'Fullscreen');
       } else if (a === 'rotate') {
         if (!rotSupported) {
-          items[i].textContent = 'Rotate Screen';
+          items[i].textContent = L10n.t('rotate', 'Rotate Screen');
         } else if (isLandscape) {
-          items[i].textContent = 'Rotate To Portrait';
+          items[i].textContent = L10n.t('rotate_portrait', 'Rotate To Portrait');
         } else {
-          items[i].textContent = 'Rotate To Landscape';
+          items[i].textContent = L10n.t('rotate_landscape', 'Rotate To Landscape');
         }
       } else if (a === 'volume') {
-        items[i].textContent = 'Volume';
+        items[i].textContent = L10n.t('volume', 'Volume');
       }
     }
   }
@@ -1037,7 +1056,7 @@
     Store.setState({ play: 'play' });
     // silent=true (countdown finished / seek flush): playback starting is
     // self-evident — don't flash the Play label over the info bar.
-    if (!silent) showPlaybackOsd('Play');
+    if (!silent) showPlaybackOsd(L10n.t('osd_play', 'Play'));
     // Async entry points (countdown timer, Auto Play) bypass
     // dispatchAction, so the softkey PLAY→PAUSE swap must be done here.
     if (typeof updateSoftkeys === 'function') updateSoftkeys();
@@ -1057,7 +1076,7 @@
     var d = Number(st.startDelay);
     if (d > 0) {
       armCountdown(d);
-      showPlaybackOsd('Play');
+      showPlaybackOsd(L10n.t('osd_play', 'Play'));
       // Same once-per-file toast rule as the manual Play path.
       if (st.npPending && typeof window.showNowPlaying === 'function') {
         window.showNowPlaying(st.fileName);
@@ -1096,16 +1115,16 @@
         if (s.startCountdown != null) {
           if (s.cdRunning) {
             Store.setState({ cdRunning: false }); // hold
-            showPlaybackOsd('Pause');
+            showPlaybackOsd(L10n.t('osd_pause', 'Pause'));
           } else {
             Store.setState({ cdRunning: true });  // resume
-            showPlaybackOsd('Play');
+            showPlaybackOsd(L10n.t('osd_play', 'Play'));
           }
           break;
         }
         if (s.play === 'play') {
           Store.setState({ play: 'pause' });
-          showPlaybackOsd('Pause');
+          showPlaybackOsd(L10n.t('osd_pause', 'Pause'));
           break;
         }
         // Countdown applies ONLY to a fresh start from the beginning
@@ -1113,7 +1132,7 @@
         var delaySec = Number(s.startDelay);
         if (s.play === 'stop' && delaySec > 0) {
           armCountdown(delaySec);
-          showPlaybackOsd('Play');
+          showPlaybackOsd(L10n.t('osd_play', 'Play'));
           // Now Playing fires the MOMENT Play is pressed — the countdown
           // only delays the audio, not the toast. Consuming npPending
           // here keeps it a once-per-file toast (no repeat at 0:00).
@@ -1128,7 +1147,7 @@
       case 'stop':
         cancelCountdown();
         Store.setState({ play: 'stop', timeSec: 0 });
-        if (s.fileName) showInfoOsd('Stop');
+        if (s.fileName) showInfoOsd(L10n.t('osd_stop', 'Stop'));
         break;
       case 'seekBack':
         seekSeconds(-1);
@@ -1167,7 +1186,7 @@
       case 'restart':
         Sequencer.stop();
         Sequencer.play();
-        if (s.fileName) showInfoOsd('Restart');
+        if (s.fileName) showInfoOsd(L10n.t('osd_restart', 'Restart'));
         break;
       case 'loadMidi':
         // Same storage-permission guard as the Options menu item.
@@ -1191,17 +1210,17 @@
           if (typeof window.clearPfaTmp === 'function') {
             try { window.clearPfaTmp(); } catch (eC) {}
           }
-          if (s.fileName) showInfoOsd('Clear');
+          if (s.fileName) showInfoOsd(L10n.t('osd_clear', 'Clear'));
         } catch (e) { console.error('[Ctrl] clearMidi error', e); }
         break;
       case 'toggleFullscreen':
         var _wasFS = !!(document.fullscreenElement || document.mozFullScreenElement);
         toggleFullscreen();
-        showInfoOsd(_wasFS ? 'Exit fullscreen' : 'Fullscreen');
+        showInfoOsd(_wasFS ? L10n.t('exit_full_screen', 'Exit Full Screen') : L10n.t('fullscreen', 'Fullscreen'));
         break;
       case 'rotateScreen':
         rotateScreen();
-        showInfoOsd('Rotate');
+        showInfoOsd(L10n.t('rotate', 'Rotate'));
         break;
       case 'cycleRenderMode':
         _cycleStoreOpts(['auto', 'individual', 'buffer'], 'renderMode', 'Render');
@@ -1209,7 +1228,7 @@
       case 'toggleAutoPlay':
         var _ap = !s.autoPlay;
         setVisual('autoPlay', _ap);
-        showInfoOsd('Auto play: ' + (_ap ? 'On' : 'Off'));
+        showInfoOsd(L10n.t('opt_autoplay', 'Auto Play') + ': ' + (_ap ? L10n.t('opt_on', 'On') : L10n.t('opt_off', 'Off')));
         break;
       case 'cyclePianoSize':
         _cycleStoreOpts(['big', 'small', 'none'], 'pianoSize', 'Piano size');
@@ -1228,14 +1247,14 @@
             Store.setState({ kbStart: 0, kbEnd: 127 });
           }
         }
-        showInfoOsd(_is128 ? '88 keys' : '128 keys');
+        showInfoOsd(_is128 ? L10n.t('opt_88', '88 Keys') : L10n.t('opt_128', '128 Keys'));
         try { window.dispatchEvent(new Event('resize')); } catch (eR) {}
         break;
       case 'toggleInfoCard':
         var _ic = !s.infoCard;
         setVisual('infoCard', _ic); // applyInfoCard side-effect runs inside applyVisual
         // OSD (same style as "+1 sec") — not a toast, not a stat row.
-        showInfoOsd('Info card: ' + (_ic ? 'Show' : 'Hide'));
+        showInfoOsd(L10n.t('opt_infocard', 'Info Card') + ': ' + (_ic ? L10n.t('opt_show', 'Show') : L10n.t('opt_hide', 'Hide')));
         break;
       case 'trailUp':
         stepTrail(+0.1);
@@ -1255,11 +1274,27 @@
         try {
           if (typeof Notes !== 'undefined' && Notes.randomizePalette) {
             Notes.randomizePalette();
-            showInfoOsd('Track colors randomised');
+            showInfoOsd(L10n.t('osd_colors_randomised', 'Colors Randomised'));
           }
         } catch (e) { console.error('[Ctrl] randomColors failed', e); }
         break;
+      case 'toggleAudio':
+        // RSK on the piano screen: mute / unmute the master audio. Routed
+        // through Settings.setAudio so the Synth → Audio Output row AND the
+        // persisted value stay in sync with this runtime toggle.
+        var _audioNext = (s.audio === false);
+        if (typeof Settings !== 'undefined' && Settings.setAudio) {
+          Settings.setAudio(_audioNext);
+        } else {
+          Store.setState({ audio: _audioNext });
+        }
+        // Audio OSD is FULLSCREEN-ONLY (showPlaybackOsd checks #app.fullscreen),
+        // and during the demo #hud is hidden so nothing shows anyway.
+        showPlaybackOsd(L10n.t('audio_output', 'Audio') + ': ' + (_audioNext ? L10n.t('on', 'On') : L10n.t('off', 'Off')));
+        break;
       case 'back':
+        // Handled before dispatch in onKeyDown (pass-through to the OS so it
+        // backgrounds the app). Reached only via other paths — no-op.
         break;
       default: break;
     }
@@ -1311,7 +1346,7 @@
   // ("1.1x speed"); no accumulation, each press just refreshes the 2s hold.
   function showSpeedOsd() {
     var v = Number(Store.getState().speed) || 1;
-    showInfoOsd(v.toFixed(1) + 'x speed');
+    showInfoOsd(v.toFixed(1) + 'x ' + L10n.t('hud_speed', 'Speed').replace('Speed: ', '').replace('Speed', 'Speed'));
   }
 
   function seekSeconds(delta) {
@@ -1369,7 +1404,7 @@
     var next = Math.round(((typeof s.trail === 'number' ? s.trail : 1.0) + delta) * 10) / 10;
     next = Math.min(8.0, Math.max(0.1, next));
     if (next !== s.trail) setVisual('trail', next);
-    showInfoOsd('Trail ' + next.toFixed(1));
+    showInfoOsd(L10n.t('opt_trail', 'Trail') + ' ' + next.toFixed(1));
   }
 
   // Cycle an enum Store key forwards through `values`, then show an OSD.
@@ -1381,7 +1416,16 @@
     idx = (idx < 0 ? -1 : idx);
     var next = values[(idx + 1) % values.length];
     setVisual(key, next);
-    showInfoOsd(label + ': ' + next);
+    var tLabel = L10n.t('opt_' + key, label) || label;
+    var tNext = next;
+    // Map values to translations
+    if (next === 'auto') tNext = L10n.t('opt_auto', 'Auto');
+    if (next === 'individual') tNext = L10n.t('opt_individual', 'Individual');
+    if (next === 'buffer') tNext = L10n.t('opt_buffer', 'Buffer');
+    if (next === 'big') tNext = L10n.t('opt_big', 'Big');
+    if (next === 'small') tNext = L10n.t('opt_small', 'Small');
+    if (next === 'none') tNext = L10n.t('opt_none', 'None');
+    showInfoOsd(tLabel + ': ' + tNext);
   }
 
   // ── Menu open ──
@@ -1429,32 +1473,55 @@
     } catch (ig2) {}
     if (_eOpen) {
       if (leftE)  leftE.textContent  = '';
-      if (ctrE)   ctrE.textContent   = 'OK';
+      if (ctrE)   ctrE.textContent = L10n.t('softkey_ok', 'OK');
       if (rightE) rightE.textContent = '';
       return;
     }
 
     // Developer-menu confirm dialog: LSK = OK, RSK = Cancel.
     if (isDevConfirmOpen()) {
-      if (leftE)  leftE.textContent  = 'OK';
+      if (leftE)  leftE.textContent = L10n.t('softkey_ok', 'OK');
       if (ctrE)   ctrE.textContent   = '';
-      if (rightE) rightE.textContent = 'Cancel';
+      if (rightE) rightE.textContent = L10n.t('softkey_cancel', 'Cancel');
       return;
     }
 
     // Developer-menu acknowledgment dialog: centre OK only.
     if (isDevDoneOpen()) {
       if (leftE)  leftE.textContent  = '';
-      if (ctrE)   ctrE.textContent   = 'OK';
+      if (ctrE)   ctrE.textContent = L10n.t('softkey_ok', 'OK');
       if (rightE) rightE.textContent = '';
       return;
     }
 
+    if (typeof Settings !== 'undefined') {
+      if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
+        if (leftE)  leftE.textContent  = '';
+        if (ctrE)   ctrE.textContent   = L10n.t('softkey_ok', 'OK');
+        if (rightE) rightE.textContent = '';
+        return;
+      }
+      if (Settings.isSfLoading && Settings.isSfLoading()) {
+        if (leftE)  leftE.textContent  = '';
+        if (ctrE)   ctrE.textContent   = '';
+        if (rightE) rightE.textContent = L10n.t('softkey_cancel', 'Cancel');
+        return;
+      }
+    }
+
+
     // Reset-confirm dialog: LSK = OK, RSK = Cancel, centre held idle.
     if (isResetConfirmOpen()) {
-      if (leftE)  leftE.textContent  = 'OK';
+      if (leftE)  leftE.textContent = L10n.t('softkey_ok', 'OK');
       if (ctrE)   ctrE.textContent   = '';
-      if (rightE) rightE.textContent = 'Cancel';
+      if (rightE) rightE.textContent = L10n.t('softkey_cancel', 'Cancel');
+      return;
+    }
+
+    if (typeof Settings !== 'undefined' && Settings.isSfDeleteConfirmOpen && Settings.isSfDeleteConfirmOpen()) {
+      if (leftE)  leftE.textContent = L10n.t('softkey_ok', 'OK');
+      if (ctrE)   ctrE.textContent   = '';
+      if (rightE) rightE.textContent = L10n.t('softkey_cancel', 'Cancel');
       return;
     }
 
@@ -1462,12 +1529,15 @@
     var menuOpen = s.menu && s.menu.open;
     var settingsOpen = (typeof Settings !== 'undefined' &&
                         Settings.isOpen && Settings.isOpen());
+    // RSK on the piano toggles the master audio — reflect the live state.
+    var audioLabel = L10n.t('softkey_audio', 'Audio') + ': ' +
+                     ((s.audio !== false) ? L10n.t('on', 'On') : L10n.t('off', 'Off'));
 
     if (aboutOpen()) {
       // About is read-only — only Back applies.
       if (leftE)  leftE.textContent  = '';
       if (ctrE)   ctrE.textContent   = '';
-      if (rightE) rightE.textContent = 'Back';
+      if (rightE) rightE.textContent = L10n.t('softkey_back', 'Back');
     } else if (menuOpen) {
       // Options menu — center SELECT activates the focused item. When the
       // focused item is locked (Note Color Randomise while demo / no file),
@@ -1483,7 +1553,7 @@
         (focusedItem.classList.contains('demo-locked') ||
          focusedItem.classList.contains('beta-locked'));
       if (leftE)  leftE.textContent  = '';
-      if (ctrE)   ctrE.textContent   = fLocked ? '' : 'SELECT';
+      if (ctrE)   ctrE.textContent = fLocked ? '' : L10n.t('softkey_select', 'Select').toUpperCase();
       if (rightE) rightE.textContent = '';
     } else if (settingsOpen) {
       // Drill-in rows (Keyboard Range / Info Card Options / color
@@ -1504,9 +1574,9 @@
                       var sfA = document.querySelector('#subsettings-list .setting-row.focused');
                       return !!(sfA && sfA.getAttribute && sfA.getAttribute('data-type') === 'action');
                     })();
-        if (leftE)  leftE.textContent  = Settings.sfAllChecked() ? 'Deselect All' : 'Select All';
-        if (ctrE)   ctrE.textContent   = sfSel ? 'Select' : '';
-        if (rightE) rightE.textContent = 'Finish';
+        if (leftE)  leftE.textContent = Settings.sfAllChecked() ? L10n.t('softkey_deselect_all', 'Deselect All') : L10n.t('softkey_select_all', 'Select All');
+        if (ctrE)   ctrE.textContent = sfSel ? L10n.t('softkey_select', 'Select') : '';
+        if (rightE) rightE.textContent = L10n.t('softkey_finish', 'Finish');
         return;
       }
 
@@ -1532,21 +1602,20 @@
       } else {
         var selRow = document.querySelector('#settings-list .setting-row.focused');
         if (selRow) selT = selRow.getAttribute('data-type');
-        // Loaded-SoundFont row in the Synth group: LSK = Delete,
-        // center = Select, RSK = Move / Done (Move mode toggle).
-        if (selRow && selT === 'sfrow') {
-          var moveMode = (typeof Settings.isMoveMode === 'function' && Settings.isMoveMode());
-          if (leftE)  leftE.textContent  = 'Delete';
-          if (ctrE)   ctrE.textContent   = 'Select';
-          if (rightE) rightE.textContent = moveMode ? 'Done' : 'Move';
-          return;
-        }
       }
-      // Drill-in ('sub' / 'color') AND one-shot action rows (Developer:
-      // Memory Stats / Export Log / Storage Test) AND palette/loadmore
+
+      // Loaded-SoundFont row in the Synth group: LSK = Delete,
+      // center = Select, RSK = Move / Done (Move mode toggle).
+      if (selT === 'sfrow') {
+        var moveMode = (typeof Settings.isMoveMode === 'function' && Settings.isMoveMode());
+        if (leftE)  leftE.textContent = moveMode ? L10n.t('softkey_done', 'Done') : L10n.t('softkey_move', 'Move');
+        if (ctrE)   ctrE.textContent = moveMode ? '' : L10n.t('softkey_select', 'Select');
+        if (rightE) rightE.textContent = moveMode ? L10n.t('softkey_cancel', 'Cancel') : L10n.t('softkey_delete', 'Delete');
+        return;
+      }
       // AND Graphics radio rows advertise the center action with a
       // "SELECT" label.
-      if (ctrE) ctrE.textContent = (selT === 'sub' || selT === 'color' || selT === 'action' || selT === 'palette' || selT === 'radio') ? 'SELECT' : '';
+      if (ctrE) ctrE.textContent = (selT === 'sub' || selT === 'color' || selT === 'action' || selT === 'sfaction' || selT === 'palette' || selT === 'radio') ? L10n.t('softkey_select', 'Select').toUpperCase() : '';
       if (leftE)  leftE.textContent  = '';
       if (rightE) rightE.textContent = '';
     } else {
@@ -1554,27 +1623,27 @@
       // right softkey is the big red button, centre is held idle so PLAY/
       // PAUSE can't be triggered mid-parse.
       if (analyzingNow()) {
-        if (leftE)  leftE.textContent  = 'Settings';
+        if (leftE)  leftE.textContent = L10n.t('softkey_settings', 'Settings');
         if (ctrE)   ctrE.textContent   = '';
-        if (rightE) rightE.textContent = 'Cancel';
+        if (rightE) rightE.textContent = L10n.t('softkey_cancel', 'Cancel');
       } else {
       // Demo self-play: hide PLAY/PAUSE and lock speed/stop/restart.
       // Settings stays so a real .mid/.note can stop the demo at any time.
       var isDemo = false;
       try { isDemo = typeof window.isDemoActive === 'function' && window.isDemoActive(); } catch (igD) {}
       if (isDemo) {
-        if (leftE)  leftE.textContent  = 'Settings';
+        if (leftE)  leftE.textContent = L10n.t('softkey_settings', 'Settings');
         if (ctrE)   ctrE.textContent   = '';
-        if (rightE) rightE.textContent = '';
+        if (rightE) rightE.textContent = audioLabel;
       } else {
       var hasFile = !!s.fileName;
       // PAUSE also while a countdown is RUNNING (press = hold it);
       // PLAY when idle, held, or stopped.
       var busy = (s.play === 'play') ||
                  (s.startCountdown != null && s.cdRunning);
-      if (leftE)  leftE.textContent  = 'Settings';
-      if (ctrE)   ctrE.textContent   = hasFile ? (busy ? 'PAUSE' : 'PLAY') : '';
-      if (rightE) rightE.textContent = '';
+      if (leftE)  leftE.textContent = L10n.t('softkey_settings', 'Settings');
+      if (ctrE)   ctrE.textContent = hasFile ? (busy ? L10n.t('osd_pause', 'Pause').toUpperCase() : L10n.t('osd_play', 'Play').toUpperCase()) : '';
+      if (rightE) rightE.textContent = audioLabel;
       }
       }
     }

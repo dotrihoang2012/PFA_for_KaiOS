@@ -117,7 +117,7 @@ var NoteWriter = (function () {
 
     pickStorage(est, function (stInfo) {
       if (!stInfo || !stInfo.st) {
-        if (opts.onError) opts.onError('No writable storage found.');
+        if (opts.onError) opts.onError(L10n.t('err_no_writable_storage', 'No writable storage found.'));
         return;
       }
       var st = stInfo.st;

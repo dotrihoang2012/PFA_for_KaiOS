@@ -7,12 +7,17 @@
     "url": "https://github.com/dotrihoang2012"
   },
   "icons": {
-    "46": "/icons/piano_56.png",
-    "112": "/icons/piano_112.png"
+    "46": "/style/icons/piano_56.png",
+    "112": "/style/icons/piano_112.png"
   },
   "default_locale": "en-US",
   "fullscreen": false,
-  "orientation": ["portrait-primary", "portrait-secondary", "landscape-primary", "landscape-secondary"],
+  "orientation": [
+    "portrait-primary",
+    "portrait-secondary",
+    "landscape-primary",
+    "landscape-secondary"
+  ],
   "version": "1.0.1",
   "type": "privileged",
   "dependencies": {
@@ -20,10 +25,345 @@
   },
   "theme_color": "#0a9bf5",
   "locales": {
+    "af-ZA": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI-speler met sleutelbordvisualisering",
+      "description": "n MIDI-speler met regstreekse klavier-visuele beelde."
+    },
+    "ar-SA": {
+      "name": "Piano From Above",
+      "subtitle": "مشغل MIDI مع مرئيات لوحة المفاتيح",
+      "description": "مشغل MIDI مع مرئيات بيانو حية."
+    },
+    "az-Latn-AZ": {
+      "name": "Piano From Above",
+      "subtitle": "Klaviatura vizuallaşdırılması ilə MIDI pleyeri",
+      "description": "Canlı piano vizualları olan MIDI pleyeri."
+    },
+    "be-BY": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI-плэер з візуалізацыяй клавіятуры",
+      "description": "MIDI-плэер з жывой візуалізацыяй піяніна."
+    },
+    "bg-BG": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI плейър с визуализация на клавиатурата",
+      "description": "MIDI плейър с визуализации на пиано на живо."
+    },
+    "bn-BD": {
+      "name": "Piano From Above",
+      "subtitle": "কীবোর্ড ভিজ্যুয়ালাইজেশন সহ MIDI প্লেয়ার",
+      "description": "লাইভ পিয়ানো ভিজ্যুয়াল সহ একটি MIDI প্লেয়ার।"
+    },
+    "bn-IN": {
+      "name": "Piano From Above",
+      "subtitle": "কীবোর্ড ভিজ্যুয়ালাইজেশন সহ MIDI প্লেয়ার",
+      "description": "লাইভ পিয়ানো ভিজ্যুয়াল সহ একটি MIDI প্লেয়ার।"
+    },
+    "bs-BA": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI plejer sa vizuelizacijom tastature",
+      "description": "MIDI plejer sa živom vizuelizacijom klavira."
+    },
+    "cs-CZ": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI přehrávač s vizualizací klávesnice",
+      "description": "MIDI přehrávač s živou vizualizací klavíru."
+    },
+    "da-DK": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI-afspiller med tastaturvisualisering",
+      "description": "En MIDI-afspiller med levende pianovisualisering."
+    },
+    "de-DE": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI-Player mit Tastaturvisualisierung",
+      "description": "Ein MIDI-Player mit Live-Klavier-Visualisierung."
+    },
+    "el-GR": {
+      "name": "Piano From Above",
+      "subtitle": "Αναπαραγωγέας MIDI με οπτικοποίηση πληκτρολογίου",
+      "description": "Αναπαραγωγέας MIDI με ζωντανά οπτικά στοιχεία πιάνου."
+    },
+    "en-GB": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI Player with keyboard Visualization",
+      "description": "A MIDI player with live piano visuals. Open any .mid or .note and watch the keys as it plays."
+    },
     "en-US": {
       "name": "Piano From Above",
       "subtitle": "MIDI Player with keyboard Visualization",
       "description": "A MIDI player with live piano visuals. Open any .mid or .note and watch the keys as it plays."
+    },
+    "es-ES": {
+      "name": "Piano From Above",
+      "subtitle": "Reproductor MIDI con visualización de teclado",
+      "description": "Un reproductor MIDI con imágenes de piano en vivo."
+    },
+    "es-US": {
+      "name": "Piano From Above",
+      "subtitle": "Reproductor MIDI con visualización de teclado",
+      "description": "Un reproductor MIDI con imágenes de piano en vivo."
+    },
+    "en-NG": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI Player with keyboard Visualization",
+      "description": "A MIDI player with live piano visuals. Open any .mid or .note and watch the keys as it plays."
+    },
+    "et-EE": {
+      "name": "Piano From Above",
+      "subtitle": "Klaviatuuri visualiseerimisega MIDI-mängija",
+      "description": "Reaalajas klaverivisuaalidega MIDI-mängija."
+    },
+    "fi-FI": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI-soitin näppäimistön visualisoinnilla",
+      "description": "MIDI-soitin livenäppäimistön visualisoinnilla."
+    },
+    "fr-FR": {
+      "name": "Piano From Above",
+      "subtitle": "Lecteur MIDI avec visualisation du clavier",
+      "description": "Un lecteur MIDI avec des visuels de piano en direct."
+    },
+    "fr-CA": {
+      "name": "Piano From Above",
+      "subtitle": "Lecteur MIDI avec visualisation du clavier",
+      "description": "Un lecteur MIDI avec des visuels de piano en direct."
+    },
+    "he-IL": {
+      "name": "Piano From Above",
+      "subtitle": "נגן MIDI עם ויזואליזציה של המקלדת",
+      "description": "נגן MIDI עם ויזואליזציה של פסנתר בלייב."
+    },
+    "hi-IN": {
+      "name": "Piano From Above",
+      "subtitle": "कीबोर्ड विज़ुअलाइज़ेशन के साथ MIDI प्लेयर",
+      "description": "लाइव पियानो विजुअल के साथ एक MIDI प्लेयर।"
+    },
+    "hr-HR": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI plejer sa vizuelizacijom tastature",
+      "description": "MIDI plejer sa živom vizuelizacijom klavira."
+    },
+    "hu-HU": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI lejátszó billentyűzet-vizualizációval",
+      "description": "MIDI lejátszó élő zongoravizuális elemekkel."
+    },
+    "hy-AM": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI նվագարկիչ ստեղնաշարի վիզուալիզացիայով",
+      "description": "MIDI նվագարկիչ կենդանի դաշնամուրի վիզուալներով:"
+    },
+    "id-ID": {
+      "name": "Piano From Above",
+      "subtitle": "Pemutar MIDI dengan Visualisasi Papan Ketik",
+      "description": "Pemutar MIDI dengan visual piano langsung."
+    },
+    "it-IT": {
+      "name": "Piano From Above",
+      "subtitle": "Lettore MIDI con visualizzazione della tastiera",
+      "description": "Un lettore MIDI con visuali di pianoforte dal vivo."
+    },
+    "km-KH": {
+      "name": "Piano From Above",
+      "subtitle": "កម្មវិធីចាក់ MIDI ជាមួយការមើលឃើញក្ដារចុច",
+      "description": "កម្មវិធីចាក់ MIDI ជាមួយរូបភាពព្យាណូផ្ទាល់។"
+    },
+    "kk-KZ": {
+      "name": "Piano From Above",
+      "subtitle": "Клавиатураны визуализациялайтын MIDI плеер",
+      "description": "Тірі пианино визуализациясы бар MIDI плейер."
+    },
+    "lt-LT": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI grotuvas su klaviatūros vizualizacija",
+      "description": "MIDI grotuvas su gyvais fortepijono vaizdais."
+    },
+    "lv-LV": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI atskaņotājs ar tastatūras vizualizāciju",
+      "description": "MIDI atskaņotājs ar dzīvajiem klavieru vizuālajiem attēliem."
+    },
+    "lo-LA": {
+      "name": "Piano From Above",
+      "subtitle": "ເຄື່ອງຫຼິ້ນ MIDI ທີ່ມີການສະແດງພາບແປ້ນພິມ",
+      "description": "ເຄື່ອງຫຼິ້ນ MIDI ທີ່ມີພາບເປຍໂນສົດ."
+    },
+    "ka-GE": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI დამკვრელი კლავიატურის ვიზუალიზაციით",
+      "description": "MIDI დამკვრელი ცოცხალი ფორტეპიანოს ვიზუალით."
+    },
+    "mk-MK": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI плејер со визуализација на тастатурата",
+      "description": "MIDI плејер со визуализација на пијано во живо."
+    },
+    "ms-MY": {
+      "name": "Piano From Above",
+      "subtitle": "Pemain MIDI dengan Visualisasi Papan Kekunci",
+      "description": "Pemain MIDI dengan visual piano langsung."
+    },
+    "nb-NO": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI-spiller med tastaturvisualisering",
+      "description": "En MIDI-spiller med levende pianovisualisering."
+    },
+    "ne-IN": {
+      "name": "Piano From Above",
+      "subtitle": "कीबोर्ड भिजुअलाइजेशनको साथ MIDI प्लेयर",
+      "description": "लाइभ पियानो भिजुअलहरूसँग एक MIDI प्लेयर।"
+    },
+    "nl-NL": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI-speler met toetsenbordvisualisatie",
+      "description": "Een MIDI-speler met live pianovisuals."
+    },
+    "pl-PL": {
+      "name": "Piano From Above",
+      "subtitle": "Odtwarzacz MIDI z wizualizacją klawiatury",
+      "description": "Odtwarzacz MIDI z wizualizacją pianina na żywo."
+    },
+    "pt-BR": {
+      "name": "Piano From Above",
+      "subtitle": "Reprodutor MIDI com visualização de teclado",
+      "description": "Um reprodutor MIDI com visuais de piano ao vivo."
+    },
+    "pt-PT": {
+      "name": "Piano From Above",
+      "subtitle": "Reprodutor MIDI com visualização de teclado",
+      "description": "Um reprodutor MIDI com visuais de piano ao vivo."
+    },
+    "ro-RO": {
+      "name": "Piano From Above",
+      "subtitle": "Player MIDI cu vizualizare tastatură",
+      "description": "Un player MIDI cu imagini de pian în direct."
+    },
+    "ru-RU": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI-плеер с визуализацией клавиатуры",
+      "description": "MIDI-плеер с живой визуализацией пианино."
+    },
+    "si-LK": {
+      "name": "Piano From Above",
+      "subtitle": "වීඩියෝ දර්ශන සහිත MIDI වාදකය",
+      "description": "සජීවී පියානෝ දර්ශන සහිත MIDI වාදකය."
+    },
+    "sk-SK": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI prehrávač s vizualizáciou klávesnice",
+      "description": "MIDI prehrávač s živou vizualizáciou klavíra."
+    },
+    "sl-SI": {
+      "name": "Piano From Above",
+      "subtitle": "Predvajalnik MIDI z vizualizacijo tipkovnice",
+      "description": "Predvajalnik MIDI z živimi vizualnimi elementi klavirja."
+    },
+    "sq-AL": {
+      "name": "Piano From Above",
+      "subtitle": "Luajtës MIDI me vizualizim të tastierës",
+      "description": "Një luajtës MIDI me pamje vizuale të pianos drejtpërdrejt."
+    },
+    "sr-Latn-CS": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI plejer sa vizuelizacijom tastature",
+      "description": "MIDI plejer sa živom vizuelizacijom klavira."
+    },
+    "sv-SE": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI-spelare med tangentbordsvisualisering",
+      "description": "En MIDI-spelare med levande pianovisualisering."
+    },
+    "sw-ZA": {
+      "name": "Piano From Above",
+      "subtitle": "Kicheza MIDI chenye taswira ya kibodi",
+      "description": "Kicheza MIDI chenye taswira za piano za moja kwa moja."
+    },
+    "ta-IN": {
+      "name": "Piano From Above",
+      "subtitle": "விசைப்பலகை காட்சிப்படுத்தலுடன் MIDI பிளேயர்",
+      "description": "நேரடி பியானோ காட்சிப்படுத்தலுடன் கூடிய MIDI பிளேயர்."
+    },
+    "th-TH": {
+      "name": "Piano From Above",
+      "subtitle": "เครื่องเล่น MIDI พร้อมการแสดงภาพคีย์บอร์ด",
+      "description": "เครื่องเล่น MIDI พร้อมภาพเปียโนสด"
+    },
+    "fil-PH": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI Player na may Visualise ng Keyboard",
+      "description": "Isang MIDI player na may live na visual ng piano."
+    },
+    "tr-TR": {
+      "name": "Piano From Above",
+      "subtitle": "Klavye Görselleştirmeli MIDI Oynatıcı",
+      "description": "Canlı piyano görsellerine sahip bir MIDI oynatıcı."
+    },
+    "uk-UA": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI-плеєр з візуалізацією клавіатури",
+      "description": "MIDI-плеєр з живою візуалізацією піаніно."
+    },
+    "ur-PK": {
+      "name": "Piano From Above",
+      "subtitle": "کی بورڈ وژولائزیشن کے ساتھ MIDI پلیئر",
+      "description": "لائیو پیانو وژولز کے ساتھ ایک MIDI پلیئر۔"
+    },
+    "vi-VN": {
+      "name": "Piano From Above",
+      "subtitle": "Trình phát MIDI hiển thị bàn phím",
+      "description": "Ứng dụng phát file MIDI trực quan trên bàn phím Piano. Mở bất kỳ file .mid hoặc .note nào."
+    },
+    "xh-ZA": {
+      "name": "Piano From Above",
+      "subtitle": "I-MIDI player enembonakalo yekhibhodi",
+      "description": "I-MIDI player enembonakalo ye-piano ephilayo."
+    },
+    "zh-CN": {
+      "name": "Piano From Above",
+      "subtitle": "带键盘可视化的 MIDI 播放器",
+      "description": "具有实时钢琴视觉效果的 MIDI 播放器。"
+    },
+    "zh-TW": {
+      "name": "Piano From Above",
+      "subtitle": "帶琴鍵視覺化的 MIDI 播放器",
+      "description": "具有即時鋼琴視覺效果的 MIDI 播放器。"
+    },
+    "zh-HK": {
+      "name": "Piano From Above",
+      "subtitle": "帶琴鍵視覺化的 MIDI 播放器",
+      "description": "具有即時鋼琴視覺效果的 MIDI 播放器。"
+    },
+    "is-IS": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI spilari með lyklaborðsmyndrænni sýn",
+      "description": "MIDI spilari með lifandi píanómyndum."
+    },
+    "zu-ZA": {
+      "name": "Piano From Above",
+      "subtitle": "Isidlali se-MIDI esinesibonisi sekhibhodi",
+      "description": "Isidlali se-MIDI esinezithombe zepiyano ezibukhoma."
+    },
+    "mo-RO": {
+      "name": "Piano From Above",
+      "subtitle": "Player MIDI cu vizualizare tastatură",
+      "description": "Un player MIDI cu imagini de pian în direct."
+    },
+    "fa-IR": {
+      "name": "Piano From Above",
+      "subtitle": "پخش کننده MIDI با تجسم صفحه کلید",
+      "description": "پخش کننده MIDI با جلوه های بصری پیانو زنده."
+    },
+    "ps-AF": {
+      "name": "Piano From Above",
+      "subtitle": "د کیبورډ لید سره MIDI پلیر",
+      "description": "د ژوندی پیانو لیدونو سره د MIDI پلیر."
+    },
+    "uz-Cyrl-UZ": {
+      "name": "Piano From Above",
+      "subtitle": "MIDI Player with keyboard Visualization",
+      "description": "A MIDI player with live piano visuals."
     }
   },
   "chrome": {
@@ -65,6 +405,8 @@
     "utilities"
   ],
   "messages": [
-    { "activity": "/index.html" }
+    {
+      "activity": "/index.html"
+    }
   ]
 }

@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Možnosti"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Vyberte"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Zpět"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "hrát"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Pauza"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Přestaň"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Zrušit"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Dokončit"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "všechny"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "žádný"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Pohybujte se"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "Dobře."
+  },
+  {
+    "$i": "settings",
+    "$v": "Nastavení"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Syntetizátor"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Vizuální"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Systém"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Nastavení vývojáře"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Nastavení zvukového písma"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "téma"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Načtěte soubor MIDI/Note"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Změňte soubor MIDI/Note"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Načíst Soundfont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Načíst více"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Zrušit analýzu"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Jasný"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Zvukový výstup"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Zvukový motor"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Syntetický průběh"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Přeskočit pomalý úvod"
+  },
+  {
+    "$i": "speed",
+    "$v": "Rychlost"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Poznámka Trail"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Automatické přehrávání"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Zobrazit dialog"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Zobrazit OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Zpoždění spuštění: "
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Rozsah klávesnice"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Středová značka C"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Zobrazit popisky poznámek"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Velikost klavíru"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Barvy pruhu"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Barva klavíru"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Barva zaměření"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Načítání barvy"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Zobrazit lištu načítání"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Zobrazit % při analýze"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Zobrazit % při slučování"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Posuvná animace"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Barva textu"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Barva pozadí"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Režim vykreslení"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D zobrazení"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Zobrazit informační kartu"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Cel�� obrazovka"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Otočit obrazovku"
+  },
+  {
+    "$i": "volume",
+    "$v": "Hlasitost"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Nastavení importu"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Nastavení exportu"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Automaticky na celou obrazovku"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Automatické otočení obrazovky"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Obnovit všechna nastavení"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "O této aplikaci"
+  },
+  {
+    "$i": "developer",
+    "$v": "Vývojář"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Podrobný stav"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Při analýze podrobné"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Při init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Statistiky paměti"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Exportovat protokol"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Test úložiště"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Délka vyrovnávací paměti"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Hlasy (polyfonie)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Zakázat Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Již načteno"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Načítání zvukového písma"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Načítání modulu..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Načítání aplikace..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Analýza MIDI…"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Sloučení skladeb…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Nyní se hraje"
+  },
+  {
+    "$i": "paused",
+    "$v": "Pozastaveno"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Zastaveno"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Chyba"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Soubor nelze přečíst nebo soubor chybí."
+  },
+  {
+    "$i": "on",
+    "$v": "Zapnuto"
+  },
+  {
+    "$i": "off",
+    "$v": "Vypnuto"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Web Audio"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "AudioControl (bypass)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Automaticky"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (oscilátor)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sinus"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "náměstí"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Pilový zub"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Trojúhelník"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Plný (128 klíčů)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 klíčů"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 klíčů"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 klíčů"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 klíčů"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Smart (automatický zoom)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Malý"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Střední"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Velký"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Poznámka podzim"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "klávesnice"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Obojí"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Počet poznámek"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Prošel"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Rychlost"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Čas"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polyfonie"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Renderované poznámky"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Audio vyrovnávací paměť"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Klíště"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Plovoucí"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Hranice"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Hranice informační karty"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Pozice"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Pozadí"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Text informační karty"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Vlevo"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Správně"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Předvolby"
+  },
+  {
+    "$i": "general",
+    "$v": "Generál"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Načítání bar"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Dialog"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafika"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Informační karta"
+  },
+  {
+    "$i": "piano",
+    "$v": "klavír"
+  },
+  {
+    "$i": "palette",
+    "$v": "Poznámka Barva"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Podrobný stav"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Při analýze podrobné"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Při init"
+  },
+  {
+    "$i": "memory",
+    "$v": "Statistiky paměti"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Exportovat protokol"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Test úložiště"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Velký"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Žádné piano"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Nastavení pozadí"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "téma"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Modrá"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Bílá"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Černá"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statistiky"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "styl"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Poznámky"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "klávesnice"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Barvy"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Zvuk"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Efekty"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "prošel:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "rychlost:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "čas:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polyfonie:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Vykresleno:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Audio Buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Zaškrtněte:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Nabito"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Obnovit všechna nastavení na výchozí tovární hodnoty?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Odstraňte SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Chcete smazat?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Načteno zvuková písma"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Nabídka pro vývojáře"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Povolit režim nabídky pro vývojáře?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Nabídka pro vývojáře povolena v nastavení"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Verze 1.0.1 • KaiOS 2.5 • Podpora černého MIDI • Licence MIT"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "MIDI vizualizér optimalizovaný pro chytré telefony (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Zaměřuje se na optimalizovaný kanál vykreslování Canvas pro plynulé zobrazení černých MIDI stop s vysokou hustotou na omezeném hardwaru."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Klíčové vlastnosti"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Black MIDI Optimization – lehké algoritmy zvládají desítky tisíc not bez výrazných poklesů FPS."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Podpora fyzické klávesnice – plynulá navigace pomocí D-Padu a číselných kláves."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Vysoce přizpůsobitelné - plný 128-klávesový klavírní displej, přizpůsobitelné barvy stop, nastavitelná rychlost klesání not."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Synthesizer - vestavěný lehký syntezátor minimalizuje využití paměti RAM na zařízeních nižší třídy."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Klíče"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > vyhledávání ±1s • ^ v hlasitost • OK přehrávání/pozastavení"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1x rychlost • 2 režim vykreslování • 3 -0,1x rychlost • 4 otočení"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 načtení MIDI • 6 celá obrazovka • 7 kláves 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 clear MIDI (uvolňuje RAM) • 9 velikost piana • 0 stop"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Informační karta hovoru • * stopa -0,1 • # stopa +0,1 • Ukončení hovoru"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Poděkování a přispívání"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Vyvinul T.Hoang • Designové komponenty KaiUI"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PR vítáni: fork -> feature branch -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Zdrojový kód: github.com/dotrihoang2012/PFA_for_KaiOS. Vydáno pod licencí MIT."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Uzamčeno, dokud se soubor nenačte"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Barevná Paleta"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Zpoždění spuštění: "
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Vybrány všechny zvukové fonty"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Výběr vymazán"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Načítání zrušeno"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Probíhá skenování..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Nebylo vybráno nic"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Vlastní paleta aktivní"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Neplatný obrázek"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Výběr barvy není k dispozici"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Nelze přečíst soubor"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Není obrazovým souborem"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Obrázek je příliš velký"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Pozadí uloženo"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Pozadí vymazáno"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Bylo dosaženo limitu hlasů"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Režim vyrovnávací paměti plátna"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Žádný SoundFont k odstranění"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Odstraněno"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Přesun zrušen"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Uspořádání uloženo"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Použijte nahoru/dolů pro pohyb, OK pro umístění"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Nebyl načten žádný SoundFont"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Použito při příštím spuštění"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Zakázáno při příštím spuštění"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Nastavení importováno"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Zamčeno během ukázky"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Obnovit nastavení"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Reset není k dispozici"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Reset se nezdařil"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Rotace není podporována"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Hlasitost: KaiOS API není k dispozici"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Vol up se nezdařil"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Vol down selhal"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Zobrazení objemu se nezdařilo"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "viděl"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Délka vyrovnávací paměti"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Plánovací pufr ve vzorcích (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Lidi"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Max. simultánní tóny (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Nastavení pozadí"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "ukázat editační dialog"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Barva textu"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Barva pozadí"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Barva procentuálního pruhu (méně výrazné)"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Rozhraní API paměti není k dispozici"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Skladování v pořádku"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Protokol exportován do"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Akce selhala"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Pro export protokolu není k dispozici žádné úložiště."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Režim vykreslování"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Jednotlivé poznámky"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Plátěný vyrovnávací paměť"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D pohled"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Barva náhodné poznámky"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Barevná Paleta"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Načíst další"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Načtené zvukové fonty"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Nebyly načteny žádné zvukové fonty"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Skenování..."
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Skener není k dispozici"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Na zařízení nebyly nalezeny žádné zvukové soubory (.sf2, .sf3, .dls, .sfz)"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "\"Čtení dat."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Načíst pozadí"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Vymazat pozadí"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Náhled"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Počet klíčů"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Načítání"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Zrušit celá obrazovka"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Otočit na výšku"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Otočit na šířku"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Zakázat režim nabídky pro vývojáře?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Nabídka pro vývojáře je v nastavení zakázána"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Inicializace jádra aplikace..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Načítání nastavení a předvoleb..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Inicializace zvukového enginu..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Načítací modul: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Probíhá příprava bank..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Syntéza připravena"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Inicializace displeje a plátna..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Připraveno"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Dekódování vzorků ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Dekódování vzorků..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Zpoždění před přehráváním v sekundách (0 = Vypnuto)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Nepodařilo se načíst."
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "soundfont(s)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank není k dispozici"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Načtení selhalo"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Načteno"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Nelze vymazat - konverze stále probíhá.\nPo dokončení znovu stiskněte Vymazat."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "K odstranění není k dispozici žádný úložný prostor."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Vymazáno"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "soubor(y) z mezipaměti pro převod."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Vymazat dokončeno s chybami."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Vymazání selhalo:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Barvy náhodně"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Odstranit"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "\"Čtení dat."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS halda (použitá/celkem):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS objekty:"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "poznámky v paměti RAM:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Název souboru:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp write-log:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "nedostupné"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Tato aplikace vyžaduje přístup k SD kartě.\n\nPovolení:\nNastavení -> Soukromí a zabezpečení -> Oprávnění aplikace -> PFA -> Úložiště paměťových karet -> Udělit.\n\nPoté aplikaci znovu otevřete/ znovu načtěte soubor.\n\nOK zavře aplikaci."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Stále analyzujeme předchozí soubor - čekejte prosím."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Analýza streamování Midi se nezdařila:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Nelze přečíst tento soubor. Nemusí se jednat o platný export Midi nebo (.note)."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Nepodařilo se přečíst SoundFont \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". Soubor může být přesunut, odstraněn nebo poškozen."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "chyba souboru, přesunuta nebo odstraněna."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Obrázek na pozadí chybí - znovu jej načtěte v Nastavení."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Není co exportovat"
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Konverze již probíhá"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Povolení k ukládání bylo odepřeno - udělit přístup k SD kartě pro převod"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Nebylo nalezeno žádné zapisovatelné úložiště."
+  },
+  {
+    "$i": "error",
+    "$v": "Chyba"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Obecné pokyny"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Načítání lišty"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Styl dialogu"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafika"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Klavír"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Barevná Paleta"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Neznámo"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Vyhovující"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Rychlost: 1,0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS (snímků za sekundu): 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Čas:"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polyfonie"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Vykreslené poznámky: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Vyrovnávací paměť zvuku: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Zaškrtnout"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Obnovit všechna nastavení"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Výstup"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 klíčů"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Vlastní"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Kmitání"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Tmavý"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Světlo"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Modrý"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Fialová"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Náhodně"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Náhodné alfa přechody"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Náhodné přechody"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Náhodně s alfou"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Paleta Synthesia 10"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Paleta Synthesia 9-0.8"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "vlastní paleta"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Zakázat zvukové efekty"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Pro export nastavení není k dispozici žádné úložiště."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Export nastavení se nezdařil:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "všechny úložné objemy nejsou k dispozici"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Export nastavení se nezdařil: žádný zapisovatelný úložný objem."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Nastavení exportováno:\nostatní/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Export nastavení je zablokován: povolte ukládání zařízení: povolte sdcard a zkuste to znovu."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "This .note is a binary Midi export,\nnejedná se o konfiguraci Nastavení.\n\nImportovat pouze soubory nastavení exportované prostřednictvím nastavení exportu."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Nelze přečíst tento soubor.\n\nNejedná se o export nastavení."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Tato .note není exportem nastavení\n(chybí značka Nastavení)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Importovaná nastavení nelze použít."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Nelze přečíst tento soubor."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Importovat lze pouze konfigurace nastavení .note.\n\nVyzvednuto:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Nelze spustit výběr souboru."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "horního válce"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "selhalo"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Nepodařilo se načíst SoundFont(y) (soubor přesunut, odstraněn nebo poškozen):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Načteno"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Přehrát"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Pozastavit"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Zastavit"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Restartovat"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Vyčistit"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Celá obrazovka"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Otočit"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Automatické přehrávání"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Zapnuto"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Vypnuto"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Informační karta"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Zobrazit"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Skrýt"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Stopa"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Vykreslování"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Velikost klavíru"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Změnit soubor MIDI/Note"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Načíst soubor MIDI/Note"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Otočit na výšku"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Otočit na šířku"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "Dobře."
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Zpět"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Nastavení"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Zrušit"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Vybrat"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Smazat"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Přesunout"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Hotovo"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Vybrat vše"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Zrušit výběr všeho"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Dokončit"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Zobrazit informační kartu"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Zobrazit štítky not"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Rozsah klávesnice"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Značka středního C"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Barva lišty"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Barva klavíru"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Automatické přehrávání"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Zobrazit OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Nastavení pozadí"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Zobrazit lištu načítání"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Zobrazit % během analýzy"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Zobrazit % během slučování"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Barva načítání"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "Barva textu %"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Posuvná animace"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Zobrazit dialog"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Barva textu"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Barva pozadí"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Podrobný stav"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Podrobně během analýzy"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Podrobně během inicializace"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Barva zaměření"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Pozadí"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Zpoždění startu"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Zpoždění před přehráváním v sekundách (0 = Vypnuto)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Start"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Konec"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Bez názvu"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Ztlumeno"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "CHYBA"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Upovídané při čtení zvukových písem"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Analýza MIDI dat..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Slučování událostí..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "readHeader hotovo:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "stopy"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Rušení..."
+  },
+  {
+    "$i": "language",
+    "$v": "Jazyk"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Automatická změna jazyka"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Oddělovač jazyků"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Zvuk"
+  }
+]

@@ -202,7 +202,7 @@
 }
 .swatch.focused {
   border-color: var(--color-gs00);
-  outline: 0.25rem solid #0066cc;
+  outline: 0.25rem solid var(--color-focus, #0066cc);
 }
 
 /* First cell of the grid — restores factory default / theme color. */
@@ -217,7 +217,7 @@
 }
 .swatch-default.focused {
   border-color: var(--color-gs00);
-  outline: 0.25rem solid #0066cc;
+  outline: 0.25rem solid var(--color-focus, #0066cc);
   color: var(--color-gs00);
 }
 
@@ -428,14 +428,14 @@
   font-size: 1.2rem;
   color: var(--color-gs45);
 }
-/* Focused: KaiUI --focused modifier + project blue highlight */
-.kai-text-input.focused { background: #0066cc; }
+/* Focused: KaiUI --focused modifier + project focus highlight */
+.kai-text-input.focused { background: var(--color-focus, #0066cc); }
 .kai-text-input.focused .kai-text-input-label,
 .kai-text-input.focused .kai-text-input-hint { color: #ffffff; }
 .kai-text-input.focused .kai-text-input-input {
-  border-color: #ffffff;
-  background: transparent;
-  color: #ffffff;
+  border-color: var(--color-focus, #0066cc);
+  background: #ffffff;
+  color: #000000;
 }
 
 /* ===========================================
@@ -476,7 +476,7 @@
   box-sizing: border-box;
 }
 .palette-row.focused {
-  background: #0066cc;
+  background: var(--color-focus, #0066cc);
 }
 .palette-row-name {
   font-size: 1.5rem;
@@ -506,7 +506,7 @@
 }
 .palette-row.selected .palette-radio::before {
   content: '\e906'; /* kai-icon-radio-button-selected */
-  color: #0066cc;
+  color: var(--color-focus, #0066cc);
 }
 .palette-row.selected.focused .palette-radio::before {
   color: #ffffff;
@@ -515,7 +515,7 @@
 /* Radio rows in Graphics settings page (renderMode / view3d) */
 .setting-row.selected .palette-radio::before {
   content: '\e906'; /* kai-icon-radio-button-selected */
-  color: #0066cc;
+  color: var(--color-focus, #0066cc);
 }
 .setting-row.selected.focused .palette-radio::before {
   color: #ffffff;
@@ -535,7 +535,7 @@
   box-sizing: border-box;
 }
 .palette-action.focused {
-  background: #0066cc;
+  background: var(--color-focus, #0066cc);
   color: #ffffff;
 }
 
@@ -553,18 +553,20 @@
   box-sizing: border-box;
 }
 .palette-loadmore.focused {
-  background: #0066cc;
+  background: var(--color-focus, #0066cc);
   color: #ffffff;
 }
 
 /* ── SoundFont rows (Settings → Synth → Load Soundfont) ─────────────── */
 
-/* Square CHECKBOX glyph — kai-icons font radio set, unselected state. */
+/* Square CHECKBOX glyph — kai-icons font (NOT the circular radio set:
+   \e902 unchecked square, \e901 checked square with a tick). */
 .sf-check {
   flex-shrink: 0;
   width: 2rem;
   height: 2rem;
   margin-left: 1rem;
+  margin-right: 1.2rem;
   font-family: 'kai-icons';
   font-size: 2rem;
   line-height: 2rem;
@@ -572,13 +574,13 @@
   color: var(--color-gs70);
 }
 .sf-check::before {
-  content: '\e90f'; /* kai-icon-radio-button-unselected */
+  content: '\e902'; /* kai-icon-checkbox-unchecked */
   display: block;
   width: 100%;
 }
 .sf-check.selected::before {
-  content: '\e906'; /* kai-icon-radio-button-selected */
-  color: #0066cc;
+  content: '\e901'; /* kai-icon-checkbox-checked */
+  color: var(--color-focus, #0066cc);
 }
 .sf-row.focused .sf-check.selected::before {
   color: #ffffff;
@@ -589,13 +591,13 @@
   display: flex;
   align-items: center;
   padding: 0.9rem 1rem;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: var(--color-gs90);
   box-sizing: border-box;
   min-height: 4.5rem;
 }
 .sf-row.focused {
-  background: #0066cc;
+  background: var(--color-focus, #0066cc);
   color: #ffffff;
 }
 .sf-row-label {
@@ -604,7 +606,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-weight: 400;
+  font-weight: 500;
+  font-size: 1.6rem;
 }
 .sf-row-meta {
   flex-shrink: 0;
@@ -612,7 +615,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: var(--color-gs70);
 }
 
@@ -624,25 +627,161 @@
   white-space: pre-wrap;
 }
 
-/* Loaded-SoundFont rows inside the Synth group view blink with the
-   group accent: a matching .sf-row here just reuses .setting-row, but a
-   small blue strip is drawn on the left so the bank list reads as a
-   different section than plain settings rows. */
-.setting-row.sf-row {
-  position: relative;
-}
-.setting-row.sf-row::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 0.3rem;
-  background: #0066cc;
-}
-.setting-row.sf-row.selected::before {
-  background: #ffffff;
-}
 .setting-row.sf-row .sf-check {
   margin-left: 0.8rem;
+  margin-right: 1rem;
 }
+
+/* Loaded-SoundFont rows multi-line text wrapping & flex alignment */
+.setting-row.sf-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: auto;
+  min-height: 5rem;
+  line-height: 1.3;
+  padding: 0.8rem 1.2rem;
+  box-sizing: border-box;
+}
+.setting-row.sf-row .setting-row-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-right: 1rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+.setting-row.sf-row .setting-row-value {
+  flex-shrink: 0;
+  margin-left: auto;
+  font-weight: 500;
+  font-size: 1.4rem;
+  text-align: right;
+}
+
+/* Ensure dialog header is non-bold (regular weight) */
+.kai-dialog .kai-dialog-header,
+#sf-loading-header {
+  font-weight: normal !important;
+}
+
+/* ── Fullscreen Black Loading Screen (icons/init.png centered + bottom progress & log) ── */
+#app-boot-dialog.sf-loading-fullscreen,
+.sf-loading-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000000 url('icons/init_background.png') no-repeat center center / cover !important;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  opacity: 1;
+  transition: opacity 0.4s ease-out;
+}
+#app-boot-dialog.sf-loading-fullscreen.sf-loading-fade-out,
+.sf-loading-fullscreen.sf-loading-fade-out {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+#app-boot-dialog.sf-loading-fullscreen.hidden,
+.sf-loading-fullscreen.hidden {
+  display: none !important;
+}
+
+.sf-loading-container {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+}
+
+.sf-loading-center {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.sf-loading-init-icon {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.sf-loading-bottom {
+  flex: 0 0 auto;
+  width: 100%;
+  padding-bottom: 0.5rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.sf-loading-log {
+  font-size: 1.4rem;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+.sf-loading-log-detail {
+  font-size: 1.2rem;
+  color: #aaaaaa;
+  margin-bottom: 0.4rem;
+  text-align: center;
+  max-height: 3rem;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.sf-loading-bar-wrapper {
+  width: 100%;
+  background: #333333;
+  border-radius: 3px;
+  height: 6px;
+  overflow: hidden;
+  margin: 0.4rem 0;
+}
+
+.sf-loading-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: #0066cc;
+  transition: width 0.1s linear;
+}
+
+.sf-loading-percent-text {
+  text-align: center;
+  margin: 0.3rem 0 0 0;
+  font-size: 1.5rem;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+
+/* RTL fixes for setting row */
+html[dir="rtl"] .setting-row.has-sub {
+  padding-right: 1.6rem;
+  padding-left: 3.2rem;
+}
+html[dir="rtl"] .setting-row.has-sub::after {
+  right: auto;
+  left: 0.5rem;
+  transform: scaleX(-1);
+}
+

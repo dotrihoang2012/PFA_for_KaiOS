@@ -28,7 +28,7 @@
 
     // Soft keys
     [K.SOFT_LEFT]:  'menuOpen',
-    [K.SOFT_RIGHT]: 'playPause',
+    [K.SOFT_RIGHT]: 'toggleAudio',   // RSK on the piano = Audio On/Off
 
     // Hardware keys (KaiOS)
     [K.END_CALL]:   'quitApp',
@@ -51,8 +51,11 @@
     // keyCode 0 with only e.key populated for these hardware keys.
     '0': 'stop', '1': 'speedStepUp', '2': 'cycleRenderMode',
     '3': 'speedStepDown', '4': 'rotateScreen', '5': 'loadMidi',
-    '6': 'toggleFullscreen', '7': 'toggleKeyRange', '8': 'clearMidi',
-    '9': 'cyclePianoSize',
+    '6': 'toggleFullscreen', '7': 'toggleKeyRange', '9': 'cyclePianoSize',
+    // NOTE: no string '8' here — keyCode 8 is the hardware Back, and in an
+    // object literal the string "8" collides with [K.BACKSPACE] (also "8"),
+    // so '8': 'clearMidi' would hijack the Back button into clearing. The
+    // number-8 key still clears via [K.NUMBER_8] (keyCode 56).
 
     // e.key string forms for the rest (zero-keyCode devices)
     'Enter': 'playPause', 'ArrowLeft': 'seekBack', 'ArrowRight': 'seekForward',

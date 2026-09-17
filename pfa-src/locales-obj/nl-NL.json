@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Opties"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Selecteer"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Terug"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Spelen"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Pauze"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Stoppen"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Annuleer"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Afwerking"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Allemaal"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Geen"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Verplaatsen"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "settings",
+    "$v": "Instellingen"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Synthesizer"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Visueel"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Systeem"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Ontwikkelaarsinstellingen"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Geluidslettertype-instellingen"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Thema"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "MIDI/nootbestand laden"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Wijzig het MIDI/nootbestand"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Geluidslettertype laden"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Laad meer"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Analyse annuleren"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Duidelijk"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Audio-uitvoer"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Geluidsmotor"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Synth-golfvorm"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Sla de langzame intro over"
+  },
+  {
+    "$i": "speed",
+    "$v": "Snelheid"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Opmerking spoor"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Automatisch afspelen"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Dialoogvenster tonen"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "OSD weergeven"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Startvertraging"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Toetsenbordbereik"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Middelste C-markering"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Toon notitielabels"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Pianogrootte"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Kleur van de balk"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Pianokleur"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Focuskleur"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Kleur laden"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Toon laadbalk"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Toon % tijdens het analyseren"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Toon % tijdens het samenvoegen"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Glijdende animatie"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Tekstkleur"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Achtergrondkleur"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Rendermodus"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D-weergave"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Infokaart tonen"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Volledig scherm"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Scherm draaien"
+  },
+  {
+    "$i": "volume",
+    "$v": "Volume"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Instellingen importeren"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Instellingen exporteren"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Automatisch volledig scherm"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Scherm automatisch draaien"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Reset alle instellingen"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Over deze app"
+  },
+  {
+    "$i": "developer",
+    "$v": "Ontwikkelaar"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Uitgebreide status"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Uitgebreid tijdens het analyseren"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Uitgebreid tijdens het begin"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Geheugenstatistieken"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Logboek exporteren"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Opslagtest"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Bufferlengte"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Stemmen (polyfonie)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Schakel Soundfont FX uit"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Al geladen"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Geluidslettertype laden"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Module laden..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "App laden..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "MIDI analyseren..."
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Nummers samenvoegen…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Nu aan het spelen"
+  },
+  {
+    "$i": "paused",
+    "$v": "Gepauzeerd"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Gestopt"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Fout"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Kan bestand niet lezen of bestand ontbreekt."
+  },
+  {
+    "$i": "on",
+    "$v": "Aan"
+  },
+  {
+    "$i": "off",
+    "$v": "Uit"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Webaudio"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "Audiobediening (bypass)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Automatisch"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS-synthesizer (oscillator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "Geluidslettertype"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sinus"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Vierkant"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Zaagtand"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Driehoek"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Volledig (128 toetsen)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 sleutels"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 sleutels"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 sleutels"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 sleutels"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Slim (automatische zoom)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Klein"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Middelmatig"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Groot"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Let op herfst"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Toetsenbord"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Beide"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Opmerking telling"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Geslaagd"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Snelheid"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Tijd"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polyfonie"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Teruggegeven notities"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Audiobuffer"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Vink"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Zwevend"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Grens"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Infokaartrand"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Positie"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Achtergrond"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Infokaarttekst"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Links"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Juist"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Voorinstellingen"
+  },
+  {
+    "$i": "general",
+    "$v": "Algemeen"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Laadbalk"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Dialoog"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafisch"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Infokaart"
+  },
+  {
+    "$i": "piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "palette",
+    "$v": "Opmerking Kleur"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Uitgebreide status"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Uitgebreid tijdens het analyseren"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Uitgebreid tijdens het begin"
+  },
+  {
+    "$i": "memory",
+    "$v": "Geheugenstatistieken"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Logboek exporteren"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Opslagtest"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Groot"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Geen piano"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Achtergrondinstellingen"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Thema"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Blauw"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Wit"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Zwart"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statistieken"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Stijl"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Opmerkingen"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Toetsenbord"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Kleuren"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "Geluidslettertype"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Audio"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Effecten"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Geslaagd:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Snelheid:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Tijd:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polyfonie:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Weergegeven:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Audio-buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Vink aan:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Geladen"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Alle instellingen terugzetten naar fabrieksinstellingen?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Geluidslettertype verwijderen"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Wilt u verwijderen?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Geladen geluidsfont(en)"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Ontwikkelaarsmenu"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Ontwikkelaarsmenumodus inschakelen?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Ontwikkelaarsmenu ingeschakeld in instellingen"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Versie 1.0.1 • KaiOS 2.5 • Black MIDI ondersteund • MIT-licentie"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "Een MIDI-visualizer geoptimaliseerd voor slimme telefoons (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Richt zich op een geoptimaliseerde Canvas-renderingpijplijn om zwarte MIDI-tracks met hoge dichtheid soepel weer te geven op beperkte hardware."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Belangrijkste kenmerken"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Black MIDI-optimalisatie - lichtgewicht algoritmen verwerken tienduizenden noten zonder ernstige FPS-dalingen."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Ondersteuning voor fysiek toetsenbord - soepele navigatie via D-Pad en cijfertoetsen."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Zeer aanpasbaar - volledig pianodisplay met 128 toetsen, aanpasbare trackkleuren, instelbare notenvalsnelheden."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Synthesizer - ingebouwde lichtgewicht synth minimaliseert het RAM-gebruik op goedkope apparaten."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Sleutels"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > zoeken ±1s • ^ v volume • OK afspelen/pauzeren"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1x snelheid • 2 rendermodus • 3 -0,1x snelheid • 4 roteren"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 MIDI laden • 6 volledig scherm • 7 toetsen 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 heldere MIDI (maakt RAM vrij) • 9 pianogrootte • 0 stop"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Gespreksinfokaart • * spoor -0,1 • # spoor +0,1 • Gesprek beëindigen"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Credits en bijdragen"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Ontwikkeld door T.Hoang • KaiUI-ontwerpcomponenten"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PR's welkom: fork -> feature branch -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Broncode: github.com/dotrihoang2012/PFA_for_KaiOS. Uitgegeven onder de MIT-licentie."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Vergrendeld tot bestand geladen is"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Notitiekleurpalet"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Vertraging starten"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Alle geluidsfonts geselecteerd"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Selectie goedgekeurd"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Laden geannuleerd"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Ik scan nog steeds..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Niets geselecteerd"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Aangepast palet actief"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Ongeldige afbeelding"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Kleurkiezer niet beschikbaar"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Kan bestand niet lezen"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Geen afbeeldingsbestand"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Afbeelding te groot"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Achtergrond opgeslagen"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Achtergrond gewist"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Stemlimiet bereikt"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Canvas buffermodus"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Geen SoundFont om te verwijderen"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Verwijderd"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Verplaatsen geannuleerd"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Opgeslagen regeling"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Omhoog/omlaag gebruiken om te verplaatsen, OK om te plaatsen"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Geen geluidslettertype geladen"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Toegepast bij de volgende lancering"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Uitgeschakeld bij volgende lancering"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Instellingen geïmporteerd"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Vergrendeld tijdens demo"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Alle instellingen opnieuw instellen"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Reset is niet beschikbaar"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Terugzetten mislukt"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Rotatie niet ondersteund"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Volume: KaiOS API niet beschikbaar"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Volup mislukt"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Vol-down mislukt"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Volumeweergave mislukt"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Zag"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Bufferlengte"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Planning buffer in monsters (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Stemmen"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Max. gelijktijdige opmerkingen (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Achtergrondinstellingen"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Dialoogvenster tonen"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Tekstkleur"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Achtergrondkleur"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Percentage kleur"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Geheugen-API niet beschikbaar"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Opslag OK"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Log geëxporteerd naar"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Actie mislukt"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Geen opslag beschikbaar om het logboek te exporteren."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Rendermodus"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Individuele opmerkingen"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Canvas Buffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D-weergave"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Willekeurige nootkleur"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Notitiekleurpalet"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Meer laden"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Geladen geluidsletters"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Geen geluidsletters geladen"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Scannen..."
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Scanner is niet beschikbaar"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Geen geluidsfont bestanden (.sf2, .sf3, .dls, .sfz) gevonden op apparaat"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Bestand lezen..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Achtergrond laden"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Achtergrond wissen"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Voorbeeld"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Aantal sleutels"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Laden:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Volledig scherm afsluiten"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Naar portret draaien"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Roteren naar landschap"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Developer menumodus uitschakelen?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Ontwikkelaarsmenu uitgeschakeld in instellingen"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "App Core initialiseren..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Instellingen en voorkeuren laden..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Audio-engine initialiseren..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Laadmodule: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Banken voorbereiden..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth gereed"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Display & Canvas initialiseren..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Klaar"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Monsters decoderen ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Monsters decoderen..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Vertraging voor afspelen in seconden (0 = Uit)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Laden mislukt"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "geluidsfont(s)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank niet beschikbaar"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Kon niet lezen"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Geladen"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Kan nu niet ontruimen - een conversie draait nog steeds.\nDruk opnieuw op Wissen zodra het klaar is."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Geen opslag beschikbaar om op te ruimen."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Klaar:\n"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "bestand(s) uit de conversie-cache."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Wissen voltooid met fouten."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Wissen mislukt:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Gerandomiseerde kleuren"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Verwijderen"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Gegevens lezen..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS-hoop (gebruikt/totaal):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS objecten"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "opmerkingen in RAM:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "bestandsnaam:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa tmp schrijflogboek:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "niet beschikbaar"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Deze app heeft SD kaart toegang nodig.\n\nOm het mogelijk te maken:\nInstellingen -> Privacy & Security -> Applicatierechten -> PFA -> Geheugenkaartopslag -> Grant.\n\nheropen dan de app / herlaad het bestand.\n\nOK sluit de app."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Het vorige bestand wordt nog geanalyseerd - wacht even."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Streaming MIDI-analyse mislukt:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Kon dit bestand niet lezen. Het kan een geldige MIDI of (.note) export zijn."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Kon SoundFont niet lezen \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". Bestand kan worden verplaatst, verwijderd of beschadigd."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "bestandsfout, verplaatst of verwijderd."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Achtergrondafbeelding ontbreekt - herlaad het in Instellingen."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Niets om te exporteren."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Er wordt al een conversie uitgevoerd"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Opslag toestemming geweigerd - SD-kaart toegang te converteren"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Geen schrijfbare opslag gevonden."
+  },
+  {
+    "$i": "error",
+    "$v": "Fout"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Algemeen"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Laden van balk"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Dialoogstijl"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafieken"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Kleurpalet"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Onbekend"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS: 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC: 0"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Geslaagd: 0"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Snelheid: 1,0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS: 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Tijd: --:-- / --:--"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polyfonie: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Gerenderde notities: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Audiobuffer: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tick: 0"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM: 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Alle instellingen herstellen"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Afsluiten"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 Sleutels"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Aangepast"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Oscillator"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Donker"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Licht"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Blauw"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Paars"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Willekeurig"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Willekeurige alpha-gradients"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Willekeurige kleurverloop"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Willekeurig met Alpha"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 Palet"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Synthesia 9-0,8 Palet"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Aangepast palet"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Geluidseffecten uitschakelen"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Geen opslag beschikbaar om instellingen te exporteren."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Exportinstellingen mislukt:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "alle opslagvolumes niet beschikbaar"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Exportinstellingen mislukt: geen schrijfbaar opslagvolume."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Uitvoeren instellingen:\nandere /"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Instellingen export geblokkeerd: laat apparaat-opslag:sdcard toestemming, dan opnieuw proberen."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Deze .note is een binaire MIDI export,\ngeen instellingenconfiguratie.\n\nImporteert alleen Instellingen bestanden die via Exportinstellingen worden geëxporteerd."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Kon dit bestand niet lezen.\n\nHet is geen uitvoer van Instellingen."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Deze .note is geen Instellingen exporteren\n(de instellingenmarkering ontbreekt)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Kon de geïmporteerde instellingen niet toepassen."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Kan dat bestand niet lezen."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Alleen .note Instellingen configuraties kunnen geïmporteerd worden.\n\nGekozen:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Kan de bestandskiezer niet starten."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "geladen,"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "mislukt"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Kon SoundFont(s) (bestand verplaatst, verwijderd of beschadigd) niet laden:\n"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Geladen"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Afspelen"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Pauzeren"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Stoppen"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Opnieuw starten"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Wissen"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Volledig scherm"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Roteren"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Automatisch afspelen"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Aan"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Uit"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Infokaart"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Tonen"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Verbergen"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Spoor"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Renderen"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Pianogrootte"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Verander MIDI/Notitie Bestand"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Laad MIDI/Notitie Bestand"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Draai naar portret"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Draai naar landschap"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Terug"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Instellingen"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Annuleren"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Selecteren"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Verwijderen"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Verplaatsen"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Klaar"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Alles selecteren"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Alles deselecteren"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Voltooien"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Toon Info Kaart"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Toon Notitielabels"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Toetsenbord Bereik"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Middelste C Markering"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Balk Kleur"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Piano Kleur"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Automatisch Afspelen"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Toon OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Achtergrond Instellingen"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Toon Laadbalk"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Toon % tijdens analyseren"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Toon % tijdens samenvoegen"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Laadkleur"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "% Tekstkleur"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Glijdende Animatie"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Toon Dialoog"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Tekstkleur"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Achtergrondkleur"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Uitgebreide Status"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Uitgebreid tijdens analyseren"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Uitgebreid tijdens init"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Focus Kleur"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Achtergrond"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Start Vertraging"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Vertraging voor afspelen in seconden (0 = Uit)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Begin"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Einde"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Naamloos"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Gedempt"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "FOUT"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Uitgebreid tijdens het lezen van soundfonts"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "MIDI-gegevens parseren..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Gebeurtenissen samenvoegen..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "readHeader klaar:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "sporen"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Annuleren..."
+  },
+  {
+    "$i": "language",
+    "$v": "Taal"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Taal automatisch wijzigen"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Taalscheidingsteken"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Audio"
+  }
+]

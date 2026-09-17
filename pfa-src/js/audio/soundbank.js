@@ -34,6 +34,8 @@ var Soundbank = (function () {
   var UID_KEY = 'pfa.soundfonts.uid';
 
   var ctx = null;          // AudioContext shared with Synth
+  var masterGain = null;   // master output bus — lets Audio On/Off mute every bank
+  var muted = false;       // current mute state (masterGain pin)
   var banks = [];          // [{id, name, path, volName, selected, presetCount, noteMap}]
 
   /** Initialise AudioContext (or reuse existing one from Synth) */
@@ -42,6 +44,13 @@ var Soundbank = (function () {
     if (window.AudioContext) ctx = new AudioContext('content');
     else if (window.webkitAudioContext) ctx = new webkitAudioContext('content');
     else throw new Error('Web Audio API not available');
+    // Master output bus (Audio On/Off). All bank voices route through it so a
+    // single gain write mutes/unmutes the whole engine instantly.
+    if (!masterGain) {
+      masterGain = ctx.createGain();
+      masterGain.gain.value = muted ? 0 : 1.0;
+      masterGain.connect(ctx.destination);
+    }
     return ctx;
   }
 
@@ -140,30 +149,56 @@ var Soundbank = (function () {
    * SF3 Ogg samples are Fed straight to decodeAudioData (Gecko decodes
    * Ogg/Vorbis natively when the bytes are a full stream).
    */
-  function decodeSamples(parsed) {
+  function decodeSamples(parsed, onProgress) {
     return new Promise(function (resolve, reject) {
       var samples = parsed.samples || [];
+      var total = samples.length;
       var out = {};
       var idx = 0;
       (function next() {
-        if (idx >= samples.length) { resolve(out); return; }
+        if (typeof window !== 'undefined' && window.Settings &&
+            typeof window.Settings.isSfLoadingCancelled === 'function' &&
+            window.Settings.isSfLoadingCancelled()) {
+          reject(new Error('Loading cancelled'));
+          return;
+        }
+        if (idx >= samples.length) {
+          if (onProgress) try { onProgress(total, total); } catch (e) {}
+          resolve(out);
+          return;
+        }
+        if (onProgress && idx % 5 === 0) {
+          try { onProgress(idx, total); } catch (e) {}
+        }
         var smp = samples[idx];
-        var bufBytes;
         if (smp.ogg && smp.pcm) {
           // Raw Ogg stream (SF3) — give it to the decoder as-is.
-          bufBytes = smp.pcm.buffer;
+          decodeBuffer(smp.pcm.buffer).then(function (abuf) {
+            out[idx] = abuf;
+            idx++; next();
+          }, function () {
+            console.warn('[Soundbank] sample decode failed: ' + smp.name);
+            idx++; next();
+          });
         } else {
-          // PCM16 mono → wrap into a WAV container first.
-          bufBytes = SfParser.pcm16ToWav(smp.pcm, smp.sampleRate);
+          // PCM16 mono → create AudioBuffer directly and populate channel data
+          try {
+            var ctx = ensureContext();
+            var len = smp.pcm.length;
+            var abuf = ctx.createBuffer(1, len, smp.sampleRate || 44100);
+            var channelData = abuf.getChannelData(0);
+            for (var i = 0; i < len; i++) {
+              channelData[i] = smp.pcm[i] / 32768.0;
+            }
+            out[idx] = abuf;
+          } catch (e) {
+            console.warn('[Soundbank] sample decode failed: ' + smp.name);
+          }
+          idx++;
+          // Prevent call stack overflow for large sample arrays
+          if (idx % 20 === 0) setTimeout(next, 0);
+          else next();
         }
-        decodeBuffer(bufBytes).then(function (abuf) {
-          out[idx] = abuf;
-          idx++; next();
-        }, function () {
-          // One bad sample must not kill the whole bank — skip it.
-          console.warn('[Soundbank] sample decode failed: ' + smp.name);
-          idx++; next();
-        });
       })();
     });
   }
@@ -173,8 +208,9 @@ var Soundbank = (function () {
   /**
    * Parse + decode + add a SoundFont FILE as a new bank.
    * name/path/volName come from the scanner entry (or picker).
+   * onProgress(done, total) is called during sample decoding.
    */
-  function loadFromFile(name, path, volName, arrayBuffer) {
+  function loadFromFile(name, path, volName, arrayBuffer, onProgress) {
     return new Promise(function (resolve, reject) {
       var parsed;
       try { parsed = SfParser.parse(arrayBuffer); }
@@ -183,7 +219,7 @@ var Soundbank = (function () {
         reject(new Error('SoundFont contains no presets'));
         return;
       }
-      decodeSamples(parsed).then(function (bufBySample) {
+      decodeSamples(parsed, onProgress).then(function (bufBySample) {
         var noteMap = buildNoteMap(parsed, bufBySample);
         var bank = addBank({
           id: nextId(),
@@ -203,38 +239,41 @@ var Soundbank = (function () {
    * Legacy .soundbank.json route — fetch the JSON, decode its base64 WAV(s)
    * and register it as a single bank spanning the full note range.
    */
-  async function load(url) {
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error('Failed to fetch soundbank: ' + resp.status);
-    const data = await resp.json();
-    const presets = data.presets || [];
-    const preset = presets[0];
-    if (!preset) throw new Error('Soundbank JSON contains no presets');
-    const zone = (preset.zones && preset.zones[0]) || null;
-    if (!zone) throw new Error('No zone data in first preset');
+  function load(url) {
+    return fetch(url).then(function (resp) {
+      if (!resp.ok) throw new Error('Failed to fetch soundbank: ' + resp.status);
+      return resp.json();
+    }).then(function (data) {
+      var presets = data.presets || [];
+      var preset = presets[0];
+      if (!preset) throw new Error('Soundbank JSON contains no presets');
+      var zone = (preset.zones && preset.zones[0]) || null;
+      if (!zone) throw new Error('No zone data in first preset');
 
-    const wavBase64 = zone.wav;
-    const binary = atob(wavBase64);
-    const wavArray = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i++) wavArray[i] = binary.charCodeAt(i);
-    const audioBuf = await decodeBuffer(wavArray.buffer);
-
-    const noteMap = {};
-    const rootKey = zone.rootKey || 60;
-    const sampleRate = zone.sampleRate || (audioBuf ? audioBuf.sampleRate : 44100);
-    for (let n = 0; n < 128; n++) {
-      noteMap[n] = [{ buffer: audioBuf, rootKey: rootKey, sampleRate: sampleRate }];
-    }
-    addBank({
-      id: nextId(),
-      name: preset.name || 'Soundbank',
-      path: url || '',
-      volName: '',
-      selected: true,
-      sourceType: 'json',
-      presetCount: presets.length
-    }, noteMap);
-    console.log('[Soundbank] JSON bank loaded, ready for playback');
+      var wavBase64 = zone.wav;
+      var binary = atob(wavBase64);
+      var wavArray = new Uint8Array(binary.length);
+      for (var i = 0; i < binary.length; i++) wavArray[i] = binary.charCodeAt(i);
+      
+      return decodeBuffer(wavArray.buffer).then(function (audioBuf) {
+        var noteMap = {};
+        var rootKey = zone.rootKey || 60;
+        var sampleRate = zone.sampleRate || (audioBuf ? audioBuf.sampleRate : 44100);
+        for (var n = 0; n < 128; n++) {
+          noteMap[n] = [{ buffer: audioBuf, rootKey: rootKey, sampleRate: sampleRate }];
+        }
+        addBank({
+          id: nextId(),
+          name: preset.name || 'Soundbank',
+          path: url || '',
+          volName: '',
+          selected: true,
+          sourceType: 'json',
+          presetCount: presets.length
+        }, noteMap);
+        console.log('[Soundbank] JSON bank loaded, ready for playback');
+      });
+    });
   }
 
   /** Low‑level: register a fully decoded bank object + its noteMap. */
@@ -256,7 +295,7 @@ var Soundbank = (function () {
 
   function removeBank(id) {
     for (var i = 0; i < banks.length; i++) {
-      if (banks[i].id === id) {
+      if (String(banks[i].id) === String(id)) {
         banks.splice(i, 1);
         persist();
         return true;
@@ -287,8 +326,26 @@ var Soundbank = (function () {
     return true;
   }
 
+  function setBankOrder(ids) {
+    if (!Array.isArray(ids)) return;
+    var newBanks = [];
+    ids.forEach(function (id) {
+      for (var i = 0; i < banks.length; i++) {
+        if (String(banks[i].id) === String(id)) {
+          newBanks.push(banks[i]);
+          break;
+        }
+      }
+    });
+    banks.forEach(function (b) {
+      if (newBanks.indexOf(b) === -1) newBanks.push(b);
+    });
+    banks = newBanks;
+    persist();
+  }
+
   function bankById(id) {
-    for (var i = 0; i < banks.length; i++) if (banks[i].id === id) return banks[i];
+    for (var i = 0; i < banks.length; i++) if (String(banks[i].id) === String(id)) return banks[i];
     return null;
   }
 
@@ -315,6 +372,19 @@ var Soundbank = (function () {
   }
   function isReady() { return anySelected(); }
 
+  // Voice budget: total simultaneously-playing note layers across ALL
+  // selected banks. Settings → Synth → Soundfont Settings → Voices.
+  var _activeVoices = 0;
+  var _voices = 32;
+  function setVoices(n) {
+    n = Math.floor(Number(n));
+    if (!isFinite(n) || n < 1) n = 32;
+    _voices = Math.min(256, n);
+  }
+  function voiceGuard() { return _activeVoices >= _voices; }
+  function bookVoice() { _activeVoices++; }
+  function freeVoice() { _activeVoices = Math.max(0, _activeVoices - 1); }
+
   /**
    * Play a note on EVERY selected bank (layering). delaySec/durSec are in
    * seconds relative to AudioContext.currentTime.
@@ -336,16 +406,19 @@ var Soundbank = (function () {
       for (var ei = 0; ei < entries.length; ei++) {
         var entry = entries[ei];
         if (!entry || !entry.buffer) continue;
+        if (voiceGuard()) continue; // over the Voices budget → drop
+        bookVoice();
         try {
           var source = audioCtx.createBufferSource();
           source.buffer = entry.buffer;
           var gainNode = audioCtx.createGain();
           gainNode.gain.value = gainVal;
-          source.connect(gainNode).connect(audioCtx.destination);
+          source.connect(gainNode).connect(masterGain || audioCtx.destination);
           var stopTime = startTime + (durSec || entry.buffer.duration);
           source.start(startTime);
           source.stop(stopTime);
-        } catch (e) { /* one bad layer must never stop the rest */ }
+          source.onended = freeVoice;
+        } catch (e) { freeVoice(); /* one bad layer must never stop the rest */ }
       }
     }
   }
@@ -355,6 +428,13 @@ var Soundbank = (function () {
     try { localStorage.removeItem(REGISTRY_KEY); } catch (e) {}
     if (ctx && typeof ctx.close === 'function') ctx.close();
     ctx = null;
+    masterGain = null;
+  }
+
+  /** Mute / unmute the whole soundbank engine (Audio On/Off toggle). */
+  function mute(on) {
+    muted = !!on;
+    if (masterGain) masterGain.gain.value = muted ? 0 : 1.0;
   }
 
   /**
@@ -363,25 +443,56 @@ var Soundbank = (function () {
    * reapplied. Missing/corrupt files are skipped (stale registry entries do
    * not block the rest).
    */
-  function restore() {
+  function restore(onProgress) {
     return new Promise(function (resolve) {
       var entries = readRegistry();
-      if (!entries.length) { resolve(0); return; }
+      if (!entries.length) { resolve({ count: 0, failed: [] }); return; }
       var done = 0;
+      var failedItems = [];
+      var total = entries.length;
       (function next() {
-        if (done >= entries.length) { resolve(entries.length); return; }
+        if (done >= total) {
+          if (onProgress) try { onProgress(100); } catch (e) {}
+          persist();
+          resolve({ count: total - failedItems.length, failed: failedItems });
+          return;
+        }
+        if (typeof window !== 'undefined' && window.Settings &&
+            typeof window.Settings.isSfLoadingCancelled === 'function' &&
+            window.Settings.isSfLoadingCancelled()) {
+          resolve({ count: done - failedItems.length, failed: failedItems });
+          return;
+        }
         var item = entries[done];
         done++;
         if (!item || !item.path) { next(); return; }
         if (typeof SfScan === 'undefined' || !SfScan.readByPath) { next(); return; }
         SfScan.readByPath(item.volName, item.path).then(function (ab) {
+          if (!ab) throw new Error('File missing or unreadable');
+          if (typeof window !== 'undefined' && window.Settings &&
+              typeof window.Settings.isSfLoadingCancelled === 'function' &&
+              window.Settings.isSfLoadingCancelled()) {
+            throw new Error('Cancelled');
+          }
           return loadFromFile(item.name || item.path.split('/').pop(),
-                              item.path, item.volName, ab);
+                              item.path, item.volName, ab, function (samplesDone, samplesTotal) {
+                                var fileBase = (done - 1) / total;
+                                var fileFrac = (samplesTotal > 0) ? (samplesDone / samplesTotal) : 1;
+                                var overall = Math.min(100, Math.round((fileBase + fileFrac / total) * 100));
+                                var logName = item.name || (item.path ? item.path.split('/').pop() : '');
+                                if (onProgress) try { onProgress(overall, logName); } catch (e) {}
+                              });
         }).then(function (bank) {
-          try { setSelected(bank.id, item.selected !== false); } catch (e) {}
+          if (bank) try { setSelected(bank.id, item.selected !== false); } catch (e) {}
           next();
-        }, function () {
-          console.warn('[Soundbank] restore skipped: ' + item.path);
+        }, function (err) {
+          if (err && err.message === 'Cancelled') {
+            next();
+            return;
+          }
+          console.warn('[Soundbank] restore skipped: ' + (item ? item.path : ''), err);
+          var displayName = (item && (item.name || (item.path ? item.path.split('/').pop() : ''))) || 'SoundFont';
+          failedItems.push(displayName);
           next();
         });
       })();
@@ -395,11 +506,15 @@ var Soundbank = (function () {
     toggleSelect: toggleSelect,
     setSelected: setSelected,
     moveBank: moveBank,
+    setBankOrder: setBankOrder,
     getBanks: getBanks,
     load: load,
     play: play,
     unload: unload,
     restore: restore,
+    readRegistry: readRegistry,
+    setVoices: setVoices,
+    mute: mute,
     isReady: isReady
   };
 })();

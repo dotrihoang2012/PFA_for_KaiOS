@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Alternativer"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Velg"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Tilbake"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Spill"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Paus"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Stopp"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Avbryt"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Fullfør"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Alle"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Ingen"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Flytt"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "settings",
+    "$v": "Innstillinger"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Synthesizer"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Visuelt"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "System"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Utviklerinnstillinger"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Lydfontinnstillinger"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Tema"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Last inn MIDI/Note-fil"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Endre MIDI/Note-fil"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Last inn Soundfont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Last inn mer"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Avbryt analyse"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Tøm"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Lyd utgang"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Lydmotor"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Synth-bølgeform"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Hopp over langsom intro"
+  },
+  {
+    "$i": "speed",
+    "$v": "Hastighet"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Merk Trail"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Automatisk avspilling"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Vis dialog"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Vis OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Startforsinkelse"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Tastaturrekkevidde"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Midt C-markør"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Vis notatetiketter"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Piano størrelse"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Bar farge"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Piano farge"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Fokus farge"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Laster farge"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Vis lastelinje"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Vis % mens du analyserer"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Vis % under sammenslåing"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Skyveanimasjon"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Tekstfarge"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Bakgrunnsfarge"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Render-modus"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D-visning"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Vis infokort"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Fullskjerm"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Roter skjermen"
+  },
+  {
+    "$i": "volume",
+    "$v": "Volum"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Importer innstillinger"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Eksportinnstillinger"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Auto fullskjerm"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Roter skjerm automatisk"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Tilbakestill alle innstillinger"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Om denne appen"
+  },
+  {
+    "$i": "developer",
+    "$v": "Utvikler"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Utførlig status"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Utførlig mens du analyserer"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Utførlig mens init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Minnestatistikk"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Eksporter logg"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Lagringstest"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Bufferlengde"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Stemmer (polyfoni)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Deaktiver Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Allerede lastet"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Laster inn Soundfont"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Laster inn modul ..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Laster appen ..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Analyserer MIDI …"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Slår sammen spor …"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Spiller nå"
+  },
+  {
+    "$i": "paused",
+    "$v": "Pause"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Stoppet"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Feil"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Kan ikke lese filen eller filen mangler."
+  },
+  {
+    "$i": "on",
+    "$v": "På"
+  },
+  {
+    "$i": "off",
+    "$v": "Av"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Nettlyd"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "AudioControl (bypass)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Auto"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (oscillator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sinus"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Kvadrat"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Sagtann"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Trekant"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Full (128 nøkler)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 nøkler"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 nøkler"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 nøkler"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 nøkler"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Smart (automatisk zoom)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Liten"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Middels"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Stor"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Merk høst"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Tastatur"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Begge deler"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Notattelling"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Bestått"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Hastighet"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Tid"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polyfoni"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Gjengitte notater"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Lydbuffer"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Kryss av"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Flytende"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Grense"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Infokortkant"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Posisjon"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Bakgrunn"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Infokorttekst"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "venstre"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Høyre"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Forhåndsinnstillinger"
+  },
+  {
+    "$i": "general",
+    "$v": "Generelt"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Lastelinje"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Dialog"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafikk"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Infokort"
+  },
+  {
+    "$i": "piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "palette",
+    "$v": "Merk farge"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Utførlig status"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Utførlig mens du analyserer"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Utførlig mens init"
+  },
+  {
+    "$i": "memory",
+    "$v": "Minnestatistikk"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Eksporter logg"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Lagringstest"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Stort"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Ikke piano"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Bakgrunnsinnstillinger"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Tema"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Blått"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Hvit"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Svart"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statistikk"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Stil"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Notater"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Tastatur"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Farger"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Lyd"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Effekter"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Bestått:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Hastighet:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Tid:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polyfoni:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Gjengitt:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Lydbuff:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Kryss av:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Lastet"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Tilbakestille alle innstillinger til fabrikkinnstillinger?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Slett SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Vil du slette?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Lastet lydfont(er)"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Utviklermeny"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Vil du aktivere utviklermenymodus?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Utviklermeny aktivert i innstillingene"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Versjon 1.0.1 • KaiOS 2.5 • Black MIDI støttet • MIT-lisens"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "En MIDI-visualisering optimert for smarttelefoner (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Fokuserer på en optimalisert Canvas-gjengivelsespipeline for jevn visning av svarte MIDI-spor med høy tetthet på begrenset maskinvare."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Nøkkelfunksjoner"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Black MIDI Optimization - lette algoritmer håndterer titusenvis av toner uten alvorlige FPS-fall."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Støtte for fysisk tastatur - jevn navigering via D-Pad og talltaster."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Svært tilpassbar - full 128-tasters pianoskjerm, tilpassbare sporfarger, justerbar notefallshastighet."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Synthesizer - innebygd lettvektssynth minimerer RAM-bruk på low-end enheter."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Nøkler"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > søk ±1s • ^ v volum • OK spill/pause"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1x hastighet • 2 gjengivelsesmodus • 3 -0,1x hastighet • 4 rotasjoner"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 last MIDI • 6 fullskjerm • 7 tangenter 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 klare MIDI (frigjør RAM) • 9 pianostørrelser • 0 stopp"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Samtaleinfokort • * spor -0,1 • # spor +0,1 • Avslutt samtale"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Kreditter og bidrag"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Utviklet av T.Hoang • KaiUI designkomponenter"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PR-er velkommen: gaffel -> funksjonsgren -> forplikte -> push -> Pull-forespørsel"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Kildekode: github.com/dotrihoang2012/PFA_for_KaiOS. Utgitt under MIT-lisensen."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Låst til filen lastes"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Merk fargepalett"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Startforsinkelse"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Alle lydfonter er valgt"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Utvalget slettet"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Lastingen ble avbrutt"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Skanner fortsatt..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Ingenting er valgt"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Egendefinert palett aktiv"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Ugyldig bilde"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Fargevelger er ikke tilgjengelig"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Kan ikke lese filen"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Ikke en bildefil"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Bildet er for stort"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Bakgrunnen er lagret"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Bakgrunnen er ryddet"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Stemmergrensen nådd"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Canvas buffermodus"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Ingen SoundFont å slette"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Slettet"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Flytting avbrutt"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Arrangementet er lagret"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Bruk opp/ned for å flytte, OK for å plassere"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Ingen SoundFont lastet"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Brukes ved neste lansering"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Deaktivert ved neste lansering"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Innstillinger importert"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Låst under demo"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Alle innstillinger tilbakestilles"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Tilbakestilling er ikke tilgjengelig"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Tilbakestilling mislyktes"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Rotasjon støttes ikke"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Volum: KaiOS API utilgjengelig"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Vol up mislyktes"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Volum ned mislyktes"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Volumshow mislyktes"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Sag"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Bufferlengde"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Planleggingsbuffer i prøver (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Stemme"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Maks samtidige notater (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Bakgrunnsinnstillinger"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Vis dialog"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Tekstfarge"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Bakgrunnsfarge"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Prosentvis farge"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Memory API er ikke tilgjengelig"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Lagring OK"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Logg eksportert til"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Handlingen mislyktes"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Ingen lagring tilgjengelig for å eksportere loggen."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Render-modus"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Individuelle notater"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Canvas Buffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D-visning"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Tilfeldig notatfarge"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Merk fargepalett"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Last inn mer"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Lastet inn SoundFonts"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Ingen lydfonts lastet"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Skanner..."
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Scanner er ikke tilgjengelig"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Ingen lydfont-filer (.sf2, .sf3, .dls, .sfz) funnet på enheten"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Leser fil..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Last inn bakgrunn"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Tøm bakgrunn"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Forhåndsvisning"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Nøkkeltall"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Laster inn:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Avslutt full skjerm"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Roter til portrett"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Roter til landskap"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Slå av utviklermenymodus?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Utviklermenyen deaktivert i innstillinger"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Initialiserer appkjerne..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Laster inn innstillinger og preferanser..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Initialiserer lydmotor..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Lastemodul: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Forbereder banker..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth klar"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Initialiserer Display & Canvas..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Ferdig"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Dekodingsprøver ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Dekoder prøver..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Forsening før avspilling i sekunder (0 = Av)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Klarte ikke å laste"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "lydfont(er)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank utilgjengelig"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Klarte ikke å lese"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Lastet"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Kan ikke klart nå - en konvertering er fortsatt i gang.\nTrykk på Clear igjen når den er ferdig."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Ingen lagring tilgjengelig."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Fjernet:\n"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "fil(er) fra konverteringsbufferen."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Klar med feil."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Tømming mislyktes:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Farger randomisert"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Slett"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Leser data..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS-haug (brukt/totalt):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS-objekter"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "notater i RAM:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "filnavn:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa tmp skrivelogg:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "utilgjengelig"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Denne appen trenger SD korttilgang.\n\nFor å tillate det:\nInnstillinger -> Personvern og sikkerhet -> Appløyve -> PFA -> Minnekortlagring -> Grant.\n\nÅpne appen / laste filen på nytt.\n\nOK stenger appen."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Fortsatt analysere den forrige filen - vent."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Streaming av MIDI-analyse mislyktes:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Kunne ikke lese denne filen. Det kan ikke være en gyldig MIDI eller (.note) eksport."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Klarte ikke å lese SoundFont"
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "Filen kan flyttes, slettes eller ødelegges."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "filfeil, flyttet eller slettet."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Bakgrunnsbilde mangler - last det på nytt i Innstillinger."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Ingenting å eksportere."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "En konvertering er allerede i gang"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Lagringstillatelse nektet - gi SD-korttilgang til konvertering"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Ingen skrivbar lagringsplass funnet."
+  },
+  {
+    "$i": "error",
+    "$v": "Feil"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Generelt"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Laster Bar"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Dialogstil"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafikk"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Fargepalett"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Ukjend"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS: 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC: 0"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Passert: 0"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Hastighet: 1.0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS: 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Tid: ---------"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polyfoni: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Relaterte notater: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Lydbuffer: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tick: 0"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM: 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Tilbakestill alle innstillinger"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Avslutt"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 nøkler"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Tilpasset"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Oscillator"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "M�rk"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Lys"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Bl�"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Lilla"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Tilfeldig"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Tilfeldige alfa-overganger"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Tilfeldige overganger"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Tilfeldig med Alpha"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 Palett"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Synthesia 9-0.8 Palett"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Tilpasset palett"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Slå av lydeffekter"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Ingen lagringsplass tilgjengelig for eksportinnstillinger."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Eksport av innstillinger mislyktes:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "alle lagringsmengder er utilgjengelige"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Eksportering av innstillinger mislyktes: intet skrivbar lagringsvolum."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Innstillinger eksportert:\nandre/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Innstillinger eksport blokkert: tillate enhet-lagring:sdcard tillatelse, deretter prøve igjen."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Dette .note er en binær MIDI eksport,\nikke innstilling av innstillinger.\n\nImporter kun innstillingsfiler som eksporteres via eksportinnstillinger."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Kunne ikke lese denne filen.\n\nDet er ikke eksport av innstillinger."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Denne .note er ikke en innstillingseksport\n(mangler innstillingsmerket)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Kunne ikke bruke de importerte innstillingene."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Kan ikke lese den filen."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Bare .note innstillinger kan importeres.\n\nPlukket:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Kan ikke starte filvalgeren."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "lastet,"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "mislykkedes"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Klarte ikke å laste SoundFont(s) (fil flyttet, slettet eller ødelagt):\n"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Lastet"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Spill"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Paus"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Stopp"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Start på nytt"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Tøm"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Fullskjerm"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Roter"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Autospill"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "På"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Av"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Infokort"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Vis"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Skjul"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Spor"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Gjengivelse"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Pianostørrelse"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Bytt MIDI/Notefil"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Last inn MIDI/Notefil"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Roter til portrett"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Roter til landskap"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Tilbake"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Innstillinger"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Avbryt"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Velg"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Slett"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Flytt"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Ferdig"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Velg alt"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Fravelg alt"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Fullfør"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Vis infokort"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Vis noteetiketter"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Tastaturområde"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Midtre C-markør"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Strekfarge"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Pianofarge"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Spill automatisk"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Vis OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Bakgrunnsinnstillinger"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Vis lastefelt"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Vis % under analyse"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Vis % under sammenslåing"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Lastefarge"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "% Tekstfarge"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Skyveanimasjon"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Vis dialog"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Tekstfarge"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Bakgrunnsfarge"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Detaljert status"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Detaljert under analyse"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Detaljert under init"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Fokusfarge"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Bakgrunn"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Startforsinkelse"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Forsinkelse før avspilling i sekunder (0 = Av)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Start"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Slutt"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Uten navn"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Dempet"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "FEIL"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Utførlig mens du leser lydfonter"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Parser MIDI-data..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Slår sammen hendelser ..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "readHeader ferdig:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "spor"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Avbryter …"
+  },
+  {
+    "$i": "language",
+    "$v": "Språk"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Bytt språk automatisk"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Språkseparator"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Lyd"
+  }
+]

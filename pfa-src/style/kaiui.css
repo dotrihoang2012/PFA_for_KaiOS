@@ -16,6 +16,7 @@
   /* Highlight */
   --color-purple: #873eff;
   --color-purple-dark: #320374;
+  --color-focus: #0066cc;
 
   /* KaiOS native softkey colors (from SoftKey.scss) */
   --softkeybar-background-color: var(--color-gs20);
@@ -63,21 +64,20 @@ html, body {
   --statusbar-height: 5px;
 }
 
-/* Gaia icons font — loaded from fonts/gaia-icons.ttf (copied from Gaia
-   shared/elements/gaia-icons). Used inside Options menu + Settings rows
-   to render OS-native "forward" arrow glyph. */
+/* Gaia icons font — loaded from style/fonts/gaia-icons.ttf
+   used inside Options menu + Settings rows to render OS-native "forward" arrow glyph. */
 @font-face {
   font-family: 'gaia-icons';
-  src: url('../fonts/gaia-icons.ttf') format('truetype');
+  src: url('fonts/gaia-icons.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
 
-/* Kai icons font — copied from KaiUI-master/kai-font/fonts. Powers the
-   radio-button glyphs on the Note Color palette rows (kai-rbl style). */
+/* Kai icons font — loaded from style/fonts/kai-icons.ttf
+   Powers the radio-button glyphs on the Note Color palette rows (kai-rbl style). */
 @font-face {
   font-family: 'kai-icons';
-  src: url('../fonts/kai-icons.ttf') format('truetype');
+  src: url('fonts/kai-icons.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
@@ -313,30 +313,25 @@ html, body {
 .kai-om-item {
   width: 100%;
   min-height: 6rem;
-  padding: 0 1.6rem;
+  padding: 1rem 1.6rem;
   color: var(--option-menu-color);
   background: var(--color-gs00);
   font-weight: 400;
   font-size: 1.7rem;
-  line-height: 6rem;
+  line-height: 1.3;
   border-bottom: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   outline: none;
-  /* Keep menu labels on one line; without this, "MIDI-OUT Settings"
-     wraps onto two lines and KaiOS Gecko inserts a hyphen between
-     the wrapped chunks. */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-wrap: break-word;
 }
 
 /* Focused item — blue highlight + white text (matches Settings sub-page) */
 .kai-om-item:focus,
 .kai-om-item.focused {
   color: var(--color-gs00);
-  background: #0066cc;
+  background: var(--color-focus, #0066cc);
 }
 
 /* LOCKED (bundled demo self-playing): greyed out, non-interactive. Focus
@@ -348,7 +343,7 @@ html, body {
 .kai-om-item.demo-locked:focus,
 .kai-om-item.demo-locked.focused {
   color: var(--color-gs00);
-  background: #0066cc;
+  background: var(--color-focus, #0066cc);
   opacity: 0.4;
 }
 
@@ -361,7 +356,7 @@ html, body {
 .kai-om-item.perm-locked:focus,
 .kai-om-item.perm-locked.focused {
   color: var(--color-gs00);
-  background: #0066cc;
+  background: var(--color-focus, #0066cc);
   opacity: 0.4;
 }
 
@@ -376,7 +371,7 @@ html, body {
 .kai-om-item.beta-locked:focus,
 .kai-om-item.beta-locked.focused {
   color: var(--color-gs00);
-  background: #0066cc;
+  background: var(--color-focus, #0066cc);
   opacity: 0.4;
 }
 
@@ -529,19 +524,17 @@ html, body {
   align-items: center;
   justify-content: space-between;
   min-height: 5rem;
-  padding: 0 1.6rem;
+  padding: 1rem 1.6rem;
   color: var(--option-menu-color);
   background: var(--color-gs00);
   font-weight: 400;
   font-size: 1.6rem;
-  line-height: 5rem;
+  line-height: 1.3;
   outline: none;
-  white-space: nowrap;
-  overflow: hidden;
-  border-bottom: none;
+  word-wrap: break-word;
 }
 .setting-row.focused {
-  background: #0066cc;
+  background: var(--color-focus, #0066cc);
   color: #ffffff;
 }
 /* LOCKED (bundled demo self-playing): greyed out, still focusable but
@@ -554,7 +547,7 @@ html, body {
   pointer-events: none;
 }
 .setting-row.perm-locked.focused {
-  background: #0066cc;
+  background: var(--color-focus, #0066cc);
   color: var(--color-gs00);
   opacity: 0.4;
 }
@@ -615,7 +608,7 @@ html, body {
 }
 /* FOCUSED: blue background, white text, shows only slider */
 .setting-row-slider.focused {
-  background: #0066cc;
+  background: var(--color-focus, #0066cc);
   color: #ffffff;
 }
 /* Slider track + thumb vars */
@@ -635,9 +628,9 @@ html, body {
   --range: calc(var(--max) - var(--min));
   --ratio: calc((var(--val) - var(--min)) / var(--range));
   --sx: calc(0.5 * 2rem + var(--ratio) * (100% - 2rem));
-  --slider-fill: #0066cc;
+  --slider-fill: var(--color-focus, #0066cc);
   --slider-track: #cccccc;
-  --slider-thumb-bg: #0066cc;
+  --slider-thumb-bg: var(--color-focus, #0066cc);
   --slider-thumb-border: #ffffff;
 }
 .setting-row-slider input[type="range"]::-moz-focus-outer {
@@ -655,7 +648,7 @@ html, body {
   --slider-fill:        #ffffff;       /* white fill */
   --slider-track:       #aaaaaa;       /* gray track */
   --slider-thumb-bg:    #ffffff;       /* white knob */
-  --slider-thumb-border:#0066cc;       /* blue border */
+  --slider-thumb-border:var(--color-focus, #0066cc);       /* blue border */
 }
 .setting-row-slider input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
@@ -863,3 +856,18 @@ html, body {
   word-wrap: break-word;
   overflow: hidden;
 }
+
+/* Fix overlapping text with submenu arrow */
+.kai-om-item.has-submenu {
+  padding-right: 3.5rem;
+}
+html[dir="rtl"] .kai-om-item.has-submenu {
+  padding-right: 1.6rem;
+  padding-left: 3.5rem;
+}
+html[dir="rtl"] .kai-om-item.has-submenu::after {
+  right: auto;
+  left: 0.5rem;
+  transform: scaleX(-1);
+}
+

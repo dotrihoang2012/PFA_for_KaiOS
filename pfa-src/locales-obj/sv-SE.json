@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Alternativ"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Välj"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Tillbaka"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Spela"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Pausa"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Sluta"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Avbryt"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Avsluta"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Alla"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Inga"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Flytta"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "settings",
+    "$v": "Inställningar"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Synthesizer"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Visuellt"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Systemsystem"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Utvecklarinställningar"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Soundfont-inställningar"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Tema"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Ladda MIDI/Note-fil"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Ändra MIDI/Note-fil"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Ladda Soundfont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Ladda mer"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Avbryt analys"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Rensa"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Ljudutgång"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Ljudmotor"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Synthvågform"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Hoppa över Slow Intro"
+  },
+  {
+    "$i": "speed",
+    "$v": "Hastighet"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Notera Trail"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Automatisk uppspelning"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Visa dialog"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Visa OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Startfördröjning"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Tangentbordsomfång"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Mellan C-markör"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Visa anteckningsetiketter"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Piano storlek"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Bar färg"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Piano färg"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Fokus färg"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Laddar färg"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Visa laddningsfältet"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Visa % medan du analyserar"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Visa % vid sammanslagning"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Glidande animation"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Text färg"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Bakgrundsfärg"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Renderläge"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D-vy"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Visa infokort"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Helskärm"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Rotera skärmen"
+  },
+  {
+    "$i": "volume",
+    "$v": "Volym"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Importera inställningar"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Exportinställningar"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Auto helskärm"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Autorotera skärmen"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Återställ alla inställningar"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Om denna app"
+  },
+  {
+    "$i": "developer",
+    "$v": "Utvecklare"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Utförlig status"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Omfattande medan du analyserar"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Omfattande medan init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Minnesstatistik"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Exportera logg"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Förvaringstest"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Buffertlängd"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Röster (polyfoni)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Inaktivera Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Redan laddad"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Laddar Soundfont"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Laddar modul..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Laddar appen..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Analyserar MIDI..."
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Slår ihop spår..."
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Spelar nu"
+  },
+  {
+    "$i": "paused",
+    "$v": "Pausad"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Slutade"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Fel"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Kan inte läsa filen eller filen saknas."
+  },
+  {
+    "$i": "on",
+    "$v": "På"
+  },
+  {
+    "$i": "off",
+    "$v": "Av"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Webbljud"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "AudioControl (bypass)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Auto Auto Auto Auto"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (oscillator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sinus"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Square Square"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Sågtand"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Triangel"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Full (128 nycklar)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 nycklar"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 nycklar"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 nycklar"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 nycklar"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Smart (Autozoom)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Liten"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Medium"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Stora"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Notera hösten"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Tangentbord"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Båda"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Noträkning"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Godkänd"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Hastighet"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Tid"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polyfoni"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Återgivna anteckningar"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Ljudbuffert"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Bocka"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Flytande"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Gräns"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Infokortsgräns"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Placera"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Bakgrund"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Infokortstext"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Vänster"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Rätt"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Förinställningar"
+  },
+  {
+    "$i": "general",
+    "$v": "Allmänt"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Loading Bar"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Dialog"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafik"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Infokort"
+  },
+  {
+    "$i": "piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "palette",
+    "$v": "Notera färg"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Utförlig status"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Omfattande medan du analyserar"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Omfattande medan init"
+  },
+  {
+    "$i": "memory",
+    "$v": "Minnesstatistik"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Exportera logg"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Förvaringstest"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Stora"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Inget piano"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Bakgrundsinställningar"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Tema"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Blå"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Vit"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Svart"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statistik"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Stil"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Anteckningar"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Tangentbord"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Färger"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Ljud"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Effekter"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Godkänd:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Hastighet:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Tid:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polyfoni:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Gjort:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Audio Buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Kryssa:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Laddat"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Återställa alla inställningar till fabriksinställningarna?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Ta bort SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Vill du radera?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Laddade ljudteckensnitt"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Utvecklarmeny"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Aktivera utvecklarmenyläge?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Utvecklarmenyn aktiverad i inställningarna"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Version 1.0.1 • KaiOS 2.5 • Svart MIDI stöds • MIT-licens"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "En MIDI-visualiserare optimerad för smarta funktionstelefoner (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Fokuserar på en optimerad Canvas-renderingspipeline för att smidigt visa svarta MIDI-spår med hög densitet på begränsad hårdvara."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Nyckelfunktioner"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Svart MIDI-optimering - lätta algoritmer hanterar tiotusentals toner utan allvarliga FPS-fall."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Stöd för fysisk knappsats - smidig navigering via D-Pad och sifferknappar."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Mycket anpassningsbar - full pianodisplay med 128 tangenter, anpassningsbara spårfärger, justerbar notfallshastighet."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Synthesizer - inbyggd lättviktssynth minimerar RAM-användningen på enkla enheter."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Nycklar"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > sök ±1s • ^ v volym • OK spela upp/pausa"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1x hastighet • 2 renderingsläge • 3 -0,1x hastighet • 4 rotationer"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 ladda MIDI • 6 fullskärm • 7 tangenter 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 klara MIDI (frigör RAM) • 9 pianostorlekar • 0 stopp"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Samtalsinformationskort • * spår -0,1 • # spår +0,1 • Avsluta samtal avsluta"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Krediter och bidrag"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Utvecklad av T.Hoang • KaiUI designkomponenter"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PRs välkomna: gaffel -> feature branch -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Källkod: github.com/dotrihoang2012/PFA_for_KaiOS. Släppt under MIT-licensen."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Låst tills filbelastningar"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Notera färgpalett"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Startfördröjning"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Alla soundfonts valda"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Valet rensades"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Inläsningen avbröts"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Fortfarande skanning..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Inget valt"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Anpassad palett aktiv"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Ogiltig bild"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Färgplockare otillgänglig"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Kan inte läsa filen"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Inte en bildfil"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Bild för stor"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Background sparad"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Bakgrunden har rensats"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Röstgränsen nådde"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Canvas buffertläge"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Inga SoundFont att radera"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Raderad"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Flytta inställd"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Arrangemang sparade"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Använd upp/ner för att flytta, OK att placera"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Ingen SoundFont laddad"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Tillämpad på nästa lansering"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Inaktiverad på nästa lansering"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Inställningar importerade"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Låst under demo"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Alla inställningar återställs"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Återställ ej tillgänglig"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Återställ misslyckades"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Rotation stöds inte"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Volym: KaiOS API otillgänglig"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Vol up misslyckades"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Vol down misslyckades"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Volymshow misslyckades"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Såg"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Buffert längd"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Planering buffert i prover (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Röster"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Max samtidiga anteckningar (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Bakgrundsinställningar"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Visa dialogruta"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Textfärg"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Bakgrundsfärg"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Procentandel färg"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Minnes-API inte tillgängligt"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Lagring OK"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Exporterad till"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Åtgärden misslyckades"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Ingen lagring tillgänglig för att exportera loggen."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "renderingsläge"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Individuella anteckningar"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Canvasbuffert"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D-vy"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Slumpmässig anteckningsfärg"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Färgpalett"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Ladda in fler"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Laddade SoundFonts"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Inga SoundFonts laddade"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Skannar ..."
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Skannern är inte tillgänglig"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Inga soundfont-filer (.sf2, .sf3, .dls, .sfz) hittades på enheten"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "läser data"
+  },
+  {
+    "$i": "load_background",
+    "$v": "Ladda bakgrund"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Rensa bakgrund"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Förhandsvisning"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Nyckelantal"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Lastning"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Avsluta fullskärmsläge"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Rotera till stående"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Rotera till liggande"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Inaktivera utvecklarmenyläge?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Utvecklarmeny inaktiverad i inställningar"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Initierar appkärna..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Läser in inställningar och preferenser..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Initierar ljudmotor..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Laddningsmodul: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Förbereder banker..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth redo"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Initierar display och canvas..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Redo"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Avkodning av prover ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Avkodar prover..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Fördröjning före uppspelning i sekunder (0 = Av)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Misslyckades att ladda"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "soundfont(s)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank ej tillgänglig"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Misslyckades med att läsa data."
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Lastad"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Kan inte rensa nu - en konvertering körs fortfarande.\nTryck på Clear igen när den är klar."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Ingen lagring tillgänglig att rensa."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Rensat"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "fil(er) från konverteringscachen."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Rensa färdigt med fel."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Resning misslyckades"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Randomiserade färger"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Ta bort"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "läser data"
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS-hög (använd/total):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS-objekt:"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "anteckningar i ram:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Filnamn:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp skriv-logg:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "otillgänglig"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Den här appen behöver SD-kortåtkomst.\n\nFör att tillåta det:\nInställningar -> Sekretess och säkerhet -> Appbehörigheter -> PFA -> Minneskortslagring -> Bevilja.\n\nÖppna sedan appen igen/ ladda om filen.\n\nOK stänger appen."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Analyserar fortfarande den tidigare filen - vänligen vänta."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Streaming MIDI-analys misslyckades:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Det gick inte att läsa den här filen. Det kanske inte är en giltig MIDI- eller (.note) -export."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Kunde inte läsa SoundFont \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". Filen kan flyttas, raderas eller skadas."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "filfel, flyttat eller raderat."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Bakgrundsbild saknas - ladda om den i Inställningar."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Ingenting att exportera!"
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "En konvertering körs redan"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Lagringsbehörighet nekad - bevilja SD-kortåtkomst för konvertering"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Inget skrivbart lagringsutrymme hittades."
+  },
+  {
+    "$i": "error",
+    "$v": "Fel"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Allmänt"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Laddningsfält"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Dialogstil"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafik"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Färgpalett"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Nepoznato"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Godkänd:"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Hastighet: 1,0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Tid:"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polyfoni"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Återgivna anteckningar: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Ljudbuffert: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Kryssa"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Återställ alla inställningar"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Avsluta"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 nycklar"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Anpassad"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Oscillation"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "M�rk"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Ljus"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Bl�"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Lila"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Slumpmässig"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Slumpmässiga alfa-gradienter"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Slumpmässiga övertoningar"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Slumpmässigt med alfa"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 Palett"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Synthesia 9-0.8 Palett"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "egen palett"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Inaktivera ljudeffekter"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Ingen lagring tillgänglig för exportinställningar."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Export av inställningar misslyckades:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "alla lagringsvolymer ej tillgängliga"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Export av inställningar misslyckades: ingen skrivbar lagringsvolym."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Inställningar exporterade:\növriga/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Inställningar export blockerad: tillåt enhetslagring:SDCARD-behörighet och försök sedan igen."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Denna .note är en binär MIDI-export,\ninte en inställningskonfiguration.\n\nImportera endast inställningsfiler som exporteras via Exportinställningar."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Det gick inte att läsa den här filen.\n\nDet är inte en export av inställningar."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Denna .note är inte en export av inställningar\n(saknar inställningsmarkören)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Det gick inte att tillämpa de importerade inställningarna."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Kan inte läsa den filen."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Endast konfigurationer för .note-inställningar kan importeras.\n\nPlockat:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Kan inte starta filväljaren."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "Laddade"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "misslyckades"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Kunde inte ladda SoundFont(er) (filen flyttades, raderades eller skadades):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Lastad"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Spela"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Pausa"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Stoppa"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Starta om"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Rensa"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Helskärm"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Rotera"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Spela automatiskt"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "På"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Av"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Infokort"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Visa"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Dölj"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Spår"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Rendering"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Pianostorlek"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Byt MIDI/notfil"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Ladda MIDI/notfil"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Rotera till stående"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Rotera till liggande"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Tillbaka"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Inställningar"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Avbryt"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Välj"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Radera"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Flytta"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Klar"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Markera allt"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Avmarkera allt"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Slutför"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Visa infokort"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Visa notetiketter"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Klaviaturintervall"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Markör för mitt-C"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Fältfärg"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Pianofärg"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Spela upp automatiskt"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Visa OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Bakgrundsinställningar"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Visa laddningsfält"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Visa % vid analys"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Visa % vid sammanslagning"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Laddningsfärg"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "%-textfärg"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Glidande animering"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Visa dialogruta"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Textfärg"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Bakgrundsfärg"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Utförlig status"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Utförlig vid analys"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Utförlig vid initiering"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Fokusfärg"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Bakgrund"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Startfördröjning"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Fördröjning före uppspelning i sekunder (0 = Av)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Börja"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Slut"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Namnlös"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Dämpad"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "FEL"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Utförlig när du läser ljudfonter"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Parsar MIDI-data..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Slår samman händelser..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "ReadHeader klar:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "spår"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Inställande..."
+  },
+  {
+    "$i": "language",
+    "$v": "Språk"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Byt språk automatiskt"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Språkavgränsare"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Ljud"
+  }
+]

@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Parinktys"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Pasirinkite"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Atgal"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Žaisti"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Pauzė"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Sustok"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Atšaukti"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Baigti"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Visi"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Nėra"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Judėti"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "Gerai"
+  },
+  {
+    "$i": "settings",
+    "$v": "Nustatymai"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Sintezatorius"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Vizualinis"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Sistema"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Kūrėjo nustatymai"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Garso šrifto nustatymai"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "tema"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Įkelkite MIDI / užrašų failą"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Pakeiskite MIDI / užrašų failą"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Įkelti garso šriftą"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Įkelti daugiau"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Atšaukti analizę"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Aišku"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Garso išvestis"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Garso variklis"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Sintezatoriaus bangos forma"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Praleisti lėtą įvadą"
+  },
+  {
+    "$i": "speed",
+    "$v": "Greitis"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Pastabų takas"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Automatinis paleidimas"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Rodyti dialogą"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Rodyti OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Pradžios atidėjimas"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Klaviatūros diapazonas"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Vidurinis C žymeklis"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Rodyti pastabų etiketes"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Piano dydis"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Juostos spalva"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Piano spalva"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Fokusavimo spalva"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Įkeliama spalva"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Rodyti įkėlimo juostą"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Analizuojant rodyti %"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Sujungiant rodyti %"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Slankioji animacija"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Teksto spalva"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Fono spalva"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Atvaizdavimo režimas"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D vaizdas"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Rodyti informacijos kortelę"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Visas ekranas"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Pasukti ekraną"
+  },
+  {
+    "$i": "volume",
+    "$v": "Apimtis"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Importuoti nustatymus"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Eksportuoti nustatymus"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Automatinis viso ekrano režimas"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Automatinis ekrano pasukimas"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Iš naujo nustatyti visus nustatymus"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Apie šią programą"
+  },
+  {
+    "$i": "developer",
+    "$v": "Kūrėjas"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Daugiakalbis statusas"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Daugiakalbis analizuojant"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Daugiakalbis init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Atminties statistika"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Eksportuoti žurnalą"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Sandėliavimo testas"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Buferio ilgis"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Balsai (polifonija)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Išjungti Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Jau įkeltas"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Įkeliamas garso šriftas"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Įkeliamas modulis..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Įkeliama programa..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Analizuojamas MIDI…"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Sujungiami takeliai…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Dabar žaidžia"
+  },
+  {
+    "$i": "paused",
+    "$v": "Pristabdyta"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Sustojo"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Klaida"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Failo nuskaityti nepavyko arba failo trūksta."
+  },
+  {
+    "$i": "on",
+    "$v": "Įjungta"
+  },
+  {
+    "$i": "off",
+    "$v": "Išjungta"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Žiniatinklio garsas"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "Garso valdymas (apėjimas)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Auto"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (osciliatorius)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "Garso šriftas"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sine"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Kvadratas"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Pjūklas"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Trikampis"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Visas (128 raktai)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 raktai"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 raktai"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 raktas"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 raktai"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Išmanusis (automatinis mastelio keitimas)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Mažas"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Vidutinis"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Didelis"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Pastaba Ruduo"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Klaviatūra"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Abu"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Pastaba Skaičius"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Praėjo"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Greitis"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Laikas"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polifonija"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Pateikti užrašai"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Garso buferis"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Varnelė"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Plaukiojantis"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Sienos"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Informacinės kortelės sienelė"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Padėtis"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Fonas"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Informacinės kortelės tekstas"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Kairė"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Teisingai"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Išankstiniai nustatymai"
+  },
+  {
+    "$i": "general",
+    "$v": "Generolas"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Įkrovimo juosta"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Dialogas"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafika"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Informacinė kortelė"
+  },
+  {
+    "$i": "piano",
+    "$v": "Pianinas"
+  },
+  {
+    "$i": "palette",
+    "$v": "Pastaba Spalva"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Daugiakalbis statusas"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Daugiakalbis analizuojant"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Daugiakalbis init"
+  },
+  {
+    "$i": "memory",
+    "$v": "Atminties statistika"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Eksportuoti žurnalą"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Sandėliavimo testas"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Didelis"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Nėra pianino"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Fono nustatymai"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "tema"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Mėlyna"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Baltas"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Juoda"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statistika"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Stilius"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Pastabos"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Klaviatūra"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Spalvos"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "Garso šriftas"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Garsas"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Efektai"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Išlaikyta:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Greitis:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Laikas:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polifonija:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Pateikta:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Garso mėgėjas:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Pažymėkite:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Pakrauta"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Atstatyti visus gamyklinius nustatymus?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Ištrinkite SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Ar norite ištrinti?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Įkeltas (-i) garso šriftas (-ai)"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Kūrėjo meniu"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Įgalinti kūrėjo meniu režimą?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Nustatymuose įjungtas kūrėjo meniu"
+  },
+  {
+    "$i": "about_version",
+    "$v": "1.0.1 versija • KaiOS 2.5 • Palaikomas juodas MIDI • MIT licencija"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "MIDI vizualizatorius, optimizuotas išmaniesiems telefonams (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Dėmesys sutelkiamas į optimizuotą drobės atvaizdavimo vamzdyną, kad būtų sklandžiai rodomi didelio tankio juodi MIDI takeliai suvaržyta aparatūra."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Pagrindinės savybės"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Juodas MIDI optimizavimas – lengvi algoritmai apdoroja dešimtis tūkstančių natų be didelių FPS kritimų."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Fizinės klaviatūros palaikymas – sklandi navigacija naudojant D-Pad ir skaičių klavišus."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Labai pritaikoma – pilnas 128 klavišų pianino ekranas, tinkinamos takelio spalvos, reguliuojamas natų kritimo greitis."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "„WebAudio Synthesizer“ – įtaisytas lengvas sintezatorius sumažina RAM naudojimą žemos klasės įrenginiuose."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Raktai"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > ieškoti ±1 s • ^ v garsumas • Gerai paleisti / pristabdyti"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1x greitis • 2 atvaizdavimo režimas • 3 -0,1x greitis • 4 pasukimai"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 įkelti MIDI • 6 viso ekrano • 7 klavišai 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 skaidrus MIDI (atlaisvina RAM) • 9 pianino dydis • 0 stotelių"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Skambučio informacijos kortelė • * seka -0,1 • # seka +0,1 • Baigti skambutį baigti"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Kreditai ir indėlis"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Sukūrė T.Hoang • KaiUI dizaino komponentai"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PRs laukiamas: šakutė -> funkcija filialas -> įsipareigoti -> stumti -> ištraukti užklausą"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Šaltinio kodas: github.com/dotrihoang2012/PFA_for_KaiOS. Išleistas pagal MIT licenciją."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Užrakinta, kol failas bus įkeltas"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Spalvų paletės parinktys"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Pradžios delsa"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Pasirinkti visi garso fontai"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Pasirinkimas išvalytas"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Įkėlimas atšauktas"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Vis dar nuskaitoma..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Nieko pasirinkta"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Pasirinktinė paletė aktyvi"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Paveiksliuko dydis"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Spalvų parinkiklis nepasiekiamas"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Neina skaityti failo% 1"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Ne vaizdo failas"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Paveikslėlis per didelis"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Fonas išsaugotas"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Fonas išvalytas"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Pasiekta balsų riba"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Drobės buferio režimas"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Nėra SoundFont, kurį būtų galima ištrinti"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Ištrinta"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Failo perkėlimas atšauktas"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Susitarimas išsaugotas"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Naudokite aukštyn/žemyn, kad perkeltumėte, galima pastatyti"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Neįkeltas „SoundFont“"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Taikoma kitą kartą paleidžiant"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Išjungta kitą kartą paleidus"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Nustatymai importuoti!"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Užrakinta demonstracijos metu"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Atstatyti numatytuosius nustatymus"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Nustatyti iš naujo negalima"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Nustatyti iš naujo nepavyko"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Sukimas nepalaikomas"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Tūris: KaiOS API nepasiekiama"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Nepavyko padidinti garsumo"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Nepavyko sumažinti garsumo"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Nepavyko parodyti garsumo"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Pjūklas"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Buferio ilgis"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Buferinio tirpalo planavimas mėginiuose (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Balsai"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Maks. vienalaikių natų skaičius (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Fono nustatymai"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Rodyti dialogą"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Teksto spalva"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Fono spalva"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Procentinė Spalva"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Atminties API nepasiekiama"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Saugykla tvarkinga"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Žurnalas eksportuotas į"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Veiksmo atlikti nepavyko."
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Nėra saugyklos, kad būtų galima eksportuoti žurnalą."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Render režimas"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Individualios pastabos"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Drobės buferis"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D rodinys"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Atsitiktinės pastabos spalva"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Spalvų paletės parinktys"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Jkelti daugiau"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Įkelti SoundFonts"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Nėra įkeltų SoundFonts"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Nuskaitoma…"
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Skaitytuvas nepasiekiamas"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Įrenginyje nerasta garso šrifto failų (.sf2, .sf3, .dls, .sfz)"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Skaitomas failas..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Įkelti foną"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Išvalyti foną"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Peržiūra"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Raktų skaičius"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Įkrovimas"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Palikti viso ekrano veiksenąEncodings menu"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Pasukti į stačią"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Pasukti į kraštovaizdį"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Išjungti kūrėjo meniu režimą?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Kūrėjo meniu išjungtas nustatymuose"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Inicijuojamas programos branduolys..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Įkeliami nustatymai ir nuostatos..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Inicijuojamas garso variklis..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Įkėlimo modulis: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Ruošiami bankai..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Sintezė paruošta"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Inicijuojama ekrano & drobė..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Paruošta"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Ėminių dekodavimas ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Dekoduojami pavyzdžiai..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Delsa prieš atkūrimą sekundėmis (0 = išjungta)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Nepavyko įkelti"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "garso šriftą (-us)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank nepasiekiamas"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Nepavyko nuskaityti failo"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Įkeltas"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Dabar negalima išvalyti - konversija vis dar vykdoma.\nBaigę dar kartą paspauskite Clear (išvalyti)."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Nėra saugyklos, kurią būtų galima išvalyti."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Tarpuskaita atlikta"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "failas(-ai) iš konversijos talpyklos."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Išvalymas baigtas su klaidomis."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Išvalyti nepavyko:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Atsitiktinės spalvos"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Ištrinti"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Skaitomi duomenys..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS krūva (panaudota/iš viso):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS objektai:"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "pastabos RAM atmintyje:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Failo pavadinimas:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp write-log:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "neprieinama"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Šiai programėlei reikia prieigos prie SD kortelės.\n\nNorėdami tai leisti:\nNustatymai -> Privatumas ir sauga -> Programėlės leidimai -> PFA -> Atminties kortelės saugykla -> Suteikti.\n\nTada iš naujo atidarykite programėlę / įkelkite failą iš naujo.\n\nGerai, programėlė uždaroma."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Vis dar analizuojamas ankstesnis failas - palaukite."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Nepavyko srautinė MIDI analizė:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Nepavyko perskaityti šio failo. Tai gali būti negaliojantis MIDI arba (.note) eksportas."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Nepavyko perskaityti SoundFont \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". Failas gali būti perkeltas, ištrintas arba sugadintas."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "failo klaida, perkelta arba ištrinta."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Trūksta fono vaizdo - įkelkite jį iš naujo nustatymuose."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Nėra ką eksportuoti"
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Konversija jau vykdoma"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Saugojimo leidimas nesuteiktas - suteikite prieigą prie SD kortelės, kad galėtumėte konvertuoti"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Nerasta įrašomosios saugyklos."
+  },
+  {
+    "$i": "error",
+    "$v": "Klaida"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Bendra informacija"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Įkėlimo juosta"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Dialogo stilius"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafikai"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Pianinas"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Spalvų paletės parinktys"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Nežinoma"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Sėkmingai"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Greitis: 1,0 k."
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "TPS"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Laikas:"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polifonija"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Pateiktos pastabos: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Garso buferis: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Pažymėti"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Atstatyti į numatytas reikšmes"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Išeiti"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 klavišai"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Tinkintas"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Generatorius"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Tamsus"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Šviesa"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Mėlyna"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Violetinė"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Atsitiktine tvarka"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Atsitiktiniai alfa gradientai"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Atsitiktiniai gradientai"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Atsitiktinė atranka su alfa"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "„Synthesia 10“ paletė"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Sintezė 9-0.8 Paletė"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Pasirinktinė paletė"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Išjungti garso efektus"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Nėra saugyklos, kad būtų galima eksportuoti nustatymus."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Nustatymų eksportavimas nepavyko:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "visi saugojimo kiekiai nepasiekiami"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Nustatymų eksportavimas nepavyko: nėra įrašomo saugojimo tūrio."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Nustatymai eksportuoti:\nkiti/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Nustatymų eksportas užblokuotas: leiskite įrenginio saugojimą:SD kortelės leidimą, tada bandykite dar kartą."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Ši .note yra dvejetainis MIDI eksportas,\nne nustatymų konfigūracija.\n\nImportuoti tik Nustatymų failus, eksportuotus per Eksportavimo Nustatymus."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Nepavyko perskaityti šio failo.\n\nTai nėra nustatymų eksportas."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Ši .note nėra nustatymų eksportas\n(trūksta nustatymų žymeklio)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Nepavyko pritaikyti importuotų nustatymų."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Nepavyksta nuskaityti šio failo."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Galima importuoti tik .note nustatymų konfigūracijas.\n\nIšduota:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Nepavyksta paleisti failų parinkiklio."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "užkrauta"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "nepavyko"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Nepavyko įkelti SoundFont (-ų) (failas perkeltas, ištrintas arba sugadintas):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Įkeltas"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Groti"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Pristabdyti"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Sustabdyti"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Paleisti iš naujo"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Išvalyti"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Visas ekranas"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Pasukti"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Automatinis paleidimas"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Įjungta"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Išjungta"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Informacijos kortelė"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Rodyti"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Slėpti"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Pėdsakas"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Atvaizdavimas"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Fortepijono dydis"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Pakeisti MIDI/Natų Failą"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Įkelti MIDI/Natų Failą"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Pasukti į vertikalų"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Pasukti į horizontalų"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "Gerai"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Atgal"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Nustatymai"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Atšaukti"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Pasirinkti"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Ištrinti"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Perkelti"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Atlikta"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Žymėti viską"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Atžymėti viską"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Baigti"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Rodyti informacijos kortelę"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Rodyti natų etiketes"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Klaviatūros diapazonas"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Vidurinio C žymeklis"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Juostos spalva"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Fortepijono spalva"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Automatinis paleidimas"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Rodyti OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Fono nustatymai"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Rodyti įkėlimo juostą"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Rodyti % analizuojant"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Rodyti % sujungiant"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Įkėlimo spalva"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "% teksto spalva"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Slenkanti animacija"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Rodyti dialogą"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Teksto spalva"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Fono spalva"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Išsami būsena"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Išsamiai analizuojant"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Išsamiai inicijuojant"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Fokuso spalva"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Fonas"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Pradžios vėlavimas"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Vėlavimas prieš atkūrimą sekundėmis (0 = Išjungta)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Pradžia"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Pabaiga"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Be pavadinimo"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Nutildytas"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "KLAIDA"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Daugiakalbis skaitant garso šriftus"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Analizuojami MIDI duomenys..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Sujungiami įvykiai..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "Read Header atlikta:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "takelius"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Atšaukiama..."
+  },
+  {
+    "$i": "language",
+    "$v": "Kalba"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Automatiškai pakeisti kalbą"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Kalbos skyriklis"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Garsas"
+  }
+]

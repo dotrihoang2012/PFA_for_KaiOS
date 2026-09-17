@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Izinketho"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Khetha"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Emuva"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Dlala"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Misa isikhashana"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Yima"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Khansela"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Qeda"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Konke"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Lutho"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Hambisa"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "settings",
+    "$v": "Izilungiselelo"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "I-Synth"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Okubonakalayo"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Uhlelo"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Izilungiselelo Zonjiniyela"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Izilungiselelo zefonti yomsindo"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Itimu"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Layisha ifayela le-MIDI/Note"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Shintsha Ifayela le-MIDI/Note"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Layisha ifonti yomsindo"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Layisha okuningi"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Khansela Ukuhlaziya"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Kucace"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Okukhipha umsindo"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Injini Yomsindo"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "I-Synth Waveform"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Yeqa Isingeniso Esinensa"
+  },
+  {
+    "$i": "speed",
+    "$v": "Isivinini"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Qaphela Trail"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Dlala ngokuzenzakalelayo"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Bonisa Ibhokisi"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Bonisa i-OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Qala Ukulibaziseka"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Ububanzi bekhibhodi"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Umaka C ophakathi"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Bonisa Amalebula Amanothi"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Usayizi Wepiyano"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Umbala Webha"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Umbala Wepiyano"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Umbala Wokugxilisa"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Ilayisha Umbala"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Bonisa Ibha Yokulayisha"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Bonisa % ngenkathi uhlaziya"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Bonisa % ngenkathi uhlanganisa"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "I-animation eslayidayo"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Umbala Wombhalo"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Umbala Ongemuva"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Imodi Yokuhlinzeka"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "Ukubuka kwe-3D"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Bonisa Ikhadi Lolwazi"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Isikrini esigcwele"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Zungezisa Isikrini"
+  },
+  {
+    "$i": "volume",
+    "$v": "Ivolumu"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Ngenisa Izilungiselelo"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Thumela Izilungiselelo"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Isikrini esigcwele esizenzakalelayo"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Zungezisa ngokuzenzakalela isikrini"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Setha kabusha Zonke izilungiselelo"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Mayelana nalolu hlelo lokusebenza"
+  },
+  {
+    "$i": "developer",
+    "$v": "Unjiniyela"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Isimo se-Verbose"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Verbose ngenkathi ehlaziya"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Verbose ngenkathi init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Izibalo Zenkumbulo"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Thumela Ilogi"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Ukuhlolwa Kwesitoreji"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Ubude besibhafa"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Amazwi (i-Polyphony)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Khubaza i-Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Sekuvele kulayishiwe"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Ilayisha ifonti yomsindo"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Ilayisha imojuli..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Ilayisha uhlelo lokusebenza..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Ihlaziya i-MIDI..."
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Ihlanganisa amathrekhi..."
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Manje iyadlala"
+  },
+  {
+    "$i": "paused",
+    "$v": "Kumisiwe okwesikhashana"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Imile"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Iphutha"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Ifayela ayikwazi ukufunda noma ifayela alikho."
+  },
+  {
+    "$i": "on",
+    "$v": "Vuliwe"
+  },
+  {
+    "$i": "off",
+    "$v": "Valiwe"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Umsindo Wewebhu"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "I-AudioControl (Bypass)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Okuzenzakalelayo"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "I-JS Synth (Oscillator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "I-SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sine"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Isikwele"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "I-Sawtooth"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Unxantathu"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Okugcwele (128 okhiye)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 okhiye"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 okhiye"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 okhiye"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 okhiye"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "I-Smart (Sondeza ngokuzenzakalelayo)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Encane"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Maphakathi"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Okukhulu"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Qaphela Ukuwa"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Ikhibhodi"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Kokubili"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "I-NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Qaphela Ukubala"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Kuphasisiwe"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Isivinini"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Isikhathi"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "I-FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "I-Polyphony"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Amanothi anikeziwe"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Ibhafa yomsindo"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Thikha"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Iyantanta"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Umngcele"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Umngcele Wekhadi Lolwazi"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Isikhundla"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Ingemuva"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Umbhalo Wekhadi Lolwazi"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Kwesokunxele"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Kulungile"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Ukusetha ngaphambilini"
+  },
+  {
+    "$i": "general",
+    "$v": "Okujwayelekile"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Ilayisha Ibha"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Ingxoxo"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Izithombe"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Ikhadi Lolwazi"
+  },
+  {
+    "$i": "piano",
+    "$v": "Upiyano"
+  },
+  {
+    "$i": "palette",
+    "$v": "Qaphela Umbala"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Isimo se-Verbose"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Verbose ngenkathi ehlaziya"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Verbose ngenkathi init"
+  },
+  {
+    "$i": "memory",
+    "$v": "Izibalo Zenkumbulo"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Thumela Ilogi"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Ukuhlolwa Kwesitoreji"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Okukhulu"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Ayikho ipiyano"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Izilungiselelo zangemuva"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Itimu"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Okuluhlaza okwesibhakabhaka"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Emhlophe"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Mnyama"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Izibalo"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Isitayela"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Amanothi"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Ikhibhodi"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Imibala"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "I-SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Umsindo"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Imiphumela"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "I-NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Kuphasisiwe:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Isivinini:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "I-FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Isikhathi:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "I-Polyphony:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Kunikezelwe:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "I-Audio Buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Thikha:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "I-BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Kulayishiwe"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Setha kabusha zonke izilungiselelo zibe okumisiwe kwasembonini?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Susa i-SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Ingabe ufuna ukususa?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "I(ama)fonti elayishiwe"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Imenyu Yonjiniyela"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Nika amandla imodi yemenyu kanjiniyela?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Imenyu yonjiniyela inikwe amandla kuzilungiselelo"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Inguqulo 1.0.1 • I-KaiOS 2.5 • I-MIDI emnyama isekelwe • Ilayisensi ye-MIT"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "Isibonisi se-MIDI esenzelwe amafoni ahlakaniphile (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Igxile epayipini lokunikezela leCanvas elilungiselelwe ukuze libonise ngokushelelayo amathrekhi ama-Black MIDI aphezulu kuhadiwe evinjiwe."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Izici Eziyinhloko"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "I-Black MIDI Optimization - ama-algorithms angasindi aphatha amashumi ezinkulungwane zamanothi ngaphandle kokwehla okukhulu kwe-FPS."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Ukusekelwa Kwekhiphedi Engokoqobo - ukuzulazula okushelelayo nge-D-Pad nezinkinobho zezinombolo."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Ekwenzeke ngokwezifiso Kakhulu - isibonisi sepiyano esigcwele okhiye abangu-128, imibala yethrekhi ehlelwa ngendlela oyifisayo, isivinini esishintshayo senothi esiwayo."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "I-WebAudio Synthesizer - i-synthes ye-lightweight eyakhelwe ngaphakathi inciphisa ukusetshenziswa kwe-RAM kumadivayisi asezingeni eliphansi."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Okhiye"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > funa ±1s • ^ v ivolumu • KULUNGILE dlala/misa kancane"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0.1x isivinini • 2 imodi yokunikezela • 3 -0.1x isivinini • 4 zungezisa"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 layisha i-MIDI • 6 isikrini esigcwele • 7 okhiye 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 i-MIDI ecacile (ikhulula i-RAM) • 9 usayizi wepiyano • 0 isitobhi"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Ikhadi lolwazi lwekholi • * umkhondo -0.1 • # umkhondo +0.1 • Qeda ukuyeka ucingo"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Amakhredithi Nokunikela"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Ithuthukiswe ngu-T.Hoang • Izingxenye zomklamo we-KaiUI"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "I-PRs yamukelekile: imfoloko -> isici segatsha -> zibophezele -> phusha -> Donsa Isicelo"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Ikhodi yomthombo: github.com/dotrihoang2012/PFA_for_KaiOS. Ikhishwe ngaphansi kwelayisense ye-MIT."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Locked until file loads"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Note color palette"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Start Delay"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "All soundfonts selected"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Selection cleared"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Loading cancelled"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Still scanning..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Nothing selected"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Custom palette active"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Invalid image"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Color picker unavailable"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Cannot read file"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Not an image file"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Image too large"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Background saved"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Background cleared"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Voices limit reached"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Canvas buffer mode"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "No SoundFont to delete"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Deleted"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Move cancelled"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Arrangement saved"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Use up/down to move, OK to place"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "No SoundFont loaded"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Applied on next launch"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Disabled on next launch"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Settings imported"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Locked during demo"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "All settings reset"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Reset unavailable"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Reset failed"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Rotation not supported"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Volume: KaiOS API unavailable"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Vol up failed"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Vol down failed"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Volume show failed"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Saw"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Ubude be-buffer"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "I-buffer yokuhlela (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Amazwi"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Amanothi amaningi ngesikhathi esisodwa (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Background Settings"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Show Dialog"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Text Color"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Background Color"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Percentage Color"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Memory API not available"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Storage OK"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Log exported to "
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Action failed"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "No storage available to export the log."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Render Mode"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Individual Notes"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Canvas Buffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D View"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Random Note Color"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Note Color Palette"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Load More"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Loaded SoundFonts"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "No SoundFonts Loaded"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Scanning…"
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Scanner unavailable"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Awekho amafayela e-soundfont atholakele."
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Ifunda ifayela..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Load Background"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Clear Background"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Preview"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Key Count"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Iyalayisha:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Exit Full Screen"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Rotate To Portrait"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Rotate To Landscape"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Disable developer menu mode?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Developer menu disabled in settings"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Iqalisa I-App Core..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Ilayisha Izilungiselelo Nezintandokazi..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Iqalisa Injini Yomsindo..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Ilayisha imojula: Amafonti omsindo"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Ilungiselela amabhange..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth ilungile"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Iqala Isibonisi Nekhanvasi..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Ilungile"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Amasampula okukhipha ikhodi ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Iqopha amasampuli..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Delay before playback in seconds (0 = Off)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Failed to load "
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": " soundfont(s)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank unavailable"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Failed to read "
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Loaded "
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Cannot clear now - a conversion is still running.\nPress Clear again once it finishes."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "No storage available to clear."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Cleared:\n"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": " file(s) from the conversion cache."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Clear finished with errors."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Clear failed: "
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Colors Randomised"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Delete"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Ifunda Idatha..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS heap (used/total): "
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS Izinto"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "notes in RAM: "
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "fileName: "
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp write-log: "
+  },
+  {
+    "$i": "unavailable",
+    "$v": "unavailable"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "This app needs SD card access.\n\nTo allow it:\nSettings -> Privacy & Security -> App Permissions -> PFA -> Memory Card Storage -> Grant.\n\nThen reopen the app / reload the file.\n\nOK closes the app."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Still analyzing the previous file - please wait."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Streaming MIDI analysis failed: "
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Could not read this file. It may not be a valid MIDI or (.note) export."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Failed to read SoundFont \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". File may be moved, deleted, or corrupted."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "file error, moved, or deleted."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Background image is missing - reload it in Settings."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Nothing to export."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "A conversion is already running"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Storage permission denied - grant SD card access to convert"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "No writable storage found."
+  },
+  {
+    "$i": "error",
+    "$v": "Iphutha"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "General"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Loading Bar"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Dialog Style"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Graphics"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "IPiyano"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Color Palette"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Unknown"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS: 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC: 0"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Passed: 0"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Speed: 1.0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS: 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Time: --:-- / --:--"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polyphony: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Rendered Notes: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Audio Buffer: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tick: 0"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM: 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Reset All Settings"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Phuma"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 Keys"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Custom"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Oscillator"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Mnyama"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Khanya"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Luhlaza okwesibhakabhaka"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Purple"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Random"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Random Alpha Gradients"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Random Gradients"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Random with Alpha"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 Iphalethi"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Synthesia 9-0.8 Palette"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Custom Palette"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Disable sound effects"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "No storage available to export settings."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Settings export failed: "
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "all storage volumes unavailable"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Settings export failed: no writable storage volume."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Settings exported:\nothers/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Settings export blocked: allow device-storage:sdcard permission, then retry."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "This .note is a binary MIDI export,\nnot a Settings config.\n\nImport only Settings files exported via Export Settings."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Could not read this file.\n\nIt is not a Settings export."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "This .note is not a Settings export\n(missing the Settings marker)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Could not apply the imported settings."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Cannot read that file."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Only .note Settings configs can be imported.\n\nPicked: "
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Cannot launch the file picker."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "loaded, "
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "failed"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Failed to load SoundFont(s) (file moved, deleted, or corrupted):\n"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Loaded "
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Dlala"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Misa kancane"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Misa"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Qala phansi"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Sula"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Isikrini esigcwele"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Zungezisa"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Dlala ngokuzenzakalela"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Vula"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Vala"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Ikhadi Lolwazi"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Bonisa"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Fihla"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Umzila"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Ukunikezela"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Usayizi wepiyano"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Shintsha Ifayela le-MIDI/Inothi"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Layisha Ifayela le-MIDI/Inothi"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Zungezisa Kuma Mpo"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Zungezisa Kuma Vundlile"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "KULUNGILE"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Emuva"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Izilungiselelo"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Khansela"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Khetha"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Susa"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Hambisa"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Kwenziwe"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Khetha Konke"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Yeka Ukukhetha Konke"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Qeda"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Bonisa Ikhadi Lolwazi"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Bonisa Amalebula Enothi"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Ububanzi Bekhibhodi"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Umaka ka-C Omaphakathi"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Umbala Webha"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Umbala Wepiyano"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Dlala Ngokuzenzakalelayo"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Bonisa i-OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Izilungiselelo Zangemuva"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Bonisa Ibha Yokulayisha"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Bonisa i-% ngenkathi uhlaziya"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Bonisa i-% ngenkathi uhlanganisa"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Umbala Wokulayisha"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "% Umbala Wombhalo"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Ukugqwayiza Okushelelayo"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Bonisa Ibhokisi Lengxoxo"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Umbala Wombhalo"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Umbala Wangemuva"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Isimo Esinemininingwane"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Nemininingwane ngenkathi uhlaziya"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Nemininingwane ngenkathi uqala"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Umbala Wokugxila"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Ingemuva"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Ukulibaziseka Kokuqala"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Ukulibaziseka ngaphambi kokudlala ngemizuzwana (0 = Valiwe)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Qala"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Qeda"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Ayinasihloko"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Ithulisiwe"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "IPHUTHA"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Verbose ngenkathi ufunda amafonti omsindo"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Ihlaziya idatha ye-MIDI..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Ihlanganisa imicimbi..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "fundaIsihloko senziwe:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "amathrekhi"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Iyakhansela..."
+  },
+  {
+    "$i": "language",
+    "$v": "Ulimi"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Shintsha ulimi ngokuzenzakalelayo"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Isihlukanisi solimi"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Umsindo"
+  }
+]

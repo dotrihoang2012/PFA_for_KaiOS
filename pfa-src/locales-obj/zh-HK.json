@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "選項"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "選擇"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "返回"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "玩"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "暫停"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "停止"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "取消"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "完成"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "全部"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "無"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "移動"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "好"
+  },
+  {
+    "$i": "settings",
+    "$v": "設定"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "合成器"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "視覺"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "系統"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "開發者設定"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "聲音字體設定"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "主題"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "載入 MIDI/音符文件"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "更改 MIDI/音符文件"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "載入聲音字體"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "加載更多"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "取消分析"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "清除"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "音訊輸出"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "聲音引擎"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "合成波形"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "跳過慢速介紹"
+  },
+  {
+    "$i": "speed",
+    "$v": "速度"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "注意軌跡"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "自動播放"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "顯示對話框"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "顯示螢幕顯示"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "啟動延遲"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "鍵盤範圍"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "中間 C 標記"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "顯示註釋標籤"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "鋼琴尺寸"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "條形顏色"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "鋼琴色"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "焦點顏色"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "載入顏色"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "顯示載入欄"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "分析時顯示%"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "合併時顯示%"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "滑動動畫"
+  },
+  {
+    "$i": "text_color",
+    "$v": "文字顏色"
+  },
+  {
+    "$i": "background_color",
+    "$v": "背景顏色"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "渲染模式"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D視圖"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "顯示資訊卡"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "全螢幕"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "旋轉螢幕"
+  },
+  {
+    "$i": "volume",
+    "$v": "體積"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "導入設定"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "匯出設定"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "自動全螢幕"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "自動旋轉螢幕"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "重置所有設定"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "關於這個應用程式"
+  },
+  {
+    "$i": "developer",
+    "$v": "開發商"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "詳細狀態"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "分析時冗長"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "初始化時詳細"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "記憶體統計"
+  },
+  {
+    "$i": "export_log",
+    "$v": "匯出日誌"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "儲存測試"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "緩衝區長度"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "聲音（複調）"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "禁用 Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "已載入"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "載入聲音字體"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "正在加載模組..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "正在載入應用程式..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "分析 MIDI..."
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "合併曲目..."
+  },
+  {
+    "$i": "now_playing",
+    "$v": "正在播放"
+  },
+  {
+    "$i": "paused",
+    "$v": "已暫停"
+  },
+  {
+    "$i": "stopped",
+    "$v": "已停止"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "錯誤"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "無法讀取檔案或檔案遺失。"
+  },
+  {
+    "$i": "on",
+    "$v": "開"
+  },
+  {
+    "$i": "off",
+    "$v": "關閉"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "網路音訊"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "音頻控制（旁路）"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "汽車"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS 合成器（振盪器）"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "聲音字體"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "正弦"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "廣場"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "鋸齒波"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "三角形"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "全（128鍵）"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88鍵"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76鍵"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61鍵"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49鍵"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "智慧（自動變焦）"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "小號"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "中等"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "大號"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "注意墜落"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "鍵盤"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "兩者都"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "核動力源"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "音符數"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "透過"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "速度"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "時間"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS (FPS)"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "複調音樂"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "渲染註釋"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "音訊緩衝器"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "勾選"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "業務流程管理"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "浮動"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "邊框"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "資訊卡邊框"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "職位"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "背景"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "資訊卡文字"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "左"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "右"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "預設"
+  },
+  {
+    "$i": "general",
+    "$v": "一般"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "載入欄"
+  },
+  {
+    "$i": "dialog",
+    "$v": "對話"
+  },
+  {
+    "$i": "graphics",
+    "$v": "圖形"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "資訊卡"
+  },
+  {
+    "$i": "piano",
+    "$v": "鋼琴"
+  },
+  {
+    "$i": "palette",
+    "$v": "注意顏色"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "詳細狀態"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "分析時冗長"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "初始化時詳細"
+  },
+  {
+    "$i": "memory",
+    "$v": "記憶體統計"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "匯出日誌"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "儲存測試"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "大"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "沒有鋼琴"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "背景設定"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "主題"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "藍色"
+  },
+  {
+    "$i": "color_white",
+    "$v": "白色"
+  },
+  {
+    "$i": "color_black",
+    "$v": "黑色"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "統計數據"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "風格"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "註解"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "鍵盤"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "顏色"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "聲音字體"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "音訊"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "效果"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "淨推薦值："
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "數控："
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "通過："
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "速度："
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "幀率："
+  },
+  {
+    "$i": "hud_time",
+    "$v": "時間："
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "複調音樂："
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "渲染："
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "音訊緩衝區："
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "勾選："
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "節拍器："
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "已載入"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "將所有設定重設為出廠預設值？"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "刪除聲音字體"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "您想刪除嗎？"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "已載入聲音字體"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "開發者選單"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "啟用開發者選單模式？"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "在設定中啟用開發者選單"
+  },
+  {
+    "$i": "about_version",
+    "$v": "版本 1.0.1 • KaiOS 2.5 • 支援 Black MIDI • MIT 許可證"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "針對智慧型功能手機（Nokia 2720 Flip、8000 4G、6300 4G、8110 4G、JioPhone...）最佳化的 MIDI 視覺化工具。專注於優化的 Canvas 渲染管道，以在受限的硬體上平滑地顯示高密度黑色 MIDI 軌道。"
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "主要特點"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "黑色 MIDI 最佳化 - 輕量級演算法可處理數以萬計的音符，而不會出現嚴重的 FPS 下降。"
+  },
+  {
+    "$i": "about_f2",
+    "$v": "實體鍵盤支援 - 透過方向鍵和數字鍵順暢導航。"
+  },
+  {
+    "$i": "about_f3",
+    "$v": "高度可自訂 - 完整的 128 鍵鋼琴顯示器、可自訂的軌道顏色、可調節的音符落下速度。"
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio 合成器 - 內建輕量合成器可最大限度地減少低階裝置上的 RAM 使用。"
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "按鍵"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > 搜尋 ±1s • ^ v 音量 • OK 播放/暫停"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0.1x 速度 • 2 渲染模式 • 3 -0.1x 速度 • 4 旋轉"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 載入 MIDI • 6 全螢幕 • 7 鍵 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 個清晰 MIDI（釋放 RAM）• 9 鋼琴尺寸• 0 停止"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "呼叫資訊卡 • * Trail -0.1 • # Trail +0.1 • 結束通話退出"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "學分與貢獻"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "由 T.Hoang 開發 • KaiUI 設計元件"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "歡迎 PR：分叉 -> 功能分支 -> 提交 -> 推送 -> 拉取請求"
+  },
+  {
+    "$i": "about_src",
+    "$v": "原始碼：github.com/dotrihoang2012/PFA_for_KaiOS。根據 MIT 許可證發布。"
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "在檔案載入前已鎖起"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "有色調色板"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "開始延后"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "已選擇所有音效"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "選取被清除"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "載入已取消"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "在掃瞄..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "沒有選擇"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "自訂調色板作用中"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "不合法的影像"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "取色器不可用"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "無法讀取檔案"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "不是相片檔"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "相片太大了"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "二. 背景已保存"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "二. 背景已清除"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "有聲音已達限值"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Canvas 缓冲模式"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "沒有要刪除的音效Font"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "已刪除"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "已取消移出"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "已儲存安排"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "上下移動取出好放入"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "未載入音效Font"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "在下次出發上被應用"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "在下次發行時已禁用"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "已匯入的設定"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "在演示中被鎖起"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "所有設定值重置"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "無法重置"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "重設失敗"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "不支援自旋"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "音量: CaiOS API 不可用"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "活出失敗"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "下放失敗"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "音量顯示失敗"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "有"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "缓冲長度"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "(512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "聲音"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "最大同時音符 (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "背景設定"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "顯示對話框"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "文字顏色"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "背景顏色"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "百分比顏色"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "內存 API 不可用"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "儲存好"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "日志已匯出至"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "動作失敗"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "沒有可用的儲存以匯出紀錄 。"
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "渲染模式"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "注"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Canvas Buffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "三维檢視"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "隨機記號顏色"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "注意彩色調色板"
+  },
+  {
+    "$i": "load_more",
+    "$v": "多載入"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "已載入音效"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "沒有收音機"
+  },
+  {
+    "$i": "scanning",
+    "$v": "正在掃描中..."
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "掃描器不可用"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "在裝置上找不到 soundfont 文件 (. sf2,. sf3,. dls,. sfz)"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "讀取資料..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "載入背景"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "清除背景"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "預覽"
+  },
+  {
+    "$i": "key_count",
+    "$v": "金鑰計數"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "載入中:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "退出全螢幕"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "旋轉到外觀"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "旋轉到地平面"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "禁用發展者選單模式?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "在設定中已禁用開發者選單"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "正在初始化應用程式核心..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "正在載入設定和首選項..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "正在初始化音訊引擎..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "載入模組：Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "銀行準備..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth ??"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "正在初始化顯示和畫布..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "準備好"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "解碼樣本（"
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "解碼樣本..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "在回放前延后秒 (0 = 關接)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "載入失敗"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "音效font (s)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "音效庫不可用"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "讀取失敗"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "已載入"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "無法清除 -- 轉換正在執行中 。\n完成后再按 Clear 。"
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "沒有儲存可清除 。"
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "已清除 :\n"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "从轉換快取取出的文件。"
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "有錯誤已清除 。"
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "清除失敗 :"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "有相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "刪除"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "讀取資料..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "(已使用/總和):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS ??"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "在 RAM 有音符:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "文件名 :"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa tmp 寫入紀錄 :"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "不可用"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "它需要SD卡接通\n\n就可:\n設定 - > 隱私與安全 - > App 權限 - > PFA - > 記憶卡儲存 - > 葛蘭特\n\n重新啟動應用程式 / 重新載入檔案 。\n\n有相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相關相相關相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相相"
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "仍在分析上一個檔案 -- 請等一等."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "流動 MIDI 分析失敗 :"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "無法讀取此檔案 。 它可能不是有效的MIDI或 (. note) 匯出 。"
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "讀取 SoundFont 失敗"
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". 文件可能被移走、被刪除或被損毀。"
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "檔案出錯, 已移出或已刪除 。"
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "背景影像已缺失 -- 在設定中重新載入 。"
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "有外出需要"
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "有轉換已執行中"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "儲存權被拒絕 -- -- 授權 SD 卡以轉換"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "找不到可寫入的儲存檔 。"
+  },
+  {
+    "$i": "error",
+    "$v": "??"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "一般"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "正在載入列中"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "對話框樣式"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "相片"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "??"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "顏色調色板"
+  },
+  {
+    "$i": "unknown",
+    "$v": "未知"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS: 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "有:0"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "已通過: 0"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "速度: 1. 0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS: 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "有: -- -- -- -- -- -- -- -- -- -- -- -- -- -- --"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "多管:0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "注: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "音效缓冲: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tick: 0"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM: 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "重置所有設定"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "??"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 鍵"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "自訂"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "振動器"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "??"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "??"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "??"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "紫色"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "隨機"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "隨機 Alpha 梯度"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "隨機梯度"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "有 Alpha 的隨機"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 ???"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "合成 9-0.8 調色板"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "自訂調色板"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "關閉音效"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "沒有可匯出設定值的儲存 。"
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "設定匯出失敗 :"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "所有儲存的音量都無法提供"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "設定匯出失敗: 沒有可寫入的儲存音量 。"
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "已匯出設定值:\n其他/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "已封鎖的設定: 允許裝置儲存: sdcard 權限再重試 。"
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "二進位 MIDI 匯出\n不是設定配置 。\n\n只匯入通過匯出設定匯出的設定檔 。"
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "無法讀取此檔案 。\n\n它不是設定匯出 。"
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "此. note 不是設定匯出\n(缺少設定符號)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "無法用入的設定值 。"
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "無法讀取檔案 。"
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "只有. note 設定配置可以被匯入 。\n\n已選取 :"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "無法啟動取取檔案器 。"
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "有子彈了"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "失敗"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "載入 SoundFont (已移出、被刪除或被損毀的文件) 失敗 :\n"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "已載入"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "播放"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "暫停"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "停止"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "重新啟動"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "清除"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "全螢幕"
+  },
+  {
+    "$i": "rotate",
+    "$v": "旋轉"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "自動播放"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "開"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "關"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "資訊卡"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "顯示"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "隱藏"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "軌跡"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "渲染"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "鋼琴尺寸"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "更改 MIDI/Note 檔案"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "載入 MIDI/Note 檔案"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "旋轉至直向"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "旋轉至橫向"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "確定"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "返回"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "設定"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "取消"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "選擇"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "刪除"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "移動"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "完成"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "全選"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "取消全選"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "結束"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "顯示資訊卡"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "顯示音符標籤"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "鍵盤範圍"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "中央C標記"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "進度列顏色"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "鋼琴顏色"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "自動播放"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "顯示 OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "背景設定"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "顯示載入列"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "分析時顯示百分比"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "合併時顯示百分比"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "載入顏色"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "百分比文字顏色"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "滑動動畫"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "顯示對話方塊"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "文字顏色"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "背景顏色"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "詳細狀態"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "分析時顯示詳情"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "初始時顯示詳情"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "焦點顏色"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "背景"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "啟動延遲"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "播放前的延遲秒數 (0 = 關閉)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "開始"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "結束"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "無標題"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "靜音"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "錯誤"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "閱讀聲音字體時冗長"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "正在解析 MIDI 資料..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "合併事件..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "讀取標題完成："
+  },
+  {
+    "$i": "tracks",
+    "$v": "曲目"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "正在取消..."
+  },
+  {
+    "$i": "language",
+    "$v": "語言"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "自動更改語言"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "語言分隔符"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "音訊"
+  }
+]

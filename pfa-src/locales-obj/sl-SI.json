@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Možnosti"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Izberite"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Nazaj"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Igraj"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Premor"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Stop"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Prekliči"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Končaj"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Vse"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Noben"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Premakni se"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "V redu."
+  },
+  {
+    "$i": "settings",
+    "$v": "nastavitve"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Sintetizator"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Vizualno"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Sistem"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Nastavitve razvijalca"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Nastavitve Soundfont"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Tema"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Naloži datoteko MIDI/Note"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Spremenite datoteko MIDI/Note"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Nalo��i Soundfont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Naloži več"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Prekliči analizo"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "jasno"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Avdio izhod"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Zvočni motor"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Sintetična valovna oblika"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Preskoči počasen uvod"
+  },
+  {
+    "$i": "speed",
+    "$v": "Hitrost"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Opomba Trail"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Samodejno predvajanje"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Prikaži pogovorno okno"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Pokaži OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Zakasnitev začetka"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Razpon tipkovnice"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Srednji C marker"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Prikaži oznake opomb"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Velikost klavirja"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Barva vrstice"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Barva klavirja"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Barva fokusa"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Nalaganje barve"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Prikaži vrstico za nalaganje"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Pokaži % med analiziranjem"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Pokaži % med spajanjem"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Drsna animacija"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Barva besedila"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Barva ozadja"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Način upodabljanja"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D pogled"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Pokaži informacijsko kartico"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Cel zaslon"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Zasuk zaslona"
+  },
+  {
+    "$i": "volume",
+    "$v": "Glasnost"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Uvozi nastavitve"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Izvozi nastavitve"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Samodejni cel zaslon"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Samodejno obračanje zaslona"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Ponastavi vse nastavitve"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "O tej aplikaciji"
+  },
+  {
+    "$i": "developer",
+    "$v": "Razvijalec"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Podrobno stanje"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Dobesedno med analiziranjem"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Podrobno med init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Statistika pomnilnika"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Dnevnik izvoza"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Preizkus shranjevanja"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Dolžina medpomnilnika"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Glasovi (polifonija)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Onemogoči Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Že naloženo"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Nalaganje Soundfonta"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Nalaganje modula ..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Nalaganje aplikacije ..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Analiziranje MIDI ..."
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Združevanje skladb ..."
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Zdaj se igra"
+  },
+  {
+    "$i": "paused",
+    "$v": "Zaustavljeno"
+  },
+  {
+    "$i": "stopped",
+    "$v": "ustavil"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Napaka"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Datoteke ni mogoče prebrati ali pa datoteka manjka."
+  },
+  {
+    "$i": "on",
+    "$v": "Vklopljeno"
+  },
+  {
+    "$i": "off",
+    "$v": "Izključeno"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Spletni zvok"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "AudioControl (Bypass)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Avto"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (oscilator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sinus"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "kvadrat"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Žagasti zob"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Trikotnik"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Polno (128 tipk)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 ključev"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 ključev"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 ključev"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 ključev"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Pametno (samodejna povečava)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "majhna"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Srednje"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Velik"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Note Fall"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Tipkovnica"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Oba"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Štetje opomb"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "opravljeno"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Hitrost"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Čas"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polifonija"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Upodobljene opombe"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Avdio medpomnilnik"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Kljukica"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Lebdeče"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Meja"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Obroba informacijske kartice"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Položaj"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Ozadje"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Besedilo informacijske kartice"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "levo"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Prav"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Prednastavitve"
+  },
+  {
+    "$i": "general",
+    "$v": "Splošno"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Nakladalna vrstica"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Pogovorno okno"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafika"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Informacijska kartica"
+  },
+  {
+    "$i": "piano",
+    "$v": "Klavir"
+  },
+  {
+    "$i": "palette",
+    "$v": "Opomba Barva"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Podrobno stanje"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Dobesedno med analiziranjem"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Podrobno med init"
+  },
+  {
+    "$i": "memory",
+    "$v": "Statistika pomnilnika"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Dnevnik izvoza"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Preizkus shranjevanja"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Velik"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Brez klavirja"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Nastavitve ozadja"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Tema"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Modra"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Bela"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Črna"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statistika"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Slog"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Opombe"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Tipkovnica"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Barve"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Avdio"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Učinki"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Uspešno:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Hitrost:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Čas:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polifonija:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Upodobljeno:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Audio Buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Označite:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Naloženo"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Ponastaviti vse nastavitve na tovarniško privzete?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Izbriši SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Ali želite izbrisati?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Naložene zvočne pisave"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Meni za razvijalce"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Ali želite omogočiti menijski način razvijalca?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Meni za razvijalce je omogočen v nastavitvah"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Različica 1.0.1 • KaiOS 2.5 • Podprt črni MIDI • Licenca MIT"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "Vizualizator MIDI, optimiziran za pametne telefone s funkcijami (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone ...). Osredotoča se na optimiziran cevovod za upodabljanje Canvas za gladek prikaz črnih MIDI skladb visoke gostote na omejeni strojni opremi."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Ključne značilnosti"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Black MIDI Optimization - lahki algoritmi obravnavajo več deset tisoč not brez resnih padcev FPS."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Podpora za fizično tipkovnico - gladka navigacija prek D-Pada in številskih tipk."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Visoko prilagodljiv - polni klavirski zaslon s 128 tipkami, prilagodljive barve skladb, nastavljiva hitrost padanja not."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Synthesizer - vgrajeni lahki sintetizator zmanjša porabo RAM-a na napravah nižjega cenovnega razreda."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Ključi"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > iskanje ±1 s • ^ v glasnost • OK predvajanje/pavza"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1x hitrost • 2 način upodabljanja • 3 -0,1x hitrost • 4 vrtenje"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 nalaganje MIDI • 6 celozaslonski • 7 tipk 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 čisti MIDI (sprosti RAM) • 9 velikost klavirja • 0 stop"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Kartica z informacijami o klicu • * sled -0,1 • # sled +0,1 • Končaj klic Zapusti"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Zasluge in prispevki"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Razvil T.Hoang • Oblikovalske komponente KaiUI"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "Pozdravljeni PR-ji: fork -> veja funkcije -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Izvorna koda: github.com/dotrihoang2012/PFA_for_KaiOS. Izdano pod licenco MIT."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Zaklenjeno, dokler se datoteke ne naložijo"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Barvna paleta note"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Začni zamik"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Izbrane vse soundfonts"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Izbor je potrjen"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Nalaganje preklicano"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Še vedno skeniram..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Nič izbranega"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Prilagojena paleta aktivna"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Neveljavna slika"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Barva ni na voljo"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Ni moč prebrati datoteke"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Ni datoteka s sliko"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Slika prevelika"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Shranjeno ozadje"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Ozadje očiščeno"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Dosežena meja glasov"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Način medpomnilnika Canvas"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Ni SoundFont za brisanje"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Zbrisano"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Premakni preklicano"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Ureditev shranjena"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Uporabite gor/dol za premikanje, OK za mesto"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Ni naloženega SoundFont"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Uporablja se ob naslednjem zagonu"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Onemogočeno ob naslednjem zagonu"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Uvožene nastavitve"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Zaklenjeno med demo"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Ponastavi vse nastavitve"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Ponastavi nedostopno"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Ponastavi ni uspelo"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Vrtenje ni podprto"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Obseg: KaiOS API ni na voljo"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Vol up ni uspel"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Vol down ni uspel"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Prikaz glasnosti ni uspel"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "žaga"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Dolžina medpomnilnika"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Planiranje pufra v vzorcih (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Glasovi"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Največ simultanih not (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Nastavitve ozadja"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Prikaži pogovorno okno"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Barva besedila"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Barva ozadja"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "% barv"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Pomnilniški API ni na voljo"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Shranjevanje je v redu"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Dnevnik izvožen v"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Dejanje ni uspelo"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Shramba za izvoz dnevnika ni na voljo."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Način upodabljanja"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Posamezne opombe"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Platneni medpomnilnik"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D-pogled"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Naključna barva opombe"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Barvna paleta"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Naloži več"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Naložene zvočne pisave"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Ni naloženih SoundFonts"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Pregled&#160;..."
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Optični bralnik ni na voljo"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "V napravi ni najdena nobena datoteka z zvočno pisavo (.sf2, .sf3, .dls, .sfz)"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Branje datoteke ..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Naloži ozadje"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Počisti ozadje"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Predogled"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Število tipk"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Nalaganje:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Izhod iz celozaslonskega načina"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Zasukaj na pokončno"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Zasukaj v ležeče"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Želite onemogočiti način menija za razvijalce?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Meni razvijalca je onemogočen v nastavitvah"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Inicializacija jedra aplikacije..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Nalaganje nastavitev in nastavitev..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Inicializacija zvočnega motorja..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Modul nalaganja: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Priprava bank..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Sintetizator je pripravljen"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Inicializacija & platna zaslona..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "pripravljena"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Dekodiranje vzorcev ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Dekodiranje vzorcev..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Zakasnitev pred predvajanjem v sekundah (0 = izklopljeno)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Nalaganje% 1 je spodletelo"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "soundfont(s)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank ni na voljo"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Ni mogoče prebrati \"<x id=\"1\"/>\"."
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Obremenjeno"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Trenutno ni mogoče počistiti - konverzija se še vedno izvaja.\nKo končate, ponovno pritisnite Clear (Počisti)."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Shramba ni na voljo za čiščenje."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Obračunano"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "datotekeiz predpomnilnika konverzij."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Počisti končano z napakami."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Brisanje ni uspelo:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Barve randomizirane"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Izbriši"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Branje podatkov ..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "Kup JS (uporabljen/skupaj):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "Predmeti JS:"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "opombe v RAM-u:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Ime datoteke:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp write-log:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "ni na voljo"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Ta aplikacija potrebuje dostop do kartice SD.\n\nČe želite to omogočiti:\nNastavitve -> Zasebnost in varnost -> Dovoljenja aplikacije -> PFA -> Shranjevanje pomnilniških kartic -> Odobritev.\n\nNato znova odprite aplikacijo / ponovno naložite datoteko.\n\nOK zapre aplikacijo."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Še vedno analiziramo prejšnjo datoteko - počakajte."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Pretakanje MIDI analize ni uspelo:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Te datoteke ni bilo mogoče prebrati. Morda ni veljaven izvoz MIDI ali (.note)."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Branje SoundFonta ni uspelo \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". Datoteka je lahko premaknjena, izbrisana ali poškodovana."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "napaka datoteke, premaknjena ali izbrisana."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Manjka slika ozadja - ponovno jo naložite v nastavitvah."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Ničesar za izvoz."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Pretvorba se že izvaja"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Dovoljenje za shranjevanje je zavrnjeno - dodelite dostop do kartice SD za pretvorbo"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Najden ni bil noben zapisljiv pomnilnik."
+  },
+  {
+    "$i": "error",
+    "$v": "Napaka"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Splošno"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Vrstica nalaganja"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Slog pogovornega okna"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafika"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Klavir"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Barvna paleta"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Neznano"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Opravljeno"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Hitrost: 1,0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Čas:"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polifonija: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Opravljene opombe: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Avdio medpomnilnik: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Kljukica"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "DMV"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Ponastavi vse nastavitve"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Izhod"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 ključev"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Po meri"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Nihanje"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Temno"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Svetlo"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Modro"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Vijolična"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Treba je"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Naključni alfa prelivi"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Naključni prelivi"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Naključno z Alfo"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Paleta Synthesia 10"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Sintezija 9-0.8 Paleta"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Paleta po meri"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Onemogoči zvočne učinke"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Shramba ni na voljo za izvoz nastavitev."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Izvoz nastavitev ni uspel:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "vse prostornine za shranjevanje niso na voljo"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Izvoz nastavitev ni uspel: ni zapisljivega pomnilnika."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Izvožene nastavitve:\ndrugi/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Izvoz nastavitev je blokiran: dovolite shranjevanje naprave: dovoljenje za sdcard, nato poskusite znova."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Ta .note je binarni izvoz MIDI,\nni konfiguracija nastavitev.\n\nUvozite samo datoteke z nastavitvami, izvožene prek nastavitev izvoza."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Te datoteke ni bilo mogoče prebrati.\n\nTo ni izvoz nastavitev."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Ta .note ni izvoz nastavitev\n(manjka označevalec nastavitev)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Uvoženih nastavitev ni bilo mogoče uporabiti."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Te datoteke ni mogoče prebrati."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Uvozite lahko samo nastavitve .note.\n\nIzbrano:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Izbirnika datotek ni mogoče zagnati."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "naložen"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "ni uspelo"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "SoundFont (ov) ni bilo mogoče naložiti (datoteka je bila premaknjena, izbrisana ali poškodovana):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Obremenjeno"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Predvajaj"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Premor"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Ustavi"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Ponovno zaženi"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Počisti"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Celozaslonski način"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Zavrti"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Samodejno predvajanje"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Vklopljeno"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Izklopljeno"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Informacijska kartica"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Prikaži"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Skrij"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Sled"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Upodabljanje"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Velikost klavirja"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Spremeni datoteko MIDI/note"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Naloži datoteko MIDI/note"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Zavrti v pokončno"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Zavrti v ležečo"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "V redu"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Nazaj"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Nastavitve"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Prekliči"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Izberi"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Izbriši"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Premakni"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Končano"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Izberi vse"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Počisti vse"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Končaj"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Prikaži informacijsko kartico"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Prikaži oznake not"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Obseg klaviature"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Oznaka srednjega C"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Barva vrstice"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Barva klavirja"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Samodejno predvajanje"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Prikaži OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Nastavitve ozadja"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Prikaži vrstico nalaganja"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Prikaži % med analiziranjem"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Prikaži % med združevanjem"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Barva nalaganja"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "Barva besedila %"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Drsna animacija"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Prikaži pogovorno okno"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Barva besedila"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Barva ozadja"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Podrobno stanje"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Podrobno med analiziranjem"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Podrobno med inicializacijo"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Barva poudarka"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Ozadje"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Zamik začetka"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Zamik pred predvajanjem v sekundah (0 = izklopljeno)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Začetek"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Konec"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Neimenovan"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Utišano"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "NAPAKA"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Pogovorno med branjem zvočnih pisav"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Razčlenjevanje podatkov MIDI ..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Združevanje dogodkov ..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "readHeader končano:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "skladbe"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Preklic..."
+  },
+  {
+    "$i": "language",
+    "$v": "Jezik"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Samodejna sprememba jezika"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Jezikovno ločilo"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Avdio"
+  }
+]

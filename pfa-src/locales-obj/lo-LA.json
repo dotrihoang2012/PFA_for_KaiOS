@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "ທາງເລືອກ"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "ເລືອກ"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "ກັບຄືນໄປບ່ອນ"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "ຫຼິ້ນ"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "ຢຸດຊົ່ວຄາວ"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "ຢຸດ"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "ຍົກເລີກ"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "ຈົບ"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "ທັງໝົດ"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "ບໍ່ມີ"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "ຍ້���ຍ"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "ຕົກລົງ"
+  },
+  {
+    "$i": "settings",
+    "$v": "ການຕັ້ງຄ່າ"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "ເຄື່ອງສັງເຄາະ"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "ສາຍຕາ"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "ລະບົບ"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "ການຕັ້ງຄ່ານັກພັດທະນາ"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "ການຕັ້ງຄ່າ Soundfont"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "ຫົວຂໍ້"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "ໂຫລດໄຟລ໌ MIDI/Note"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "ປ່ຽນໄຟລ໌ MIDI/Note"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "ໂຫລດ Soundfont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "ໂຫຼດເພີ່ມເຕີມ"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "ຍົກເລີກການວິເຄາະ"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "ຈະແຈ້ງ"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "ສຽງອອກ"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "ເຄື່ອງຈັກສຽງ"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Synth Waveform"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "ຂ້າມ Intro ຊ້າ"
+  },
+  {
+    "$i": "speed",
+    "$v": "ຄວາມໄວ"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "ຫມາຍເຫດ Trail"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "ຫຼິ້ນອັດຕະໂນມັດ"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "ສະແດງກ່ອງໂຕ້ຕອບ"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "ສະແດງ OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "ເລີ່ມຊັກຊ້າ"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "ຊ່ວງແປ້ນພິມ"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "ເຄື່ອງໝາຍ C ກາງ"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "ສະແດງປ້າຍກຳກັບບັນທຶກ"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "ຂະຫນາດ piano"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "ສີແຖບ"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "ສີ piano"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "ສີໂຟກັສ"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "ກຳລັງໂຫຼດສີ"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "ສະແດງແຖບການໂຫຼດ"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "ສະແດງ % ໃນຂະນະທີ່ວິເຄາະ"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "ສະແດງ % ໃນຂະນະທີ່ການລວມເຂົ້າກັນ"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Sliding Animation"
+  },
+  {
+    "$i": "text_color",
+    "$v": "ສີຂໍ້ຄວາມ"
+  },
+  {
+    "$i": "background_color",
+    "$v": "ສີພື້ນຫຼັງ"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "ໂໝດສະແດງຜົນ"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D View"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "ສະແດງບັດຂໍ້ມູນ"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "ເຕັມຈໍ"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "ໝຸນໜ້າຈໍ"
+  },
+  {
+    "$i": "volume",
+    "$v": "ປະລິມານ"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "ນໍາເຂົ້າການຕັ້ງຄ່າ"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "ສົ���ງອອກການຕັ້ງຄ່າ"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "ເຕັມຈໍອັດຕະໂນມັດ"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "ອັດຕະໂນມັດ Rotate ຫນ້າຈໍ"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "ຣີເຊັດການຕັ້ງຄ່າທັງໝົດ"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "ກ່ຽວ​ກັບ App ນີ້​"
+  },
+  {
+    "$i": "developer",
+    "$v": "ນັກພັດທະນາ"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "ສະຖານະ verbose"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Verbose ໃນຂະນະທີ່ການວິເຄາະ"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Verbose ໃນຂະນະທີ່ init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "ສະຖິຕິຄວາມຈໍາ"
+  },
+  {
+    "$i": "export_log",
+    "$v": "ບັນທຶກການສົ່ງອອກ"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "ການທົດສອບການເກັບຮັກສາ"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Buffer Length"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "ສຽງ (ໂພລິໂຟນີ)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "ປິດໃຊ້ງານ Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "ໂຫຼດແລ້ວ"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "ກຳລັງໂຫລດ Soundfont"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "ກຳລັງໂຫຼດໂມດູນ..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "ກຳລັງໂຫຼດແອັບ..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "ກຳລັງວິເຄາະ MIDI..."
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "ກຳລັງຮວມເພງ..."
+  },
+  {
+    "$i": "now_playing",
+    "$v": "ຕອນນີ້ກຳລັງຫຼິ້ນ"
+  },
+  {
+    "$i": "paused",
+    "$v": "ຢຸດຊົ່ວຄາວ"
+  },
+  {
+    "$i": "stopped",
+    "$v": "ຢຸດເຊົາ"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "ຜິດພາດ"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "ບໍ່ສາມາດອ່ານໄຟ��໌ ຫຼືໄຟລ໌ຫາຍໄປ."
+  },
+  {
+    "$i": "on",
+    "$v": "ສຸດ"
+  },
+  {
+    "$i": "off",
+    "$v": "ປິດ"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "ສຽງເວັບ"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "ການຄວບຄຸມສຽງ (ຂ້າມຜ່ານ)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "ອັດຕະໂນມັດ"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (Oscillator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "ຊິນ"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "ສີ່ຫຼ່ຽມ"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "ແຂ້ວເລື່ອຍ"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "ສາມຫຼ່ຽມ"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "ເຕັມ (128 ກະແຈ)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 ກະແຈ"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 ກະແຈ"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 ກະແຈ"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 ກະແຈ"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "ອັດສະລິຍະ (ຊູມອັດຕະໂນມັດ)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "ຂະຫນາດນ້ອຍ"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "ຂະຫນາດກາງ"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "ຂະຫນາດໃຫຍ່"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Note Fall"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "ແປ້ນພິມ"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "ທັງສອງ"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "ຫມາຍເຫດ"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "ຜ່ານ"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "ຄວາມໄວ"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "ເວລາ"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "ໂພລີໂຟນີ"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "ບັນທຶກທີ່ສະແດງ"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Audio Buffer"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "ໝາຍຕິກ"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "ລອຍ"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "ຊາຍແດນ"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "ຊາຍແດນບັດຂໍ້ມູນ"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "ຕໍາແໜ່ງ"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "ຄວາມເປັນມາ"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "ຂໍ້​ຄວາມ​ບັດ​ຂໍ້​ມູນ​"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "ຊ້າຍ"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "ສິດ"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "ກຳນົດລ່ວງໜ້າ"
+  },
+  {
+    "$i": "general",
+    "$v": "ທົ່ວໄປ"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "ກຳລັງໂຫຼດແຖບ"
+  },
+  {
+    "$i": "dialog",
+    "$v": "ກ່ອງໂຕ້ຕອບ"
+  },
+  {
+    "$i": "graphics",
+    "$v": "ຮູບພາບ"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "ບັດຂໍ້ມູນ"
+  },
+  {
+    "$i": "piano",
+    "$v": "ເປຍໂນ"
+  },
+  {
+    "$i": "palette",
+    "$v": "ໝາຍເຫດ ສີ"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "ສະຖານະ verbose"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Verbose ໃນຂະນະທີ່ການວິເຄາະ"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Verbose ໃນຂະນະທີ່ init"
+  },
+  {
+    "$i": "memory",
+    "$v": "ສະຖິຕິຄວາມຈໍາ"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "ບັນທຶກການສົ່ງອອກ"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "ການທົດສອບການເກັບຮັກສາ"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "ໃຫຍ່"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "ບໍ່ມີ piano"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "ການຕັ້ງຄ່າພື້ນຫຼັງ"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "ຫົວຂໍ້"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "ສີຟ້າ"
+  },
+  {
+    "$i": "color_white",
+    "$v": "ສີຂາວ"
+  },
+  {
+    "$i": "color_black",
+    "$v": "ດຳ"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "ສະຖິຕິ"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "ແບບ"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "ບັນທຶກ"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "ແປ້ນພິມ"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "ສີ"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "ສຽງ"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "ຜົນກະທົບ"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "ຜ່ານ:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "ຄວາມໄວ:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "ເວລາ:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polyphony:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "ບັນຍາຍ:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "ສຽງ Buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "ໝາຍຕິກ:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "ໂຫຼດແລ້ວ"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "ຣີເຊັດການຕັ້ງຄ່າທັງໝົດເປັນຄ່າເລີ່ມຕົ້ນຈາກໂຮງງານບໍ?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "ລຶບ SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "ທ່ານຕ້ອ���ການລຶບບໍ?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "ໂຫຼດ soundfont"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "ເມນູນັກພັດທະນາ"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "ເປີດໃຊ້ໂໝດເມນູນັກພັດທະນາບໍ?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "ເມນູຜູ້ພັດທະນາຖືກເປີດໃຊ້ໃນການຕັ້ງຄ່າ"
+  },
+  {
+    "$i": "about_version",
+    "$v": "ເວີຊັ່ນ 1.0.1 • KaiOS 2.5 • ຮອງຮັບ MIDI Black • MIT License"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "MIDI visualizer ເຫມາະສໍາລັບໂທລະສັບຄຸນນະສົມບັດ smart (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). ເນັ້ນໃສ່ທໍ່ສະແດງ Canvas ທີ່ປັບໃຫ້ເໝາະສົມເພື່ອສະແດງແທຣັກ Black MIDI ທີ່ມີຄວາມໜາແໜ້ນສູງຢູ່ໃນຮາດແວທີ່ຖືກຈຳກັດ."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "ຄຸນນະສົມບັດທີ່ສໍາຄັນ"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Black MIDI Optimization - ສູດການຄິດໄລ່ທີ່ມີນ້ຳໜັກເບົາສາມາດຈັດການບັນທຶກໄດ້ຫຼາຍສິບພັນອັນໂດຍບໍ່ມີການຫຼຸດລົງ FPS ຮ້າຍແຮງ."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "ຮອງຮັບປຸ່ມກົດທາງກາຍະພາບ - ການນໍາທາງທີ່ລຽບງ່າຍຜ່ານ D-Pad ແລະປຸ່ມຕົວເລກ."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "ປັບແຕ່ງໄດ້ສູງ - ຈໍສະແດງຜົນ piano ເຕັມ 128 ປຸ່ມ, ສີຕິດຕາມທີ່ສາມາດປັບແຕ່ງໄດ້, ປັບຄວາມໄວໃນການຫຼຸດລົງຂອງບັນທຶກ."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Synthesizer - ສັງເຄາະນ້ຳໜັກເບົາໃນຕົວຊ່ວຍຫຼຸດຜ່ອນການນຳໃຊ້ RAM ໃນອຸປະກອນຕ່ຳສຸດ."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "ກະແຈ"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > seek ±1s • ^ v ລະດັບສຽງ • ຕົກລົງຫຼິ້ນ/ຢຸດຊົ່ວຄາວ"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0.1x ຄວາມໄວ • 2 ຮູບແບບ render • 3 -0.1x ຄວາມໄວ • 4 rotate"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 ໂຫຼດ MIDI • 6 ເຕັມຈໍ • 7 ປຸ່ມ 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 ຊັດເຈນ MIDI (ປ່ອຍ RAM) • 9 ຂະຫນາດ piano • 0 ຢຸດ"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "ບັດຂໍ້ມູນການໂທ • * trail -0.1 • # trail +0.1 • ສິ້ນສຸດການໂທອອກ"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "ສິນເຊື່ອ & ການປະກອບສ່ວນ"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "ພັດທະນາໂດຍ T.Hoang • ອົງປະກອບການອອກແບບ KaiUI"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PRs ຍິນດີຕ້ອນຮັບ: fork -> feature branch -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "ລະຫັດແຫຼ���ງ: github.com/dotrihoang2012/PFA_for_KaiOS. ປ່ອຍອອກມາພາຍໃຕ້ໃບອະນຸຍາດ MIT."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "ລັອກຈົນກວ່າໄຟລ໌ຈະໂຫລດ"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "ຫມາຍເຫດ palette ສີ"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "ເລີ່ມຊັກຊ້າ"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "ເລືອກຕົວອັກສອນສຽງທັງໝົດແລ້ວ"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "ລຶບການເລືອກແລ້ວ"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "ຍົກເລີກການໂຫຼດແລ້ວ"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "ຍັງສະແກນຢູ່..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "ບໍ່ມີຫຍັງເລືອກ"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "ແຖບແບບກຳນົດເອງເປີດໃຊ້ຢູ່"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "ຮູບບໍ່ຖືກຕ້ອງ"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "ບໍ່ສາມາດເລືອກສີໄດ້"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "ບໍ່ສາມາດອ່ານໄຟລ໌ໄດ້"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "ບໍ່ແມ່ນໄຟລ໌ຮູບພາບ"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "ຮູບພາບໃຫຍ່ເກີນໄປ"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "ບັນທຶກພື້ນຫຼັງແລ້ວ"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "ລຶບລ້າງພື້ນຫຼັງແລ້ວ"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "ຮອດຂີດຈຳກັດສຽງແລ້ວ"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "ໂໝດກັນດານຜ້າໃບ"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "ບໍ່ມີ SoundFont ທີ່ຈະລຶບ"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "ລຶບແລ້ວ"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "ຍົກເລີກການຍ້າຍແລ້ວ"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "ບັນທຶກການຈັດການແລ້ວ"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "ໃຊ້ຂຶ້ນ/ລົງເພື່ອຍ້າຍ, ຕົກລົງເພື່ອວາງ"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "ບໍ່ມີການໂຫຼດ SoundFont"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "ນຳໃຊ້ໃນການເປີດຕົວຄັ້ງຕໍ່ໄປ"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "ປິດໃຊ້ງານໃນການເປີດຕົວຄັ້ງຕໍ່ໄປ"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "ນຳເຂົ້າການຕັ້ງຄ່າແລ້ວ"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "ລັອກໃນລະຫວ່າງການສາທິດ"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "ຣີເຊັດການຕັ້ງຄ່າທັງໝົດ"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "ບໍ່ສາມາດຣີເຊັດໄດ້"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "ຣີເຊັດບໍ່ສຳເລັດ"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "ບໍ່ຮອງຮັບການຫມຸນ"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "ປະລິມານ: KaiOS API ບໍ່ສາມາດໃຊ້ໄດ້"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Vol up ລົ້ມເຫລວ"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Vol down ລົ້ມເຫລວ"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "ການສະແດງປະລິມານລົ້ມເຫລວ"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "ເຫັນ"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "?????????????"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "??????????????? (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "???"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "????????????????????? (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "ການຕັ້ງຄ່າພື້ນຫຼັງ"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "ສະແດງກ່ອງໂຕ້ຕອບ"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "ສີຂໍ້ຄວາມ"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "ສີພື້ນຫຼັງ"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "ສີເປີເຊັນ"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Memory API ບໍ່ສາມາດໃຊ້ໄດ້"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "ການເກັບຮັກສາ OK"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "ບັນທຶກຖືກສົ່ງອອກໄປ"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "ການປະຕິບັດລົ້ມເຫລວ"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "ບໍ່ມີບ່ອນເກັບຂໍ້ມູນເພື່ອສົ່ງອອກບັນທຶກ."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "ໂໝດສະແດງຜົນ"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "ບັນທຶກສ່ວນບຸກຄົນ"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Canvas Buffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D View"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "ສີໝາຍເຫດແບບສຸ່ມ"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Note Color Palette"
+  },
+  {
+    "$i": "load_more",
+    "$v": "ໂຫຼດເພີ່ມເຕີມ"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "ໂຫຼດ SoundFonts ແລ້ວ"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "ບໍ່ມີການໂຫຼດ SoundFonts"
+  },
+  {
+    "$i": "scanning",
+    "$v": "ກຳລັງສະແກນ..."
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "ເຄື່ອງສະແກນບໍ່ສາມາດໃຊ້ໄດ້"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "ບໍ່ພົບໄຟລ໌ soundfont (.sf2, .sf3, .dls, .sfz) ໃນອຸປະກອນ"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "ກຳລັງອ່ານຂໍ້ມູນ..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "ໂຫຼດພື້ນຫຼັງ"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "ລ້າງພື້ນຫຼັງ"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "ເບິ່ງຕົວຢ່າງ"
+  },
+  {
+    "$i": "key_count",
+    "$v": "ຈຳນວນກະແຈ"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "ກຳລັງໂຫຼດ:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "ອອກຈາກເຕັມຈໍ"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "ໝຸນເປັນຮູບຄົນ"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "ໝຸນໄປສູ່ພູມສັນຖານ"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "ປິດໂໝດເມນູນັກພັດທະນາບໍ?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "ເມນູນັກພັດທະນາຖືກປິດການນຳໃຊ້ໃນການຕັ້ງຄ່າ"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "ກຳລັງເລີ່ມ App Core..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "ກຳລັງໂຫຼດການຕັ້ງຄ່າ ແລະການຕັ້ງຄ່າ..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "ກຳລັງເລີ່ມເຄື່ອງຈັກສຽງ..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "ກຳລັງໂຫຼດໂມດູນ: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "ກຳລັງກະກຽມທະນາຄານ..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth ????????"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "ກຳລັງເລີ່ມຕົ້ນຈໍສະແດງຜົນ ແລະຜ້າໃບ..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "ພ້ອມ"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "ຕົວຢ່າງການຖອດລະຫັດ ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "ກຳລັງຖອດລະຫັດຕົວຢ່າງ..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "ເລື່ອນກ່ອນການຫຼິ້ນໃນວິນາທີ (0 = ປິດ)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "ໂຫຼດບໍ່ສຳເລັດ"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "soundfont(s)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank ບໍ່ສາມາດໃຊ້ໄດ້"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "ອ່ານບໍ່ສຳເລັດ"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "ໂຫຼດແລ້ວ"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "ບໍ່ສາມາດລຶບລ້າງໄດ້ໃນຕອນນີ້ - ການແປງຍັງເຮັດວຽກຢູ່.\nກົດ Clear ອີກເທື່ອຫນຶ່ງເມື່ອມັນສໍາເລັດ."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "ບໍ່ມີບ່ອນເກັບຂໍ້ມູນເພື່ອລຶບລ້າງ."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "ລຶບລ້າງ:"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "ໄຟລ໌ຈາກແຄດການແປງ."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "ລຶບລ້າງສຳເລັດແລ້ວດ້ວຍຄວາມຜິດພາດ."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "ລຶບລ້າງບໍ່ສຳເລັດ:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "ສີ Random"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "ລຶບ"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "ກຳລັງອ່ານຂໍ້ມູນ..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS heap (ໃຊ້ແລ້ວ/ທັງໝົດ):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "????? JS"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "ຫມາຍ​ເຫດ​ໃນ RAM​:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "ຊື່ໄຟລ໌:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp ຂຽນບັນທຶກ:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "ບໍ່ສາມາດໃຊ້ໄດ້"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "ແອັບນີ້ຕ້ອງການການເຂົ້າເຖິງ SD card.\n\nເພື່ອ​ອະ​ນຸ​ຍາດ​ໃຫ້​ມັນ​:\nການ​ຕັ້ງ​ຄ່າ -​> ຄວາມ​ເປັນ​ສ່ວນ​ຕົວ​ແລະ​ຄວາມ​ປອດ​ໄພ -​> ການ​ອະ​ນຸ​ຍາດ App -​> PFA -​> ການ​ເກັບ​ຮັກ​ສາ​ບັດ​ຄວາມ​ຈໍາ -​> ການ​ໃຫ້​ບໍ​ລິ​.\n\nຈາກນັ້ນເປີດແອັບຄືນໃໝ່/ໂຫຼດໄຟລ໌ຄືນໃໝ່.\n\nຕົກລົງປິດແອັບ."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "ຍັງວິເຄາະໄຟລ໌ທີ່ຜ່ານມາ - ກະລຸນາລໍຖ້າ."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "ການວິເຄາະການຖ່າຍທອດ MIDI ລົ້ມເຫລວ:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "ບໍ່ສາມາດອ່ານໄຟລ໌ນີ້ໄດ້. ມັນອາດຈະບໍ່ແມ່ນການສົ່ງອອກ MIDI ຫຼື (.note) ທີ່ຖືກຕ້ອງ."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "ລົ້ມເຫລວໃນການອ່ານ SoundFont \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". ໄຟລ໌ອາດຈະຖືກຍ້າຍ, ລຶບ, ຫຼືເສຍຫາຍ."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "ໄຟລ໌ຜິດພາດ, ຍ້າຍ, ຫຼືລຶບ."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "ບໍ່ມີຮູບພາບພື້ນຫຼັງ - ໂຫຼດມັນຄືນໃໝ່ໃນການຕັ້ງຄ່າ."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "ບໍ່ມີຫຍັງທີ່ຈະສົ່ງອອກ."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "ການແປງກໍາລັງແລ່ນຢູ່ແລ້ວ"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "ການອະນຸຍາດບ່ອນຈັດເກັບຂໍ້ມູນຖືກປະຕິເສດ - ໃຫ້ສິດ SD card ເພື່ອປ່ຽນ"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "ບໍ່ພົບບ່ອນເກັບຂໍ້ມູນທີ່ສາມາດຂຽນໄດ້."
+  },
+  {
+    "$i": "error",
+    "$v": "?????????"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "ທົ່ວໄປ"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "ກຳລັງໂຫຼດແຖບ"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "ຮູບແບບກ່ອງໂຕ້ຕອບ"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "ຮູບພາບ"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "?????"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "ສີ Palette"
+  },
+  {
+    "$i": "unknown",
+    "$v": "ບໍ່ຮູ້ຈັກ"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS: 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC: 0"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "ຜ່ານ: 0"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "ຄວາມໄວ: 1.0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS: 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "ເວລາ: --:-- / --:--"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "ໂພລີໂຟນີ: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "ບັນທຶກທີ່ສະແດງ: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Audio Buffer: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tick: 0"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM: 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "ຣີເຊັດການຕັ້ງຄ່າທັງໝົດ"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "???"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 ກະແຈ"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "ກຳນົດເອງ"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Oscillator"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "???"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "???????"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "?????"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "ສີມ່ວງ"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "ສຸ່ມ"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Random Alpha Gradients"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Gradients ແບບສຸ່ມ"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Random ກັບ Alpha"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 Palette"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Synthesia 9-0.8 Palette"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Custom Palette"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "ປິດສຽງຜົນກະທົບ"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "ບໍ່ມີບ່ອນເກັບຂໍ້ມູນເພື່ອສົ່ງອອກການຕັ້ງຄ່າ."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "ການຕັ້ງຄ່າການສົ່ງອອກລົ້ມເຫລວ:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "ປະລິມານການເກັບຮັກສາທັງໝົດບໍ່ສາມາດໃຊ້ໄດ້"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "ການຕັ້ງຄ່າການສົ່ງອອກລົ້ມເຫລວ: ບໍ່ມີປະລິມານການເກັບຮັກສາທີ່ສາມາດຂຽນໄດ້."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "ສົ່ງອອກການຕັ້ງຄ່າແລ້ວ:\nອື່ນໆ/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "ການ​ຕັ້ງ​ຄ່າ​ການ​ສົ່ງ​ອອກ​ຖືກ​ບລັອກ​: ອະ​ນຸ​ຍາດ​ໃຫ້​ອຸ​ປະ​ກອນ​ການ​ເກັບ​ຮັກ​ສາ​: ການ​ອະ​ນຸ​ຍາດ sdcard​, ຫຼັງ​ຈາກ​ນັ້ນ​ລອງ​ໃຫມ່​."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": ".note ນີ້ເປັນການສົ່ງອອກ MIDI binary,\nບໍ່ແມ່ນການຕັ້ງຄ່າການຕັ້ງຄ່າ.\n\nນໍາເຂົ້າໄຟລ໌ການຕັ້ງຄ່າເທົ່ານັ້ນທີ່ສົ່ງອອກຜ່ານການຕັ້ງຄ່າການສົ່ງອອກ."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "ບໍ່ສາມາດອ່ານໄຟລ໌ນີ້ໄດ້.\n\nມັນບໍ່ແມ່ນການສົ່ງອອກການຕັ້ງຄ່າ."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": ".note ນີ້ບໍ່ແມ່ນການສົ່ງອອກການຕັ້ງຄ່າ\n(ບໍ່ມີເຄື່ອງໝາຍການຕັ້ງຄ່າ)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "ບໍ່ສາມາດນຳໃຊ້ການຕັ້ງຄ່າທີ່ນຳເຂົ້າໄດ້."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "ບໍ່ສາມາດອ່ານໄຟລ໌ນັ້ນໄດ້."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "ມີພຽງແຕ່ .note Settings ທີ່ສາມາດນໍາເຂົ້າໄດ້.\n\nເລືອກແລ້ວ:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "ບໍ່ສາມາດເປີດໂຕເລືອກໄຟລ໌ໄດ້."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "ໂຫຼດແລ້ວ,"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "ລົ້ມເຫລວ"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "ລົ້ມເຫລວໃນການໂຫລດ SoundFont(s) (ໄຟລ໌ຍ້າຍ, ລຶບ, ຫຼືເສຍຫາຍ):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "ໂຫຼດແລ້ວ"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "ຫຼິ້ນ"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "ຢຸດຊົ່ວຄາວ"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "ຢຸດ"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "ເລີ່ມໃໝ່"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "ລຶບ"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "ເຕັມຈໍ"
+  },
+  {
+    "$i": "rotate",
+    "$v": "ໝຸນ"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "ຫຼິ້ນອັດຕະໂນມັດ"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "ເປີດ"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "ປິດ"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "ບັດຂໍ້ມູນ"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "ສະແດງ"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "ເຊື່ອງ"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "ຮອຍ"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "ປະມວນຜົນພາບ"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "ຂະໜາດເປຍໂນ"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "ປ່ຽນໄຟລ໌ MIDI/Note"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "ໂຫຼດໄຟລ໌ MIDI/Note"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "ໝຸນເປັນແນວຕັ້ງ"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "ໝຸນເປັນແນວນອນ"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "ຕົກລົງ"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "ກັບຄືນ"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "ຕັ້ງຄ່າ"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "ຍົກເລີກ"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "ເລືອກ"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "ລຶບ"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "ຍ້າຍ"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "ສຳເລັດ"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "ເລືອກທັງໝົດ"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "ຍົກເລີກການເລືອກທັງໝົດ"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "ສຳເລັດ"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "ສະແດງບັດຂໍ້ມູນ"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "ສະແດງປ້າຍຊື່ໂນດ"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "ຊ່ວງຄີບອດ"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "ເຄື່ອງໝາຍ Middle C"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "ສີແຖບ"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "ສີເປຍໂນ"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "ຫຼິ້ນອັດຕະໂນມັດ"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "ສະແດງ OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "ຕັ້ງຄ່າພື້ນຫຼັງ"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "ສະແດງແຖບໂຫຼດ"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "ສະແດງ % ຂະນະວິເຄາະ"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "ສະແດງ % ຂະນະຮວມ"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "ສີການໂຫຼດ"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "ສີຂໍ້ຄວາມ %"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "ອະນິເມຊັນເລື່ອນ"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "ສະແດງກ່ອງໂຕ້ຕອບ"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "ສີຂໍ້ຄວາມ"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "ສີພື້ນຫຼັງ"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "ສະຖານະລະອຽດ"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "ລະອຽດຂະນະວິເຄາະ"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "ລະອຽດຕອນເລີ່ມຕົ້ນ"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "ສີໂຟກັສ"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "ພື້ນຫຼັງ"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "ຄວາມໜ່ວງເລີ່ມຕົ້ນ"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "ຄວາມໜ່ວງກ່ອນຫຼິ້ນເປັນວິນາທີ (0 = ປິດ)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "ເລີ່ມຕົ້ນ"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "ສິ້ນສຸດ"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "ບໍ່ມີຊື່"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "ປິດສຽງ"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "ຜິດພາດ"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Verbose ໃນຂະນະທີ່ອ່ານ soundfonts"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "ກຳລັງວິເຄາະຂໍ້ມູນ MIDI..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "ຮວມກິດຈະກຳ..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "ອ່ານ​ຫົວ​ຂໍ້​ສໍາ​ເລັດ​:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "ຕິດຕາມ"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "ກຳລັງຍົກເລີກ..."
+  },
+  {
+    "$i": "language",
+    "$v": "ພາສາ"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "ປ່ຽນພາສາອັດຕະໂນມັດ"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "ຕົວ​ແຍກ​ພາ​ສາ​"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "ສຽງ"
+  }
+]

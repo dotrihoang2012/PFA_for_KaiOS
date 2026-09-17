@@ -1,4 +1,4 @@
-/**
+﻿/**
  * sfparser.js — In-app SoundFont 2 (.sf2 / .sf3) parser for PFA.
  *
  * Parses the RIFF/SFBK container directly from an ArrayBuffer (read by
@@ -146,18 +146,17 @@ var SfParser = (function () {
 
     // ── Zones per preset: walk pbag → instrument gen (41) + key/vel ranges ──
     var presets = [];
+    var pBags = readBagsRaw(bytes, pbag);
+    var pGens = readGensRaw(bytes, pgen);
     for (var pi = 0; pi < presetHeaders.length; pi++) {
       var ph = presetHeaders[pi];
       var zones = [];
       var bagLo = ph.bagIndex;
-      var bagHi = (pi + 1 < presetHeaders.length)
-        ? presetHeaders[pi + 1].bagIndex
-        : (pbag ? Math.floor(pbag.size / 4) : bagLo);
+      var pBagHi = (pi + 1 < presetHeaders.length) ? presetHeaders[pi + 1].bagIndex : pBags.length;
 
-      for (var bi = bagLo; bi < bagHi; bi++) {
-        if (!pbag) break;
+      for (var bi = bagLo; bi < pBagHi; bi++) {
         var gens = [];
-        if (pgen) gens = bagGens(readBagsRaw(pbag), bi, readGensRaw(pgen));
+        if (pgen) gens = bagGens(pBags, bi, pGens);
         if (!gens.length) continue;
         var instId = null;
         var keyLo = null, keyHi = null, velLo = null, velHi = null;
@@ -219,19 +218,21 @@ var SfParser = (function () {
   }
 
   // Read pbag/pgen into plain arrays once (avoid DataView juggling).
-  function readBagsRaw(chunk) {
+  function readBagsRaw(bytes, chunk) {
+    if (!chunk) return [];
     var n = Math.floor(chunk.size / 4);
     var arr = [];
-    var dv2 = new DataView(chunk.buffer, chunk.byteOffset, chunk.size);
+    var dv2 = new DataView(bytes.buffer, bytes.byteOffset + chunk.off, chunk.size);
     for (var i = 0; i < n; i++) {
       arr.push({ genIndex: dv2.getUint16(i * 4, true), modIndex: dv2.getUint16(i * 4 + 2, true) });
     }
     return arr;
   }
-  function readGensRaw(chunk) {
+  function readGensRaw(bytes, chunk) {
+    if (!chunk) return [];
     var n = Math.floor(chunk.size / 4);
     var arr = [];
-    var dv2 = new DataView(chunk.buffer, chunk.byteOffset, chunk.size);
+    var dv2 = new DataView(bytes.buffer, bytes.byteOffset + chunk.off, chunk.size);
     for (var i = 0; i < n; i++) {
       arr.push({ op: dv2.getUint16(i * 4, true), amount: dv2.getInt16(i * 4 + 2, true) });
     }
@@ -244,26 +245,26 @@ var SfParser = (function () {
    * come from the preset zone; instrument ranges are merged by
    * intersection (default full).
    */
-  function instrumentZones(instId, pKeyLo, pKeyHi, pVelLo, pVelHi,
-                           dv, bytes, pdta) {
+  // Find all zones for a given instrument (instId) overlapping [keyLo, keyHi] / [velLo, velHi].
+  function instrumentZones(instId, pKeyLo, pKeyHi, pVelLo, pVelHi, dv, bytes, pdta) {
     var inst = pdta.inst ? pdta.inst : null;
     var ibag = pdta.ibag ? pdta.ibag : null;
     var igen = pdta.igen ? pdta.igen : null;
     var out = [];
     if (!inst || !ibag || !igen) return out;
 
-    var instN = Math.floor(inst.size / 22);
-    if (instId < 0 || instId >= instN) return out;
-    var io = inst.off + instId * 22;
-    var iBagIndex = dv.getUint16(io + 20, true);
+    var instOff = inst.off + instId * 22;
+    var bagIndex = dv.getUint16(instOff + 20, true);
+    var nextBag = (instId * 22 + 22 < inst.size) ? dv.getUint16(instOff + 22 + 20, true) : null;
 
-    var ibags = readBagsRaw(ibag);
-    var igens = readGensRaw(igen);
+    var ibags = readBagsRaw(bytes, ibag);
+    var igens = readGensRaw(bytes, igen);
+    var instN = Math.floor(inst.size / 22);
     var iBagHi = (instId + 1 < instN)
       ? dv.getUint16(inst.off + (instId + 1) * 22 + 20, true)
       : ibags.length;
 
-    for (var bi = iBagIndex; bi < iBagHi; bi++) {
+    for (var bi = bagIndex; bi < iBagHi; bi++) {
       var lo = ibags[bi] ? ibags[bi].genIndex : 0;
       var hi = (bi + 1 < ibags.length) ? ibags[bi + 1].genIndex : igens.length;
       if (lo >= igens.length) continue;

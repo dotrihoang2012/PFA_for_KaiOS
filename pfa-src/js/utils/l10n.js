@@ -1,60 +1,55 @@
 /**
- * l10n.js — Simple locale loader for KaiOS.
- * Loads /locales/{lang}/app.json. Falls back to key if missing.
- * Usage: L10n.t('softkey_menu') → or 'Menu'
+ * l10n.js — L10n bridge for Piano From Above (KaiOS 2.5).
+ * 
+ * KaiOS apps (like settings) use shared/js/l10n.js which provides navigator.mozL10n.
+ * This file just provides a thin synchronous wrapper L10n.t() for the JS UI (like softkeys)
+ * and ensures the UI updates when navigator.mozL10n emits 'localized'.
  */
 var L10n = (function () {
   'use strict';
 
-  var _lang = 'en';
-  var _strings = {};
+  var _ready = false;
 
-  /**
-   * Detect device language or use default.
-   * KaiOS 2.5: navigator.language = 'en' / 'vi' / etc.
-   */
-  function init(callback) {
-    if (typeof navigator !== 'undefined' && navigator.language) {
-      var code = navigator.language;
-      if (code.indexOf('-') > -1) code = code.split('-')[0];
-      _lang = code;
-    }
-    loadBundle(_lang, callback);
-  }
-
-  function loadBundle(lang, callback) {
-    var url = '/locales/' + lang + '/app.json';
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        try {
-          _strings = JSON.parse(xhr.responseText);
-        } catch (e) {
-          _strings = {};
+  function t(key, fallback) {
+    if (typeof navigator !== 'undefined' &&
+        navigator.mozL10n &&
+        typeof navigator.mozL10n.get === 'function') {
+      try {
+        var val = navigator.mozL10n.get(key);
+        if (val && typeof val === 'string' && val !== key && val !== '') {
+          return val;
         }
-      } else if (lang !== 'en') {
-        loadBundle('en', callback);
-        return;
-      }
-      if (callback) callback();
-    };
-    xhr.onerror = function () {
-      if (lang !== 'en') { loadBundle('en', callback); return; }
-      if (callback) callback();
-    };
-    xhr.send();
+      } catch (e) { /* ignore */ }
+    }
+    return (fallback !== undefined) ? fallback : key;
   }
 
-  /** Translate a key. Returns key itself if not found. */
-  function t(key) {
-    return _strings[key] || key;
+  if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
+    window.addEventListener('localized', function () {
+      _ready = true;
+      if (typeof window.updateSoftkeys === 'function') {
+        window.updateSoftkeys();
+      }
+      if (typeof Settings !== 'undefined' &&
+          typeof Settings.isOpen === 'function' && Settings.isOpen() &&
+          typeof Settings.rebuildRows === 'function') {
+        // We do not have Settings.refreshRows, so we'd need to re-open the sub-page.
+        // It's usually fine since 'localized' fires once on boot.
+      }
+    });
   }
 
   return {
-    init:     init,
-    t:        t,
-    getLang:  function () { return _lang; },
-    getStrings: function () { return _strings; },
+    t: t,
+    isReady: function() { return _ready; },
+    getLang: function () {
+      if (typeof navigator !== 'undefined' &&
+          navigator.mozL10n &&
+          navigator.mozL10n.language &&
+          navigator.mozL10n.language.code) {
+        return navigator.mozL10n.language.code;
+      }
+      return 'en-US';
+    }
   };
 })();

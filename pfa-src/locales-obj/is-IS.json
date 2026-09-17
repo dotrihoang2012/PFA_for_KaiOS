@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Valmöguleikar"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Veldu"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Til baka"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Spila"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Gera hlé"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Hættu"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Hætta við"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Ljúktu"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Allt"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Engin"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Færa"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "Allt í lagi"
+  },
+  {
+    "$i": "settings",
+    "$v": "Stillingar"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Synthesizer"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Sjónræn"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Kerfi"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Stillingar þróunaraðila"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Stillingar hljóðleturs"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Þema"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Hlaða inn MIDI/Note skrá"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Breyta MIDI/Note File"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Hlaða niður Soundfont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Hlaða meira"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Hætta við greiningu"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Hreinsa"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Hljóðúttak"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Hljóðvél"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Synth bylgjuform"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Slepptu Slow Intro"
+  },
+  {
+    "$i": "speed",
+    "$v": "Hraði"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Athugið Trail"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Sjálfvirk spilun"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Sýna glugga"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Sýna OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Töf á byrjun"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Lyklaborðssvið"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Mið C merki"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Sýna athugasemdamerki"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Píanó stærð"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Litur á stiku"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Píanó litur"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Fókus litur"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Hleðsla litur"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Sýna hleðslustiku"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Sýna % meðan verið er að greina"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Sýna % við sameiningu"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Renna hreyfimynd"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Litur texta"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Bakgrunnslitur"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Render Mode"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D útsýni"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Sýna upplýsingakort"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Fullur skjár"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Snúa skjánum"
+  },
+  {
+    "$i": "volume",
+    "$v": "Bindi"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Innflutningsstillingar"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Flytja út stillingar"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Sjálfvirkur fullur skjár"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Snúa skjá sjálfkrafa"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Endurstilla allar stillingar"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Um þetta forrit"
+  },
+  {
+    "$i": "developer",
+    "$v": "Hönnuður"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Röð staða"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Orðrétt á meðan verið er að greina"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Orðrétt á meðan þú byrjar"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Minni tölfræði"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Útflutningsskrá"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Geymslupróf"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Lengd stuðara"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Raddir (margfónía)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Slökktu á Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Þegar hlaðið"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Hleður Soundfont"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Hleður einingu..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Hleður forriti..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Greinir MIDI..."
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Sameinar lög..."
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Nú spilar"
+  },
+  {
+    "$i": "paused",
+    "$v": "Gert hlé"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Hætt"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Villa"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Get ekki lesið skrá eða skrá vantar."
+  },
+  {
+    "$i": "on",
+    "$v": "Á"
+  },
+  {
+    "$i": "off",
+    "$v": "Slökkt"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Hljóð á vefnum"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "AudioControl (hjáveitu)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Sjálfvirk"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (Oscillator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sínus"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Ferningur"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Sagtönn"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Þríhyrningur"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Fullt (128 lyklar)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 lyklar"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 lyklar"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 lykla"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 lyklar"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Smart (sjálfvirkur aðdráttur)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Lítil"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Miðlungs"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Stórt"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Athugið haust"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Lyklaborð"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Bæði"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Athugasemd"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Samþykkt"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Hraði"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Tími"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Margrödd"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Afgreiddar athugasemdir"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Hljóðbuffi"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Merktu við"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Fljótandi"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Landamæri"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Upplýsingakortamörk"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Staða"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Bakgrunnur"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Texti upplýsingaspjalds"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Vinstri"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Rétt"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Forstillingar"
+  },
+  {
+    "$i": "general",
+    "$v": "Almennt"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Hleðsla Bar"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Valmynd"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafík"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Upplýsingakort"
+  },
+  {
+    "$i": "piano",
+    "$v": "Píanó"
+  },
+  {
+    "$i": "palette",
+    "$v": "Athugið Litur"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Röð staða"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Orðrétt á meðan verið er að greina"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Orðrétt á meðan þú byrjar"
+  },
+  {
+    "$i": "memory",
+    "$v": "Minni tölfræði"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Útflutningsskrá"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Geymslupróf"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Stórt"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Ekkert píanó"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Bakgrunnsstillingar"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Þema"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Blár"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Hvítur"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Svartur"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Tölfræði"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Stíll"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Skýringar"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Lyklaborð"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Litir"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Hljóð"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Áhrif"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Samþykkt:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Hraði:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Tími:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Margrödd:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Gefið:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Audio Buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Merktu við:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Hlaðinn"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Endurstilla allar stillingar á upphafsstillingar?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Eyða SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Viltu eyða?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Hlaðið hljóðletur"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Valmynd þróunaraðila"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Virkja þróunarvalmyndarstillingu?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Valmynd þróunaraðila virkjuð í stillingum"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Útgáfa 1.0.1 • KaiOS 2.5 • Styður svartur MIDI • MIT leyfi"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "MIDI sjóntæki sem er fínstillt fyrir snjallsíma (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Einbeitir sér að fínstilltri Canvas flutningsleiðslu til að sýna mjúklega svarta MIDI lög með miklum þéttleika á þvinguðum vélbúnaði."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Helstu eiginleikar"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Black MIDI Optimization - létt reiknirit höndla tugþúsundir nóta án alvarlegra FPS falla."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Stuðningur við líkamlegt lyklaborð - slétt leiðsögn með D-Pad og tölutökkum."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Mjög sérhannaðar - fullur 128 takka píanóskjár, sérhannaðar lagalitir, stillanlegur fallhraði nótna."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Synthesizer - innbyggður léttur hljóðgervill lágmarkar vinnsluminni notkun á lágum tækjum."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Lyklar"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > leita ±1s • ^ v hljóðstyrkur • Í lagi spila/hlé"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1x hraði • 2 flutningshamur • 3 -0,1x hraði • 4 snúningur"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 hlaða MIDI • 6 fullskjár • 7 takkar 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 clear MIDI (fríar vinnsluminni) • 9 píanó stærð • 0 stopp"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Símtalsupplýsingaspjald • * slóð -0,1 • # slóð +0,1 • Hætta á símtali"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Inneign og framlag"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Þróað af T.Hoang • KaiUI hönnunarhlutar"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PRs velkomnir: gaffal -> lögun grein -> skuldbinda sig -> ýta -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Kóði: github.com/dotrihoang2012/PFA_for_KaiOS. Gefið út undir MIT leyfinu."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Læst þar til skráin er hlaðin"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Athugið litatöflu"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Töf á byrjun"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Öll hljóðletur valin"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Val hreinsað"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Hætt við hleðslu"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Enn að skanna..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Ekkert valið"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Sérsniðin litatöflu virk"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Ógild mynd"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Litavali ekki tiltækur"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Get ekki lesið skrá"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Ekki myndskrá"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Of stór mynd"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Bakgrunnur vistaður"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Bakgrunnur hreinsaður"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Hámarki radda náð"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Stiga biðminni stilling"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Ekkert SoundFont til að eyða"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Eytt"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Hætt við flutning"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Fyrirkomulag vistað"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Notaðu upp/niður til að færa, OK til að setja"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Ekkert SoundFont hlaðið"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Beitt við næstu kynningu"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Óvirkt við næstu ræsingu"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Stillingar fluttar inn"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Læst meðan á kynningu stendur"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Allar stillingar endurstilltar"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Endurstilling er ekki tiltæk"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Endurstilling mistókst"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Snúningur ekki studdur"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Rúmmál: KaiOS API ekki tiltækt"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Vol up mistókst"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Niðurhal mistókst"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Hljóðstyrkssýning mistókst"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Sá"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Lengd bi�minnis"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Skipulagsbi�minni (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Raddir"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "H�marks samt�mis n�tur (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Bakgrunnsstillingar"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Sýna glugga"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Litur texta"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Bakgrunnslitur"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Hlutfall litur"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Minni API ekki tiltækt"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Geymsla í lagi"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Log fluttur út til"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Aðgerð mistókst"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Engin geymsla tiltæk til að flytja út skrána."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Render Mode"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Einstakar athugasemdir"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Canvas Buffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D útsýni"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Random Note Color"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Athugaðu Litapalletta"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Hlaða meira"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Hlaðinn SoundFonts"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Engin SoundFonts hlaðin"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Skannar…"
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Skanni ekki tiltækur"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Engar hljóðleturskrár (.sf2, .sf3, .dls, .sfz) fundust í tækinu"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Les gögn..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Hlaða bakgrunn"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Hreinsa bakgrunnur"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Forskoðun"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Lykilfjöldi"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Hleður:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Hætta á öllum skjánum"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Snúa í andlitsmynd"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Snúa í landslag"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Slökkva á valmyndarstillingu þróunaraðila?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Valmynd þróunaraðila óvirk í stillingum"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Frumstillir forritskjarna..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Hleður stillingar og kjörstillingar..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Frumstillir hljóðvél..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Hleðslueining: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Undirbúa banka..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth tilb�inn"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Frumstillir skjá og striga..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Tilbúið"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Afkóðun sýnishorn ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Afkóðun sýnishorn..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Töf fyrir spilun í sekúndum (0 = slökkt)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Mistókst að hlaða"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "hljóðletur(s)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Hljóðbanki ekki tiltækur"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Tókst ekki að lesa"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Hlaðinn"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Ekki hægt að hreinsa núna - umbreyting er enn í gangi.\nÝttu aftur á Hreinsa þegar því er lokið."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Engin geymsla tiltæk til að hreinsa."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Hreinsað:"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "skrá(r) úr skyndiminni umbreytingar."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Hreinsa lokið með villum."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Hreinsa mistókst:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Litir slembiraðaðir"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Eyða"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Les gögn..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS hrúga (notað/samtals):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS hlutir"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "athugasemdir í vinnsluminni:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "skráarnafn:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp skrifa-skrá:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "ófáanlegt"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Þetta app þarf aðgang að SD-korti.\n\nTil að leyfa það:\nStillingar -> Persónuvernd og öryggi -> Heimildir forrita -> PFA -> Geymsla minniskorta -> Veittur.\n\nOpnaðu síðan appið aftur / endurhlaðið skránni.\n\nOK lokar appinu."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Er enn að greina fyrri skrá - vinsamlegast bíddu."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "MIDI-greining á streymi mistókst:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Gat ekki lesið þessa skrá. Það getur verið að það sé ekki gilt MIDI eða (.note) útflutningur."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Mistókst að lesa SoundFont \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". Skrá getur verið færð, eytt eða skemmd."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "skrá villa, færð eða eytt."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Bakgrunnsmynd vantar - endurhlaða hana í stillingum."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Ekkert til að flytja út."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Umbreyting er þegar í gangi"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Geymsluleyfi hafnað - veittu SD korti aðgang til að breyta"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Engin skrifanleg geymsla fannst."
+  },
+  {
+    "$i": "error",
+    "$v": "Villa"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Almennt"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Hleðsla Bar"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Dialog stíll"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafík"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "P�an�"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Litapalletta"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Óþekkt"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS: 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC: 0"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Samþykkt: 0"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Hraði: 1,0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS: 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Tími: --:-- / --:--"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Margrödd: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Tengdar athugasemdir: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Hljóðbuffi: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tick: 0"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM: 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Endurstilla allar stillingar"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "H�tta"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 lyklar"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Sérsniðin"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Oscillator"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "D�kkt"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Lj�st"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Bl�tt"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Fjólublátt"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Handahófi"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Random Alpha Gradients"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Random Gradients"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Random með Alpha"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 litaspjald"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Synthesia 9-0,8 litatöflu"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Sérsniðin litatöflu"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Slökktu á hljóðbrellum"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Engin geymsla tiltæk til að flytja út stillingar."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Útflutningur stillinga mistókst:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "allt geymslumagn ekki tiltækt"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Útflutningur stillinga mistókst: ekkert skrifanlegt geymslumagn."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Stillingar fluttar út:\naðrir/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Útflutningur stillinga læstur: leyfa tæki-geymslu:sdcard leyfi, reyndu síðan aftur."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Þessi .note er tvöfaldur MIDI útflutningur,\nekki stillingarstillingar.\n\nFlytja aðeins inn stillingarskrár sem fluttar eru út með útflutningsstillingum."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Gat ekki lesið þessa skrá.\n\nÞað er ekki stillingarútflutningur."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Þessi .note er ekki útflutningur stillinga\n(vantar stillingamerkið)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Gat ekki beitt innfluttu stillingunum."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Get ekki lesið þá skrá."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Aðeins er hægt að flytja inn stillingar .note.\n\nValið:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Ekki er hægt að ræsa skráavalið."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "hlaðinn,"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "mistókst"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Mistókst að hlaða SoundFont(s) (skrá færð, eytt eða skemmd):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Hlaðinn"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Spila"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Gera hlé"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Stöðva"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Endurræsa"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Hreinsa"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Heilskjár"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Snúa"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Sjálfvirk spilun"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Kveikt"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Slökkt"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Upplýsingaspjald"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Sýna"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Fela"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Slóð"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Birting"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Stærð píanós"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Breyta MIDI/Note skrá"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Hlaða MIDI/Note skrá"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Snúa á hæð"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Snúa á breidd"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "Í lagi"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Til baka"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Stillingar"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Hætta við"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Velja"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Eyða"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Færa"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Lokið"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Velja allt"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Afvelja allt"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Klára"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Sýna upplýsingakort"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Sýna nótnamerki"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Lyklaborðssvið"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Mið C merki"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Stiklitur"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Píanólitur"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Sjálfvirk spilun"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Sýna OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Bakgrunnsstillingar"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Sýna hleðslustiku"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Sýna % við greiningu"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Sýna % við sameiningu"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Hleðslulitur"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "% Textalitur"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Rennandi fjör"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Sýna valmynd"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Textalitur"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Bakgrunnslitur"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Nákvæm staða"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Nákvæmt við greiningu"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Nákvæmt við frumstillingu"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Fókuslitur"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Bakgrunnur"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Byrjunartöf"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Töf fyrir spilun í sekúndum (0 = Slökkt)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Byrjun"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Endir"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Án titils"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Þaggað"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "VILLA"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Rólegt við lestur hljóðletur"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Þýðir MIDI gögn..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Sameinar viðburði..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "readHeader búinn:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "lög"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Hættir við..."
+  },
+  {
+    "$i": "language",
+    "$v": "Tungumál"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Breyta tungumáli sjálfkrafa"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Tungumálaskil"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Hljóð"
+  }
+]

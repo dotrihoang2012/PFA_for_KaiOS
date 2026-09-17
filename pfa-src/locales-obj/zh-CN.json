@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "选项"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "选择"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "返回"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "播放"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "暂停"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "停止"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "取消"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "完成"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "全选"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "清空"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "移动"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "确定"
+  },
+  {
+    "$i": "settings",
+    "$v": "设置"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "合成器"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "视觉"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "系统"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "开发者设置"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "SoundFont 设置"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "主题"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "加载 MIDI/Note 文件"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "更改 MIDI/Note 文件"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "加载 Soundfont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "加载更多"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "取消分析"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "清除"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "音频输出"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "声音引擎"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "合成器波形"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "跳过慢速前奏"
+  },
+  {
+    "$i": "speed",
+    "$v": "速度"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "音符尾迹"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "自动播放"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "显示对话框"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "显示 OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "启动延迟"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "键盘范围"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "中央 C 标记"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "显示音符标签"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "钢琴尺寸"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "小节线颜色"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "钢琴颜色"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "焦点颜色"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "加载颜色"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "显示加载条"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "分析时显示 %"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "合并时显示 %"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "滑动动画"
+  },
+  {
+    "$i": "text_color",
+    "$v": "文本颜色"
+  },
+  {
+    "$i": "background_color",
+    "$v": "背景颜色"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "渲染模式"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D 视图"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "显示信息卡"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "全屏"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "旋转屏幕"
+  },
+  {
+    "$i": "volume",
+    "$v": "音量"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "导入设置"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "导出设置"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "自动全屏"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "自动旋转屏幕"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "重置所有设置"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "关于此应用"
+  },
+  {
+    "$i": "developer",
+    "$v": "开发者"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "详细状态"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "分析时显示细节"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "初始化时显示细节"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "内存统计"
+  },
+  {
+    "$i": "export_log",
+    "$v": "导出日志"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "存储测试"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "缓冲区长度"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "最大发音 (复音)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "禁用 Soundfont 音效"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "已加载"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "正在加载 Soundfont"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "正在加载模块..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "正在加载应用..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "正在分析 MIDI…"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "正在合并音轨…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "正在播放"
+  },
+  {
+    "$i": "paused",
+    "$v": "已暂停"
+  },
+  {
+    "$i": "stopped",
+    "$v": "已停止"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "错误"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "无法读取文件或文件丢失。"
+  },
+  {
+    "$i": "on",
+    "$v": "开启"
+  },
+  {
+    "$i": "off",
+    "$v": "关闭"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "网络音频"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "音频控制（旁路）"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "汽车"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS 合成器（振荡器）"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "声音字体"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "正弦"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "广场"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "锯齿波"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "三角形"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "全（128键）"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88键"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76键"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61键"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49键"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "智能（自动变焦）"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "小号"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "中等"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "大号"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "注意坠落"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "键盘"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "两者都"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "核动力源"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "音符数"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "通过"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "速度"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "时间"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS 系统"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "复调音乐"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "渲染注释"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "音频缓冲器"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "勾选"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "业务流程管理"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "浮动"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "边框"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "信息卡边框"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "职位"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "背景"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "信息卡文本"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "左"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "右"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "预设"
+  },
+  {
+    "$i": "general",
+    "$v": "一般"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "加载栏"
+  },
+  {
+    "$i": "dialog",
+    "$v": "对话"
+  },
+  {
+    "$i": "graphics",
+    "$v": "图形"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "信息卡"
+  },
+  {
+    "$i": "piano",
+    "$v": "钢琴"
+  },
+  {
+    "$i": "palette",
+    "$v": "注意颜色"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "详细状态"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "分析时冗长"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "初始化时详细"
+  },
+  {
+    "$i": "memory",
+    "$v": "内存统计"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "导出日志"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "储存测试"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "大"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "没有钢琴"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "背景设置"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "主题"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "蓝色"
+  },
+  {
+    "$i": "color_white",
+    "$v": "白色"
+  },
+  {
+    "$i": "color_black",
+    "$v": "黑色"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "统计数据"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "风格"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "注释"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "键盘"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "颜色"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "声音字体"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "音频"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "效果"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "净推荐值："
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "数控："
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "通过："
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "速度："
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "帧率："
+  },
+  {
+    "$i": "hud_time",
+    "$v": "时间："
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "复调音乐："
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "渲染："
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "音频缓冲区："
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "勾选："
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "节拍器："
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "已加载"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "将所有设置重置为出厂默认设置？"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "删除声音字体"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "您想删除吗？"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "已加载声音字体"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "开发者菜单"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "启用开发���菜单模式？"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "在设置中启用开发者菜单"
+  },
+  {
+    "$i": "about_version",
+    "$v": "版本 1.0.1 • KaiOS 2.5 • 支持 Black MIDI • MIT 许可证"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "针对智能功能手机（Nokia 2720 Flip、8000 4G、6300 4G、8110 4G、JioPhone...）优化的 MIDI 可视化工具。专注于优化的 Canvas 渲染管道，以在受限的硬件上平滑地显示高密度黑色 MIDI 轨道。"
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "主要特点"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "黑色 MIDI 优化 - 轻量级算法可处理数以万计的音符，而不会出现严重的 FPS 下降。"
+  },
+  {
+    "$i": "about_f2",
+    "$v": "物理键盘支持 - 通过方向键和��字键顺畅导航。"
+  },
+  {
+    "$i": "about_f3",
+    "$v": "高度可定制 - 完整的 128 键钢琴显示屏、可定制的轨道颜色、可调节的音符落下速度。"
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio 合成器 - 内置轻量级合成器最大限度地减少低端设备上的 RAM 使用。"
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "按键"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > 搜索 ±1s • ^ v 音量 • OK 播放/暂停"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0.1x 速度 • 2 渲染模式 • 3 -0.1x 速度 • 4 旋转"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 加载 MIDI • 6 全屏 • 7 键 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 个清晰 MIDI（释放 RAM）• 9 钢琴尺寸• 0 停止"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "呼叫信息卡 • * Trail -0.1 • # Trail +0.1 • 结束呼叫退出"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "学分与贡献"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "由 T.Hoang 开发 • KaiUI 设计组件"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "欢迎 PR：分叉 -> 功能分支 -> 提交 -> 推送 -> 拉取请求"
+  },
+  {
+    "$i": "about_src",
+    "$v": "源代码：github.com/dotrihoang2012/PFA_for_KaiOS。根据 MIT 许可证发布。"
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "锁定到文件装入"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "注意颜色调色板"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "开始延迟"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "选中全部音效"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "选择已清除"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "装入已取消"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "还在扫描..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "无选择"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "自定义调色板活动"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "无效的图像"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "无法选择颜色"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "无法读取文件"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "不是图像文件"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "图像太大"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "背景已保存"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "背景已清除"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "声音限制已经达到"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Canvas 缓冲模式"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "没有要删除的音效Font"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "删除"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "移动已取消"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "保存的安排"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "使用上下移动, 确定位置"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "未装入音效Font"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "下次发射时应用"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "下次发射时禁用"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "导入的设置"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "演示时锁定"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "所有设置重设"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "无法重置"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "重置失败"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "不支持旋转"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "音量: KaiOS API 不可用"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "输入失败"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "倒计时失败"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "音量显示失败"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "锯子"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "缓冲长度"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "样本中的规划缓冲(512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "声音"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "最大同时注释 (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "背景设置"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "显示对话框"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "文本颜色"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "背景颜色"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "颜色百分比"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "内存 API 不可用"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "存储确定"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "导出为"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "动作失败"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "无法导出日志 。"
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "渲染模式"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "个人说明"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Canvas Buffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "三维视图"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "随机记号颜色"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "注意颜色调色板"
+  },
+  {
+    "$i": "load_more",
+    "$v": "更多装入"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "装入的音效"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "没有装入音效"
+  },
+  {
+    "$i": "scanning",
+    "$v": "正在扫描..."
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "没有扫描仪"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "在设备上找不到声音font文件(.sf2,.sf3,.dls,.sfz)"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "读取数据..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "装入背景"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "清除背景"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "预览"
+  },
+  {
+    "$i": "key_count",
+    "$v": "密钥计数"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "加载中："
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "退出全屏幕"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "旋转到外观"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "旋转到景观"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "禁用开发者菜单模式吗 ?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "在设置中禁用开发者菜单"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "正在初始化应用程序核心..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "正在加载设置和首选项..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "正在初始化音频引擎..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "加载模块：Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "银行准备..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth ??"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "正在初始化显示和画布..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "准备好"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "解码样本（"
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "解码样本..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "延迟播放秒数( 0 = 关闭)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "装入失败"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "声音font (s)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "没有音库"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "读取失败"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "已装入"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "无法清除 - 转换仍在运行 。\n完成后再按 Clear 键 。"
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "没有可供清理的存储 。"
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "已清除 :\n"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "来自转换缓存的文件。"
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "清除完错误 。"
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "清除失败 :"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "随机颜色"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "删除"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "读取数据..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "联合来文堆(已使用/总数):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS ??"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "内存中的音符 :"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "文件名称 :"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa tmp 写入- log :"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "无"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "这个应用需要SD卡的访问.\n\n允许:\n设置 - > 隐私和安全 - > App权限 - > PFA - > 内存卡存储 - > 格兰特\n\n然后重新打开应用程序 / 重新装入文件 。\n\n好吧,关闭应用程序。"
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "仍在分析前一个文件 - 请等一下 。"
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "流出 MIDI 分析失败 :"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "无法读取此文件 。 它可能不是有效的MIDI或(.注)出口。"
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "读取 SoundFont 失败"
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\" 。文件可能被移动、删除或损坏。"
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "文件出错,已移动,或已删除。"
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "背景图像缺失 - 在设置中重新装入 。"
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "没有出口。"
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "转换已运行"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "存储许可被拒绝 - 允许 SD 卡访问转换"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "未找到可写存储 。"
+  },
+  {
+    "$i": "error",
+    "$v": "??"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "常规"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "正在装入栏"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "对话框样式"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "图形"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "??"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "颜色调色板"
+  },
+  {
+    "$i": "unknown",
+    "$v": "未知"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS: 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "净入学率:0"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "通过:0"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "速度: 1.0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS: 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "时间: -- -- -- -- -- -- -- --"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "多声道: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "渲染说明: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "音频缓冲: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tick: 0"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM: 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "重置所有设置"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "??"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 键"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "自定义"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "振荡器"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "??"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "??"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "??"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "紫色"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "随机"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "随机阿尔法梯度"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "随机梯度"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "随阿尔法随机"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 ???"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "合成 9-0.8 调色板"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "自定义调色板"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "禁用声音效果"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "没有可用于导出设置的存储 。"
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "设置导出失败 :"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "全部存储量不可用"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "设置导出失败: 没有可写存储量 。"
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "导出设置 :\n其他人/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "设置导出被屏蔽: 允许设备存储: sdcard 权限, 然后重试 。"
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "此注为 二进制 MIDI 导出,\n不是设置配置 。\n\n只导入通过导出设置导出的设置文件 。"
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "无法读取此文件 。\n\n这不是设置导出 。"
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "此. note 不是设置导出\n(缺少设置标记)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "无法应用导入的设置 。"
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "无法读取该文件 。"
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "只能导入. note 设置配置 。\n\n选取 :"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "无法启动文件拾取器 。"
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "装入"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "失败"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "装入 SoundFont (s) (文件已移动、 删除或损坏) 失败 :\n"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "已装入"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "播放"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "暂停"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "停止"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "重新启动"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "清除"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "全屏"
+  },
+  {
+    "$i": "rotate",
+    "$v": "旋转"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "自动播放"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "开"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "关"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "信息卡"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "显示"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "隐藏"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "轨迹"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "渲染"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "钢琴尺寸"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "更改 MIDI/Note 文件"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "加载 MIDI/Note 文件"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "旋转至竖屏"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "旋转至横屏"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "确定"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "返回"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "设置"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "取消"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "选择"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "删除"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "移动"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "完成"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "全选"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "取消全选"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "结束"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "显示信息卡"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "显示音符标签"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "键盘范围"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "中央C标记"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "进度条颜色"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "钢琴颜色"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "自动播放"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "显示 OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "背景设置"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "显示加载条"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "分析时显示百分比"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "合并时显示百分比"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "加载颜色"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "百分比文本颜色"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "滑动动画"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "显示对话框"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "文本颜色"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "背景颜色"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "详细状态"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "分析时显示详情"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "初始化时显示详情"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "焦点颜色"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "背景"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "启动延迟"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "播放前的延迟秒数 (0 = 关闭)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "开始"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "结束"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "无标题"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "静音"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "错误"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "阅读声音字体时冗长"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "正在解析 MIDI 数据..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "合并事件..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "读取标题完成："
+  },
+  {
+    "$i": "tracks",
+    "$v": "曲目"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "正在取消..."
+  },
+  {
+    "$i": "language",
+    "$v": "语言"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "自动更改语言"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "语言分隔符"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "音频"
+  }
+]

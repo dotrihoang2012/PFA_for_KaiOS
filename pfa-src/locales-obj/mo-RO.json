@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Opțiuni"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Selectați"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Înapoi"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Joacă"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Pauză"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Opreste-te"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Anulează"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Termină"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Toate"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Niciuna"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Mișcă-te"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "Bine"
+  },
+  {
+    "$i": "settings",
+    "$v": "Setări"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Sintetizator"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "vizual"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Sistem"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Setări pentru dezvoltatori"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Setări Soundfont"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Temă"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Încărcați fișierul MIDI/Notă"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Schimbați fișierul MIDI/Notă"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Încărcați Soundfont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Încărcați mai multe"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Anulează analiza"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Clar"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Ieșire audio"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Motor de sunet"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Formă de undă de sinteză"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Omite introducerea lentă"
+  },
+  {
+    "$i": "speed",
+    "$v": "Viteza"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Notă Traseul"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Redare automată"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Afișați dialogul"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Afișează OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Întârziere de pornire"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Gama tastaturii"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Marker C mijlociu"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Afișați etichetele notelor"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Dimensiunea pianului"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Culoarea barei"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Culoare pian"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Culoare de focalizare"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Culoare de încărcare"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Afișați bara de încărcare"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Afișați % în timpul analizei"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Afișați % în timpul îmbinării"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Animație de alunecare"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Culoare text"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Culoare de fundal"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Modul de randare"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "Vedere 3D"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Afișați cardul de informații"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Ecran complet"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Rotiți ecranul"
+  },
+  {
+    "$i": "volume",
+    "$v": "Volumul"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Setări de import"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Setări de export"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Ecran complet automat"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Rotire automată a ecranului"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Resetați toate setările"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Despre această aplicație"
+  },
+  {
+    "$i": "developer",
+    "$v": "Dezvoltator"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Stare detaliată"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Verbos în timpul analizei"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Verbose în timp ce init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Statistici de memorie"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Export Jurnal"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Test de depozitare"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Lungimea tamponului"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Voci (polifonie)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Dezactivați Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Deja încărcat"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Se încarcă Soundfont"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Se încarcă modulul..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Se încarcă aplicația..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Se analizează MIDI..."
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Se îmbină melodiile..."
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Acum joacă"
+  },
+  {
+    "$i": "paused",
+    "$v": "Întrerupt"
+  },
+  {
+    "$i": "stopped",
+    "$v": "oprit"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Eroare"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Nu se poate citi fișierul sau lipsește fișierul."
+  },
+  {
+    "$i": "on",
+    "$v": "Pornit"
+  },
+  {
+    "$i": "off",
+    "$v": "Oprit"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Web Audio"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "AudioControl (ocolire)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Auto"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (oscilator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sine"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "pătrat"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Dinți de ferăstrău"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Triunghi"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Complet (128 de taste)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 de chei"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 de chei"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 de chei"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 de chei"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Smart (zoom automat)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Mic"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Mediu"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Mare"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Notă toamna"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Tastatura"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "ambele"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Număr de note"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "A trecut"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Viteza"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "timpul"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polifonie"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Note randate"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Buffer audio"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Bifă"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Plutitoare"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Frontieră"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Bordura cardului de informații"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Poziție"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Fundal"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Textul cardului de informații"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Stânga"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Corect"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Presetări"
+  },
+  {
+    "$i": "general",
+    "$v": "general"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Bara de încărcare"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Dialog"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafică"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Card informativ"
+  },
+  {
+    "$i": "piano",
+    "$v": "pian"
+  },
+  {
+    "$i": "palette",
+    "$v": "Notă Culoare"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Stare detaliată"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Verbos în timpul analizei"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Verbose în timp ce init"
+  },
+  {
+    "$i": "memory",
+    "$v": "Statistici de memorie"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Export Jurnal"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Test de depozitare"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Mare"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Fără pian"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Setări de fundal"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Temă"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Albastru"
+  },
+  {
+    "$i": "color_white",
+    "$v": "alb"
+  },
+  {
+    "$i": "color_black",
+    "$v": "negru"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statistici"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Stil"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Note"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Tastatura"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Culori"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Audio"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Efecte"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "A trecut:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Viteza:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Ora:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polifonie:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Redat:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Buf audio:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "bifare:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Încărcat"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Resetați toate setările la valorile implicite din fabrică?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Ștergeți SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Doriți să ștergeți?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Font(e) de sunet încărcate"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Meniul dezvoltatorului"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Activați modul meniu dezvoltator?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Meniul dezvoltatorului este activat în setări"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Versiunea 1.0.1 • KaiOS 2.5 • Black MIDI acceptat • Licență MIT"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "Un vizualizator MIDI optimizat pentru telefoanele inteligente (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Se concentrează pe o conductă de randare Canvas optimizată pentru a afișa fără probleme melodiile Black MIDI de înaltă densitate pe hardware limitat."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Caracteristici cheie"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Optimizare MIDI neagră - algoritmii ușori gestionează zeci de mii de note fără scăderi severe ale FPS."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Suport pentru tastatură fizică - navigare lină prin D-Pad și tastele numerice."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Extrem de personalizabil - afișaj complet pentru pian cu 128 de taste, culori personalizabile ale pieselor, viteze reglabile de cădere a notelor."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Synthesizer - sintetizatorul ușor încorporat minimizează utilizarea RAM pe dispozitivele de gamă inferioară."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Chei"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > căutare ±1s • ^ v volum • OK redare/pauză"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1x viteză • 2 mod de randare • 3 -0,1x viteză • 4 rotire"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 încărcare MIDI • 6 fullscreen • 7 taste 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 clear MIDI (eliberează RAM) • 9 dimensiune pian • 0 stop"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Cartelă cu informații despre apel • * traseu -0,1 • # traseu +0,1 • Încheiere apel"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Credite și contribuții"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Dezvoltat de T.Hoang • Componente de design KaiUI"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PR-uri binevenite: fork -> feature branch -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Cod sursă: github.com/dotrihoang2012/PFA_for_KaiOS. Lansat sub licența MIT."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Blocat până se încarcă fișierul"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Observați paleta de culori"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Întârziere de pornire"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Toate fonturile sonore selectate"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Selecția a fost șters"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Încărcarea a fost anulată"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Inca se scaneaza..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Nimic selectat"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Paleta personalizată activă"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Imagine nevalidă"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Selectorul de culori indisponibil"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Nu se poate citi fișierul"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Nu este un fișier imagine"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Imaginea este prea mare"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Fundal salvat"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Fundalul a fost șters"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Limita de voci a fost atinsă"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Modul tampon canvas"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Nu există SoundFont de șters"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Șters"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Mutare anulată"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Aranjament salvat"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Folosiți sus/jos pentru a muta, OK pentru a plasa"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Nu s-a încărcat SoundFont"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Se aplică la următoarea lansare"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Dezactivat la următoarea lansare"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Setări importate"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Blocat în timpul demonstrației"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Toate setările sunt resetate"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Resetare indisponibilă"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Resetarea a eșuat"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Rotirea nu este acceptată"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Volum: API-ul KaiOS indisponibil"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Vol up eșuat"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Vol down a eșuat"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Afișarea volumului a eșuat"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Saw"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Lungime buffer"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Buffer de planificare (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Voci"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Max. note simultane (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Setări de fundal"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Afișați dialogul"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Culoare text"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Culoare de fundal"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Culoarea procentuală"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "API-ul de memorie nu este disponibil"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Stocare OK"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Jurnalul exportat în"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Acțiunea eșuată"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Nu există spațiu de stocare disponibil pentru a exporta jurnalul."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Modul de redare"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Note individuale"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Canvas Buffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "Vedere 3D"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Culoare aleatoare a notei"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Notă Paleta de culori"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Încărcați mai multe"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "SoundFont-uri încărcate"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Nu au fost încărcate fonturi audio"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Se scanează…"
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Scanerul nu este disponibil"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Nu s-au găsit fișiere soundfont (.sf2, .sf3, .dls, .sfz) pe dispozitiv"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Se citește fișierul..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Încărcare fundal"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Șterge fundalul"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Previzualizare"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Număr de chei"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Încărcare:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Ieșiți din ecranul complet"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Rotiți la Portret"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Rotiți la peisaj"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Dezactivați modul meniu dezvoltator?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Meniul dezvoltatorului este dezactivat în setări"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Se inițializează App Core..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Se încarcă setările și preferințele..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Se inițializează motorul audio..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Modul de încărcare: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Pregatirea bancilor..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth pregatit"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Se inițializează Display și Canvas..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Gata"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Decodificarea mostrelor ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Decodificarea mostrelor..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Întârziere înainte de redare în secunde (0 = Oprit)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Nu s-a putut încărca"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "font(e) de sunet."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Bancă de sunet indisponibilă"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Nu s-a putut citi"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Încărcat"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Nu se poate șterge acum - încă rulează o conversie.\nApăsați din nou pe Șterge odată ce se termină."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Nu există spațiu de stocare disponibil pentru golire."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Eliberat:"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "fișier(e) din memoria cache de conversie."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Sterge terminat cu erori."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Ștergere a eșuat:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Culori randomizate"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Şterge"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Citirea datelor..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "Heap JS (utilizat/total):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "Obiecte JS"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "note în RAM:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "nume de fișier:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "jurnal de scriere pfa_tmp:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "indisponibil"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Această aplicație are nevoie de acces la card SD.\n\nPentru a-i permite:\nSetări -> Confidențialitate și securitate -> Permisiuni aplicații -> PFA -> Stocare card de memorie -> Acordare.\n\nApoi redeschideți aplicația / reîncărcați fișierul.\n\nOK închide aplicația."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Încă se analizează fișierul anterior - așteptați."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Analiza MIDI în flux a eșuat:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Nu s-a putut citi acest fișier. Este posibil să nu fie un export MIDI sau (.notă) valid."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Nu s-a putut citi SoundFont \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "„. Fișierul poate fi mutat, șters sau corupt."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "eroare de fișier, mutat sau șters."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Imaginea de fundal lipsește - reîncărcați-o în Setări."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Nimic de exportat."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "O conversie rulează deja"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Permisiune de stocare refuzată - acordați acces cardului SD pentru conversie"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Nu s-a găsit niciun spațiu de stocare care poate fi scris."
+  },
+  {
+    "$i": "error",
+    "$v": "Eroare"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "General"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Bara de încărcare"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Stil de dialog"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafică"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Pian"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Paleta de culori"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Necunoscut"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS: 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC: 0"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "A trecut: 0"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Viteza: 1.0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS: 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Ora: --:-- / --:--"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polifonie: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Note redate: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Buffer audio: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tick: 0"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM: 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Resetați toate setările"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Ie?ire"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 de chei"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Personalizat"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Oscilator"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "�ntunecat"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Luminos"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Albastru"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Violet"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Aleatoriu"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Gradienți alfa aleatoriu"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Degrade aleatorii"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Aleatoriu cu Alpha"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Paleta Synthesia 10"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Paleta Synthesia 9-0,8"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Paleta personalizată"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Dezactivați efectele sonore"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Nu există spațiu de stocare disponibil pentru exportul setărilor."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Exportul setărilor nu a reușit:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "toate volumele de stocare indisponibile"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Exportul setărilor nu a reușit: nu există volum de stocare care poate fi scris."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Setări exportate:\naltii/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Exportul setărilor blocat: permiteți permisiunea de stocare a dispozitivului: card SD, apoi încercați din nou."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Acest .note este un export MIDI binar,\nnu o configurație de setări.\n\nImportați numai fișierele Setări exportate prin Setări Export."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Nu s-a putut citi acest fișier.\n\nNu este un export de Setări."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Acest .notă nu este un export de Setări\n(lipsește marcatorul Setări)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Nu s-au putut aplica setările importate."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Nu pot citi acel fișier."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Numai setările .note pot fi importate.\n\nales:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Nu se poate lansa selectorul de fișiere."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "încărcat,"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "a eșuat"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Nu s-a putut încărca SoundFont (fișierul mutat, șters sau corupt):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Încărcat"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Redare"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Pauză"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Oprire"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Repornire"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Golire"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Ecran complet"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Rotire"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Redare automată"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Pornit"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Oprit"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Card de informații"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Afișare"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Ascundere"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Urmă"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Randare"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Dimensiune pian"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Schimbă fișierul MIDI/Note"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Încarcă fișierul MIDI/Note"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Rotește tip portret"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Rotește tip peisaj"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "Bine"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Înapoi"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Setări"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Anulează"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Selectează"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Șterge"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Mută"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Gata"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Selectează tot"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Deselectează tot"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Termină"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Arată Info Card"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Arată etichete note"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Interval claviatură"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Marcaj C mijlociu"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Culoare bară"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Culoare pian"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Redare automată"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Afișează OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Setări fundal"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Afișează bara de încărcare"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Arată % la analizare"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Arată % la combinare"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Culoare încărcare"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "Culoare text %"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Animație glisantă"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Afișează dialog"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Culoare text"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Culoare fundal"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Stare detaliată"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Detaliat la analizare"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Detaliat la inițializare"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Culoare focalizare"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Fundal"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Întârziere start"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Întârziere înainte de redare în secunde (0 = Oprit)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Început"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Sfârșit"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Fără titlu"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Dezactivat"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "EROARE"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Verbos în timp ce citiți fonturi sonore"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Se analizează datele MIDI..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Îmbinarea evenimentelor..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "readHeader terminat:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "urme"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Se anulează..."
+  },
+  {
+    "$i": "language",
+    "$v": "Limbă"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Schimbarea automată a limbii"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Separator de limbă"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Audio"
+  }
+]

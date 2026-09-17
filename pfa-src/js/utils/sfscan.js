@@ -219,13 +219,15 @@ var SfScan = (function () {
     });
   }
 
-  /** st.get(path) with a timeout → File (or null). */
   function dsGet(st, path) {
     return new Promise(function (resolve) {
       var settled = false;
       var req;
       var timer = setTimeout(function () { if (!settled) { settled = true; resolve(null); } }, READ_TIMEOUT);
-      try { req = st.get(stripSlash(path)); }
+      var safePath = stripSlash(path);
+      // DeviceStorage.get expects a path relative to the mount point.
+      safePath = safePath.replace(/^(sdcard|sdcard1|internal|internal\/storage|volume)\//, '');
+      try { req = st.get(safePath); }
       catch (e) { clearTimeout(timer); settled = true; resolve(null); return; }
       req.onsuccess = function () {
         if (settled) return;

@@ -751,7 +751,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
       // Refuse so we never start scraping the shared tmp dir while another
       // conversion is writing runs there. Callers consume onDone/onError, so
       // resolve (not reject) to avoid an unhandled rejection down the chain.
-      var busy = 'A conversion is already running';
+      var busy = L10n.t('err_conversion_running', 'A conversion is already running');
       console.error('[StreamParser] ' + busy);
       if (opts.onError) opts.onError(busy || 'stream parse failed');
       return Promise.resolve();
@@ -794,7 +794,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
         // error dialog can never replace it. onCancel resets the busy flag and
         // hides the parsing pill, leaving the dialog visible.
         _converting = false;
-        if (opts.onCancel) opts.onCancel('Storage permission denied — grant SD card access to convert');
+        if (opts.onCancel) opts.onCancel(L10n.t('err_storage_denied', 'Storage permission denied - grant SD card access to convert'));
         return;
       }
       if (!stInfo || !stInfo.st) throw new Error('No writable storage');
@@ -888,7 +888,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
         .then(function () { console.log('[StreamParser] cleanTmpDir done'); return ensureDir(st, dir); })
         .then(function () { console.log('[StreamParser] ensureDir done'); return readHeader(blob); })
         .then(function (hdr) {
-          console.log('[StreamParser] readHeader done: ' + hdr.tracks.length + ' tracks');
+          console.log('[StreamParser] ' + (typeof L10n !== 'undefined' ? L10n.t('readheader_done', 'readHeader done: ') : 'readHeader done: ') + hdr.tracks.length + ' ' + (typeof L10n !== 'undefined' ? L10n.t('tracks', 'tracks') : 'tracks'));
           stage('parse');
           meta.div = hdr.div;
           // Parse progress = bytes read so far ÷ total track bytes (stream
@@ -976,7 +976,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
       if (e && e.name === 'CancelError') {
         console.log('[StreamParser] conversion cancelled — partial files cleaned');
         cleanUpSwept().then(function () {
-          if (opts.onCancel) opts.onCancel('Analysis cancelled');
+          if (opts.onCancel) opts.onCancel(L10n.t('toast_loading_cancelled', 'Analysis cancelled'));
           else if (opts.onError) opts.onError('Analysis cancelled');
         });
         return Promise.resolve();

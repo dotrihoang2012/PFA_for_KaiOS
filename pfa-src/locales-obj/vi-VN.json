@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Tùy chọn"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Chọn"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Quay lại"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Phát"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Tạm dừng"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Dừng"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Hủy"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Hoàn tất"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Tất cả"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Bỏ chọn"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Di chuyển"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "settings",
+    "$v": "Cài đặt"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Âm thanh"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Hiển thị"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Hệ thống"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Cài đặt Nhà phát triển"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Cài đặt SoundFont"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Giao diện & Màu sắc"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Tải bài MIDI/Note"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Đổi bài MIDI/Note"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Tải SoundFont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Tải thêm SoundFonts"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Hủy phân tích"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Xóa bộ nhớ"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Đầu ra âm thanh"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Động cơ âm thanh"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Dạng sóng âm"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Bỏ qua đoạn dạo chậm"
+  },
+  {
+    "$i": "speed",
+    "$v": "Tốc độ"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Vệt nốt nhạc"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Tự động phát"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Hiển thị hộp thoại"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Hiển thị OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Độ trễ bắt đầu"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Phạm vi bàn phím"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Đánh dấu nốt C3"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Hiển thị nhãn nốt"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Kích thước Piano"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Màu thanh chia"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Màu phím Piano"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Màu chọn (Focus)"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Màu tải dữ liệu"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Hiển thị thanh load"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Hiện % khi phân tích"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Hiện % khi gộp track"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Hiệu ứng trượt"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Màu chữ"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Màu nền"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Chế độ Render"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "Góc nhìn 3D"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Hiện bảng thông tin"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Toàn màn hình"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Xoay màn hình"
+  },
+  {
+    "$i": "volume",
+    "$v": "Âm lượng"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Nhập Cài Đặt"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Xuất Cài Đặt"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Tự động toàn màn hình"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Tự động xoay màn hình"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Đặt lại tất cả cài đặt"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Giới thiệu ứng dụng"
+  },
+  {
+    "$i": "developer",
+    "$v": "Nhà phát triển"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Trạng thái chi tiết"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Chi tiết khi phân tích"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Chi tiết khi khởi tạo"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Thống kê bộ nhớ"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Xuất nhật ký"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Kiểm tra lưu trữ"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Độ dài bộ đệm"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Số giọng tối đa (Polyphony)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Tắt hiệu ứng SoundFont"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Đã nạp file này"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Đang tải SoundFont"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Đang nạp module..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Đang tải"
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Đang phân tích MIDI…"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Đang gộp track…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Đang phát"
+  },
+  {
+    "$i": "paused",
+    "$v": "Tạm dừng"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Đã dừng"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Lỗi"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Không thể đọc file hoặc file đã bị di chuyển/xóa."
+  },
+  {
+    "$i": "on",
+    "$v": "Bật"
+  },
+  {
+    "$i": "off",
+    "$v": "Tắt"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Bộ tổng hợp Web Audio"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "Bộ điều khiển âm thanh KaiOS"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Tự động"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "Bộ xử lý âm thanh JS"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sine"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Vuông (Square)"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Sawtooth (Răng cưa)"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Tam giác (Triangle)"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Đầy đủ (128 phím)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 Phím"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 phím"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 phím"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 phím"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Thông minh (Tự zoom)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Nhỏ"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Vừa"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Lớn"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Chỉ nốt nhạc rơi"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Chỉ bàn phím"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Bàn phím + Nốt nhạc rơi"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS (Nốt/s)"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Tổng số nốt"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Đã qua"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Tốc độ"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Thời gian"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "Khung hình (FPS)"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Đa âm (Polyphony)"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Số nốt đang vẽ"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Bộ nhớ đệm"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Tick"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Nổi"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Viền"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Màu viền thẻ"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Vị trí"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Nền"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Màu chữ thẻ"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Trái"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Phải"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Mẫu có sẵn"
+  },
+  {
+    "$i": "general",
+    "$v": "Chung"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Thanh tải"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Hộp thoại"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Đồ họa"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Thẻ thông tin"
+  },
+  {
+    "$i": "piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "palette",
+    "$v": "Màu nốt nhạc"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Chi tiết trạng thái"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Chi tiết khi phân tích"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Chi tiết khi khởi tạo"
+  },
+  {
+    "$i": "memory",
+    "$v": "Bộ nhớ"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Xuất Log"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Kiểm tra bộ nhớ"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Lớn"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Không có"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Cài đặt hình nền"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Theo giao diện"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Xanh lam"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Trắng"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Đen"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Thống kê"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Kiểu dáng"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Nốt nhạc"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Bàn phím"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Màu sắc"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Âm thanh"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Hiệu ứng"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS: "
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC: "
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Đã qua: "
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Tốc độ: "
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS: "
+  },
+  {
+    "$i": "hud_time",
+    "$v": "TG: "
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Đa âm: "
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Đang vẽ: "
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Bộ nhớ đệm: "
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Tick"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM: "
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Đã nạp"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Đặt lại tất cả cài đặt về mặc định?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Xóa SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Bạn có chắc chắn muốn xóa?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Đã tải soundfont"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Menu Nhà Phát Triển"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Bật chế độ menu nhà phát triển?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Đã bật menu nhà phát triển trong cài đặt"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Phiên bản 1.0.1 • KaiOS 2.5 • Hỗ trợ Black MIDI • Giấy phép MIT"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "Trình diễn MIDI tối ưu cho điện thoại phổ thông thông minh (Nokia 2720 Flip, 8000 4G...). Tập trung vào pipeline render Canvas để hiển thị mượt mà các bản nhạc Black MIDI mật độ cao."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Tính Năng Chính"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "<b>Tối Ưu Black MIDI</b> - thuật toán nhẹ xử lý hàng chục ngàn nốt nhạc mà không bị sụt FPS nghiêm trọng."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "<b>Hỗ Trợ Bàn Phím Vật Lý</b> - điều hướng mượt mà qua phím D-Pad và phím số."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "<b>Tùy Chỉnh Cao</b> - hiển thị đủ 128 phím, tùy chỉnh màu sắc, tốc độ rơi nốt."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "<b>WebAudio Synthesizer</b> - synth tích hợp giảm thiểu sử dụng RAM trên thiết bị yếu."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Phím tắt"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > tua ±1s • ^ v âm lượng • OK phát/dừng"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 tốc độ +0.1x • 2 chế độ vẽ • 3 tốc độ -0.1x • 4 xoay"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 tải MIDI • 6 toàn màn hình • 7 số phím 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 xóa MIDI (giải phóng RAM) • 9 kích cỡ đàn • 0 dừng"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Gọi thẻ thông tin • * vệt -0.1 • # vệt +0.1 • Kết thúc thoát"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Tác Giả & Đóng Góp"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Phát triển bởi T.Hoang • Thành phần giao diện KaiUI"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "Hoan nghênh PR: fork -> feature branch -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Mã nguồn:<br>github.com/dotrihoang2012/PFA_for_KaiOS<br><br>Phát hành theo Giấy phép MIT."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Bị khóa cho đến khi tải file"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Bảng màu nốt nhạc"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Độ trễ bắt đầu"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Đã chọn tất cả soundfont"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Đã bỏ chọn"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Đã hủy tải"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Đang quét..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Chưa chọn mục nào"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Đang dùng bảng màu tùy chỉnh"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Hình ảnh không hợp lệ"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Trình chọn màu không khả dụng"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Không thể đọc file"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Không phải file hình ảnh"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Hình ảnh quá lớn"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Đã lưu hình nền"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Đã xóa hình nền"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Đã đạt giới hạn âm thanh"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Chế độ Canvas buffer"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Không có SoundFont để xóa"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Đã xóa"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Đã hủy di chuyển"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Đã lưu sắp xếp"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Lên/xuống để di chuyển, OK để đặt"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Chưa tải SoundFont nào"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Sẽ áp dụng vào lần mở sau"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Sẽ tắt vào lần mở sau"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Đã nhập cài đặt"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Bị khóa trong chế độ demo"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Đã đặt lại tất cả"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Không thể đặt lại lúc này"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Đặt lại thất bại"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Thiết bị không hỗ trợ xoay"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Không có API âm lượng KaiOS"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Tăng âm lượng thất bại"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Giảm âm lượng thất bại"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Hiện thanh âm lượng thất bại"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Răng cưa (Saw)"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "Soundbank"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Độ trễ âm thanh"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Bộ nhớ đệm theo mẫu (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Số nốt tối đa"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Số nốt phát cùng lúc (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Cài đặt hình nền"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Hiển thị hộp thoại"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Màu chữ"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Màu nền"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Màu phần trăm"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "API Bộ nhớ không khả dụng"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Bộ nhớ hoạt động tốt"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Đã xuất log ra "
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Thao tác thất bại"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Không có bộ nhớ để xuất log."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Chế độ vẽ"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Từng nốt nhạc"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Buffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "Góc nhìn 3D"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Màu nốt ngẫu nhiên"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Bảng màu nốt nhạc"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Tải thêm"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "SoundFonts Đã Tải"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Chưa tải SoundFont nào"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Đang quét…"
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Trình quét không khả dụng"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Không tìm thấy file soundfont (.sf2, .sf3, .dls, .sfz) trên máy"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Đang đọc dữ liệu..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Tải hình nền"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Xóa hình nền"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Xem trước"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Số lượng phím"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Đang tải: "
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Thoát toàn màn hình"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Xoay dọc"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Xoay ngang"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Tắt chế độ nhà phát triển?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Đã tắt menu nhà phát triển trong Cài đặt"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Đang khởi tạo cốt lõi ứng dụng..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Đang tải Cài đặt & Tùy chọn..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Đang khởi tạo Engine âm thanh..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Đang tải module: Soundfont"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Đang chuẩn bị bộ tiếng..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth đã sẵn sàng"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Đang khởi tạo Hiển thị & Canvas..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Sẵn sàng"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Đang giải mã mẫu âm thanh ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Đang giải mã mẫu âm thanh..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Trì hoãn trước khi phát (giây, 0 = Tắt)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Không thể tải "
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": " soundfont."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank không khả dụng"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Không thể đọc "
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Đã tải "
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Không thể xóa lúc này - tiến trình chuyển đổi đang chạy.\nHãy thử xóa lại khi hoàn tất."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Không có bộ nhớ để xóa."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Đã xóa:\n"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": " file từ bộ đệm chuyển đổi."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Xóa xong nhưng có lỗi."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Lỗi khi xóa: "
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Đã tạo màu ngẫu nhiên"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Xóa"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Đang đọc dữ liệu..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "Heap JS (dùng/tổng): "
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "Đối tượng JS: "
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "Nốt nhạc trong RAM: "
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Tên file: "
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "Log ghi pfa_tmp: "
+  },
+  {
+    "$i": "unavailable",
+    "$v": "không khả dụng"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Ứng dụng này cần truy cập thẻ SD.\n\nĐể cấp quyền:\nCài đặt -> Quyền riêng tư & Bảo mật -> Quyền ứng dụng -> PFA -> Bộ nhớ thẻ nhớ -> Cấp quyền.\n\nSau đó mở lại ứng dụng / tải lại file.\n\nNhấn OK để đóng ứng dụng."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Đang phân tích file trước đó - vui lòng chờ."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Phân tích luồng MIDI thất bại: "
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Không thể đọc file này. File có thể không phải định dạng MIDI hoặc (.note) hợp lệ."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Không thể đọc SoundFont \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". File có thể đã bị di chuyển, xóa hoặc bị hỏng."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "lỗi file, bị di chuyển hoặc đã bị xóa."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Thiếu hình nền - hãy tải lại hình nền trong Cài đặt."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Không có gì để xuất."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Một tiến trình chuyển đổi đang chạy"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Từ chối truy cập bộ nhớ - hãy cấp quyền thẻ SD để chuyển đổi"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Không tìm thấy bộ nhớ có thể ghi."
+  },
+  {
+    "$i": "error",
+    "$v": "Lỗi"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Chung"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Thanh tải dữ liệu"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Kiểu hộp thoại"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Đồ họa"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Đàn Piano"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Bảng màu"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Không rõ"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC: 0"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Đã qua: 0"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Tốc độ: 1.0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "TG: --:-- / --:--"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Đa âm: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Đang vẽ: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Bộ nhớ đệm: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tick 0"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Khôi phục cài đặt gốc"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Thoát"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 Phím"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Tùy chỉnh"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Tổng hợp nhạc (Oscillator)"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Tối"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Sáng"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Xanh lam"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Tím"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Ngẫu nhiên"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Gradient trong suốt ngẫu nhiên"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Gradient ngẫu nhiên"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Trong suốt ngẫu nhiên"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Bảng màu Synthesia 10"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Bảng màu Synthesia 9"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Bảng màu tùy chỉnh"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Tắt hiệu ứng âm thanh"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Không có bộ nhớ nào khả dụng để xuất cài đặt."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Lỗi xuất cài đặt: "
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "tất cả bộ nhớ đều không khả dụng"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Lỗi xuất cài đặt: không có bộ nhớ nào ghi được."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Đã xuất cài đặt vào:\nothers/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Xuất cài đặt bị chặn: hãy cấp quyền device-storage:sdcard rồi thử lại."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "File .note này là file MIDI nhị phân,\nkhông phải file cài đặt.\n\nChỉ nhập các file Settings được tạo từ chức năng Export Settings."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Không thể đọc file.\n\nĐây không phải là file Export Settings."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "File .note này không phải file Settings\n(thiếu dấu hiệu nhận biết)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Không thể áp dụng cài đặt đã nhập."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Không thể đọc file đó."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Chỉ chấp nhận file có đuôi .note.\n\nFile đã chọn: "
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Không thể mở trình chọn file."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "đã tải, "
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "thất bại"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Không thể tải SoundFont (file bị di chuyển, xóa, hoặc hỏng):\n"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Đã tải "
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Phát"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Tạm dừng"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Dừng"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Phát lại"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Xóa"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Toàn màn hình"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Xoay màn hình"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Tự động phát"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Bật"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Tắt"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Bảng thông tin"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Hiện"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Ẩn"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Đuôi nốt"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Chế độ vẽ"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Kích thước phím đàn"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Bỏ chọn hết"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Chọn tất cả"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Chọn"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Xong"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Xóa"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Xong"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Di chuyển"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Hủy"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Đổi file MIDI/Note"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Tải file MIDI/Note"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Xoay màn hình dọc"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Xoay ngang"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Trở lại"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Cài đặt"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Hiện bảng thông tin"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Hiện tên nốt"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Số phím đàn"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Đánh dấu nốt Đô"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Màu thanh ngang"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Màu phím đàn"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Tự động phát"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Hiện thông báo"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Cài đặt nền"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Hiện thanh tải"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Hiện % khi phân tích"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Hiện % khi gộp nốt"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Màu thanh tải"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "Màu chữ %"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Hiệu ứng trượt"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Hiện hộp thoại"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Màu chữ"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Màu nền"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Chi tiết trạng thái"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Chi tiết phân tích"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Chi tiết lúc khởi động"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Màu chọn"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Màu nền"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Độ trễ bắt đầu"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Đợi trước khi phát (giây) (0 = Tắt)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Bắt đầu"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Kết thúc"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Không tên"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Đã tắt"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "LỖI"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Hiển thị chi tiết khi tải soundfont"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Đang phân tích MIDI..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Đang trộn dữ liệu..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "Đọc header xong: "
+  },
+  {
+    "$i": "tracks",
+    "$v": "track"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Đang hủy..."
+  },
+  {
+    "$i": "language",
+    "$v": "Ngôn ngữ"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Tự động đổi ngôn ngữ"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Dải phân cách ngôn ngữ"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Âm thanh"
+  }
+]

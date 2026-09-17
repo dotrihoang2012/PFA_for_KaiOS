@@ -299,6 +299,40 @@
 
   function boot() {
     console.log('[Main] boot: DOMContentLoaded; canvas exists?', !!document.getElementById('main-canvas'));
+
+    // ── App Launch Loading Screen (init.png + log + % + progress bar) ──
+    var bootDlg = document.getElementById('app-boot-dialog');
+    var bootSubtitleEl = document.getElementById('app-boot-subtitle');
+    var bootListEl = document.getElementById('app-boot-list');
+    var bootBarEl = document.getElementById('app-boot-bar');
+    var bootPctEl = document.getElementById('app-boot-percent');
+
+    function updateBootProgress(pct, logMsg, detailLog) {
+      var val = Math.min(100, Math.max(0, Math.round(pct)));
+      if (bootBarEl) bootBarEl.style.width = val + '%';
+      if (bootPctEl) bootPctEl.textContent = val + '%';
+
+      var showLog = false;
+      try {
+        var st = (typeof Store !== 'undefined' && Store.getState) ? Store.getState() : null;
+        if (st && (st.verboseInit || st.verboseLoadLog)) showLog = true;
+      } catch (e) {}
+
+      if (bootSubtitleEl) {
+        bootSubtitleEl.textContent = logMsg || '';
+        bootSubtitleEl.style.display = (showLog && logMsg) ? 'block' : 'none';
+      }
+      if (bootListEl) {
+        bootListEl.textContent = detailLog || '';
+        bootListEl.style.display = (showLog && detailLog) ? 'block' : 'none';
+      }
+    }
+
+    if (bootDlg) {
+      bootDlg.classList.remove('hidden');
+      updateBootProgress(5, L10n.t('boot_app_core', 'Initializing App Core...'), '');
+    }
+
     // Boot-time storage log: distinguish internal vs removable SD card
     // (used by the incremental .note writer). Does not block boot.
     try { if (typeof StorageSel !== 'undefined' && StorageSel.log) StorageSel.log(); } catch (e) {}
@@ -528,125 +562,123 @@
     // Settings: load persisted values, push to Store, apply theme.
     // Order matters: Settings.load() must run BEFORE the first frame so
     // the renderer's theme-aware fillStyle picks up the right background.
+    updateBootProgress(25, L10n.t('boot_settings', 'Loading Settings & Preferences...'), '');
     try {
       if (typeof Settings !== 'undefined' && Settings.load) {
         console.log('[Main] calling Settings.load(), Settings=', typeof Settings);
         Settings.load();
-        console.log('[Main] Settings.load done; theme=', Store.getState().theme);
       }
-    } catch (e) {
-      console.error('[Main] settings.load failed', e);
-    }
+    } catch (e) { console.error('[Main] settings.load failed', e); }
 
-    // Developer → On-screen verbose status: restore the persisted toggle.
     try { pfaSetDevOsd(!!Store.getState().osdLog); } catch (e) {}
 
-    // Restore the soundfont banks registry (localStorage) at boot so the
-    // Synth → Load Soundfont list and layered playback survive restarts.
-    // Runs after Settings.load() so the persisted engine ('soundbank')
-    // is already in Store when the first notes try to play.
-    try {
-      if (typeof Soundbank !== 'undefined' && Soundbank.restore) {
-        Soundbank.restore();
-      }
-    } catch (e) { console.error('[Main] Soundbank.restore failed', e); }
+    // Soundfont restoration or module loading stage (50% -> 85%)
+    var _sfBootErrors = null;
+    var bootSfPromise = new Promise(function (resolve) {
+      updateBootProgress(50, L10n.t('boot_audio_engine', 'Initializing Audio Engine...'), '');
+      try {
+        var st = Store.getState();
+        var isAudioOn = (st && st.audio !== false);
 
-    // System → Auto Full Screen / Auto Rotate on launch (reads the Sys
-    // toggles Settings.load() just pushed into Store).
-    try {
-      if (typeof window.applySystemSettings === 'function') window.applySystemSettings();
-    } catch (e) { console.error('[Main] applySystemSettings failed', e); }
-
-    // Restore a persisted background image (survives app restarts) — must
-    // run after Settings.load() seeded Store. The render loop hides it for
-    // the demo lock exactly like bgColor. If the saved image won't load
-    // (corrupt/truncated entry) OR its source file was deleted / renamed
-    // / moved, raise a DIALOG immediately at launch and drop the broken
-    // entry so it can't silently sit there every boot.
-    try {
-      var _st0 = Store.getState();
-      if (_st0 && _st0.bgImageUrl && typeof window.pfaSetBgImage === 'function') {
-        window.pfaSetBgImage(_st0.bgImageUrl, reportBgImageMissing);
-      }
-      if (_st0 && _st0.bgImagePath && typeof checkBgImageFile === 'function') {
-        try { checkBgImageFile(_st0.bgImagePath, reportBgImageMissing); }
-        catch (eF) { console.error('[Main] bg image check failed', eF); }
-      }
-    } catch (e) { console.error('[Main] restore bgImage failed', e); }
-
-    // Softkey labels — let controls.js manage them
-    if (typeof updateSoftkeys === 'function') updateSoftkeys();
-
-    // Error dialog (single OK) keyboard/click wiring
-    bindErrorDialogControls();
-
-    // Hide/restore the parse indicator when the user opens/closes any
-    // overlay (Options, MIDI-OUT settings, Visual settings, About) while
-    // an analysis is running — the indicator only ever lives on the piano.
-    try {
-      var _ovIds = ['menu-overlay', 'settings-overlay', 'subsettings-overlay', 'about-overlay'];
-      if (typeof MutationObserver !== 'undefined') {
-        var _ovMo = new MutationObserver(function () {
-          try { _reconcileParseIndicator(); } catch (e) {}
-        });
-        for (var _ovI = 0; _ovI < _ovIds.length; _ovI++) {
-          var _ovEl = document.getElementById(_ovIds[_ovI]);
-          if (_ovEl) _ovMo.observe(_ovEl, { attributes: true, attributeFilter: ['class'] });
-        }
-      }
-    } catch (e) {}
-
-    // Start render loop
-    lastFrameTime = performance.now();
-    renderLoop(performance.now());
-
-    // Init NoteBuffer with screen dimensions
-    if (typeof NoteBuffer !== 'undefined') {
-      NoteBuffer.init(width, height);
-      NoteBuffer.ensureKeyCache(Store.getState().kbStart || 21,
-                                Store.getState().keyWidth || 16);
-    }
-    console.log('[Main] booted. Canvas ' + width + 'x' + height);
-
-    // KaiAds fullscreen integration (no-op when the SDK is unavailable:
-    // desktop browser / simulator / missing ads-sdk dependency).
-    try {
-      if (typeof KaiAds !== 'undefined' && KaiAds) {
-        KaiAds.setPauseHooks(function () {
-          var _adSt = Store.getState();
-          if (_adSt.play === 'play' && typeof Sequencer !== 'undefined' && Sequencer.pause) {
-            try { Sequencer.pause(); } catch (e) {}
-            Store.setState({ play: 'pause' });
+        if (isAudioOn && typeof Soundbank !== 'undefined' && Soundbank.restore) {
+          var entries = (typeof Soundbank.readRegistry === 'function') ? Soundbank.readRegistry() : [];
+          if (entries && entries.length > 0) {
+            updateBootProgress(50, L10n.t('boot_soundfonts', 'Loading module: Soundfonts'), L10n.t('boot_prep_banks', 'Preparing banks...'));
+            Soundbank.restore(function (sfPct, sfItemLog) {
+              var mappedPct = 50 + Math.round((sfPct / 100) * 35);
+              updateBootProgress(mappedPct, L10n.t('boot_soundfonts', 'Loading module: Soundfonts'), sfItemLog ? (L10n.t('loading_prefix', 'Loading: ') + sfItemLog) : '');
+            }).then(function (res) {
+              if (res && res.failed && res.failed.length > 0) {
+                _sfBootErrors = res.failed;
+              }
+              resolve();
+            }).catch(function () {
+              resolve();
+            });
+            return;
           }
-        }, function () {});
-        KaiAds.init();
-        window.setTimeout(function () {
-          try { if (KaiAds && KaiAds.launch) KaiAds.launch(); } catch (e) {}
-        }, 2500);
-      }
-    } catch (e) {
-      console.warn('[Main] KaiAds init failed', e);
-    }
-
-    // If MozActivity fired while we were still booting (script parse
-    // raced ahead of the DOMContentLoaded handler), flush the queued
-    // payload now that canvas + Synth are wired.
-    if (_pendingActivity) {
-      var p = _pendingActivity;
-      _pendingActivity = null;
-      _gateHotOpen(function () {
-        console.log('[Main] flushing pending activity: blob?', !!p.blob, 'name=', p.name);
-        if (p.blob) {
-          handlePickedBlob(p.blob, p.name || 'picked.mid');
-        } else if (p.filepath) {
-          fetchAndLoad(p.filepath, p.name || p.filepath.split('/').pop() || 'picked.mid');
         }
-      });
-    } else {
-      // No real file was opened this boot — play the bundled demo track
-      // (runs exactly once, ends without looping; see startDemo).
-      startDemo();
-    }
+      } catch (e) { console.error('[Main] Soundbank.restore failed', e); }
+      // Fast path if soundbanks aren't loaded: simulate brief progress step
+      setTimeout(function () {
+        updateBootProgress(75, L10n.t('boot_audio_engine', 'Initializing Audio Engine...'), L10n.t('boot_synth_ready', 'Synth ready'));
+        resolve();
+      }, 100);
+    });
+
+    bootSfPromise.then(function () {
+      try {
+        if (typeof Soundbank !== 'undefined' && Soundbank.setVoices &&
+            Store.getState() && Store.getState().sfVoices != null) {
+          Soundbank.setVoices(Store.getState().sfVoices);
+        }
+      } catch (e) {}
+
+      try {
+        if (typeof window.applySystemSettings === 'function') window.applySystemSettings();
+      } catch (e) {}
+
+      try {
+        var _st0 = Store.getState();
+        if (_st0 && _st0.bgImageUrl && typeof window.pfaSetBgImage === 'function') {
+          window.pfaSetBgImage(_st0.bgImageUrl, reportBgImageMissing);
+        }
+        if (_st0 && _st0.bgImagePath && typeof checkBgImageFile === 'function') {
+          try { checkBgImageFile(_st0.bgImagePath, reportBgImageMissing); }
+          catch (eF) {}
+        }
+      } catch (e) {}
+
+      if (typeof updateSoftkeys === 'function') updateSoftkeys();
+      bindErrorDialogControls();
+
+      updateBootProgress(90, L10n.t('boot_display', 'Initializing Display & Canvas...'), '');
+      lastFrameTime = performance.now();
+      renderLoop(performance.now());
+
+      if (typeof NoteBuffer !== 'undefined') {
+        NoteBuffer.init(width, height);
+        NoteBuffer.ensureKeyCache(Store.getState().kbStart || 21,
+                                  Store.getState().keyWidth || 16);
+      }
+
+      updateBootProgress(100, L10n.t('boot_ready', 'Ready'), '');
+
+      setTimeout(function () {
+        if (bootDlg) bootDlg.classList.add('sf-loading-fade-out');
+
+        // Wait for fade-out animation to finish completely (400ms) before starting demo
+        setTimeout(function () {
+          if (bootDlg) {
+            bootDlg.classList.add('hidden');
+            bootDlg.classList.remove('sf-loading-fade-out');
+          }
+
+          if (_sfBootErrors && _sfBootErrors.length > 0) {
+            var errList = _sfBootErrors.map(function (n) { return '• ' + n; }).join('\n');
+            var errMsgs = 'Failed to load SoundFont(s) (file moved, deleted, or corrupted):\n' + errList;
+            _sfBootErrors = null;
+            if (typeof showErrorDialog === 'function') {
+              showErrorDialog(errMsgs, null, 'Error');
+            }
+          }
+
+          if (_pendingActivity) {
+            var p = _pendingActivity;
+            _pendingActivity = null;
+            _gateHotOpen(function () {
+              if (p.blob) {
+                handlePickedBlob(p.blob, p.name || 'picked.mid');
+              } else if (p.filepath) {
+                fetchAndLoad(p.filepath, p.name || p.filepath.split('/').pop() || 'picked.mid');
+              }
+            });
+          } else {
+            startDemo();
+          }
+        }, 400);
+      }, 100);
+    });
   }
 
   // Pulled out of inline handler so boot() can call it on the queued
@@ -782,7 +814,12 @@
     var bar  = document.getElementById('parse-bar');
     var fill = document.getElementById('parse-bar-fill');
     var pctE = document.getElementById('parse-pct');
-    if (fill) fill.style.background = _loadBarColor();
+    var bootBar = document.getElementById('app-boot-bar');
+    var sfBar = document.getElementById('sf-loading-bar');
+    var color = _loadBarColor();
+    if (fill) fill.style.background = color;
+    if (bootBar) bootBar.style.background = color;
+    if (sfBar) sfBar.style.background = color;
     if (pctE) pctE.style.color = _pctColor();
     if (bar) {
       // The strip appears ONLY while a MIDI/.note file is actually being
@@ -869,7 +906,7 @@
     if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
     var textEl = document.getElementById('now-playing-text');
     if (textEl && Store.getState().showDialog !== false) {
-      _setParseText(label || 'Analyzing MIDI Data...');
+      _setParseText(label || L10n.t('analyzing_midi', 'Analyzing MIDI Data...'));
     }
     // No percentage known yet (phase just started) — hide the readout until
     // the first onProgress determinate update arrives.
@@ -945,7 +982,7 @@
     if (_cancelRequested) return;   // already unwinding
     _cancelRequested = true;
     console.log('[Main] Cancel: cancellation requested — stopping the pipeline');
-    _setParseText('Cancelling...');
+    _setParseText(L10n.t('cancelling', 'Cancelling...'));
     // Ask both engines (only the live one reacts); their onCancel clears the
     // partial tmp files and calls _setPipelineBusy(false) + hideParsing().
     try { if (window.StreamParser && StreamParser.cancel) StreamParser.cancel(); } catch (e) {}
@@ -1005,13 +1042,13 @@
       return;
     }
 
-    if (bSize >= HUGE_MIDI_BYTES && blob && typeof StreamParser !== 'undefined') {      _showParseProgress('Parsing MIDI data...', true);
+    if (bSize >= HUGE_MIDI_BYTES && blob && typeof StreamParser !== 'undefined') {      _showParseProgress(L10n.t('parsing_midi_data', 'Parsing MIDI data...'), true);
       console.log('[StreamParser] huge MIDI ' + bSize + ' bytes → stream to binary .note (no RAM play)');
       _setPipelineBusy(true);
       StreamParser.midiToNote(blob, name, {
         onStage: function (s) {
-          if (s === 'parse') { _pctStage = 'parse'; _showParseProgress('Parsing MIDI data...', true); }
-          else if (s === 'merge') { _pctStage = 'merge'; _showParseProgress('Merging events...', false); }
+          if (s === 'parse') { _pctStage = 'parse'; _showParseProgress(L10n.t('parsing_midi_data', 'Parsing MIDI data...'), true); }
+          else if (s === 'merge') { _pctStage = 'merge'; _showParseProgress(L10n.t('merging_events', 'Merging events...'), false); }
         },
         onProgress: function (pct) { _updateParseProgress(pct); },
         onDone: function (path) {
@@ -1037,7 +1074,7 @@
           _setPipelineBusy(false);
           hideParsing();
           if (typeof showErrorDialog === 'function') {
-            try { showErrorDialog('Streaming MIDI analysis failed: ' + msg); } catch (e) {}
+            try { showErrorDialog(L10n.t('err_stream_failed', 'Streaming MIDI analysis failed: ') + msg); } catch (e) {}
           }
         },
         onCancel: function (msg) {
@@ -1162,6 +1199,11 @@
     if (state.audio !== _prevAudio) {
       _prevAudio = state.audio;
       Synth.mute(!state.audio);
+      // Soundbank routes straight to the context destination, so the master
+      // Audio On/Off toggle must mute it explicitly too (SF engine).
+      if (typeof Soundbank !== 'undefined' && Soundbank.mute) {
+        try { Soundbank.mute(!state.audio); } catch (eM) {}
+      }
     }
 
     // Loading-bar presentation (Visual → Loading Bar): re-apply live when
@@ -1478,7 +1520,7 @@
     var text    = document.getElementById('now-playing-text');
     if (!overlay || !text) return;
     var name = (fileName || '').split('/').pop() || 'Unknown';
-    text.textContent = 'Now playing: ' + name;
+    text.textContent = L10n.t('now_playing', 'Now playing') + ': ' + name;
     // Fade in (CSS transition on opacity), hold 3s, then FADE OUT
     // gradually. Uses .np-hide instead of .hidden — the generic
     // .hidden is display:none !important, which kills the transition.
@@ -1508,7 +1550,7 @@
     im.onerror = function () {
       _bgImage = null;
       if (typeof onFail === 'function') onFail();
-      else if (typeof showToast === 'function') showToast('Not a valid image file');
+      else if (typeof showToast === 'function') showToast(L10n.t('toast_not_image', 'Not a valid image file'));
     };
     im.src = url;
   };
@@ -1770,7 +1812,7 @@
   // Parsing pill label: MIDI-JSON files (.json/.note) read as text show
   // "Reading Data...", raw .mid files keep "Analyzing MIDI Data...".
   function _parsingLabel(name) {
-    return _isJsonName(name) ? 'Reading Data...' : 'Analyzing MIDI Data...';
+    return _isJsonName(name) ? L10n.t('reading_data', 'Reading Data...') : L10n.t('analyzing_midi', 'Analyzing MIDI Data...');
   }
 
   /**
@@ -1788,7 +1830,7 @@
       resetLoadOnError();
       // Keep demo locked after the error (no restart) — unlock only on
       // a successful .mid/.note load via loadMIDIData -> clearDemo().
-      showErrorDialog('Could not read this file. It may not be a valid MIDI or (.note) export.');
+      showErrorDialog(L10n.t('err_cannot_read_midi', 'Could not read this file. It may not be a valid MIDI or (.note) export.'));
       return false;
     }
   }
@@ -1935,7 +1977,7 @@
     return _locateNoteFile(path)
       .then(function (file) {
         if (!file) { console.error('[NoteStream] converted .note not found: ' + path); fallback(); return; }
-        showParsing('Reading Data...');
+        showParsing(L10n.t('reading_data', 'Reading Data...'));
         return loadBinaryNoteFromFile(file, name);
       })
       .catch(function (e) {
@@ -2079,9 +2121,9 @@
     // demo's own loadMIDIData()→hideParsing() kills the analyze OSD and the
     // demo plays underneath the real conversion.
     if (_pendingActivity || _activityBusy) return;
-    fetch('demo.note')
+    fetch('js/demo.note')
       .then(function (res) {
-        if (!res.ok) throw new Error('demo.note missing (HTTP ' + res.status + ')');
+        if (!res.ok) throw new Error('js/demo.note missing (HTTP ' + res.status + ')');
         return res.text();
       })
       .then(function (txt) {
@@ -2244,7 +2286,23 @@
   function _loadSfPicked(path) {
     var sfName = path.split('/').pop();
     if (typeof Soundbank === 'undefined' || !Soundbank.loadFromFile) {
-      if (typeof window.showToast === 'function') window.showToast('Soundbank unavailable');
+      if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_sf_unavailable', 'Soundbank unavailable'));
+      return;
+    }
+
+    // Check if already loaded in Soundbank
+    var existingBanks = (typeof Soundbank.getBanks === 'function') ? Soundbank.getBanks() : [];
+    var isAlreadyLoaded = existingBanks.some(function (b) {
+      return (b.path && b.path === path) || (b.name && sfName && b.name === sfName);
+    });
+
+    if (isAlreadyLoaded) {
+      var alreadyMsg = 'already loaded ' + sfName;
+      if (typeof Settings !== 'undefined' && typeof Settings.openSfDoneDialog === 'function') {
+        Settings.openSfDoneDialog(alreadyMsg);
+      } else if (typeof window.showToast === 'function') {
+        window.showToast(alreadyMsg);
+      }
       return;
     }
     var volName = (path.indexOf('/sdcard') === 0) ? 'sdcard1' : 'internal';
@@ -2258,16 +2316,20 @@
 
     function importAB(ab) {
       if (!ab) {
-        if (typeof window.showToast === 'function') window.showToast('Failed to read ' + sfName);
+        if (typeof showErrorDialog === 'function') {
+          showErrorDialog(L10n.t('err_sf_read_corrupt', 'Failed to read SoundFont "') + sfName + L10n.t('err_sf_corrupt_suffix', '". File may be moved, deleted, or corrupted.'), null, L10n.t('error', 'Error'));
+        } else if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_sf_failed_read', 'Failed to read ') + sfName);
         return;
       }
       Soundbank.loadFromFile(sfName, path, volName, ab).then(function () {
         try { Store.setState({ engine: 'soundbank' }); } catch (e) {}
         if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
-        if (typeof window.showToast === 'function') window.showToast('Loaded ' + sfName);
+        if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_sf_loaded', 'Loaded ') + sfName);
       }, function (err) {
-        if (typeof window.showToast === 'function') {
-          window.showToast('Failed to load ' + sfName + ': ' + ((err && err.message) || 'parse error'));
+        if (typeof showErrorDialog === 'function') {
+          showErrorDialog(L10n.t('toast_sf_failed_load', 'Failed to load ') + sfName + ': ' + ((err && err.message) || L10n.t('err_sf_file_error', 'file error, moved, or deleted.')), null, L10n.t('error', 'Error'));
+        } else if (typeof window.showToast === 'function') {
+          window.showToast(L10n.t('toast_sf_failed_load', 'Failed to load ') + sfName + ': ' + ((err && err.message) || 'parse error'));
         }
       });
     }
@@ -2280,7 +2342,7 @@
       var attempt = 0;
       (function next() {
         if (attempt >= tries.length) {
-          if (typeof window.showToast === 'function') window.showToast('Failed to read ' + sfName);
+          if (typeof window.showToast === 'function') window.showToast(L10n.t('error_file_read', 'Failed to read') + ' ' + sfName);
           return;
         }
         var storageKey = tries[attempt++];
@@ -2297,10 +2359,10 @@
       xhr.responseType = 'arraybuffer';
       xhr.onload = function () {
         if (xhr.status === 200 && xhr.response) importAB(xhr.response);
-        else if (typeof window.showToast === 'function') window.showToast('Failed to read ' + sfName);
+        else if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_sf_failed_read', 'Failed to read ') + sfName);
       };
       xhr.onerror = function () {
-        if (typeof window.showToast === 'function') window.showToast('Failed to read ' + sfName);
+        if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_sf_failed_read', 'Failed to read ') + sfName);
       };
       xhr.send();
     }
@@ -2320,10 +2382,63 @@
 
   // ── KICKOFF ──
 
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    var _booted = false;
+  var _langPinned = false;   // one-shot: pin the saved manual language before boot
+  function tryBoot() {
+    if (_booted) return;
+    if (!(typeof L10n !== 'undefined' && L10n.isReady && L10n.isReady())) return;
+    // Boot in the user's pinned language, not the system one: switch first
+    // and let the resulting 'localized' drive the actual boot (avoids a flash
+    // of the wrong language). Auto change language (default) leaves the
+    // system locale untouched.
+    if (!_langPinned) {
+      _langPinned = true;
+      var want = null;
+      try {
+        if (typeof Settings !== 'undefined' && Settings.savedLanguage) want = Settings.savedLanguage();
+      } catch (eL) {}
+      var have = null;
+      try {
+        have = navigator.mozL10n && navigator.mozL10n.language &&
+               navigator.mozL10n.language.code;
+      } catch (eL2) {}
+      if (want && want !== have) {
+        var switched = false;
+        try { navigator.mozL10n.language.code = want; switched = true; } catch (eL3) {}
+        if (switched) {
+          // Safety net: boot anyway if 'localized' never arrives.
+          setTimeout(function () { if (!_booted) { _booted = true; boot(); } }, 1500);
+          return;
+        }
+      }
+    }
+    _booted = true;
     boot();
+  }
+
+  // A locale switch (manual pick, boot pin, or system change) retranslates the
+  // static DOM itself; dynamic settings rows are rebuilt through this hook.
+  window.addEventListener('localized', function () {
+    try {
+      if (typeof Settings !== 'undefined' && Settings.onLocaleChanged) Settings.onLocaleChanged();
+    } catch (e) {}
+  });
+
+  // While Auto change language is Off, a device language change must not
+  // change the app language — re-assert the pinned locale.
+  window.addEventListener('languagechange', function () {
+    try {
+      if (typeof Settings !== 'undefined' && Settings.applyLanguagePreference) {
+        Settings.applyLanguagePreference();
+      }
+    } catch (e) {}
+  });
+
+  window.addEventListener('localized', tryBoot);
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    tryBoot();
   } else {
-    document.addEventListener('DOMContentLoaded', boot);
+    document.addEventListener('DOMContentLoaded', tryBoot);
   }
 
   // ── PARSING PROGRESS ──
@@ -2333,7 +2448,7 @@
   // label: optional text; defaults to "Analyzing MIDI Data...". .note/.json
   // MIDI files show "Reading Data..." instead (see _parsingLabel).
   function showParsing(label) {
-    var msgToken = (typeof label === 'string' && label.length) ? label : 'Analyzing MIDI Data...';
+    var msgToken = (typeof label === 'string' && label.length) ? label : L10n.t('analyzing_midi', 'Analyzing MIDI Data...');
     // Developer → Verbose while analyzing: the newest pipeline log line is
     // shown UNDER the label inside the pill (suppressed when Show Dialog is
     // Off — same Visual gate as the pill itself).
@@ -2468,7 +2583,7 @@
       var c = document.getElementById('sk-center');
       var l = document.getElementById('sk-left');
       var r = document.getElementById('sk-right');
-      if (c) c.textContent = 'OK';
+      if (c) c.textContent = L10n.t('softkey-ok', 'OK');
       if (l) l.textContent = '';
       if (r) r.textContent = '';
     }
@@ -2538,7 +2653,7 @@
       _nowPlayingNotif = new Notification('PFA is running', {
         body: 'Now playing: ' + base,
         tag: 'pfa-nowplaying',
-        icon: 'icons/running.png'
+        icon: 'style/icons/running.png'
       });
       _nowPlayingNotif.onclick = function () {
         try {
@@ -2607,7 +2722,7 @@
       if (_pipelineBusy && (Date.now() - _pipelineBusyAt) < STALE_MS) {
         console.log('[Main] Clear: BLOCKED by fresh pipeline busy');
         if (typeof showDevDialog === 'function') {
-          showDevDialog('Cannot clear now — a conversion is still running.\nPress Clear again once it finishes.');
+          showDevDialog(L10n.t('dev_clear_running', 'Cannot clear now - a conversion is still running.\nPress Clear again once it finishes.'));
         }
         return;
       }
@@ -2643,7 +2758,7 @@
       console.log('[Main] Clear: getDeviceStorages returned ' + vols.length + ' volume(s)',
         vols.map(function (v) { return '' + v.storageName + '(default=' + v['default'] + ')'; }).join(' / '));
       if (!vols.length) {
-        if (typeof showDevDialog === 'function') showDevDialog('No storage available to clear.');
+        if (typeof showDevDialog === 'function') showDevDialog(L10n.t('dev_clear_no_storage', 'No storage available to clear.'));
         return;
       }
 
@@ -2661,15 +2776,15 @@ vols.forEach(function (vol) {
         try { left = (typeof Written !== 'undefined' && Written.list) ? Written.list().length : 0; } catch (e) {}
         console.log('[Main] pfa_tmp CLEAR DONE: ' + total + ' files removed; write-log now ' + left + ' path(s)');
         if (typeof showDevDialog === 'function') {
-          showDevDialog('Cleared:\n' + total + ' file(s) from the conversion cache.');
+          showDevDialog(L10n.t('dev_cleared', 'Cleared:\n') + total + L10n.t('dev_cleared_files', ' file(s) from the conversion cache.'));
         }
       }).catch(function (e3) {
         console.log('[Main] pfa_tmp clear chain error: ' + e3);
-        if (typeof showDevDialog === 'function') showDevDialog('Clear finished with errors.');
+        if (typeof showDevDialog === 'function') showDevDialog(L10n.t('dev_clear_errors', 'Clear finished with errors.'));
       });
     } catch (e) {
       console.log('[Main] Clear top-level exception: ' + e);
-      if (typeof showDevDialog === 'function') showDevDialog('Clear failed: ' + e);
+      if (typeof showDevDialog === 'function') showDevDialog(L10n.t('dev_clear_failed', 'Clear failed: ') + e);
     }
   }
 
@@ -2959,7 +3074,7 @@ vols.forEach(function (vol) {
     var vols = [];
     try { vols = (navigator.getDeviceStorages && navigator.getDeviceStorages('sdcard')) || []; }
     catch (e) {}
-    if (!vols.length) { say('No storage available to export the log.'); return; }
+    if (!vols.length) { say(L10n.t('toast_no_storage_log', 'No storage available to export the log.')); return; }
 
     var d = new Date();
     function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -3047,6 +3162,208 @@ vols.forEach(function (vol) {
 
     tryWrite();
   }
+
+  // Export the whole settings profile as a JSON .note file at
+  // others/pfa_settings_HH-MM_ddmmyyyy.note. Same wording/storage policy as
+  // the log export: removable SD first, failover across volumes, bumped
+  // filename when the destination already exists.
+  function pfaExportSettings() {
+    function say(m) { try { window.showErrorDialog(m, null, L10n.t('export_settings', 'Export Settings')); } catch (e) {} }
+    var payload = (typeof Settings !== 'undefined' && Settings.exportPayload)
+      ? Settings.exportPayload() : '';
+    if (!payload) { say(L10n.t('err_nothing_to_export', 'Nothing to export.')); return; }
+    if (typeof window.pfaStorageGranted === 'function' && !window.pfaStorageGranted()) {
+      if (typeof window.pfaGuardStorageLoad === 'function') window.pfaGuardStorageLoad(true);
+      return;
+    }
+    var vols = [];
+    try { vols = (navigator.getDeviceStorages && navigator.getDeviceStorages('sdcard')) || []; }
+    catch (e) {}
+    if (!vols.length) { say(L10n.t('err_no_storage_settings', 'No storage available to export settings.')); return; }
+
+    var d = new Date();
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    var name = 'pfa_settings_' + pad(d.getHours()) + '-' + pad(d.getMinutes()) + '_' +
+               pad(d.getDate()) + pad(d.getMonth() + 1) + d.getFullYear() + '.note';
+
+    // Removable SD ranks above internal - EXACTLY like StorageSel.select
+    // (used by the log export) so the backup lands where the user expects.
+    function rankOf(st) {
+      var n = String((st && (st.storageName || st.name)) || '').toLowerCase();
+      var p = '';
+      try { p = String(st.path || ''); } catch (e) {}
+      if (n === 'sdcard1' || n === 'sdcard2' || /ext|remov/.test(n) || /\/sdcard1\//.test(p)) return 0;
+      if (n === 'sdcard') return 1;
+      return (st && st['default']) ? 0 : 1;
+    }
+    var ordered = vols.slice().sort(function (a, b) { return rankOf(a) - rankOf(b); });
+
+    var done = false;
+    var vi = 0;        // volume index into ordered[]
+    var attempt = 0;   // filename suffix attempt on the CURRENT volume
+    var lastErr = '';
+
+    function nextVolume() {
+      if (vi + 1 < ordered.length && !done) {
+        vi++;
+        attempt = 0;
+        tryWrite();
+      } else if (!done) {
+        done = true;
+        say(L10n.t('err_export_failed', 'Settings export failed: ') + (lastErr || L10n.t('err_vols_unavail', 'all storage volumes unavailable')));
+      }
+    }
+
+    function tryWrite() {
+      if (done) return;
+      var st = ordered[vi];
+      if (!st) { done = true; say(L10n.t('err_no_writable', 'Settings export failed: no writable storage volume.')); return; }
+      var nm = (attempt === 0) ? name : name.replace(/\.note$/, '_' + attempt + '.note');
+      var req;
+      try { req = st.addNamed(new Blob([payload], { type: 'application/json;charset=utf-8' }), 'others/' + nm); }
+      catch (e) { lastErr = String(e); nextVolume(); return; }
+      var t = setTimeout(function () {
+        done = true;
+        say(L10n.t('settings_exported', 'Settings exported:\nothers/') + nm);
+      }, 500);
+      req.onsuccess = function () {
+        if (done) return;
+        done = true;
+        clearTimeout(t);
+        say(L10n.t('settings_exported', 'Settings exported:\nothers/') + nm);
+      };
+      req.onerror = function () {
+        if (done) return;
+        clearTimeout(t);
+        var en = (req.error && req.error.name) || '';
+        if (en === 'SecurityError') {
+          done = true;
+          say(L10n.t('err_export_blocked', 'Settings export blocked: allow device-storage:sdcard permission, then retry.'));
+          return;
+        }
+        lastErr = en;
+        if (en === 'NoModificationAllowedError' && attempt < 5) {
+          attempt++;
+          tryWrite();
+        } else {
+          nextVolume();
+        }
+      };
+    }
+
+    tryWrite();
+  }
+
+  // Import a settings .note (System → Import Settings). Picks through the
+  // File Manager, then VALIDATES before applying: the file must end in .note
+  // (a non-.note choice → error dialog) AND its content must be the JSON
+  // settings payload. A .note that is actually a binary MIDI export (PFA magic)
+  // or plain MIDI-JSON is refused with a dialog instead of being applied.
+  function pfaImportSettings() {
+    function say(m) { try { window.showErrorDialog(m, null, L10n.t('import_settings', 'Import Settings')); } catch (e) {} }
+    function extractBlob(res) {
+      if (!res) return null;
+      if (res.blob) return res.blob;
+      if (res.blobs && res.blobs.length) return res.blobs[0];
+      if (res.data) {
+        if (res.data.blob) return res.data.blob;
+        if (res.data.blobs && res.data.blobs.length) return res.data.blobs[0];
+      }
+      return null;
+    }
+    function extractName(res) {
+      if (!res) return '';
+      var n = res.name
+        || (res.blob && res.blob.name)
+        || (res.data && (res.data.name || (res.data.blob && res.data.blob.name)))
+        || '';
+      return String(n || '');
+    }
+    // Blob → text (prefer the modern API, fall back to FileReader).
+    function blobAsText(blob) {
+      return new Promise(function (resolve, reject) {
+        function legacy() {
+          var fr = new FileReader();
+          fr.onload = function () { resolve(String(fr.result || '')); };
+          fr.onerror = function () { reject(new Error('FileReader failed')); };
+          fr.readAsText(blob);
+        }
+        if (blob && typeof blob.text === 'function') {
+          try { blob.text().then(resolve, legacy); return; } catch (e) { legacy(); }
+        } else legacy();
+      });
+    }
+    // The first bytes of the file (to detect a PFA1/PFA2 binary .note).
+    function blobHead(blob) {
+      return new Promise(function (resolve, reject) {
+        try {
+          var fr = new FileReader();
+          fr.onload = function () {
+            try {
+              var arr = new Uint8Array(fr.result);
+              var head = [];
+              for (var i = 0; i < arr.length && i < 8; i++) head.push(arr[i]);
+              resolve(head);
+            } catch (e) { reject(new Error('head decode')); }
+          };
+          fr.onerror = function () { reject(new Error('head read')); };
+          fr.readAsArrayBuffer(blob.slice(0, 8));
+        } catch (e) { reject(e); }
+      });
+    }
+    function parseAndApply(name, blob) {
+      blobAsText(blob).then(function (text) {
+        var parsed;
+        try { parsed = JSON.parse(text); }
+        catch (e) {
+          // Not JSON — check for the PFA1/PFA2 binary header so the error
+          // message can say exactly why this .note was refused.
+          blobHead(blob).then(function (head) {
+            if (head && head.length >= 4 && head[0] === 0x50 && head[1] === 0x46) {
+              say(L10n.t('err_import_binary', 'This .note is a binary MIDI export,\nnot a Settings config.\n\nImport only Settings files exported via Export Settings.'));
+            } else {
+              say(L10n.t('err_import_bad', 'Could not read this file.\n\nIt is not a Settings export.'));
+            }
+          }, function () { say(L10n.t('err_import_bad', 'Could not read this file.\n\nIt is not a Settings export.')); });
+          return;
+        }
+        if (!parsed || typeof parsed !== 'object' ||
+            parsed.pfaSettings !== 1 || !parsed.values) {
+          say(L10n.t('err_import_no_marker', 'This .note is not a Settings export\n(missing the Settings marker).'));
+          return;
+        }
+        var ok = (typeof Settings !== 'undefined' && Settings.applyImportedSettings)
+          ? Settings.applyImportedSettings(parsed) : false;
+        if (!ok) say(L10n.t('err_import_apply', 'Could not apply the imported settings.'));
+      }, function () { say(L10n.t('err_import_read', 'Could not read this file.')); });
+    }
+    try {
+      if (window._pickImportOpen) return;
+      window._pickImportOpen = true;
+      var activity = new MozActivity({
+        name: 'pick'
+      });
+      activity.onsuccess = function () {
+        window._pickImportOpen = false;
+        var blob = extractBlob(this.result);
+        var name = extractName(this.result) || (blob && blob.name) || '';
+        if (!blob) { say(L10n.t('err_import_read', 'Cannot read that file.')); return; }
+        // "picker with filter": only .note configs may be imported. Anything
+        // else is refused BEFORE reading so no conftype gets applied by mistake.
+        if (!/\.note$/i.test(String(name).trim())) {
+          say(L10n.t('err_import_not_note', 'Only .note Settings configs can be imported.\n\nPicked: ') +
+              (name || '(no name)'));
+          return;
+        }
+        parseAndApply(name, blob);
+      };
+      activity.onerror = function () { window._pickImportOpen = false; };
+    } catch (e) {
+      window._pickImportOpen = false;
+      say(L10n.t('err_picker', 'Cannot launch the file picker.'));
+    }
+  }
+
   _devHookOnce();
 // ── Storage raw diagnostic (Developer → Storage Test) ────────────────
   // Uses DeviceStorage DIRECTLY (no probe machinery) so a hang/failure is
@@ -3173,11 +3490,13 @@ vols.forEach(function (vol) {
       'pfa_tmp write-log: ' + wl.length +
       (wl.length ? '\n' + wl.map(function (p) { return '  - ' + p; }).join('\n') : ' (empty)');
     console.log('[Dev] MEM\n' + lines);
-    say('Memory:\n' + lines.replace(/\n /g, '\n'));
+    say(L10n.t('memory', 'Memory') + ':\n' + lines.replace(/\n /g, '\n'));
   }
   window.pfaDumpMemory = pfaDumpMemory;
   window.pfaSetDevOsd = pfaSetDevOsd;
   window.pfaExportLog = pfaExportLog;
+  window.pfaExportSettings = pfaExportSettings;
+  window.pfaImportSettings = pfaImportSettings;
   window.pfaStorageSel = (typeof StorageSel !== 'undefined') ? StorageSel : null;
   window.pfaStorageDiagnose = pfaStorageDiagnose;
   window.showDevDialog = showDevDialog;

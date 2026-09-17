@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Opsionet"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Zgjidhni"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Mbrapa"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Luaj"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Ndalo"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Ndalo"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Anulo"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Përfundo"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Të gjitha"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Asnjë"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Lëvizni"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "settings",
+    "$v": "Cilësimet"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Sintetizues"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Vizuale"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Sistemi"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Cilësimet e zhvilluesit"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Cilësimet e fontit të zërit"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Tema"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Ngarko skedarin MIDI/Shënim"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Ndrysho skedarin MIDI/Shënim"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Ngarko fontin e zërit"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Ngarko më shumë"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Anulo analizën"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "E qartë"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Dalja audio"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Motori i zërit"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Forma e valës Synth"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Kapërceni hyrjen e ngadaltë"
+  },
+  {
+    "$i": "speed",
+    "$v": "Shpejtësia"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Shënim Gjurmë"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Luaj automatikisht"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Shfaq dialogun"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Shfaq OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Vonesa e nisjes"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Gama e tastierës"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Shënues C i mesëm"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Shfaq etiketat e shënimeve"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Madhësia e pianos"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Ngjyra e shiritit"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Ngjyra e pianos"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Fokusimi i ngjyrës"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Ngjyra po ngarkohet"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Shfaq shiritin e ngarkimit"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Trego % gjatë analizës"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Shfaq % gjatë bashkimit"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Animacion rrëshqitës"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Ngjyra e tekstit"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Ngjyra e sfondit"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Modaliteti i paraqitjes"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "Pamje 3D"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Shfaq kartën e informacionit"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Ekrani i plotë"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Rrotulloni ekranin"
+  },
+  {
+    "$i": "volume",
+    "$v": "Vëllimi"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Cilësimet e importit"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Cilësimet e eksportit"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Ekran i plotë automatik"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Rrotullimi automatik i ekranit"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Rivendos të gjitha cilësimet"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Rreth këtij aplikacioni"
+  },
+  {
+    "$i": "developer",
+    "$v": "Zhvilluesi"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Statusi me fjalë"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Fjala gjatë analizimit"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Fjalore ndërsa init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Statistikat e memories"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Regjistri i eksportit"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Testi i ruajtjes"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Gjatësia e tamponit"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Zëra (polifoni)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Çaktivizo Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Tashmë i ngarkuar"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Duke ngarkuar fontin e zërit"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Moduli po ngarkohet..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Po ngarkon aplikacionin..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Po analizon MIDI…"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Duke bashkuar gjurmët…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Tani duke luajtur"
+  },
+  {
+    "$i": "paused",
+    "$v": "Në pauzë"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Ndaloi"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Gabim"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Skedari nuk mund të lexohet ose skedari mungon."
+  },
+  {
+    "$i": "on",
+    "$v": "Aktiv"
+  },
+  {
+    "$i": "off",
+    "$v": "Joaktiv"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Audio në ueb"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "AudioControl (Bypass)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Auto"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (oscilator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sine"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Sheshi"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Dhëmb sharrë"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Trekëndëshi"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "E plotë (128 çelësa)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 çelësa"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 çelësa"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 çelësa"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 çelësa"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "I zgjuar (Zmadhimi automatik)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "I vogël"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "E mesme"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "I madh"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Shënim Vjeshtë"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Tastierë"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "te dyja"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Numërimi i shënimeve"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Kaloi"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Shpejtësia"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Koha"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polifonia"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Shënime të dhëna"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Buffer audio"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Shënoni"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Lundrues"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Kufiri"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Kufiri i kartës së informacionit"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Pozicioni"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Sfondi"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Teksti i kartës së informacionit"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Majtas"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "E drejta"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Paracaktimet"
+  },
+  {
+    "$i": "general",
+    "$v": "Gjeneral"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Shiriti i ngarkimit"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Dialogu"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafika"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Karta e Informacionit"
+  },
+  {
+    "$i": "piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "palette",
+    "$v": "Shënim Ngjyra"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Statusi me fjalë"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Fjala gjatë analizimit"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Fjalore ndërsa init"
+  },
+  {
+    "$i": "memory",
+    "$v": "Statistikat e memories"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Regjistri i eksportit"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Testi i ruajtjes"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "I madh"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Jo piano"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Cilësimet e sfondit"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Tema"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Blu"
+  },
+  {
+    "$i": "color_white",
+    "$v": "E bardha"
+  },
+  {
+    "$i": "color_black",
+    "$v": "E zezë"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statistikat"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Stili"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Shënime"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Tastierë"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Ngjyrat"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Zëri"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Efektet"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Kaloi:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Shpejtësia:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Koha:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polifonia:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Renderuar:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Buf audio:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Shënoni:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Ngarkuar"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Të rivendosen të gjitha cilësimet në standardet e fabrikës?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Fshi SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Dëshiron të fshish?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Shkronjat e zërit të ngarkuar"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Menyja e zhvilluesit"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Të aktivizohet modaliteti i menysë së zhvilluesit?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Menyja e zhvilluesit është aktivizuar te cilësimet"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Versioni 1.0.1 • KaiOS 2.5 • MIDI i zi i mbështetur • Licenca MIT"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "Një vizualizues MIDI i optimizuar për telefonat inteligjentë (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Fokusohet në një tubacion të optimizuar të paraqitjes së kanavacës për të shfaqur pa probleme gjurmët MIDI të zeza me densitet të lartë në pajisje të kufizuar."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Karakteristikat kryesore"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Optimizimi MIDI i zi - algoritme të lehta trajtojnë dhjetëra mijëra shënime pa rënie të rënda të FPS."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Mbështetja fizike e tastierës - navigim i qetë nëpërmjet D-Pad dhe tasteve me numra."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Shumë i personalizueshëm - ekran i plotë i pianos me 128 çelësa, ngjyra të personalizueshme të pjesës, shpejtësi të rregullueshme të rënies së notave."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Synthesizer - sintetizimi i lehtë i integruar minimizon përdorimin e RAM-it në pajisjet e nivelit të ulët."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Çelësat"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > kërko ±1s • ^ v volumi • OK luaj/pauzë"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 shpejtësi +0,1x • 2 modalitet rendimenti • 3 -0,1x shpejtësi • 4 rrotullim"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 ngarkim MIDI • 6 ekran të plotë • 7 çelësa 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 MIDI i pastër (RAM pa pagesë) • 9 madhësi piano • 0 ndalesë"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Karta e informacionit të thirrjes • * trail -0.1 • # trail +0.1 • Përfundo mbylljen e telefonatës"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Kredite dhe kontribut"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Zhvilluar nga T.Hoang • Komponentët e dizajnit KaiUI"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PR-të e mirëseardhura: fork -> dega e veçorive -> angazho -> shtytje -> Kërkesë tërheqjeje"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Kodi burimor: github.com/dotrihoang2012/PFA_for_KaiOS. Lëshuar nën licencën MIT."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Bllokuar derisa skedari të ngarkohet"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Vini re paletën e ngjyrave"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Fillo vonesën"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Të gjitha fontet zanore të zgjedhura"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Përzgjedhja u pastrua"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Po ngarkohet e anuluar"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Ende po skanohet..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Asgjë e zgjedhur"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Paleta e personalizuar aktive"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "URL e pavlefshme e imazhit"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Zgjedhësi i ngjyrave i padisponueshëm"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Skedari nuk mund të lexohet"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "_Asnjë figurë"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Fotografia është shumë e madhe!"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Sfondi u ruajt"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Sfondi u pastrua"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "U arrit kufiri i zërave"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Modaliteti buffer i kanavacës"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Nuk ka SoundFont për t 'u fshirë"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Fshirë"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Lëvizja u anulua"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Marrëveshja u ruajt"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Përdor lart/poshtë për të lëvizur, në rregull për ta vendosur"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Nuk u ngarkua asnjë font zëri"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "U aplikua në nisjen tjetër"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Çaktivizuar në nisjen tjetër"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Cilësimet u importuan"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Bllokuar gjatë demonstrimit"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Rivendos të gjitha cilësimet"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Rivendosja është e padisponueshme"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Rivendosja dështoi"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Rrotullimi nuk mbështetet"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Vëllimi: KaiOS API i padisponueshëm"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Volumi dështoi"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Vol down dështoi"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Shfaqja e volumit dështoi"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Pashë"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Gjatësia e buferit"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Tamponi i planifikimit në mostra (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Zërat"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Shënime të njëkohshme maksimale (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Cilësimet e sfondit"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Shfaq dialog"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Ngjyra e tekstit"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Ngjyra e Sfondit"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Ngjyra e përqindjes"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "API i kujtesës nuk është i disponueshëm"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Ruajtja në rregull"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Regjistri u eksportua në"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Veprimi dështoi"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Nuk ka magazinim të disponueshëm për të eksportuar regjistrin."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Modaliteti:"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Shënime individuale"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Tavolinë kanavacë"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "Pamja 3D"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Ngjyra e shënimeve të rastësishme"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Shënim Paleta e ngjyrave"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Ngarko më shumë"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Gërmat zanore të ngarkuara"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Nuk u ngarkua asnjë font zanor"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Duke kërkuar..."
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Skaneri i padisponueshëm"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Në pajisje nuk u gjetën skedarë me gërma zanore (.sf2, .sf3, .dls, .sfz)"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Të dhënat e leximit..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Ngarko sfondin"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Pastro sfondin"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Paraqitje"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Numërimi i tasteve"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Duke ngarkuar..."
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Ekran i Plotë"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Rrotullo në portret"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Rrotullo në Peizazh"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Do të çaktivizosh modalitetin e menusë së zhvill"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Menuja e zhvilluesit është çaktivizuar në cilësimet"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Fillimi i bërthamës së aplikacionit..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Duke ngarkuar cilësimet dhe preferencat..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Inicializimi i motorit audio..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Moduli i ngarkimit: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Përgatitja e bankave..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Sinkronizimi është gati"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Fillimi i shfaqjes dhe kanavacës..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Gati"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Dekodimi i mostrave ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Dekodimi i mostrave..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Vonesa para riprodhimit në sekonda (0 = Off)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Ngarkimi dështoi"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "fonti(et) e zërit."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank i padisponueshëm"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Dështoi nga hap file."
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Ngarkuar:"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Nuk mund të pastrohet tani - një konvertim është ende në proces.\nShtypni Fshi përsëri sapo të përfundojë."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Nuk ka depo të disponueshme për t 'u pastruar."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Të pastruar?"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "skedari(et) nga cache e konvertimit."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Pastro përfundoi me gabime."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Pastrimi dështoi:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Ngjyrat e rastësishme"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Fshi"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Të dhënat e leximit..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "Grumbulli JS (i përdorur/total):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "Objektet JS:"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "shënime në Ram:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Emri i filit:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp shkruaj-log:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "i/e padisponueshme"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Ky aplikacion ka nevojë për qasje në kartën SD.\n\nPër ta lejuar:\nCilësimet -> Privatësia dhe siguria -> Lejet e aplikacionit -> PFA -> Ruajtja e kartës së kujtesës -> Granti.\n\nPastaj rihapni aplikacionin / ringarkoni skedarin.\n\nOK mbyll aplikacionin."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Ende duke analizuar dosjen e mëparshme - ju lutemi prisni."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Analiza MIDI e transmetimit dështoi:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Nuk mund ta lexoja këtë skedar. Mund të mos jetë një eksport i vlefshëm MIDI ose (.note)."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Leximi i SoundFont dështoi \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". Skedari mund të zhvendoset, fshihet ose korruptohet."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "gabimi i skedarit, i zhvendosur ose i fshirë."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Imazhi i sfondit mungon - ringarkojeni në Cilësimet."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Asgjë për të eksportuar."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Konvertimi është tashmë në proces"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Leja e ruajtjes u refuzua - lejo qasjen në kartën SD për ta konvertuar"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Nuk u gjet asnjë depo e shkrueshme."
+  },
+  {
+    "$i": "error",
+    "$v": "Gabim"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Të përgjithshme"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Shiriti i ngarkimit"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Stili i dialogut"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafikë"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Paleta e ngjyrave"
+  },
+  {
+    "$i": "unknown",
+    "$v": "I/e panjohur"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NP"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC."
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Ikën."
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Shpejtësia: 1.0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Ora:"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polifoni"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Shënime të dhëna: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Zëri Buffer: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Rriqrat"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM: 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Rivendos të gjitha cilësimet"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Dalje"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 çelësa"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Specifik"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Oshilator"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Err�t"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Drit�"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Bocqi"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Vjollcë"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "E rastësishme"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Gradientë alfa të rastësishëm"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Gradientë të rastësishëm"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Rastësisht me Alfa"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Sinteza 10 Paleta"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Sinteza 9-0.8 Paleta"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "E personalizuar"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Çaktivizo efektet zanore"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Nuk ka hapësirë ruajtëse të disponueshme për të eksportuar cilësimet."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Eksportimi i cilësimeve dështoi:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "të gjitha vëllimet e magazinimit të padisponueshme"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Eksporti i cilësimeve dështoi: nuk mund të shkruhet vëllimi i magazinimit."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Cilësimet u eksportuan:\ntë tjera/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Cilësimet e eksportit u bllokuan: lejoni ruajtjen e pajisjes:lejen e kartës së kreditit, pastaj riprovoni."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Ky .note është një eksport binar MIDI,\nnuk është një konfigurim i Cilësimeve.\n\nImporto vetëm skedarët e Cilësimeve të eksportuara nëpërmjet Cilësimeve të Eksportit."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "I pamundur leximi i këtij file.\n\nNuk është një eksport i rregullimeve."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Ky .note nuk është një eksport i rregullimeve\n(Duke humbur shënuesin e rregullimeve)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "I pamundur aplikimi i rregullimeve të importuara."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "I pamundur leximi i atij file."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Vetëm rregullimet mund të importohen.\n\nZgjidh"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Nuk arrij të nis zgjedhësin e skedarëve."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "ngarkuar"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "dështoi"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Dështova në ngarkimin e SoundFonts) (file lëvizi, fshirë apo dëmtuar):\n"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Ngarkuar:"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Luaj"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Pauzë"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Ndalo"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Rinis"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Pastro"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Ekrani i plotë"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Rrotullo"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Luaj automatikisht"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Aktiv"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Joaktiv"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Karta e informacionit"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Trego"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Fshih"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Gjurmë"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "j"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Madhësia e pianos"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Ndrysho skedarin MIDI/Shënime"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Ngarko skedarin MIDI/Shënime"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Rrotullo në portret"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Rrotullo në peizazh"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "Në rregull"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Kthehu"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Cilësimet"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Anulo"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Zgjidh"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Fshi"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Lëviz"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "U bë"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Zgjidh të gjitha"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Hiq zgjedhjen për të gjitha"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Përfundo"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Shfaq kartën e informacionit"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Shfaq etiketat e shënimeve"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Gama e tastierës"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Shënuesi i C së mesme"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Ngjyra e shiritit"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Ngjyra e pianos"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Luajtja automatike"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Shfaq OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Cilësimet e sfondit"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Shfaq shiritin e ngarkimit"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Shfaq % gjatë analizës"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Shfaq % gjatë bashkimit"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Ngjyra e ngarkimit"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "Ngjyra e tekstit %"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Animacion rrëshqitës"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Shfaq dialogun"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Ngjyra e tekstit"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Ngjyra e sfondit"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Statusi i detajuar"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "I detajuar gjatë analizës"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "I detajuar gjatë nisjes"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Ngjyra e fokusit"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Sfondi"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Vonesa e fillimit"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Vonesa para luajtjes në sekonda (0 = Jo)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Fillo"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Përfundo"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "I patitulluar"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Pa zë"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "GABIM"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Thjesht gjatë leximit të shkronjave zanore"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Duke analizuar të dhënat MIDI..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Duke bashkuar ngjarjet..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "ReadHeader kryer:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "gjurmët"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Po anulohet..."
+  },
+  {
+    "$i": "language",
+    "$v": "Gjuha"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Ndryshimi automatik i gjuhës"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Ndarës gjuhësor"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Zëri"
+  }
+]

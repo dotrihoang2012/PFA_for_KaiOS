@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Valikud"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Valige"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Tagasi"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Mängi"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Paus"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Peatus"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Tühista"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Lõpeta"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Kõik"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Mitte ühtegi"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Liiguta"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "settings",
+    "$v": "Seaded"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Sünt"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Visuaalne"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Süsteem"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Arendaja seaded"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Helifondi seaded"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Teema"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "Laadige MIDI-/märkmefail"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Muutke MIDI-/noodifaili"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Laadige helifont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Laadige rohkem"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Tühista analüüs"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Selge"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Heliväljund"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Helimootor"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Süntesaatori lainekuju"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Jäta aeglane sissejuhatus vahele"
+  },
+  {
+    "$i": "speed",
+    "$v": "Kiirus"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Märkus rada"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Automaatne esitus"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Näita dialoogi"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Kuva OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Käivitamise viivitus"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Klaviatuurivahemik"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Keskmine C marker"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Kuva märkmete sildid"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Klaveri suurus"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Baari värv"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Klaveri värv"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Fookuse värv"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Värvi laadimine"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Kuva laadimisriba"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Näita analüüsimise ajal %"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Kuva % ühendamisel"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Libisev animatsioon"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Teksti värv"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Taustavärv"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Renderdusrežiim"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D-vaade"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Kuva teabekaart"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Täisekraan"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Ekraani pööramine"
+  },
+  {
+    "$i": "volume",
+    "$v": "Helitugevus"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Impordi sätted"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Ekspordi sätted"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Automaatne täisekraan"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Automaatne ekraani pööramine"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Lähtestage kõik sätted"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Teave selle rakenduse kohta"
+  },
+  {
+    "$i": "developer",
+    "$v": "Arendaja"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Paljusõnaline olek"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Paljusõnaline analüüsimise ajal"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Init-i ajal paljusõnaline"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Mälu statistika"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Ekspordi logi"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Säilitamise test"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Puhvri pikkus"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Hääled (polüfoonia)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Keela Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Juba laaditud"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Soundfonti laadimine"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Mooduli laadimine..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Rakenduse laadimine..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "MIDI analüüsimine…"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Lugude ühendamine…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Nüüd mängib"
+  },
+  {
+    "$i": "paused",
+    "$v": "Peatatud"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Peatatud"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Viga"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Faili ei saa lugeda või fail puudub."
+  },
+  {
+    "$i": "on",
+    "$v": "Sees"
+  },
+  {
+    "$i": "off",
+    "$v": "Väljas"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Veebiheli"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "Helijuhtimine (möödasõit)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Automaatne"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (ostsillaator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sine"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Ruut"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Saehammas"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Kolmnurk"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Täis (128 võtit)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 võtit"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 võtit"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 võtit"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 võtit"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Nutikas (automaatne suum)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Väike"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Keskmine"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Suur"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Märkus Sügis"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Klaviatuur"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Mõlemad"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Märkus Count"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "Läbitud"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Kiirus"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Aeg"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polüfoonia"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Renderdatud märkmed"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Helipuhver"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Puuk"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Ujuv"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Piir"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Infokaardi ääris"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "positsioon"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Taust"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Infokaardi tekst"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Vasakule"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Õige"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Eelseaded"
+  },
+  {
+    "$i": "general",
+    "$v": "Kindral"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Laadimisriba"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Dialoog"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Graafika"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Infokaart"
+  },
+  {
+    "$i": "piano",
+    "$v": "Klaver"
+  },
+  {
+    "$i": "palette",
+    "$v": "Märkus Värv"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Paljusõnaline olek"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Paljusõnaline analüüsimise ajal"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Init-i ajal paljusõnaline"
+  },
+  {
+    "$i": "memory",
+    "$v": "Mälu statistika"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Ekspordi logi"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Säilitamise test"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Suur"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Klaverit pole"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Taustaseaded"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Teema"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Sinine"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Valge"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Must"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statistika"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Stiil"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Märkmed"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Klaviatuur"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Värvid"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Heli"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Efektid"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Läbitud:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Kiirus:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Aeg:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polüfoonia:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Renderdatud:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Audio Buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Märkige:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Laaditud"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Kas lähtestada kõik seaded tehase vaikeseadetele?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Kustuta SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Kas soovite kustutada?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Laaditud helifont(id)"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Arendaja menüü"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Kas lubada arendaja menüürežiim?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Arendaja menüü on seadetes lubatud"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Versioon 1.0.1 • KaiOS 2.5 • Toetatud must MIDI • MIT-litsents"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "Nutitelefonide jaoks optimeeritud MIDI-visualisaator (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Keskendub optimeeritud lõuendi renderduskonveierile, et kuvada sujuvalt kõrge tihedusega musti MIDI lugusid piiratud riistvaras."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Põhifunktsioonid"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Must MIDI optimeerimine – kerged algoritmid käsitlevad kümneid tuhandeid noote ilma tõsiste FPS-i langusteta."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Füüsilise klahvistiku tugi – sujuv navigeerimine D-Padi ja numbriklahvide kaudu."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Väga kohandatav - täielik 128-klahviline klaveriekraan, kohandatavad palavärvid, reguleeritavad noodi langemiskiirused."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio süntesaator – sisseehitatud kerge süntesaator minimeerib RAM-i kasutust madala kvaliteediga seadmetes."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Võtmed"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > otsi ±1 s • ^ v helitugevus • OK esitus/paus"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1x kiirus • 2 renderdusrežiim • 3 -0,1x kiirus • 4 pööramine"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 laadi MIDI • 6 täisekraani • 7 klahvi 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 selge MIDI (vabastab RAM) • 9 klaveri suurus • 0 stop"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Kõneinfo kaart • * jälg -0,1 • # jälg +0,1 • Kõne lõpetamine lõpetada"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Autorid ja panus"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Arendanud T.Hoang • KaiUI disainikomponendid"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "Suhtekorraldajad teretulnud: fork -> funktsiooni haru -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Lähtekood: github.com/dotrihoang2012/PFA_for_KaiOS. Välja antud MIT-i litsentsi alusel."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Lukustatud kuni faili laadimiseni"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "värvipalett"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Viitkäivitus"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Kõik helifondid on valitud"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Valik on tühistatud"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Laadimine tühistatud"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Skannimine jätkub..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Midagi pole valitud"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Kohandatud palett on aktiivne"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Vigane pildi URL"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Värvivalija pole saadaval"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Faili% 1 lugemine nurjus."
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Pole pildifail"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Pilt on liiga suur"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Taust on salvestatud"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Taust on kustutatud"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Häälte limiit on saavutatud"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Lõuendipuhvri režiim"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Kustutatav SoundFont puudub"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Kustutatud"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Teisaldamine tühistatud"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Kokkulepe on salvestatud"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Kasutage liigutamiseks üles/alla, paigutamiseks OK"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "SoundFonti pole laaditud"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Rakendatakse järgmisel käivitamisel"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Keelatud järgmisel käivitamisel"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Seaded imporditud!"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Lukustatud demo ajal"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Seadete lähtestamine."
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Lähtestamine pole saadaval"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Lähtestamine ebaõnnestus!"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Pööramist ei toetata"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Maht: KaiOS API pole saadaval"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Vol up ebaõnnestus"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Vol Down ebaõnnestus"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Helitugevuse näitamine ebaõnnestus"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Sae"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Puhvri pikkus"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Proovide puhvri planeerimine (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Osalejad"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Maksimaalsed üheaegsed noodid (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "& VÃµta tagasi: Loo kataloog"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "NÃ€ita dialoogi"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Teksti värv"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Taustavärv"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Protsendi värv"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Mälu API pole saadaval"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Salvestamine OK"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Logi eksporditud asukohta"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Toiming ei õnnestunud."
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Logi eksportimiseks pole salvestusruumi."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Viimistlusrežiim"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Individuaalsed märkused"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Lõuendipuhver"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "Ruumiline vaade"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Juhusliku noodi värv"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "värvipalett"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Laadi veel"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Laaditud SoundFonts"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "SoundFonte pole laaditud"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Skannimine..."
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Skanner pole saadaval"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Seadmest ei leitud helifondi faile (.sf2, .sf3, .dls, .sfz)"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Faili lugemine..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Laadi taust"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Tühjenda taust"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Eelvaade"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Võtmete arv"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Laadimine"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Välju täisekraanilt"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Pööra portreeks"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Pööra rõhtpaigutusele"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Kas keelata arendaja menüürežiim?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Arendaja menüü on seadetes keelatud"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Rakenduse tuuma lähtestamine..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Seadete ja eelistuste laadimine..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Audiomootori lähtestamine..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Mooduli laadimine: helifontid"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Pankade ettevalmistamine..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Süntesaator valmis"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Kuva & lõuendi lähtestamine..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Valmis"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Proovide dekodeerimine ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Proovide dekodeerimine..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Viivitus enne taasesitust sekundites (0 = väljas)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Laadimine nurjus"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "soundfont(id)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank pole saadaval"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Andmete lugemine ebaõnnestus."
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Laadungiga"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Praegu ei saa tühjendada - konversioon on veel pooleli.\nKui see on lõppenud, vajutage uuesti nuppu Clear (Tühjenda)."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Tühjendamiseks pole salvestusruumi."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Eemaldatud"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "fail(id) konversioonide vahemälust."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Tühjenda vigadega."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Tühjendamine ebaõnnestus:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Värvid randomiseeritud"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Kustuta"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Andmete lugemine..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS-puistang (kasutatud/kokku):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS-objektid:"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "märgib RAM-is:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Failinimi:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp kirjuta-logi:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "kättesaamatu"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "See rakendus vajab juurdepääsu SD-kaardile.\n\nSelle lubamiseks tee järgmist.\nSettings -> Privacy & Security -> App Permissions -> PFA -> Memory Card Storage -> Grant.\n\nSeejärel ava rakendus uuesti/ laadi fail uuesti.\n\nOK sulgeb rakenduse."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Eelmise faili analüüsimine jätkub - palun oodake."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Voogesituse MIDI-analüüs nurjus:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Seda faili ei saanud lugeda. See ei pruugi olla kehtiv MIDI- või (.note) eksport."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "SoundFonti lugemine nurjus ”"
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". Faili võib teisaldada, kustutada või rikkuda."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "faili viga, teisaldatud või kustutatud."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Taustapilt puudub - laadi see uuesti seadetes."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Pole midagi eksportida."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Konversioon on juba käimas"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Salvestusluba keelatud - anna SD-kaardile juurdepääs teisendamiseks"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Kirjutatavat salvestusruumi ei leitud."
+  },
+  {
+    "$i": "error",
+    "$v": "Viga"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Üldteave"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Laadimisriba"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Dialoogi laad"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Graafika"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Klaver"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "värvipalett"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Teadmata"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "MV"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "Möödunud"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Kiirus: 1,0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Aeg:"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polüfoonia"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Viimistletud märkmed: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Helipuhver: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Märge"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Lähtesta kõik seaded"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Välju"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 võtit"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Kohandatud"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Võnkumine"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Tume"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Valgus"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Sinine"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Lilla"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Juhuslik"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Juhuslikud alfa-gradiendid"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Juhuslikud üleminekud"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Juhuslik koos alfaga"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 palett"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Synthesia 9-0.8 palett"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Kohandatud palett"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Keela heliefektid"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Sätete eksportimiseks pole salvestusruumi."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Seadete eksportimine nurjus:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "kõik salvestusruumid pole saadaval"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Seadete eksportimine nurjus: kirjutatavat salvestusruumi pole."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Eksporditud seaded:\nmuud/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Seadete eksport on blokeeritud: luba seadme salvestamine:SD-kaardi luba, seejärel proovi uuesti."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "See .note on binaarne MIDI-eksport,\nei ole seadete konfiguratsioon.\n\nImpordi ainult ekspordisätete kaudu eksporditud seadete failid."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Seda faili ei saanud lugeda.\n\nSee ei ole seadete eksport."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "See .note ei ole seadete eksport\n(puudub seadistusmarker)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Imporditud seadeid ei saanud rakendada."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Seda faili ei saa lugeda."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Impordida saab ainult .note 'i seadete konfiguratsioone.\n\nKomplekteeritud:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Failivalijat ei saa käivitada."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "laaditud"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "nurjus"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "SoundFonti (de) laadimine nurjus (fail teisaldatud, kustutatud või rikutud):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Laadungiga"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Mängi"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Paus"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Peata"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Taaskäivita"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Tühjenda"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Täisekraan"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Pööra"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Automaatne esitamine"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Sees"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Väljas"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Infokaart"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Näita"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Peida"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Jälg"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Esitus"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Klaveri suurus"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Muuda MIDI/Noodi faili"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "Laadi MIDI/Noodi fail"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Pööra portreeformaati"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Pööra maastikuformaati"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Tagasi"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Seaded"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Tühista"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Vali"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Kustuta"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Liiguta"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Valmis"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Vali kõik"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Tühista kõik"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Lõpeta"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Näita infokaarti"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Näita noodi silte"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Klaviatuuri ulatus"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Keskmise C märgis"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Riba värv"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Klaveri värv"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Automaatne esitus"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Näita OSD-d"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Tausta seaded"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Näita laadimisriba"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Näita % analüüsimisel"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Näita % ühendamisel"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Laadimise värv"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "% Teksti värv"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Libisev animatsioon"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Näita dialoogi"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Teksti värv"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Taustavärv"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Üksikasjalik olek"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Üksikasjalik analüüsimisel"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Üksikasjalik käivitamisel"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Fookuse värv"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Taust"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Käivitamise viivitus"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Viivitus enne taasesitust sekundites (0 = Väljas)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Algus"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Lõpp"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Pealkirjata"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Vaigistatud"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "VIGA"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Paljusõnaline helifonte lugedes"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "MIDI-andmete sõelumine..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Sündmuste ühendamine..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "read Header tehtud:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "rajad"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Tühistamine..."
+  },
+  {
+    "$i": "language",
+    "$v": "Keel"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Keele automaatne muutmine"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Keele eraldaja"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Heli"
+  }
+]

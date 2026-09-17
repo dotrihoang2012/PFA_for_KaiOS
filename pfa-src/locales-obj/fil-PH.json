@@ -1,0 +1,1742 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Mga pagpipilian"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Pumili"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Bumalik"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "Maglaro"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "I-pause"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "Tumigil ka"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Kanselahin"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Tapusin"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Lahat"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "wala"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Ilipat"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "settings",
+    "$v": "Mga setting"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Synthesizer"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Visual"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Sistema"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Mga Setting ng Developer"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Mga Setting ng Soundfont"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Tema"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "I-load ang MIDI/Note File"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "Baguhin ang MIDI/Note File"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Mag-load ng Soundfont"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Mag-load pa"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Kanselahin ang Pagsusuri"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Maaliwalas"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Output ng Tunog"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Makina ng Tunog"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Synth Waveform"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Laktawan ang Mabagal na Intro"
+  },
+  {
+    "$i": "speed",
+    "$v": "Bilis"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Tandaan Trail"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Auto-Play"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Ipakita ang Dialog"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "Ipakita ang OSD"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Simulan ang Pagkaantala"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Saklaw ng Keyboard"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "Gitnang C Marker"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Ipakita ang Mga Label ng Tala"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Laki ng Piano"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Kulay ng Bar"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Kulay ng Piano"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Kulay ng Focus"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Naglo-load ng Kulay"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Ipakita ang Loading Bar"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Ipakita ang % habang nagsusuri"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Ipakita ang % habang pinagsasama"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Animasyon ng Pag-slide"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Kulay ng Teksto"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Kulay ng Background"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Mode ng Pag-render"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D na Pagtingin"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Ipakita ang Card ng Impormasyon"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "Buong Screen"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "I-rotate ang Screen"
+  },
+  {
+    "$i": "volume",
+    "$v": "Dami"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Mga Setting ng Pag-import"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "I-export ang Mga Setting"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Full Screen"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Awtomatikong I-rotate ang Screen"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "I-reset ang Lahat ng Mga Setting"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Tungkol sa App na ito"
+  },
+  {
+    "$i": "developer",
+    "$v": "Tagalikha"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Katayuan ng Verbose"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Verbose habang nagsusuri"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Verbose habang init"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Mga Istatistika ng Memorya"
+  },
+  {
+    "$i": "export_log",
+    "$v": "I-export ang Log"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Pagsubok sa Imbakan"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Haba ng Buffer"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Mga Boses (Polyphony)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Huwag paganahin ang Soundfont FX"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Na-load na"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Nilo-load ang Soundfont"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Nilo-load ang module..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Nilo-load ang App..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "Sinusuri ang MIDI..."
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Pinagsasama-sama ang mga track..."
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Naglalaro ngayon"
+  },
+  {
+    "$i": "paused",
+    "$v": "Naka-pause"
+  },
+  {
+    "$i": "stopped",
+    "$v": "Huminto"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Error"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Hindi mabasa ang file o nawawala ang file."
+  },
+  {
+    "$i": "on",
+    "$v": "Naka-on"
+  },
+  {
+    "$i": "off",
+    "$v": "Naka-off"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Web Audio"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "AudioControl (Bypass)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Auto"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (Oscillator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sine"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Parisukat"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Ngipin ng lagari"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Tatsulok"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "Puno (128 key)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 susi"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 na susi"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 susi"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 na susi"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Matalino (Awtomatikong pag-zoom)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Maliit"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "Katamtaman"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Malaki"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Tandaan Taglagas"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Keyboard"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "pareho"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Bilang ng Tala"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "nakapasa"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Bilis"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Oras"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Poliponiya"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Mga Na-render na Tala"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Audio Buffer"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Lagyan ng tsek"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Lumulutang"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "laylayan"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Border ng Info Card"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Posisyon"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Pinagmulan"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Teksto ng Info Card"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Kaliwa"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "Tama"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Preset"
+  },
+  {
+    "$i": "general",
+    "$v": "Heneral"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Naglo-load ng Bar"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Diyalogo"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Mga graphic"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Card ng Impormasyon"
+  },
+  {
+    "$i": "piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "palette",
+    "$v": "Kulay ng Tala"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Katayuan ng Verbose"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Verbose habang nagsusuri"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Verbose habang init"
+  },
+  {
+    "$i": "memory",
+    "$v": "Mga Istatistika ng Memorya"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "I-export ang Log"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Pagsubok sa Imbakan"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Malaki"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Walang Piano"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Mga Setting ng Background"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Tema"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Asul"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Puti"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Itim"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Stats"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Estilo"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Mga Tala"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Keyboard"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Mga kulay"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Audio"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Mga epekto"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "Nakapasa:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Bilis:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Oras:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polyphony:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Na-render:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Audio Buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "lagyan ng tsek:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Na-load"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "I-reset ang lahat ng setting sa mga factory default?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "Tanggalin ang SoundFont"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Gusto mo bang tanggalin?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Nag-load ng (mga) soundfont"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Menu ng Developer"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Paganahin ang mode ng menu ng developer?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Pinagana ang menu ng developer sa mga setting"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Bersyon 1.0.1 • KaiOS 2.5 �� Black MIDI suportado • MIT License"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "Isang MIDI visualizer na na-optimize para sa mga smart feature phone (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Nakatuon sa isang na-optimize na pipeline ng pag-render ng Canvas upang maayos na maipakita ang mga high-density na Black MIDI na track sa limitadong hardware."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Mga Pangunahing Tampok"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Black MIDI Optimization - ang mga magaan na algorithm ay humahawak ng libu-libong mga tala nang walang malubhang pagbaba ng FPS."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Suporta sa Pisikal na Keypad - maayos na nabigasyon sa pamamagitan ng D-Pad at mga number key."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Lubos na Nako-customize - buong 128-key na piano display, nako-customize na mga kulay ng track, adjustable na bilis ng pagbagsak ng tala."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Synthesizer - pinapaliit ng built-in na lightweight synth ang paggamit ng RAM sa mga low-end na device."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Mga susi"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > humanap ng ±1s • ^ v volume • OK play/pause"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0.1x na bilis • 2 render mode • 3 -0.1x na bilis • 4 na pag-ikot"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 load MIDI • 6 fullscreen • 7 key 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 malinaw na MIDI (nagpapalaya ng RAM) • 9 na laki ng piano • 0 stop"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Card ng impormasyon ng tawag • * trail -0.1 • # trail +0.1 • End call quit"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Mga Kredito at Pag-aambag"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "Binuo ng T.Hoang • mga bahagi ng disenyo ng KaiUI"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "Malugod na tinatanggap ang mga PR: fork -> feature branch -> commit -> push -> Pull Request"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Source code: github.com/dotrihoang2012/PFA_for_KaiOS. Inilabas sa ilalim ng Lisensya ng MIT."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Naka-lock hanggang sa mag-load ang file"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Tandaan ang paleta ng kulay"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Pagkaantala ng Pagsisimula"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Napili ang lahat ng soundfont"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Na-clear na ang napili"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Kinansela ang paglo-load"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Ini-scan pa rin..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Walang napili"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Aktibo ang pasadyang palette"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Hindi valid ang pag-crop sa larawan"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Hindi magagamit ang tagapili ng kulay"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Hindi mabasa ang file"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Hindi isang file ng imahe"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Masyadong malaki ang larawan"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Na-save ang background"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Na-clear na ang background"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Naabot na ang limitasyon sa mga boses"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Mode ng buffer ng canvas"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "Walang SoundFont na mabubura"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Na-delete"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "Mga SoundFont"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Nakansela ang paglipat"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Na-save ang kaayusan"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Gamitin pataas/pababa para gumalaw, OK para ilagay"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Walang naka-load na SoundFont"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Ilalapat sa susunod na paglulunsad"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Hindi pinagana sa susunod na paglulunsad"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Na-import na ang mga setting"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Naka-lock habang nagde-demo"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Nire-reset ang lahat ng setting"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Hindi magagamit ang pag-reset"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Nabigo ang pag-reset"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Hindi sinusuportahan ang pag-ikot"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Dami: Hindi magagamit ang KaiOS API"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Nabigo ang pag-volume up"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Nabigo ang pagbaba ng volume"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Nabigo ang pagpapakita ng volume"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Nakita"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Haba ng buffer"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Pagpaplano ng buffer sa mga sample (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Mga Boses"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Pinakamataas na sabay-sabay na mga nota (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Mga Setting ng Background"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Ipakita ang Dialog"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Kulay ng Teksto"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "color-pick-mode"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Kulay ng Porsyento"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Hindi magagamit ang Memory API"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Maayos ang imbakan"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Na-export ang log sa"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Nabigo ang Pagkilos"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Walang magagamit na storage para ma-export ang log."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Mode ng Pag-render"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Mga Indibidwal na Tala"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Canvas Buffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D na Pagtingin"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Kulay ng Random na Tala"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Paleta ng Kulay ng Tala"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Mag-load Pa"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Mga Naka-load na SoundFonts"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Walang Naka-load na SoundFonts"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Nagii-scan ..."
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Hindi magagamit ang scanner"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Walang nakitang soundfont file (.sf2, .sf3, .dls, .sfz) sa device"
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Binabasa ang file..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "I-load ang Background"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "I-clear ang Background"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "I-preview"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Bilang ng Susi"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Naglo-load"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Lumabas sa full screen"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "I-rotate Patungong Portrait"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "I-rotate Patungo sa Landscape"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "I-disable ang menu mode ng developer?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Hindi pinagana ang menu ng developer sa mga setting"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Sinisimulan ang App Core..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Naglo-load ng Mga Setting at Kagustuhan..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Sinisimulan ang Audio Engine..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Naglo-load na modyul: Mga Soundfont"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Inihahanda ang mga bangko..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Handa na ang synth"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Sinisimulan ang Display at Canvas..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "handa na"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "Mga sample na nagde-decode ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Pag-decode ng mga sample..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "Pagkaantala bago ang pag-playback sa ilang segundo (0 = Naka-off)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Hindi nag-load."
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "mga font ng tunog."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Hindi magagamit ang Soundbank"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "Hindi nabasa"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Ibinaba"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Hindi ma-clear ngayon - may conversion pa ring tumatakbo.&#10; Pindutin muli ang I-clear kapag natapos na ito."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Walang storage na maaaring linisin."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Ubos na!"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "file(s) mula sa conversion cache."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "I-clear at tapos nang may mga error."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Nabigo ang pag-clear:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Mga Kulay na Randomized"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Tanggalin"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Nagbabasa ng Data..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS bunton (ginamit/kabuuan):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "Mga bagay na JS:"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "mga tala sa RAM:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Filename:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "talaan ng pagsulat ng pfa_tmp:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "Unavailable"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Kailangan ng app na ito ng access sa SD card.&#10;&#10; Para payagan ito:&#10; Mga Setting -&gt; Privacy at Seguridad -&gt; Mga Pahintulot ng App -&gt; PFA -&gt; Imbakan ng Memory Card -&gt; Pagbibigay.&#10;&#10; Pagkatapos ay buksan muli ang app / i-reload ang file.&#10;&#10; Isinasara ng OK ang app."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Sinusuri pa rin ang nakaraang file - mangyaring maghintay."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Nabigo ang pagsusuri ng streaming MIDI:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Hindi mabasa ang file na ito. Maaaring hindi ito isang wastong MIDI o (.note) export."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "Nabigong basahin ang SoundFont &quot;"
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "&quot;. Maaaring ilipat, mabura, o masira ang file."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "error sa file, inilipat, o nabura."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Kulang ang larawan sa background - i-reload ito sa Mga Setting."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Walang mai-export."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "May conversion na tumatakbo na"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Tinanggihan ang pahintulot sa storage - bigyan ng access ang SD card para mag-convert"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Walang natagpuang imbakan na maaaring isulat."
+  },
+  {
+    "$i": "error",
+    "$v": "Error"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "Pangkalahatan"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Bar na Naglo-load"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Estilo ng Diyalogo"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Mga graphic"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "Piano"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Paleta ng Kulay"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Di-kilala"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS: 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC: 0"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "pasado"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Bilis: 1.0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS: 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Oras:"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Poliponya: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Mga Talang Naibigay: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Buffer ng Audio: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tick"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM: 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "I-reset ang Lahat ng Setting"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "Lumabas"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 Susi"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "dash-preset"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Osileytor"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "Madilim"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "Liwanag"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "Asul"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Purpura"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Random"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Mga Random na Alpha Gradient"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Mga Random na Gradient"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Random na may Alpha"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesis 10 Palette"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Paleta ng Synthesia 9-0.8"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "align-reference-type"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Huwag paganahin ang mga sound effect"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Walang available na storage para sa mga setting ng pag-export."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Nabigo ang pag-export ng mga setting:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "hindi magagamit ang lahat ng volume ng storage"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Nabigo ang pag-export ng mga setting: walang nasusulat na dami ng storage."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Mga setting na na-export:&#10; iba pa/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Na-block ang pag-export ng mga setting: payagan ang pahintulot na device-storage:sdcard, pagkatapos ay subukan muli."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Ang .note na ito ay isang binary MIDI export,&#10; hindi isang config ng Mga Setting.&#10;&#10; I-import lamang ang mga file ng Setting na na-export sa pamamagitan ng Export Settings."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Hindi mabasa ang file na ito.&#10;&#10; Hindi ito isang pag-export ng Mga Setting."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Ang .note na ito ay hindi isang pag-export ng Mga Setting&#10; (kulang ang pananda ng Mga Setting)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Hindi mailapat ang mga na-import na setting."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Hindi mabasa ang file na iyan."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Tanging ang mga config ng Setting ng .note ang maaaring i-import.&#10;&#10; Pinili:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Hindi mailunsad ang file picker."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "Ibinaba"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "ay sawi."
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "Nabigong i-load ang SoundFont(s) (nailipat, nabura, o nasira ang file):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Ibinaba"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "I-play"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "I-pause"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Ihinto"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "I-restart"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "I-clear"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Fullscreen"
+  },
+  {
+    "$i": "rotate",
+    "$v": "I-rotate"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Auto Play"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Naka-on"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Naka-off"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Card ng Impormasyon"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Ipakita"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Itago"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Trail"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "I-render"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Laki ng Piano"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "Palitan ang MIDI/Note File"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "I-load ang MIDI/Note File"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "I-rotate sa Portrait"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "I-rotate sa Landscape"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "OK"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Bumalik"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Mga Setting"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Kanselahin"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Piliin"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Tangal"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Ilipat"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Tapos na"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Piliin Lahat"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Alisin ang Pagkapili"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Tapusin"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Ipakita ang Info Card"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Ipakita ang Note Labels"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Saklaw ng Keyboard"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Gitnang C Marker"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Kulay ng Bar"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Kulay ng Piano"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Auto Play"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "Ipakita ang OSD"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Mga Setting ng Background"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Ipakita ang Loading Bar"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Ipakita ang % habang sinusuri"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Ipakita ang % habang pinagsasama"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Kulay ng Loading"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "% Kulay ng Teksto"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Sliding Animation"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Ipakita ang Dialog"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Kulay ng Teksto"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Kulay ng Background"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Verbose Status"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Verbose habang sinusuri"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Verbose habang nagsisimula"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Kulay ng Focus"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Background"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Simulan ang Pagkaantala"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Pagkaantala bago ang playback sa segundo (0 = Off)"
+  },
+  {
+    "$i": "auto Rotate",
+    "$v": "Auto Rotate"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Simula"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Wakas"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Walang pamagat"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Naka-mute"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "ERROR"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Verbose habang nagbabasa ng mga soundfont"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "Pinag-parse ang MIDI data..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Pinagsasama-sama ang mga kaganapan..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "readHeader tapos na:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "mga track"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Kinakansela..."
+  },
+  {
+    "$i": "language",
+    "$v": "Wika"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Awtomatikong palitan ang wika"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Separator ng wika"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Audio"
+  }
+]

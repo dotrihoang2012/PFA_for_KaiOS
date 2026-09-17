@@ -1,0 +1,1738 @@
+[
+  {
+    "$i": "softkey-options",
+    "$v": "Variantlar"
+  },
+  {
+    "$i": "softkey-select",
+    "$v": "Tanlang"
+  },
+  {
+    "$i": "softkey-back",
+    "$v": "Orqaga"
+  },
+  {
+    "$i": "softkey-play",
+    "$v": "O'ynang"
+  },
+  {
+    "$i": "softkey-pause",
+    "$v": "Pauza"
+  },
+  {
+    "$i": "softkey-stop",
+    "$v": "To'xtang"
+  },
+  {
+    "$i": "softkey-cancel",
+    "$v": "Bekor qilish"
+  },
+  {
+    "$i": "softkey-finish",
+    "$v": "Tugatish"
+  },
+  {
+    "$i": "softkey-all",
+    "$v": "Hammasi"
+  },
+  {
+    "$i": "softkey-none",
+    "$v": "Yo'q"
+  },
+  {
+    "$i": "softkey-move",
+    "$v": "Ko'chirish"
+  },
+  {
+    "$i": "softkey-ok",
+    "$v": "KELISHDIKMI"
+  },
+  {
+    "$i": "settings",
+    "$v": "Sozlamalar"
+  },
+  {
+    "$i": "synth_settings",
+    "$v": "Sintezator"
+  },
+  {
+    "$i": "visual_settings",
+    "$v": "Vizual"
+  },
+  {
+    "$i": "system_settings",
+    "$v": "Tizim"
+  },
+  {
+    "$i": "developer_settings",
+    "$v": "Dasturchi sozlamalari"
+  },
+  {
+    "$i": "soundfont_settings",
+    "$v": "Soundfont sozlamalari"
+  },
+  {
+    "$i": "theme_settings",
+    "$v": "Mavzu"
+  },
+  {
+    "$i": "load_midi_file",
+    "$v": "MIDI/Eslatma faylini yuklang"
+  },
+  {
+    "$i": "change_midi_file",
+    "$v": "MIDI/Eslatma faylini o'zgartiring"
+  },
+  {
+    "$i": "load_soundfont",
+    "$v": "Soundfont dasturini yuklab oling"
+  },
+  {
+    "$i": "load_more_soundfont",
+    "$v": "Ko'proq yuklash"
+  },
+  {
+    "$i": "cancel_analysis",
+    "$v": "Tahlilni bekor qilish"
+  },
+  {
+    "$i": "clear_midi",
+    "$v": "Toza"
+  },
+  {
+    "$i": "audio_output",
+    "$v": "Ovoz chiqishi"
+  },
+  {
+    "$i": "sound_engine",
+    "$v": "Ovoz mexanizmi"
+  },
+  {
+    "$i": "synth_waveform",
+    "$v": "Sintetik to'lqin shakli"
+  },
+  {
+    "$i": "skip_slow_intro",
+    "$v": "Sekin kirishni o'tkazib yuboring"
+  },
+  {
+    "$i": "speed",
+    "$v": "Tezlik"
+  },
+  {
+    "$i": "note_trail",
+    "$v": "Eslatma Trail"
+  },
+  {
+    "$i": "auto_play",
+    "$v": "Avtomatik ijro"
+  },
+  {
+    "$i": "show_dialog",
+    "$v": "Dialogni ko'rsatish"
+  },
+  {
+    "$i": "show_osd",
+    "$v": "OSD-ni ko'rsatish"
+  },
+  {
+    "$i": "start_delay",
+    "$v": "Kechikishni boshlash"
+  },
+  {
+    "$i": "keyboard_range",
+    "$v": "Klaviatura diapazoni"
+  },
+  {
+    "$i": "middle_c_marker",
+    "$v": "O'rta C belgisi"
+  },
+  {
+    "$i": "show_note_labels",
+    "$v": "Eslatma yorliqlarini ko'rsatish"
+  },
+  {
+    "$i": "piano_size",
+    "$v": "Pianino hajmi"
+  },
+  {
+    "$i": "bar_color",
+    "$v": "Bar rangi"
+  },
+  {
+    "$i": "piano_color",
+    "$v": "Pianino rangi"
+  },
+  {
+    "$i": "focus_color",
+    "$v": "Fokus rangi"
+  },
+  {
+    "$i": "loading_color",
+    "$v": "Rang yuklanmoqda"
+  },
+  {
+    "$i": "show_loading_bar",
+    "$v": "Yuklash panelini ko'rsatish"
+  },
+  {
+    "$i": "show_pct_analyzing",
+    "$v": "Tahlil qilishda % ni ko'rsatish"
+  },
+  {
+    "$i": "show_pct_merging",
+    "$v": "Birlashayotganda % koʻrsating"
+  },
+  {
+    "$i": "sliding_animation",
+    "$v": "Slayd animatsiyasi"
+  },
+  {
+    "$i": "text_color",
+    "$v": "Matn rangi"
+  },
+  {
+    "$i": "background_color",
+    "$v": "Fon rangi"
+  },
+  {
+    "$i": "render_mode",
+    "$v": "Render rejimi"
+  },
+  {
+    "$i": "view_3d",
+    "$v": "3D ko‘rish"
+  },
+  {
+    "$i": "show_info_card",
+    "$v": "Ma'lumot kartasini ko'rsatish"
+  },
+  {
+    "$i": "full_screen",
+    "$v": "To'liq ekran"
+  },
+  {
+    "$i": "rotate_screen",
+    "$v": "Ekranni aylantirish"
+  },
+  {
+    "$i": "volume",
+    "$v": "Ovoz balandligi"
+  },
+  {
+    "$i": "import_settings",
+    "$v": "Import sozlamalari"
+  },
+  {
+    "$i": "export_settings",
+    "$v": "Eksport sozlamalari"
+  },
+  {
+    "$i": "auto_fullscreen",
+    "$v": "Avtomatik to'liq ekran"
+  },
+  {
+    "$i": "auto_rotate",
+    "$v": "Ekranni avtomatik aylantirish"
+  },
+  {
+    "$i": "reset_all_settings",
+    "$v": "Barcha sozlamalarni tiklash"
+  },
+  {
+    "$i": "about_this_app",
+    "$v": "Ushbu ilova haqida"
+  },
+  {
+    "$i": "developer",
+    "$v": "Dasturchi"
+  },
+  {
+    "$i": "verbose_status",
+    "$v": "Batafsil holat"
+  },
+  {
+    "$i": "verbose_while_analyzing",
+    "$v": "Tahlil qilishda batafsil"
+  },
+  {
+    "$i": "verbose_while_init",
+    "$v": "Boshlash paytida batafsil"
+  },
+  {
+    "$i": "memory_stats",
+    "$v": "Xotira statistikasi"
+  },
+  {
+    "$i": "export_log",
+    "$v": "Eksport jurnali"
+  },
+  {
+    "$i": "storage_test",
+    "$v": "Saqlash sinovi"
+  },
+  {
+    "$i": "soundfont_buffer",
+    "$v": "Bufer uzunligi"
+  },
+  {
+    "$i": "soundfont_voices",
+    "$v": "Ovozlar (polifoniya)"
+  },
+  {
+    "$i": "disable_soundfont_fx",
+    "$v": "Soundfont FX-ni o'chirib qo'ying"
+  },
+  {
+    "$i": "already_loaded",
+    "$v": "Allaqachon yuklangan"
+  },
+  {
+    "$i": "loading_soundfont",
+    "$v": "Soundfont yuklanmoqda"
+  },
+  {
+    "$i": "loading_module",
+    "$v": "Modul yuklanmoqda..."
+  },
+  {
+    "$i": "loading_app",
+    "$v": "Ilova yuklanmoqda..."
+  },
+  {
+    "$i": "analyzing_midi",
+    "$v": "MIDI tahlil qilinmoqda…"
+  },
+  {
+    "$i": "merging_tracks",
+    "$v": "Treklar birlashtirilmoqda…"
+  },
+  {
+    "$i": "now_playing",
+    "$v": "Hozir oʻynayapti"
+  },
+  {
+    "$i": "paused",
+    "$v": "Pauza qilingan"
+  },
+  {
+    "$i": "stopped",
+    "$v": "To'xtatildi"
+  },
+  {
+    "$i": "error_dialog_title",
+    "$v": "Xato"
+  },
+  {
+    "$i": "error_file_read",
+    "$v": "Faylni oʻqib boʻlmadi yoki fayl yoʻq."
+  },
+  {
+    "$i": "on",
+    "$v": "Yoniq"
+  },
+  {
+    "$i": "off",
+    "$v": "Oʻchirilgan"
+  },
+  {
+    "$i": "opt_web-audio",
+    "$v": "Veb-audio"
+  },
+  {
+    "$i": "opt_audiocontrol",
+    "$v": "AudioControl (bypass)"
+  },
+  {
+    "$i": "opt_auto",
+    "$v": "Avtomatik"
+  },
+  {
+    "$i": "opt_js-synth",
+    "$v": "JS Synth (Osilator)"
+  },
+  {
+    "$i": "opt_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "opt_sine",
+    "$v": "Sinus"
+  },
+  {
+    "$i": "opt_square",
+    "$v": "Kvadrat"
+  },
+  {
+    "$i": "opt_sawtooth",
+    "$v": "Arra tishi"
+  },
+  {
+    "$i": "opt_triangle",
+    "$v": "Uchburchak"
+  },
+  {
+    "$i": "opt_full",
+    "$v": "To'liq (128 tugma)"
+  },
+  {
+    "$i": "opt_88",
+    "$v": "88 kalit"
+  },
+  {
+    "$i": "opt_76",
+    "$v": "76 kalit"
+  },
+  {
+    "$i": "opt_61",
+    "$v": "61 kalit"
+  },
+  {
+    "$i": "opt_49",
+    "$v": "49 ta kalit"
+  },
+  {
+    "$i": "opt_smart",
+    "$v": "Smart (Avtomatik masshtablash)"
+  },
+  {
+    "$i": "opt_small",
+    "$v": "Kichik"
+  },
+  {
+    "$i": "opt_medium",
+    "$v": "O'rta"
+  },
+  {
+    "$i": "opt_large",
+    "$v": "Katta"
+  },
+  {
+    "$i": "opt_2d",
+    "$v": "2D"
+  },
+  {
+    "$i": "opt_3d",
+    "$v": "3D"
+  },
+  {
+    "$i": "opt_notefall",
+    "$v": "Eslatma Kuz"
+  },
+  {
+    "$i": "opt_keyboard",
+    "$v": "Klaviatura"
+  },
+  {
+    "$i": "opt_both",
+    "$v": "Ikkalasi ham"
+  },
+  {
+    "$i": "infoNps",
+    "$v": "NPS"
+  },
+  {
+    "$i": "infoNoteCount",
+    "$v": "Eslatmalar soni"
+  },
+  {
+    "$i": "infoPassed",
+    "$v": "O'tdi"
+  },
+  {
+    "$i": "infoSpeed",
+    "$v": "Tezlik"
+  },
+  {
+    "$i": "infoTime",
+    "$v": "Vaqt"
+  },
+  {
+    "$i": "infoFps",
+    "$v": "FPS"
+  },
+  {
+    "$i": "infoPolyphony",
+    "$v": "Polifoniya"
+  },
+  {
+    "$i": "infoRendered",
+    "$v": "Renderlangan eslatmalar"
+  },
+  {
+    "$i": "infoAudioBuffer",
+    "$v": "Audio bufer"
+  },
+  {
+    "$i": "infoTick",
+    "$v": "Shomil"
+  },
+  {
+    "$i": "infoBpm",
+    "$v": "BPM"
+  },
+  {
+    "$i": "infoFloating",
+    "$v": "Suzuvchi"
+  },
+  {
+    "$i": "infoBorder",
+    "$v": "Chegara"
+  },
+  {
+    "$i": "infoBorderColor",
+    "$v": "Ma'lumot kartasi chegarasi"
+  },
+  {
+    "$i": "infoPos",
+    "$v": "Lavozim"
+  },
+  {
+    "$i": "infoBgColor",
+    "$v": "Fon"
+  },
+  {
+    "$i": "infoTextColor",
+    "$v": "Ma'lumot kartasi matni"
+  },
+  {
+    "$i": "opt_left",
+    "$v": "Chapga"
+  },
+  {
+    "$i": "opt_right",
+    "$v": "To'g'ri"
+  },
+  {
+    "$i": "kbRange",
+    "$v": "Oldindan sozlash"
+  },
+  {
+    "$i": "general",
+    "$v": "General"
+  },
+  {
+    "$i": "loadingBar",
+    "$v": "Yuklash paneli"
+  },
+  {
+    "$i": "dialog",
+    "$v": "Dialog"
+  },
+  {
+    "$i": "graphics",
+    "$v": "Grafika"
+  },
+  {
+    "$i": "infoCard",
+    "$v": "Ma'lumot kartasi"
+  },
+  {
+    "$i": "piano",
+    "$v": "Pianino"
+  },
+  {
+    "$i": "palette",
+    "$v": "Eslatma rangi"
+  },
+  {
+    "$i": "osdLog",
+    "$v": "Batafsil holat"
+  },
+  {
+    "$i": "verboseAnalyze",
+    "$v": "Tahlil qilishda batafsil"
+  },
+  {
+    "$i": "verboseInit",
+    "$v": "Boshlash paytida batafsil"
+  },
+  {
+    "$i": "memory",
+    "$v": "Xotira statistikasi"
+  },
+  {
+    "$i": "exportLog",
+    "$v": "Eksport jurnali"
+  },
+  {
+    "$i": "storageTest",
+    "$v": "Saqlash sinovi"
+  },
+  {
+    "$i": "opt_big",
+    "$v": "Katta"
+  },
+  {
+    "$i": "opt_none",
+    "$v": "Pianino yo'q"
+  },
+  {
+    "$i": "bgSettings",
+    "$v": "Fon sozlamalari"
+  },
+  {
+    "$i": "color_theme",
+    "$v": "Mavzu"
+  },
+  {
+    "$i": "color_blue",
+    "$v": "Moviy"
+  },
+  {
+    "$i": "color_white",
+    "$v": "Oq"
+  },
+  {
+    "$i": "color_black",
+    "$v": "Qora"
+  },
+  {
+    "$i": "sep_stats",
+    "$v": "Statistika"
+  },
+  {
+    "$i": "sep_style",
+    "$v": "Uslub"
+  },
+  {
+    "$i": "sep_notes",
+    "$v": "Eslatmalar"
+  },
+  {
+    "$i": "sep_keyboard",
+    "$v": "Klaviatura"
+  },
+  {
+    "$i": "sep_colors",
+    "$v": "Ranglar"
+  },
+  {
+    "$i": "sep_soundfont",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sep_audio",
+    "$v": "Audio"
+  },
+  {
+    "$i": "sep_effects",
+    "$v": "Effektlar"
+  },
+  {
+    "$i": "hud_nps",
+    "$v": "NPS:"
+  },
+  {
+    "$i": "hud_nc",
+    "$v": "NC:"
+  },
+  {
+    "$i": "hud_passed",
+    "$v": "O'tdi:"
+  },
+  {
+    "$i": "hud_speed",
+    "$v": "Tezlik:"
+  },
+  {
+    "$i": "hud_fps",
+    "$v": "FPS:"
+  },
+  {
+    "$i": "hud_time",
+    "$v": "Vaqt:"
+  },
+  {
+    "$i": "hud_polyphony",
+    "$v": "Polifoniya:"
+  },
+  {
+    "$i": "hud_rendered",
+    "$v": "Ko'rsatilgan:"
+  },
+  {
+    "$i": "hud_audio_buffer",
+    "$v": "Audio buf:"
+  },
+  {
+    "$i": "hud_tick",
+    "$v": "Belgilash:"
+  },
+  {
+    "$i": "hud_bpm",
+    "$v": "BPM:"
+  },
+  {
+    "$i": "loaded_sf",
+    "$v": "Yuklangan"
+  },
+  {
+    "$i": "reset_confirm",
+    "$v": "Barcha sozlamalar zavod sozlamalariga qaytarilsinmi?"
+  },
+  {
+    "$i": "delete_soundfont",
+    "$v": "SoundFont-ni o'chirish"
+  },
+  {
+    "$i": "confirm_delete",
+    "$v": "Oʻchirib tashlamoqchimisiz?"
+  },
+  {
+    "$i": "loaded_sf_msg",
+    "$v": "Yuklangan font(lar)"
+  },
+  {
+    "$i": "developer_menu",
+    "$v": "Dasturchi menyusi"
+  },
+  {
+    "$i": "enable_dev_menu",
+    "$v": "Dasturchi menyusi rejimi yoqilsinmi?"
+  },
+  {
+    "$i": "dev_menu_enabled",
+    "$v": "Sozlamalarda dasturchi menyusi yoqilgan"
+  },
+  {
+    "$i": "about_version",
+    "$v": "Versiya 1.0.1 • KaiOS 2.5 • Qora MIDI qo‘llab-quvvatlanadi • MIT litsenziyasi"
+  },
+  {
+    "$i": "about_desc",
+    "$v": "Smart funksiyali telefonlar uchun optimallashtirilgan MIDI vizualizatori (Nokia 2720 Flip, 8000 4G, 6300 4G, 8110 4G, JioPhone...). Cheklangan uskunada yuqori zichlikdagi qora MIDI treklarini muammosiz ko'rsatish uchun optimallashtirilgan Canvas renderlash quvuriga e'tibor qaratiladi."
+  },
+  {
+    "$i": "about_features_title",
+    "$v": "Asosiy xususiyatlar"
+  },
+  {
+    "$i": "about_f1",
+    "$v": "Qora MIDI optimallashtirish - engil algoritmlar o'n minglab notalarni qattiq FPS pasayishlarisiz boshqaradi."
+  },
+  {
+    "$i": "about_f2",
+    "$v": "Jismoniy klaviaturani qo'llab-quvvatlash - D-Pad va raqamli tugmalar orqali silliq navigatsiya."
+  },
+  {
+    "$i": "about_f3",
+    "$v": "Yuqori darajada moslashtirilgan - to'liq 128 tugmali pianino displeyi, moslashtirilgan trek ranglari, sozlanishi nota tushish tezligi."
+  },
+  {
+    "$i": "about_f4",
+    "$v": "WebAudio Sintezator - o'rnatilgan engil sintez past darajadagi qurilmalarda operativ xotiradan foydalanishni kamaytiradi."
+  },
+  {
+    "$i": "about_keys_title",
+    "$v": "Kalitlar"
+  },
+  {
+    "$i": "about_k1",
+    "$v": "< > izlang ±1s • ^ v ovoz balandligi • OK ijro etish/pauza qilish"
+  },
+  {
+    "$i": "about_k2",
+    "$v": "1 +0,1x tezlik • 2 render rejimi • 3 -0,1x tezlik • 4 marta aylantirish"
+  },
+  {
+    "$i": "about_k3",
+    "$v": "5 yuk MIDI • 6 to‘liq ekran • 7 tugmalar 88-128"
+  },
+  {
+    "$i": "about_k4",
+    "$v": "8 aniq MIDI (RAM bo'shatadi) • 9 pianino o'lchami • 0 to'xtash"
+  },
+  {
+    "$i": "about_k5",
+    "$v": "Qo‘ng‘iroq ma’lumot kartasi • * iz -0,1 • # iz +0,1 • Qo‘ng‘iroqni tugatish"
+  },
+  {
+    "$i": "about_credits_title",
+    "$v": "Kreditlar va hissa"
+  },
+  {
+    "$i": "about_c1",
+    "$v": "T.Hoang tomonidan ishlab chiqilgan • KaiUI dizayn komponentlari"
+  },
+  {
+    "$i": "about_c2",
+    "$v": "PRlar xush kelibsiz: vilkalar -> xususiyat bo'limi -> commit -> surish -> Pull so'rovi"
+  },
+  {
+    "$i": "about_src",
+    "$v": "Manba kodi: github.com/dotrihoang2012/PFA_for_KaiOS. MIT litsenziyasi ostida chiqarilgan."
+  },
+  {
+    "$i": "toast_locked",
+    "$v": "Fayl yuklanmaguncha qulflangan"
+  },
+  {
+    "$i": "toast_palette",
+    "$v": "Ranglar palitrasiga e'tibor bering"
+  },
+  {
+    "$i": "toast_start_delay",
+    "$v": "Kechikishni boshlash"
+  },
+  {
+    "$i": "toast_all_selected",
+    "$v": "Barcha tovush shriftlari tanlangan"
+  },
+  {
+    "$i": "toast_selection_cleared",
+    "$v": "Tanlov tozalandi"
+  },
+  {
+    "$i": "toast_loading_cancelled",
+    "$v": "Yuklash bekor qilindi"
+  },
+  {
+    "$i": "toast_still_scanning",
+    "$v": "Hali ham skanerlanmoqda..."
+  },
+  {
+    "$i": "toast_nothing_selected",
+    "$v": "Hech narsa tanlanmagan"
+  },
+  {
+    "$i": "toast_custom_palette",
+    "$v": "Maxsus palitra faol"
+  },
+  {
+    "$i": "toast_invalid_image",
+    "$v": "Rasm noto‘g‘ri"
+  },
+  {
+    "$i": "toast_no_picker",
+    "$v": "Rang tanlagich mavjud emas"
+  },
+  {
+    "$i": "toast_cannot_read",
+    "$v": "Faylni o‘qib bo‘lmaydi"
+  },
+  {
+    "$i": "toast_not_image",
+    "$v": "Tasvir fayli emas"
+  },
+  {
+    "$i": "toast_image_too_large",
+    "$v": "Rasm juda katta"
+  },
+  {
+    "$i": "toast_bg_saved",
+    "$v": "Fon saqlandi"
+  },
+  {
+    "$i": "toast_bg_cleared",
+    "$v": "Fon tozalandi"
+  },
+  {
+    "$i": "toast_voices",
+    "$v": "Ovoz chegarasiga yetdi"
+  },
+  {
+    "$i": "toast_buffer",
+    "$v": "Kanvas bufer rejimi"
+  },
+  {
+    "$i": "toast_no_sf_to_delete",
+    "$v": "O'chirish uchun SoundFont yo'q"
+  },
+  {
+    "$i": "toast_deleted",
+    "$v": "Oʻchirildi"
+  },
+  {
+    "$i": "toast_soundfonts",
+    "$v": "SoundFonts"
+  },
+  {
+    "$i": "toast_move_cancelled",
+    "$v": "Ko‘chirish bekor qilindi"
+  },
+  {
+    "$i": "toast_arrangement_saved",
+    "$v": "Aranjirovka saqlandi"
+  },
+  {
+    "$i": "toast_move_help",
+    "$v": "Ko‘chirish uchun yuqoriga/pastga, joylashtirish uchun OK dan foydalaning"
+  },
+  {
+    "$i": "toast_no_sf_loaded",
+    "$v": "Hech qanday SoundFont yuklanmagan"
+  },
+  {
+    "$i": "toast_applied_next_launch",
+    "$v": "Keyingi ishga tushirishda qo'llaniladi"
+  },
+  {
+    "$i": "toast_off_next_launch",
+    "$v": "Keyingi ishga tushirishda o'chirib qo'yiladi"
+  },
+  {
+    "$i": "toast_settings_imported",
+    "$v": "Sozlamalar import qilindi"
+  },
+  {
+    "$i": "toast_demo_locked",
+    "$v": "Demo paytida qulflangan"
+  },
+  {
+    "$i": "toast_all_reset",
+    "$v": "Barcha sozlamalar tiklandi"
+  },
+  {
+    "$i": "toast_reset_unavailable",
+    "$v": "Qayta tiklash mavjud emas"
+  },
+  {
+    "$i": "toast_reset_failed",
+    "$v": "Qayta tiklash amalga oshmadi"
+  },
+  {
+    "$i": "toast_no_rotation",
+    "$v": "Aylantirish qo'llab-quvvatlanmaydi"
+  },
+  {
+    "$i": "toast_no_volume_api",
+    "$v": "Hajmi: KaiOS API mavjud emas"
+  },
+  {
+    "$i": "toast_vol_up_failed",
+    "$v": "Ovozni oshirib bo‘lmadi"
+  },
+  {
+    "$i": "toast_vol_down_failed",
+    "$v": "Ovozni pasaytirish muvaffaqiyatsiz tugadi"
+  },
+  {
+    "$i": "toast_vol_show_failed",
+    "$v": "Ovozni ko‘rsatib bo‘lmadi"
+  },
+  {
+    "$i": "opt_saw",
+    "$v": "Ko'rdim"
+  },
+  {
+    "$i": "opt_soundbank",
+    "$v": "SoundFont"
+  },
+  {
+    "$i": "sf_buffer_length",
+    "$v": "Bufer uzunligi"
+  },
+  {
+    "$i": "sf_buffer_hint",
+    "$v": "Rejalashtirish buferi (512-8192)"
+  },
+  {
+    "$i": "sf_voices",
+    "$v": "Ovozlar"
+  },
+  {
+    "$i": "sf_voices_hint",
+    "$v": "Maks. bir vaqtning ozida notalar (1-256)"
+  },
+  {
+    "$i": "background_settings",
+    "$v": "Fon sozlamalari"
+  },
+  {
+    "$i": "show_dialog_screen",
+    "$v": "Dialogni ko'rsatish"
+  },
+  {
+    "$i": "dialog_text_color",
+    "$v": "Matn rangi"
+  },
+  {
+    "$i": "dialog_bg_color",
+    "$v": "Fon rangi"
+  },
+  {
+    "$i": "pct_text_color",
+    "$v": "Foiz rangi"
+  },
+  {
+    "$i": "toast_no_mem_api",
+    "$v": "Xotira API mavjud emas"
+  },
+  {
+    "$i": "toast_storage_ok",
+    "$v": "Saqlash OK"
+  },
+  {
+    "$i": "toast_log_exported",
+    "$v": "Jurnal eksport qilindi"
+  },
+  {
+    "$i": "dev_action_failed",
+    "$v": "Amal bajarilmadi"
+  },
+  {
+    "$i": "toast_no_storage_log",
+    "$v": "Jurnalni eksport qilish uchun xotira mavjud emas."
+  },
+  {
+    "$i": "sep_render_mode",
+    "$v": "Render rejimi"
+  },
+  {
+    "$i": "opt_individual",
+    "$v": "Shaxsiy eslatmalar"
+  },
+  {
+    "$i": "opt_buffer",
+    "$v": "Canvas Buffer"
+  },
+  {
+    "$i": "sep_3d_view",
+    "$v": "3D ko‘rish"
+  },
+  {
+    "$i": "random_note_color",
+    "$v": "Tasodifiy eslatma rangi"
+  },
+  {
+    "$i": "sep_note_color_palette",
+    "$v": "Eslatma Ranglar palitrasi"
+  },
+  {
+    "$i": "load_more",
+    "$v": "Ko'proq yuklash"
+  },
+  {
+    "$i": "sep_loaded_soundfonts",
+    "$v": "Yuklangan SoundFonts"
+  },
+  {
+    "$i": "no_soundfonts_loaded",
+    "$v": "Hech qanday SoundFonts yuklanmagan"
+  },
+  {
+    "$i": "scanning",
+    "$v": "Skanerlanmoqda…"
+  },
+  {
+    "$i": "scanner_unavailable",
+    "$v": "Skaner mavjud emas"
+  },
+  {
+    "$i": "no_sf_files_found",
+    "$v": "Qurilmada hech qanday tovush fayli (.sf2, .sf3, .dls, .sfz) topilmadi."
+  },
+  {
+    "$i": "reading_file",
+    "$v": "Maʼlumotlarni oʻqish..."
+  },
+  {
+    "$i": "load_background",
+    "$v": "Fonni yuklash"
+  },
+  {
+    "$i": "clear_background",
+    "$v": "Fonni tozalash"
+  },
+  {
+    "$i": "color_preview",
+    "$v": "Ko‘rib chiqish"
+  },
+  {
+    "$i": "key_count",
+    "$v": "Kalitlar soni"
+  },
+  {
+    "$i": "loading_prefix",
+    "$v": "Yuklanmoqda:"
+  },
+  {
+    "$i": "exit_full_screen",
+    "$v": "Toʻliq ekran rejimidan chiqish"
+  },
+  {
+    "$i": "rotate_to_portrait",
+    "$v": "Portretga aylantirish"
+  },
+  {
+    "$i": "rotate_to_landscape",
+    "$v": "Landshaftga aylantiring"
+  },
+  {
+    "$i": "disable_dev_menu",
+    "$v": "Dasturchi menyusi rejimi o‘chirilsinmi?"
+  },
+  {
+    "$i": "dev_menu_disabled",
+    "$v": "Sozlamalarda dasturchi menyusi o‘chirib qo‘yilgan"
+  },
+  {
+    "$i": "boot_app_core",
+    "$v": "Ilova yadrosi ishga tushirilmoqda..."
+  },
+  {
+    "$i": "boot_settings",
+    "$v": "Sozlamalar va afzalliklar yuklanmoqda..."
+  },
+  {
+    "$i": "boot_audio_engine",
+    "$v": "Audio dvigatel ishga tushirilmoqda..."
+  },
+  {
+    "$i": "boot_soundfonts",
+    "$v": "Yuklash moduli: Soundfonts"
+  },
+  {
+    "$i": "boot_prep_banks",
+    "$v": "Banklar tayyorlanmoqda..."
+  },
+  {
+    "$i": "boot_synth_ready",
+    "$v": "Synth ?????"
+  },
+  {
+    "$i": "boot_display",
+    "$v": "Displey va kanvas ishga tushirilmoqda..."
+  },
+  {
+    "$i": "boot_ready",
+    "$v": "Tayyor"
+  },
+  {
+    "$i": "decoding_samples",
+    "$v": "dekodlash namunalari ("
+  },
+  {
+    "$i": "decoding_samples_dots",
+    "$v": "Namunalarni dekodlash..."
+  },
+  {
+    "$i": "start_delay_hint",
+    "$v": "O'ynatishdan oldin kechikish soniyalarda (0 = o'chirilgan)"
+  },
+  {
+    "$i": "toast_sf_failed_load",
+    "$v": "Yuklab bo‘lmadi"
+  },
+  {
+    "$i": "toast_sf_failed_count",
+    "$v": "ovozli shrift(lar)."
+  },
+  {
+    "$i": "toast_sf_unavailable",
+    "$v": "Soundbank mavjud emas"
+  },
+  {
+    "$i": "toast_sf_failed_read",
+    "$v": "O‘qib bo‘lmadi"
+  },
+  {
+    "$i": "toast_sf_loaded",
+    "$v": "Yuklangan"
+  },
+  {
+    "$i": "dev_clear_running",
+    "$v": "Hozir tozalash imkonsiz – konvertatsiya hali ham ishlamoqda.\nTugatgandan so'ng yana \"O'chirish\" tugmasini bosing."
+  },
+  {
+    "$i": "dev_clear_no_storage",
+    "$v": "Tozalash uchun xotira mavjud emas."
+  },
+  {
+    "$i": "dev_cleared",
+    "$v": "Oʻchirildi:"
+  },
+  {
+    "$i": "dev_cleared_files",
+    "$v": "fayl(lar)ni konversiya keshidan."
+  },
+  {
+    "$i": "dev_clear_errors",
+    "$v": "Xatolar bilan yakunlandi."
+  },
+  {
+    "$i": "dev_clear_failed",
+    "$v": "Tozalash amalga oshmadi:"
+  },
+  {
+    "$i": "osd_colors_randomised",
+    "$v": "Ranglar tasodifiy"
+  },
+  {
+    "$i": "softkey-delete",
+    "$v": "Oʻchirish"
+  },
+  {
+    "$i": "reading_data",
+    "$v": "Maʼlumotlarni oʻqish..."
+  },
+  {
+    "$i": "dev_mem_heap",
+    "$v": "JS uyasi (ishlatilgan/jami):"
+  },
+  {
+    "$i": "dev_mem_objs",
+    "$v": "JS ??????????"
+  },
+  {
+    "$i": "dev_mem_notes",
+    "$v": "RAMdagi eslatmalar:"
+  },
+  {
+    "$i": "dev_mem_file",
+    "$v": "Fayl nomi:"
+  },
+  {
+    "$i": "dev_mem_writelog",
+    "$v": "pfa_tmp yozish jurnali:"
+  },
+  {
+    "$i": "unavailable",
+    "$v": "mavjud emas"
+  },
+  {
+    "$i": "sd_grant_hint",
+    "$v": "Bu ilovaga SD karta ruxsati kerak.\n\nBunga ruxsat berish uchun:\nSozlamalar -> Maxfiylik va xavfsizlik -> Ilovaga ruxsatlar -> PFA -> Xotira kartasini saqlash -> Grant.\n\nKeyin ilovani qayta oching / faylni qayta yuklang.\n\nOK ilovani yopadi."
+  },
+  {
+    "$i": "err_still_analyzing",
+    "$v": "Oldingi fayl hali ham tahlil qilinmoqda - kuting."
+  },
+  {
+    "$i": "err_stream_failed",
+    "$v": "Oqimli MIDI tahlili amalga oshmadi:"
+  },
+  {
+    "$i": "err_cannot_read_midi",
+    "$v": "Bu faylni oʻqib boʻlmadi. Bu haqiqiy MIDI yoki (.eslatma) eksporti boʻlmasligi mumkin."
+  },
+  {
+    "$i": "err_sf_read_corrupt",
+    "$v": "SoundFont dasturini o'qib bo'lmadi \""
+  },
+  {
+    "$i": "err_sf_corrupt_suffix",
+    "$v": "\". Fayl ko'chirilishi, o'chirilishi yoki buzilgan bo'lishi mumkin."
+  },
+  {
+    "$i": "err_sf_file_error",
+    "$v": "fayl xatosi, ko'chirilgan yoki o'chirilgan."
+  },
+  {
+    "$i": "err_bg_missing",
+    "$v": "Fon rasmi yoʻq – uni Sozlamalar orqali qayta yuklang."
+  },
+  {
+    "$i": "err_nothing_to_export",
+    "$v": "Eksport qilish uchun hech narsa yo'q."
+  },
+  {
+    "$i": "err_conversion_running",
+    "$v": "Konversiya allaqachon ishlamoqda"
+  },
+  {
+    "$i": "err_storage_denied",
+    "$v": "Saqlash ruxsati rad etildi - konvertatsiya qilish uchun SD kartaga ruxsat bering"
+  },
+  {
+    "$i": "err_no_writable_storage",
+    "$v": "Yoziladigan xotira topilmadi."
+  },
+  {
+    "$i": "error",
+    "$v": "???????"
+  },
+  {
+    "$i": "cat_general",
+    "$v": "General"
+  },
+  {
+    "$i": "cat_loadingBar",
+    "$v": "Yuklash paneli"
+  },
+  {
+    "$i": "cat_dialog",
+    "$v": "Dialog uslubi"
+  },
+  {
+    "$i": "cat_graphics",
+    "$v": "Grafika"
+  },
+  {
+    "$i": "cat_piano",
+    "$v": "???????"
+  },
+  {
+    "$i": "cat_palette",
+    "$v": "Ranglar palitrasi"
+  },
+  {
+    "$i": "unknown",
+    "$v": "Noma'lum"
+  },
+  {
+    "$i": "hud_nps_0",
+    "$v": "NPS: 0"
+  },
+  {
+    "$i": "hud_nc_0",
+    "$v": "NC: 0"
+  },
+  {
+    "$i": "hud_passed_0",
+    "$v": "O'tdi: 0"
+  },
+  {
+    "$i": "hud_speed_0",
+    "$v": "Tezlik: 1,0x"
+  },
+  {
+    "$i": "hud_fps_0",
+    "$v": "FPS: 0"
+  },
+  {
+    "$i": "hud_time_0",
+    "$v": "Vaqt: --:-- / --:--"
+  },
+  {
+    "$i": "hud_polyphony_0",
+    "$v": "Polifoniya: 0"
+  },
+  {
+    "$i": "hud_rendered_0",
+    "$v": "Ko'rsatilgan eslatmalar: 0"
+  },
+  {
+    "$i": "hud_audio_buffer_0",
+    "$v": "Audio bufer: 0"
+  },
+  {
+    "$i": "hud_tick_0",
+    "$v": "Tick: 0"
+  },
+  {
+    "$i": "hud_bpm_0",
+    "$v": "BPM: 0"
+  },
+  {
+    "$i": "reset_settings",
+    "$v": "Barcha sozlamalarni tiklash"
+  },
+  {
+    "$i": "exit_app",
+    "$v": "?????"
+  },
+  {
+    "$i": "opt_128",
+    "$v": "128 tugmalar"
+  },
+  {
+    "$i": "opt_custom",
+    "$v": "Maxsus"
+  },
+  {
+    "$i": "opt_synth",
+    "$v": "Osilator"
+  },
+  {
+    "$i": "opt_dark",
+    "$v": "????"
+  },
+  {
+    "$i": "opt_light",
+    "$v": "????"
+  },
+  {
+    "$i": "opt_blue",
+    "$v": "???"
+  },
+  {
+    "$i": "opt_purple",
+    "$v": "Binafsha"
+  },
+  {
+    "$i": "palette_random",
+    "$v": "Tasodifiy"
+  },
+  {
+    "$i": "palette_randomAlpha",
+    "$v": "Tasodifiy alfa gradientlari"
+  },
+  {
+    "$i": "palette_randomGradients",
+    "$v": "Tasodifiy gradientlar"
+  },
+  {
+    "$i": "palette_randomWithAlpha",
+    "$v": "Alpha bilan tasodifiy"
+  },
+  {
+    "$i": "palette_synth10",
+    "$v": "Synthesia 10 ?????????"
+  },
+  {
+    "$i": "palette_synth9",
+    "$v": "Sintez 9-0,8 palitrasi"
+  },
+  {
+    "$i": "palette_custom_loaded",
+    "$v": "Maxsus palitrasi"
+  },
+  {
+    "$i": "sfNoFx",
+    "$v": "Ovoz effektlarini o'chiring"
+  },
+  {
+    "$i": "err_no_storage_settings",
+    "$v": "Sozlamalarni eksport qilish uchun xotira mavjud emas."
+  },
+  {
+    "$i": "err_export_failed",
+    "$v": "Sozlamalar eksport qilinmadi:"
+  },
+  {
+    "$i": "err_vols_unavail",
+    "$v": "barcha saqlash hajmlari mavjud emas"
+  },
+  {
+    "$i": "err_no_writable",
+    "$v": "Sozlamalar eksport qilinmadi: yoziladigan xotira hajmi yo‘q."
+  },
+  {
+    "$i": "settings_exported",
+    "$v": "Sozlamalar eksport qilindi:\nboshqalar/"
+  },
+  {
+    "$i": "err_export_blocked",
+    "$v": "Sozlamalarni eksport qilish bloklandi: qurilma xotirasiga ruxsat bering: sdcard ruxsati, keyin qayta urinib ko‘ring."
+  },
+  {
+    "$i": "err_import_binary",
+    "$v": "Bu .eslatma ikkilik MIDI eksportidir,\nSozlamalar konfiguratsiyasi emas.\n\nFaqat eksport sozlamalari orqali eksport qilingan Sozlamalar fayllarini import qiling."
+  },
+  {
+    "$i": "err_import_bad",
+    "$v": "Bu faylni oʻqib boʻlmadi.\n\nBu Sozlamalar eksporti emas."
+  },
+  {
+    "$i": "err_import_no_marker",
+    "$v": "Bu .eslatma Sozlamalar eksporti emas\n(Sozlamalar belgisi yo'q)."
+  },
+  {
+    "$i": "err_import_apply",
+    "$v": "Import qilingan sozlamalarni qo‘llab bo‘lmadi."
+  },
+  {
+    "$i": "err_import_read",
+    "$v": "Bu faylni oʻqib boʻlmaydi."
+  },
+  {
+    "$i": "err_import_not_note",
+    "$v": "Faqat .note sozlamalari konfiguratsiyasi import qilinishi mumkin.\n\nTanlangan:"
+  },
+  {
+    "$i": "err_picker",
+    "$v": "Fayl tanlagichni ishga tushirib bo'lmadi."
+  },
+  {
+    "$i": "loaded_sf_short",
+    "$v": "yuklangan,"
+  },
+  {
+    "$i": "failed_sf_short",
+    "$v": "muvaffaqiyatsiz"
+  },
+  {
+    "$i": "failed_load_sf",
+    "$v": "SoundFont(lar)ni yuklab bo‘lmadi (fayl ko‘chirilgan, o‘chirilgan yoki buzilgan):"
+  },
+  {
+    "$i": "loaded_prefix",
+    "$v": "Yuklangan"
+  },
+  {
+    "$i": "osd_play",
+    "$v": "Ўйнаш"
+  },
+  {
+    "$i": "osd_pause",
+    "$v": "Пауза"
+  },
+  {
+    "$i": "osd_stop",
+    "$v": "Тўхтатиш"
+  },
+  {
+    "$i": "osd_restart",
+    "$v": "Қайта бошлаш"
+  },
+  {
+    "$i": "osd_clear",
+    "$v": "Тозалаш"
+  },
+  {
+    "$i": "fullscreen",
+    "$v": "Тўлиқ экран"
+  },
+  {
+    "$i": "rotate",
+    "$v": "Айлантириш"
+  },
+  {
+    "$i": "opt_autoplay",
+    "$v": "Автоматик ўйнаш"
+  },
+  {
+    "$i": "opt_on",
+    "$v": "Ёқиқ"
+  },
+  {
+    "$i": "opt_off",
+    "$v": "Ўчиқ"
+  },
+  {
+    "$i": "opt_infocard",
+    "$v": "Маълумот картаси"
+  },
+  {
+    "$i": "opt_show",
+    "$v": "Кўрсатиш"
+  },
+  {
+    "$i": "opt_hide",
+    "$v": "Яшириш"
+  },
+  {
+    "$i": "opt_trail",
+    "$v": "Из"
+  },
+  {
+    "$i": "opt_renderMode",
+    "$v": "Рендер"
+  },
+  {
+    "$i": "opt_pianoSize",
+    "$v": "Пианино ўлчами"
+  },
+  {
+    "$i": "menu_change_file",
+    "$v": "MIDI/Note файлини ўзгартириш"
+  },
+  {
+    "$i": "menu_load_file",
+    "$v": "MIDI/Note файлини юклаш"
+  },
+  {
+    "$i": "rotate_portrait",
+    "$v": "Портретга айлантириш"
+  },
+  {
+    "$i": "rotate_landscape",
+    "$v": "Ландшафтга айлантириш"
+  },
+  {
+    "$i": "softkey_ok",
+    "$v": "Ок"
+  },
+  {
+    "$i": "softkey_back",
+    "$v": "Орқага"
+  },
+  {
+    "$i": "softkey_settings",
+    "$v": "Созламалар"
+  },
+  {
+    "$i": "softkey_cancel",
+    "$v": "Бекор қилиш"
+  },
+  {
+    "$i": "softkey_select",
+    "$v": "Танлаш"
+  },
+  {
+    "$i": "softkey_delete",
+    "$v": "Ўчириш"
+  },
+  {
+    "$i": "softkey_move",
+    "$v": "Кўчириш"
+  },
+  {
+    "$i": "softkey_done",
+    "$v": "Тайёр"
+  },
+  {
+    "$i": "softkey_select_all",
+    "$v": "Барчасини танлаш"
+  },
+  {
+    "$i": "softkey_deselect_all",
+    "$v": "Барчасини бекор қилиш"
+  },
+  {
+    "$i": "softkey_finish",
+    "$v": "Тугатиш"
+  },
+  {
+    "$i": "opt_infoCard",
+    "$v": "Маълумот картасини кўрсатиш"
+  },
+  {
+    "$i": "opt_noteLabels",
+    "$v": "Нота ёрлиқларини кўрсатиш"
+  },
+  {
+    "$i": "opt_kbRange",
+    "$v": "Клавиатура диапазони"
+  },
+  {
+    "$i": "opt_middleMarker",
+    "$v": "Ўрта C маркёри"
+  },
+  {
+    "$i": "opt_barColor",
+    "$v": "Сатр ранги"
+  },
+  {
+    "$i": "opt_pianoColorHex",
+    "$v": "Пианино ранги"
+  },
+  {
+    "$i": "opt_autoPlay",
+    "$v": "Автоматик ижро"
+  },
+  {
+    "$i": "opt_showOsd",
+    "$v": "OSD ни кўрсатиш"
+  },
+  {
+    "$i": "opt_bgSettings",
+    "$v": "Фон созламалари"
+  },
+  {
+    "$i": "opt_pctBarVisible",
+    "$v": "Юклаш сатрини кўрсатиш"
+  },
+  {
+    "$i": "opt_pctAnalyze",
+    "$v": "Таҳлил пайтида % кўрсатиш"
+  },
+  {
+    "$i": "opt_pctMerge",
+    "$v": "Бирлаштириш пайтида % кўрсатиш"
+  },
+  {
+    "$i": "opt_loadBarColor",
+    "$v": "Юклаш ранги"
+  },
+  {
+    "$i": "opt_pctColor",
+    "$v": "% Матн ранги"
+  },
+  {
+    "$i": "opt_loadAnimated",
+    "$v": "Сурма анимация"
+  },
+  {
+    "$i": "opt_showDialog",
+    "$v": "Диалогни кўрсатиш"
+  },
+  {
+    "$i": "opt_dialogTextColor",
+    "$v": "Матн ранги"
+  },
+  {
+    "$i": "opt_dialogBgColor",
+    "$v": "Фон ранги"
+  },
+  {
+    "$i": "opt_osdLog",
+    "$v": "Батафсил ҳолат"
+  },
+  {
+    "$i": "opt_verboseAnalyze",
+    "$v": "Таҳлил пайтида батафсил"
+  },
+  {
+    "$i": "opt_verboseInit",
+    "$v": "Ишга тушириш пайтида батафсил"
+  },
+  {
+    "$i": "opt_focusColor",
+    "$v": "Фокус ранги"
+  },
+  {
+    "$i": "opt_bgColor",
+    "$v": "Фон"
+  },
+  {
+    "$i": "startDelay",
+    "$v": "Бошланиш кечикиши"
+  },
+  {
+    "$i": "startDelay_hint",
+    "$v": "Ижродан олдинги кечикиш сонияларда (0 = Ўчиқ)"
+  },
+  {
+    "$i": "opt_kbStart",
+    "$v": "Бошлаш"
+  },
+  {
+    "$i": "opt_kbEnd",
+    "$v": "Тугатиш"
+  },
+  {
+    "$i": "untitled_soundfont",
+    "$v": "Номсиз"
+  },
+  {
+    "$i": "sf_muted",
+    "$v": "Овозсиз"
+  },
+  {
+    "$i": "sf_error",
+    "$v": "ХАТО"
+  },
+  {
+    "$i": "verbose_while_reading_soundfonts",
+    "$v": "Ovoz shriftlarini o'qish paytida batafsil"
+  },
+  {
+    "$i": "parsing_midi_data",
+    "$v": "MIDI maʼlumotlari tahlil qilinmoqda..."
+  },
+  {
+    "$i": "merging_events",
+    "$v": "Tadbirlar birlashtirilmoqda..."
+  },
+  {
+    "$i": "readheader_done",
+    "$v": "readHeader bajarildi:"
+  },
+  {
+    "$i": "tracks",
+    "$v": "treklar"
+  },
+  {
+    "$i": "cancelling",
+    "$v": "Bekor qilinmoqda..."
+  },
+  {
+    "$i": "language",
+    "$v": "Til"
+  },
+  {
+    "$i": "auto_change_language",
+    "$v": "Tilni avtomatik o'zgartirish"
+  },
+  {
+    "$i": "language_separator",
+    "$v": "Til ajratuvchi"
+  },
+  {
+    "$i": "softkey_audio",
+    "$v": "Audio"
+  }
+]

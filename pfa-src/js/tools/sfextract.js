@@ -7,7 +7,7 @@
  * it, and emits a JSON structure suitable for the KaiOS soundbank engine.
  *
  * Usage:
- *   node tools/sfextract.js path/to/font.sf2 [out.soundbank.json]
+ *   node js/tools/sfextract.js path/to/font.sf2 [out.soundbank.json]
  *
  * Output format (example):
  * {
@@ -36,7 +36,7 @@ const fs = require('fs');
 const inFile = process.argv[2];
 const outFile = process.argv[3] || (inFile ? inFile.replace(/\.[^.]+$/, '.soundbank.json') : null);
 if (!inFile) {
-  console.error('Usage: node tools/sfextract.js <file.sf2> [out.soundbank.json]');
+  console.error('Usage: node js/tools/sfextract.js <file.sf2> [out.soundbank.json]');
   process.exit(1);
 }
 
