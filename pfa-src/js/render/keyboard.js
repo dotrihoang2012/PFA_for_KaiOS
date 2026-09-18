@@ -108,7 +108,9 @@ var Keyboard = (function () {
 
     // 3D depth (Graphics → 3D View 'keyboard'/'both'): white keys carry a
     // soft shadow tucked under the bar; black keys catch a 1px light on
-    // the top edge. Baked into the cached sprite — zero per-frame cost.
+    // the top edge; every key gets a darker, slightly recessed FRONT face
+    // split from the top surface by a horizontal crease — the classic 3D
+    // key profile. Baked into the cached sprite — zero per-frame cost.
     if (is3d) {
       c.fillStyle = 'rgba(0,0,0,0.28)';
       for (var s3 = 0; s3 < 128; s3++) {
@@ -121,6 +123,40 @@ var Keyboard = (function () {
         var ks4 = keyLayout[s4];
         if (!ks4.black) continue;
         c.fillRect(ks4.x + 1, 0, ks4.w - 2, 1);
+      }
+      // Front face height: ~5% of the strip (min 2px so it shows at any size).
+      var frontH = Math.max(2, Math.round(kbH * 0.05));
+      var frontY = kbH - frontH;
+      // White keys — front face darkened via a translucent black overlay
+      // (works over ANY piano color), inset 1px each side so the face sits
+      // back from the top surface.
+      c.fillStyle = 'rgba(0,0,0,0.45)';
+      for (var s5 = 0; s5 < 128; s5++) {
+        var ks5 = keyLayout[s5];
+        if (ks5.black) continue;
+        c.fillRect(ks5.x + 1, frontY + 1, ks5.w - 3, frontH - 1);
+      }
+      // White keys — the crease: horizontal line separating top from front.
+      c.fillStyle = 'rgba(0,0,0,0.5)';
+      for (var s6 = 0; s6 < 128; s6++) {
+        var ks6 = keyLayout[s6];
+        if (ks6.black) continue;
+        c.fillRect(ks6.x, frontY, ks6.w - 1, 1);
+      }
+      // Black keys — deeper front base, inset 1px each side, plus a subtle
+      // light crease so the separation reads on the dark surface.
+      var bhFront = Math.max(2, Math.round(bh * 0.05));
+      c.fillStyle = 'rgba(0,0,0,0.5)';
+      for (var s7 = 0; s7 < 128; s7++) {
+        var ks7 = keyLayout[s7];
+        if (!ks7.black) continue;
+        c.fillRect(ks7.x + 1, bh - bhFront, ks7.w - 2, bhFront);
+      }
+      c.fillStyle = 'rgba(255,255,255,0.16)';
+      for (var s8 = 0; s8 < 128; s8++) {
+        var ks8 = keyLayout[s8];
+        if (!ks8.black) continue;
+        c.fillRect(ks8.x + 1, bh - bhFront, ks8.w - 2, 1);
       }
     }
   }
