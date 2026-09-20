@@ -280,6 +280,12 @@ var Keyboard = (function () {
       if (live && live.length) {
         var ns = Sequencer.getTime();
         var wh = [], bhl = [];
+        // Dedupe per key: the TOP overlapping note wins — on the falling band
+        // the last-drawn note covers the earlier ones, so the lit key shows
+        // the SAME resulting color the falling notes display at the overlap
+        // (later live entries overwrite earlier ones → "last wins"). Each key
+        // still draws exactly ONCE so alpha never accumulates (no darkening).
+        var _whMap = {}, _bhMap = {};
         var CH = (typeof Notes !== 'undefined' && Notes.channelColor) ? Notes.channelColor : null;
         var SCAN_LIMIT = 1180591620717411303424;
         // Trail: state.trail is a number 0.1..8.0 (seconds × scale)
@@ -301,10 +307,20 @@ var Keyboard = (function () {
           if (ns < ss || ns > nsLim) continue;
           var dx = kl.x - x0;
           if (dx < -kl.w || dx > w) continue;
+          // Overlapping same-pitch notes (fast rolls, doubled tracks) would
+          // fill the semi-transparent highlight N times on ONE key → alpha
+          // accumulates → the key reads darker than a single note. Dedupe
+          // by key so every lit key is drawn exactly ONCE per frame.
           var col = CH ? CH(live[i].channel) : '#00C8FF';
-          if (kl.black) bhl.push({ dx: dx, w: kl.w, col: col, sx: kl.x });
-          else          wh.push({ dx: dx, w: kl.w, col: col });
+          if (kl.black) {
+            _bhMap[nn] = { dx: dx, w: kl.w, col: col, sx: kl.x };
+          } else {
+            _whMap[nn] = { dx: dx, w: kl.w, col: col };
+          }
         }
+        // Collapse the maps into the draw lists (key order = ascending note).
+        for (var _wk in _whMap) wh.push(_whMap[_wk]);
+        for (var _bk in _bhMap) bhl.push(_bhMap[_bk]);
 
         // White highlights (drawn UNDER the black keys — they are re-blitted
         // below so a lit white key's glow never washes over the black key

@@ -104,6 +104,38 @@
     "$v": "Ses Çıkışı"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Sentezleyici motoru"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Medya yükle"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Medyayı değiştir"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Medya dosyası"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Medya gecikmesi"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Medya başlamadan önce saniye (0 = Kapalı)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Medya dosyası değil"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Bu medya formatı cihaz tarafından desteklenmiyor. MP3 / WAV / M4A dosyası deneyin."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Ses Motoru"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Krediler ve Katkıda Bulunma"
+    "$v": "Krediler"
   },
   {
     "$i": "about_c1",
-    "$v": "T.Hoang tarafından geliştirildi • KaiUI tasarım bileşenleri"
+    "$v": "T.Hoang tarafından geliştirildi"
   },
   {
     "$i": "about_c2",

@@ -104,6 +104,38 @@
     "$v": "Heliväljund"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Süntesaator"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Laadi meedia"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Vaheta meediat"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Meediafail"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Meedia viivitus"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Sekundid enne meedia algust (0 = Väljas)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Ei ole meediafail"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "See meediavorming ei ole seadmega ühilduv. Proovige MP3 / WAV / M4A-faili."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Helimootor"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Autorid ja panus"
+    "$v": "Autorid"
   },
   {
     "$i": "about_c1",
-    "$v": "Arendanud T.Hoang • KaiUI disainikomponendid"
+    "$v": "Arendanud T.Hoang"
   },
   {
     "$i": "about_c2",

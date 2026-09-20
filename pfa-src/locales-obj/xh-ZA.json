@@ -104,6 +104,38 @@
     "$v": "Imveliso yomsindo"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Injini yokwenziwa"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Layisha imidiya"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Tshintsha imidiya"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Ifayile yemidiya"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Ukulibaziseka kwemidiya"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Iisekondi ngaphambi kokuba imidiya iqale (0 = Cimile)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Ayiyofayile yemidiya"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Le fomathi yemidiya ayixhaswa sisixhobo. Zama ifayile ye-MP3 / WAV / M4A."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Injini yesandi"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Iikhredithi kunye neGalelo"
+    "$v": "Iikhredithi"
   },
   {
     "$i": "about_c1",
-    "$v": "Iphuhliswe nguT.Hoang • I-KaiUI yoyilo lwamacandelo"
+    "$v": "Iphuhliswe nguT.Hoang"
   },
   {
     "$i": "about_c2",

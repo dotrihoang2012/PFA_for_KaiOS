@@ -104,6 +104,38 @@
     "$v": "Ieșire audio"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Motor de sinteză"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Încarcă media"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Schimbă media"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Fișier media"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Întârziere media"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Secunde înainte ca media să înceapă (0 = Dezactivat)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Nu este un fișier media"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Acest format media nu este acceptat de dispozitiv. Încearcă un fișier MP3 / WAV / M4A."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Motor de sunet"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Credite și contribuții"
+    "$v": "Credite"
   },
   {
     "$i": "about_c1",
-    "$v": "Dezvoltat de T.Hoang • Componente de design KaiUI"
+    "$v": "Dezvoltat de T.Hoang"
   },
   {
     "$i": "about_c2",

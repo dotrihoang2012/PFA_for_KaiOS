@@ -104,6 +104,38 @@
     "$v": "Garso išvestis"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Sintezatorius"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Įkelti mediją"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Keisti mediją"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Medijos failas"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Medijos delsą"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Sekundės iki medijos pradžios (0 = Išjungta)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Ne medijos failas"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Šis medijos formatas nepalaikomas įrenginio. Pabandykite MP3 / WAV / M4A failą."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Garso variklis"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Kreditai ir indėlis"
+    "$v": "Kreditai"
   },
   {
     "$i": "about_c1",
-    "$v": "Sukūrė T.Hoang • KaiUI dizaino komponentai"
+    "$v": "Sukūrė T.Hoang"
   },
   {
     "$i": "about_c2",

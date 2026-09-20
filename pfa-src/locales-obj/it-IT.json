@@ -104,6 +104,38 @@
     "$v": "Uscita audio"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Motore di sintesi"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Carica media"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Cambia media"
+  },
+  {
+    "$i": "media_file",
+    "$v": "File multimediale"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Ritardo media"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Secondi prima che il media inizi (0 = Disattivato)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Non è un file multimediale"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Questo formato multimediale non è supportato dal dispositivo. Prova un file MP3 / WAV / M4A."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Motore sonoro"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Crediti e contributi"
+    "$v": "Crediti"
   },
   {
     "$i": "about_c1",
-    "$v": "Sviluppato da T.Hoang • Componenti di progettazione KaiUI"
+    "$v": "Sviluppato da T.Hoang"
   },
   {
     "$i": "about_c2",

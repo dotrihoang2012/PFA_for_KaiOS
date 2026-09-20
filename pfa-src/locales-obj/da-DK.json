@@ -104,6 +104,38 @@
     "$v": "Lydudgang"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Synthesizer"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Indlæs medie"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Skift medie"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Mediefil"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Medieforsinkelse"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Sekunder før mediet starter (0 = Fra)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Ikke en mediefil"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Dette medieformat understøttes ikke af enheden. Prøv en MP3 / WAV / M4A-fil."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Lydmotor"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Kreditter og bidrag"
+    "$v": "Kreditter"
   },
   {
     "$i": "about_c1",
-    "$v": "Udviklet af T.Hoang • KaiUI designkomponenter"
+    "$v": "Udviklet af T.Hoang"
   },
   {
     "$i": "about_c2",

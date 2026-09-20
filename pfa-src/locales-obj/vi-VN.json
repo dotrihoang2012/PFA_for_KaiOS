@@ -104,6 +104,38 @@
     "$v": "Đầu ra âm thanh"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Động cơ tổng hợp"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Tải media"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Đổi media"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Tệp media"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Độ trễ bắt đầu"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Giây trước khi media bắt đầu (0 = Tắt)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Không phải tệp media"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Định dạng media này không được thiết bị hỗ trợ. Hãy dùng tệp MP3 / WAV / M4A."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Động cơ âm thanh"
   },
@@ -696,10 +728,6 @@
     "$v": "Đã bật menu nhà phát triển trong cài đặt"
   },
   {
-    "$i": "about_version",
-    "$v": "Phiên bản 1.0.1 • KaiOS 2.5 • Hỗ trợ Black MIDI • Giấy phép MIT"
-  },
-  {
     "$i": "about_desc",
     "$v": "Trình diễn MIDI tối ưu cho điện thoại phổ thông thông minh (Nokia 2720 Flip, 8000 4G...). Tập trung vào pipeline render Canvas để hiển thị mượt mà các bản nhạc Black MIDI mật độ cao."
   },
@@ -709,19 +737,19 @@
   },
   {
     "$i": "about_f1",
-    "$v": "<b>Tối Ưu Black MIDI</b> - thuật toán nhẹ xử lý hàng chục ngàn nốt nhạc mà không bị sụt FPS nghiêm trọng."
+    "$v": "Tối Ưu Black MIDI - thuật toán nhẹ xử lý hàng chục ngàn nốt nhạc mà không bị sụt FPS nghiêm trọng."
   },
   {
     "$i": "about_f2",
-    "$v": "<b>Hỗ Trợ Bàn Phím Vật Lý</b> - điều hướng mượt mà qua phím D-Pad và phím số."
+    "$v": "Hỗ Trợ Bàn Phím Vật Lý - điều hướng mượt mà qua phím D-Pad và phím số."
   },
   {
     "$i": "about_f3",
-    "$v": "<b>Tùy Chỉnh Cao</b> - hiển thị đủ 128 phím, tùy chỉnh màu sắc, tốc độ rơi nốt."
+    "$v": "Tùy Chỉnh Cao - hiển thị đủ 128 phím, tùy chỉnh màu sắc, tốc độ rơi nốt."
   },
   {
     "$i": "about_f4",
-    "$v": "<b>WebAudio Synthesizer</b> - synth tích hợp giảm thiểu sử dụng RAM trên thiết bị yếu."
+    "$v": "WebAudio Synthesizer - synth tích hợp giảm thiểu sử dụng RAM trên thiết bị yếu."
   },
   {
     "$i": "about_keys_title",
@@ -749,19 +777,15 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Tác Giả & Đóng Góp"
+    "$v": "Tác Giả"
   },
   {
     "$i": "about_c1",
-    "$v": "Phát triển bởi T.Hoang • Thành phần giao diện KaiUI"
-  },
-  {
-    "$i": "about_c2",
-    "$v": "Hoan nghênh PR: fork -> feature branch -> commit -> push -> Pull Request"
+    "$v": "Phát triển bởi T.Hoang"
   },
   {
     "$i": "about_src",
-    "$v": "Mã nguồn:<br>github.com/dotrihoang2012/PFA_for_KaiOS<br><br>Phát hành theo Giấy phép MIT."
+    "$v": "Mã nguồn: github.com/dotrihoang2012/PFA_for_KaiOS. Phát hành theo Giấy phép MIT."
   },
   {
     "$i": "toast_locked",

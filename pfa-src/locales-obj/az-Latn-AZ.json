@@ -104,6 +104,38 @@
     "$v": "Audio Çıxış"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Sinx generatoru"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Media yüklə"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Media dəyiş"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Media faylı"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Media gecikməsi"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Medianın başlamasından əvvəl saniyə (0 = Söndür)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Media faylı deyil"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Bu media formatı cihaz tərəfindən dəstəklənmir. MP3 / WAV / M4A faylı cəhd edin."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Səs mühərriki"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Kreditlər və Töhfələr"
+    "$v": "Kreditlər"
   },
   {
     "$i": "about_c1",
-    "$v": "T.Hoang tərəfindən hazırlanıb • KaiUI dizayn komponentləri"
+    "$v": "T.Hoang tərəfindən hazırlanıb"
   },
   {
     "$i": "about_c2",

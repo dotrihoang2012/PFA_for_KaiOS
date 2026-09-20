@@ -572,6 +572,25 @@
 
     try { pfaSetDevOsd(!!Store.getState().osdLog); } catch (e) {}
 
+    // Desktop-notification permission: must be requested while foregrounded
+    // so the background "Now playing" notification persists in the panel.
+    try { _ensureNotifPermission(); } catch (e) {}
+
+    // KaiAds: preload an ad at boot and wire the pause/resume hooks so a
+    // fullscreen ad pauses playback underneath (KaiAds best practice #3).
+    try {
+      if (typeof KaiAds !== 'undefined') {
+        if (typeof KaiAds.setPauseHooks === 'function') {
+          KaiAds.setPauseHooks(_adPausePlayback, _adResumePlayback);
+        }
+        if (typeof KaiAds.init === 'function') KaiAds.init();
+      }
+    } catch (e) {}
+
+    // Preload-media <audio> element: create it early so its 'content'
+    // channel is claimed before any playback (see _ensureMediaEl).
+    try { _ensureMediaEl(); } catch (e) {}
+
     // Soundfont restoration or module loading stage (50% -> 85%)
     var _sfBootErrors = null;
     var bootSfPromise = new Promise(function (resolve) {
@@ -676,6 +695,9 @@
           } else {
             startDemo();
           }
+          // KaiAds: show the launch fullscreen ad once the app is ready
+          // (best practice — at launch and/or after a completed session).
+          try { if (typeof KaiAds !== 'undefined' && KaiAds.launch) KaiAds.launch(); } catch (e) {}
         }, 400);
       }, 100);
     });
@@ -1127,11 +1149,218 @@
   }
 
 
+  // ── PRELOAD MEDIA (Synth Engine = preload) ──
+  // A media file (mp3/audio) plays alongside the MIDI, synced to the
+  // transport: play/pause/stop, ±1s seek, and playback rate all follow.
+  var _mediaEl = null;
+  var _mediaTimer = null;
+  var _mediaUrl = null;
+  var _mediaErrShown = false;
+  var _mediaStopped = true; // true = next play restarts at 0 (fresh start)
+
+  function _ensureMediaEl() {
+    if (_mediaEl) return _mediaEl;
+    try {
+      _mediaEl = document.createElement('audio');
+      // KaiOS: a media element must claim the 'content' (media) channel
+      // BEFORE it enters the DOM — otherwise it defaults to the notification
+      // channel (volume OSD shows "Ringtones and Alerts" and the track can
+      // be silent). Set it both ways to cover Gecko quirks.
+      try { _mediaEl.mozAudioChannelType = 'content'; } catch (e) {}
+      try { _mediaEl.setAttribute('mozAudioChannelType', 'content'); } catch (e) {}
+      _mediaEl.preload = 'none'; // don't probe/load anything at boot
+      _mediaEl.addEventListener('error', function () {
+        try { console.warn('[Media] element error', _mediaEl.error ? _mediaEl.error.code : '?'); } catch (e) {}
+        // Only surface a dialog when a real media file was loaded AND is
+        // being played — ignore spurious idle/boot errors.
+        if (_mediaErrShown || !_mediaActive()) return;
+        _mediaErrShown = true;
+        try {
+          if (typeof window.showErrorDialog === 'function') {
+            window.showErrorDialog(L10n.t('err_media_unsupported', 'This media format is not supported by the device. Try an MP3 / WAV / M4A file.'));
+          }
+        } catch (e) {}
+      });
+      _mediaEl.addEventListener('playing', function () { console.log('[Media] playing'); });
+      document.body.appendChild(_mediaEl);
+      _assertMediaChannel();
+    } catch (e) {}
+    return _mediaEl;
+  }
+
+  /** Point the OS volume rocker / OSD at the media ('content') channel. */
+  function _assertMediaChannel() {
+    try {
+      var acm = navigator.mozAudioChannelManager || navigator.audioChannelManager;
+      if (acm && typeof acm.volumeControlChannel === 'string') {
+        acm.volumeControlChannel = 'content';
+      }
+    } catch (e) {}
+  }
+
+  function _mediaActive() {
+    var st = Store.getState();
+    return !!(st.synthEngine === 'preload' && st.mediaSrc);
+  }
+
+  function _mediaApplyMute() {
+    var st = Store.getState();
+    var on = (st.audio !== false);
+    if (_mediaEl) { try { _mediaEl.muted = !on; } catch (e) {} }
+  }
+
+  function _mediaPlay() {
+    if (!_mediaActive()) return;
+    var el = _ensureMediaEl();
+    if (!el) return;
+    var st = Store.getState();
+    var src = st.mediaSrc;
+    try {
+      if (el.src !== src) { el.src = src; el.load(); }
+    } catch (e) {}
+    clearTimeout(_mediaTimer);
+    _mediaApplyMute();
+    _mediaErrShown = false;
+    _assertMediaChannel();
+    try { console.log('[Media] ch=' + (el.mozAudioChannelType || '?') + ' muted=' + el.muted); } catch (e) {}
+    var delay = Math.max(0, Number(st.mediaDelay) || 0);
+    var kick = function () {
+      try {
+        var p = el.play();
+        if (p && p.catch) p.catch(function (er) { console.warn('[Media] play blocked:', er); });
+        else console.log('[Media] play() ok');
+      } catch (e) { console.warn('[Media] play() threw:', e); }
+    };
+    // A FRESH start (from Stop) restarts the media at 0 and applies the
+    // delay. Resuming from Pause keeps the current position and plays
+    // immediately — no rewind, no re-applied delay.
+    var fresh = _mediaStopped;
+    _mediaStopped = false;
+    if (fresh) {
+      try { el.currentTime = 0; } catch (e) {}
+      if (delay > 0) {
+        _mediaTimer = setTimeout(kick, delay * 1000);
+      } else {
+        kick();
+      }
+    } else {
+      kick();
+    }
+  }
+
+  function _mediaPause() {
+    clearTimeout(_mediaTimer);
+    if (_mediaEl) { try { _mediaEl.pause(); } catch (e) {} }
+  }
+
+  function _mediaStop() {
+    clearTimeout(_mediaTimer);
+    _mediaStopped = true;
+    if (_mediaEl) {
+      try { _mediaEl.pause(); _mediaEl.currentTime = 0; } catch (e) {}
+    }
+  }
+
+  function _mediaSeek(delta) {
+    if (!_mediaEl || !_mediaActive()) return;
+    try {
+      var nt = (_mediaEl.currentTime || 0) + (Number(delta) || 0);
+      if (nt < 0) nt = 0;
+      var mx = _mediaEl.duration;
+      if (isFinite(mx) && mx > 0 && nt > mx) nt = mx;
+      _mediaEl.currentTime = nt;
+    } catch (e) {}
+  }
+
+  function _mediaSetSpeed(sp) {
+    if (!_mediaEl) return;
+    try { _mediaEl.playbackRate = (sp && sp > 0) ? sp : 1.0; } catch (e) {}
+  }
+
+  window._mediaSeek = _mediaSeek; // hook for controls.js seekSeconds
+
+  /** Accepted media extensions (blob.type may be empty on KaiOS). */
+  function _isMediaFile(blob, name) {
+    var t = (blob && blob.type) ? String(blob.type).toLowerCase() : '';
+    if (t.indexOf('audio/') === 0) return true;
+    if (t.indexOf('video/') === 0) return true;
+    var ext = String(name || '').split('.').pop().toLowerCase();
+    return ['mp3','wav','ogg','oga','m4a','aac','amr','opus','flac','3gp','mp4','m4v'].indexOf(ext) !== -1;
+  }
+
+  // Load / Change Media (Synth Settings → Preload): same MozActivity picker
+  // as the MIDI loader, but validates the pick is an audio/media file.
+  // The settings overlay stays OPEN so the user lands back here (not the
+  // piano) with the fresh file name / Change Media label visible.
+  window.launchMediaPicker = function () {
+    // Exit fullscreen first so the MozActivity picker can cover the screen
+    // properly (same as the MIDI loader does).
+    try {
+      var _fsApp = document.getElementById('app');
+      if (_fsApp && _fsApp.classList.contains('fullscreen')) {
+        _fsApp.classList.remove('fullscreen');
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+        setTimeout(function () { try { if (typeof onResize === 'function') onResize(); } catch (e) {} }, 100);
+      }
+    } catch (e) {}
+    try {
+      window._pickerOpen = true;
+      var act = new MozActivity({ name: 'pick' });
+      act.onsuccess = function (res) {
+        window._pickerOpen = false;
+        var blob = null;
+        if (res.target && res.target.result) blob = res.target.result.blob || res.target.result;
+        else if (res.result && res.result.blob) blob = res.result.blob;
+        else if (res.blob) blob = res.blob;
+        else if (res instanceof Blob) blob = res;
+        if (!blob) return;
+        var name = String(blob.name || 'media').split('/').pop();
+        if (_isMediaFile(blob, name)) {
+          var url = URL.createObjectURL(blob);
+          try { if (_mediaUrl) URL.revokeObjectURL(_mediaUrl); } catch (e) {}
+          _mediaUrl = url;
+          _mediaErrShown = false;
+          if (typeof Settings !== 'undefined' && Settings.setMedia) {
+            try { Settings.setMedia(name, url); } catch (e) {}
+          }
+          Store.setState({ mediaName: name, mediaSrc: url });
+          if (typeof Settings !== 'undefined' && Settings.refreshMidiGroup) {
+            try { Settings.refreshMidiGroup(); } catch (e) {}
+          }
+        } else {
+          if (typeof window.showErrorDialog === 'function') {
+            try { window.showErrorDialog(L10n.t('err_not_media', 'Not a media file') + ':\n' + name, null, L10n.t('error', 'Error')); } catch (e) {}
+          }
+        }
+      };
+      act.onerror = function () { window._pickerOpen = false; };
+    } catch (e) { window._pickerOpen = false; }
+  };
+
+
+  // ── KaiAds: pause/resume playback while a fullscreen ad covers the app ──
+  // KaiAds best practice #3: content must pause under a fullscreen ad.
+  var _adWasPlaying = false;
+  function _adPausePlayback() {
+    try {
+      _adWasPlaying = (Store.getState().play === 'play');
+      if (_adWasPlaying) Store.setState({ play: 'pause' });
+    } catch (e) {}
+  }
+  function _adResumePlayback() {
+    try {
+      if (_adWasPlaying) { _adWasPlaying = false; Store.setState({ play: 'play' }); }
+    } catch (e) {}
+  }
+
+
   // ── STORE CHANGE HANDLER ──
 
   var _prevSpeed      = null;
   var _prevWave       = null;
   var _prevAudio      = null;
+  var _prevSynthEngine = null;
   var _prevPctBarVis  = null;
   var _prevLoadAnim   = null;
   var _prevLoadColor  = null;
@@ -1158,11 +1387,13 @@
       try { if (typeof _engine().setActive === 'function') _engine().setActive(true); } catch (eA) {}
       _engine().ensure();
       Sequencer.play();
+      _mediaPlay();
       acquireCpuWakeLock();
       acquireScreenWakeLock();
     } else if (state.play === 'pause' && prevPlay !== 'pause') {
       Sequencer.pause();
       _engine().silence();
+      _mediaPause();
       // No audible output → release the status-bar play indicator.
       try { if (typeof _engine().setActive === 'function') _engine().setActive(false); } catch (eA) {}
     } else if (state.play === 'stop' && prevPlay !== 'stop') {
@@ -1173,6 +1404,7 @@
       try { seqEnded = typeof Sequencer !== 'undefined' && Sequencer.isEnded && Sequencer.isEnded(); } catch (e) {}
       if (!seqEnded) { try { Sequencer.stop(); } catch (e) {} }
       _engine().silence();
+      _mediaStop();
       // Nothing sounding anymore → suspend AudioContext so the OS status-bar
       // play icon disappears (a latent 'content'-channel context keeps showing
       // "playing" even after the song ends).
@@ -1196,13 +1428,28 @@
     // Audio on/off (Settings → Synth → Audio). _prevAudio guards so the
     // toggle only fires Synth.mute on an actual change (mute() silences
     // instantly; the master gain write is direct, no param events).
+    // NOTE: in preload mode the system synth stays muted regardless of
+    // this toggle — toggling audio only mutes/unmutes the media itself.
     if (state.audio !== _prevAudio) {
       _prevAudio = state.audio;
-      Synth.mute(!state.audio);
+      var _preAudio = (state.synthEngine === 'preload');
+      Synth.mute(_preAudio || !state.audio);
+      _mediaApplyMute();
       // Soundbank routes straight to the context destination, so the master
       // Audio On/Off toggle must mute it explicitly too (SF engine).
       if (typeof Soundbank !== 'undefined' && Soundbank.mute) {
-        try { Soundbank.mute(!state.audio); } catch (eM) {}
+        try { Soundbank.mute(_preAudio || !state.audio); } catch (eM) {}
+      }
+    }
+
+    // Synth Engine (System / Preload): preload mode DISABLES the system
+    // synth — only the media file sounds, playing alongside the MIDI.
+    if (state.synthEngine !== _prevSynthEngine) {
+      _prevSynthEngine = state.synthEngine;
+      var _pre = (state.synthEngine === 'preload');
+      try { Synth.mute(_pre || !state.audio); } catch (eS) {}
+      if (typeof Soundbank !== 'undefined' && Soundbank.mute) {
+        try { Soundbank.mute(_pre || !state.audio); } catch (eSB) {}
       }
     }
 
@@ -1234,6 +1481,7 @@
     if (state.speed != null && state.speed !== _prevSpeed && !_demoActive && !_lockNoFile) {
       _prevSpeed = state.speed;
       Sequencer.setSpeed(state.speed);
+      _mediaSetSpeed(state.speed);
     }
 
     // File selected from picker
@@ -2647,6 +2895,9 @@
   function showNowPlayingNotification(name) {
     try {
       if (typeof Notification === 'undefined') return;
+      // Without a granted permission the notification only flashes as a
+      // transient toast and is never stored in the notification panel.
+      if (Notification.permission !== 'granted') return;
       var raw = name || Store.getState().fileName || '';
       var base = _nowPlayingBasename(raw) || raw || 'Unknown';
       if (_nowPlayingNotif) { try { _nowPlayingNotif.close(); } catch (e2) {} _nowPlayingNotif = null; }
@@ -2670,6 +2921,23 @@
   }
   function hideNowPlayingNotification() {
     if (_nowPlayingNotif) { try { _nowPlayingNotif.close(); } catch (e) {} _nowPlayingNotif = null; }
+  }
+  // Privileged apps must request the desktop-notification permission at
+  // runtime for the notification to PERSIST in the notification panel
+  // (certified apps like the upgrade tool get it granted at install). Call
+  // this while foregrounded (boot) so the later background notification
+  // actually sticks instead of flashing as a transient toast.
+  function _ensureNotifPermission() {
+    try {
+      if (typeof Notification === 'undefined') return;
+      if (Notification.permission === 'granted' || Notification.permission === 'denied') return;
+      if (typeof Notification.requestPermission === 'function') {
+        try {
+          var p = Notification.requestPermission(function () {});
+          if (p && typeof p.then === 'function') { p.catch(function () {}); }
+        } catch (e2) {}
+      }
+    } catch (e) {}
   }
   function acquireCpuWakeLock() {
     try {

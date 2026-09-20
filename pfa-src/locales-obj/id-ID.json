@@ -104,6 +104,38 @@
     "$v": "Keluaran Audio"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Mesin sintesis"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Muat media"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Ganti media"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Berkas media"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Penundaan media"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Detik sebelum media dimulai (0 = Nonaktif)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Bukan berkas media"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Format media ini tidak didukung perangkat. Coba berkas MP3 / WAV / M4A."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Mesin Suara"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Kredit & Kontribusi"
+    "$v": "Kredit"
   },
   {
     "$i": "about_c1",
-    "$v": "Dikembangkan oleh T.Hoang • Komponen desain KaiUI"
+    "$v": "Dikembangkan oleh T.Hoang"
   },
   {
     "$i": "about_c2",

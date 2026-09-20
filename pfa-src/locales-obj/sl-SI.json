@@ -104,6 +104,38 @@
     "$v": "Avdio izhod"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Sintezator"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Naloži medij"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Spremeni medij"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Medijska datoteka"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Zakasnitev medija"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Sekund pred začetkom medija (0 = Izk.)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Ni medijska datoteka"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Ta medijski format ni podprt v napravi. Poskusite datoteko MP3 / WAV / M4A."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Zvočni motor"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Zasluge in prispevki"
+    "$v": "Zasluge"
   },
   {
     "$i": "about_c1",
-    "$v": "Razvil T.Hoang • Oblikovalske komponente KaiUI"
+    "$v": "Razvil T.Hoang"
   },
   {
     "$i": "about_c2",

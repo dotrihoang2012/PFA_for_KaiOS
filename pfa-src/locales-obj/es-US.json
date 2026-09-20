@@ -104,6 +104,38 @@
     "$v": "Salida de audio"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Motor de síntesis"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Cargar medios"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Cambiar medios"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Archivo multimedia"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Retardo de medios"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Segundos antes de que comience el medio (0 = Desactivado)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "No es un archivo multimedia"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Este formato multimedia no es compatible con el dispositivo. Pruebe un archivo MP3 / WAV / M4A."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Motor de sonido"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Créditos y contribuciones"
+    "$v": "Créditos"
   },
   {
     "$i": "about_c1",
-    "$v": "Desarrollado por T.Hoang • Componentes de diseño KaiUI"
+    "$v": "Desarrollado por T.Hoang"
   },
   {
     "$i": "about_c2",
@@ -917,7 +949,7 @@
   },
   {
     "$i": "opt_soundbank",
-    "$v": "<b>FuenteDeSonido</b>"
+    "$v": "FuenteDeSonido"
   },
   {
     "$i": "sf_buffer_length",

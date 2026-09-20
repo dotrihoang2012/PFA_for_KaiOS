@@ -104,6 +104,38 @@
     "$v": "Zvukový výstup"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Syntetizátor"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Načítať médiá"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Zmeniť médiá"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Mediálny súbor"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Oneskorenie médií"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Sekúnd pred spustením médií (0 = Vyp.)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Nie je mediálny súbor"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Tento formát médií nie je podporovaný zariadením. Skúste súbor MP3 / WAV / M4A."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Zvukový motor"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Kredity a prispievanie"
+    "$v": "Kredity"
   },
   {
     "$i": "about_c1",
-    "$v": "Vyvinutý T.Hoangom • Dizajnové komponenty KaiUI"
+    "$v": "Vyvinutý T.Hoangom"
   },
   {
     "$i": "about_c2",

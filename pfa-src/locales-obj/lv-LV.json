@@ -104,6 +104,38 @@
     "$v": "Audio izvade"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Sintezators"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Ielādēt mediju"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Mainīt mediju"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Mediju fails"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Mediju aizkavēšanās"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Sekundes pirms medijas sākuma (0 = Izsl.)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Nav mediju fails"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Šo mediju formātu ierīce neatbalsta. Mēģiniet MP3 / WAV / M4A failu."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Skaņas dzinējs"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Kredīti un ieguldījums"
+    "$v": "Kredīti"
   },
   {
     "$i": "about_c1",
-    "$v": "Izstrādāja T.Hoang • KaiUI dizaina komponenti"
+    "$v": "Izstrādāja T.Hoang"
   },
   {
     "$i": "about_c2",

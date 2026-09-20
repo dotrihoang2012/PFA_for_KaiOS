@@ -104,6 +104,38 @@
     "$v": "Hljóðúttak"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Synthesizer"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Hlaða fjölmiðla"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Skipta um fjölmiðla"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Fjölmiðlaskrá"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Fjölmiðlatöf"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Sekúndur áður en fjölmiðillinn byrjar (0 = Af)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Ekki fjölmiðlaskrá"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Þetta fjölmiðlasnið er ekki stutt af tækinu. Prófaðu MP3 / WAV / M4A skrá."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Hljóðvél"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Inneign og framlag"
+    "$v": "Inneign"
   },
   {
     "$i": "about_c1",
-    "$v": "Þróað af T.Hoang • KaiUI hönnunarhlutar"
+    "$v": "Þróað af T.Hoang"
   },
   {
     "$i": "about_c2",

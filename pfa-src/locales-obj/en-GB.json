@@ -104,6 +104,38 @@
     "$v": "Audio Output"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Synth Engine"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Load Media"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Change Media"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Media File"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Media Delay"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Seconds before the media starts (0 = Off)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Not a media file"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "This media format is not supported by the device. Try an MP3 / WAV / M4A file."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Sound Engine"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Credits & Contributing"
+    "$v": "Credits"
   },
   {
     "$i": "about_c1",
-    "$v": "Developed by T.Hoang • KaiUI design components"
+    "$v": "Developed by T.Hoang"
   },
   {
     "$i": "about_c2",

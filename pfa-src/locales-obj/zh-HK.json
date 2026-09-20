@@ -104,6 +104,38 @@
     "$v": "音訊輸出"
   },
   {
+    "$i": "synth_engine",
+    "$v": "合成器引擎"
+  },
+  {
+    "$i": "load_media",
+    "$v": "載入媒體"
+  },
+  {
+    "$i": "change_media",
+    "$v": "更改媒體"
+  },
+  {
+    "$i": "media_file",
+    "$v": "媒體檔案"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "媒體延遲"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "媒體開始前的秒數（0 = 關閉）"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "不是媒體檔案"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "此媒體格式不受裝置支援。請嘗試 MP3 / WAV / M4A 檔案。"
+  },
+  {
     "$i": "sound_engine",
     "$v": "聲音引擎"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "學分與貢獻"
+    "$v": "學分"
   },
   {
     "$i": "about_c1",
-    "$v": "由 T.Hoang 開發 • KaiUI 設計元件"
+    "$v": "由 T.Hoang 開發"
   },
   {
     "$i": "about_c2",

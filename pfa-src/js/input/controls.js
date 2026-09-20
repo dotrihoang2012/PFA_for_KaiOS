@@ -1364,6 +1364,8 @@
     bumpSeekOsd(delta);
     var wasPlaying = Sequencer.isPlaying();
     try { Sequencer.seek(delta); } catch (e) { return; }
+    // Preload media follows the ±1s seek too (main.js hook).
+    if (typeof window._mediaSeek === 'function') { try { window._mediaSeek(delta); } catch (e) {} }
     try {
       if (wasPlaying) {
         Sequencer.play();

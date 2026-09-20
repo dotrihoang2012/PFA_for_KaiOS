@@ -104,6 +104,38 @@
     "$v": "Output ng Tunog"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Makina ng sintesis"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Mag-load ng media"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Palitan ang media"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Media file"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Pagkaantala ng media"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Mga segundo bago magsimula ang media (0 = Naka-off)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Hindi media file"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Hindi sinusuportahan ng device ang format na ito. Subukan ang MP3 / WAV / M4A."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Makina ng Tunog"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Mga Kredito at Pag-aambag"
+    "$v": "Mga Kredito"
   },
   {
     "$i": "about_c1",
-    "$v": "Binuo ng T.Hoang • mga bahagi ng disenyo ng KaiUI"
+    "$v": "Binuo ng T.Hoang"
   },
   {
     "$i": "about_c2",

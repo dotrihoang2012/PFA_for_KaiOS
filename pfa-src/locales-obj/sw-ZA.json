@@ -104,6 +104,38 @@
     "$v": "Pato la Sauti"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Injini ya sinthesisi"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Pakia media"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Badilisha media"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Faili la media"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Ucheleweshaji wa media"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Sekunde kabla ya media kuanza (0 = Imazima)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Sio faili la media"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Fomati hii ya media haitumiki kwenye kifaa. Jaribu faili la MP3 / WAV / M4A."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Injini ya Sauti"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Mikopo & Kuchangia"
+    "$v": "Mikopo"
   },
   {
     "$i": "about_c1",
-    "$v": "Imetengenezwa na T.Hoang • Vipengee vya muundo wa KaiUI"
+    "$v": "Imetengenezwa na T.Hoang"
   },
   {
     "$i": "about_c2",

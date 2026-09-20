@@ -177,18 +177,18 @@ var Synth = (function () {
 
     // 1. Kill expired voices (scheduled envelope fully done + margin)
     for (var i = 0; i < LIMIT; i++) {
-      if (voices[i].alive && performance.now() > voices[i].expires) freeSlot(i);
+      if (voices[i] && voices[i].alive && performance.now() > voices[i].expires) freeSlot(i);
     }
 
     // 2. First-free slot
     for (var j = 0; j < LIMIT; j++) {
-      if (!voices[j].alive) return j;
+      if (voices[j] && !voices[j].alive) return j;
     }
 
     // 3. Count voices per channel (for fairness)
     var chCount = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     for (var k = 0; k < LIMIT; k++) {
-      if (voices[k].alive && voices[k].ch >= 0 && voices[k].ch < 16) {
+      if (voices[k] && voices[k].alive && voices[k].ch >= 0 && voices[k].ch < 16) {
         chCount[voices[k].ch]++;
       }
     }
@@ -198,7 +198,7 @@ var Synth = (function () {
     if (channel >= 0 && channel < 16 && chCount[channel] >= MAX_PER_CHANNEL) {
       var oldestSame = -1, oldestBorn = Infinity;
       for (var m = 0; m < LIMIT; m++) {
-        if (voices[m].alive && voices[m].ch === channel && voices[m].born < oldestBorn) {
+        if (voices[m] && voices[m].alive && voices[m].ch === channel && voices[m].born < oldestBorn) {
           oldestBorn = voices[m].born;
           oldestSame = m;
         }
@@ -214,7 +214,7 @@ var Synth = (function () {
     if (overChannel !== -1) {
       var oldestOver = -1, oldestOverBorn = Infinity;
       for (var n = 0; n < LIMIT; n++) {
-        if (voices[n].alive && voices[n].ch === overChannel && voices[n].born < oldestOverBorn) {
+        if (voices[n] && voices[n].alive && voices[n].ch === overChannel && voices[n].born < oldestOverBorn) {
           oldestOverBorn = voices[n].born;
           oldestOver = n;
         }
@@ -225,7 +225,7 @@ var Synth = (function () {
     // 6. Last resort — steal oldest overall
     var idx = 0, best = Infinity;
     for (var p = 0; p < LIMIT; p++) {
-      if (voices[p].born < best) { best = voices[p].born; idx = p; }
+      if (voices[p] && voices[p].born < best) { best = voices[p].born; idx = p; }
     }
     freeSlot(idx);
     return idx;
@@ -358,7 +358,7 @@ var Synth = (function () {
 
   function noteOff(note, ch) {
     for (var i = 0; i < LIMIT; i++) {
-      if (voices[i].alive && voices[i].note === note && voices[i].ch === ch) {
+      if (voices[i] && voices[i].alive && voices[i].note === note && voices[i].ch === ch) {
         freeSlot(i);
         break;
       }
@@ -385,7 +385,7 @@ var Synth = (function () {
   function zoo() {
     var now = performance.now();
     for (var i = 0; i < voices.length; i++) {
-      if (voices[i].alive && now > voices[i].expires) freeSlot(i);
+      if (voices[i] && voices[i].alive && now > voices[i].expires) freeSlot(i);
       // Idle branches cost the mixer forever ("background pop" while silent). Once the
       // residual is fully gone, detach the voice from the graph — oscillator
       // keeps running (no stop/start churn), reattach on next note.
@@ -398,7 +398,7 @@ var Synth = (function () {
   }
 
   function silence() {
-    for (var i = 0; i < LIMIT; i++) if (voices[i].alive) freeSlot(i);
+    for (var i = 0; i < LIMIT; i++) if (voices[i] && voices[i].alive) freeSlot(i);
   }
 
   // Audio On/Off toggle (Settings → Synth → Audio). Muted: not a single
@@ -464,7 +464,7 @@ var Synth = (function () {
 
 	  function getVoiceCount() {
     var c = 0;
-    for (var i = 0; i < LIMIT; i++) if (voices[i].alive) c++;
+    for (var i = 0; i < LIMIT; i++) if (voices[i] && voices[i].alive) c++;
     return c;
   }
 

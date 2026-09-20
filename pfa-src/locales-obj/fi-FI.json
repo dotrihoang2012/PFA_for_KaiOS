@@ -104,6 +104,38 @@
     "$v": "Äänilähtö"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Syntetisaattori"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Lataa media"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Vaihda media"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Mediatiedosto"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Median viive"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Sekunteja ennen median alkua (0 = pois)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Ei mediatiedosto"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Tämä mediaformaatti ei ole laitteen tukema. Kokeile MP3-, WAV- tai M4A-tiedostoa."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Äänimoottori"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Tekijät ja osallistuminen"
+    "$v": "Tekijät"
   },
   {
     "$i": "about_c1",
-    "$v": "Kehittäjä: T.Hoang • KaiUI-suunnittelukomponentit"
+    "$v": "Kehittäjä: T.Hoang"
   },
   {
     "$i": "about_c2",

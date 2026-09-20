@@ -104,6 +104,38 @@
     "$v": "Hangkimenet"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Szintetizátor"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Média betöltése"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Média módosítása"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Médiafájl"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Médiakésleltetés"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Másodperc a média indulása előtt (0 = Ki)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Nem médiafájl"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Ezt a médiaformátumot nem támogatja a készülék. Próbáljon MP3 / WAV / M4A fájlt."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Hangmotor"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Kredit és hozzájárulás"
+    "$v": "Kredit"
   },
   {
     "$i": "about_c1",
-    "$v": "Fejlesztője: T.Hoang • KaiUI tervezési komponensek"
+    "$v": "Fejlesztője: T.Hoang"
   },
   {
     "$i": "about_c2",

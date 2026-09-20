@@ -105,6 +105,10 @@ var Settings = (function () {
   var DEFAULTS = {
     midi: {
       engine:       'synth',   // 'synth' | 'soundbank'
+      synthEngine:  'system',  // 'system' | 'preload' — preload plays a media alongside the MIDI
+      mediaName:    '',        // display name of the preloaded media (no path)
+      mediaSrc:     '',        // internal blob URL of the preloaded media
+      mediaDelay:   0,         // seconds before the media starts, 0 = off
       waveform:     'square',  // 'sine' | 'square' | 'saw' | 'triangle'
       audio:        true,      // master audio on/off toggle
       skipSlowOpen: true,      // skip an absurdly slow opening tempo (< 30 BPM)
@@ -192,19 +196,36 @@ var Settings = (function () {
    * Static settings hierarchy: schema of every option row across all 4
    * top-level groups (Midi, Visual, Dev, System).
    */
+  // Preload engine: the system synth rows are hidden and the media rows
+  // (Load/Change Media, file name, Delay Start) appear instead.
+  function _isPreload() { return _values.midi.synthEngine === 'preload'; }
+
   var SCHEMA = {
     midi: [
       { key: 'audio',       l10nKey: 'audio_output',     label: 'Audio Output', type: 'bool' },
+      { key: 'synthEngine', l10nKey: 'synth_engine',     label: 'Synth Engine', type: 'enum',
+        choices: [['system','System'],['preload','Preload']] },
       { key: 'engine',      l10nKey: 'sound_engine',     label: 'Sound Engine', type: 'enum',
-        choices: [['synth','Oscillator'],['soundbank','SoundFont']] },
+        choices: [['synth','Oscillator'],['soundbank','SoundFont']],
+        hidden: function () { return _isPreload(); } },
       { key: 'sfsettings',  l10nKey: 'soundfont_settings', label: 'Soundfont Settings', type: 'sub', subkind: 'sfsettings',
         // Soundfont engine options — only meaningful while the engine is
-        // Soundbank. Hidden on the Synth option list when engine === 'synth'
-        // (the group re-renders from applyChange on the engine row).
-        hidden: function () { return _values.midi.engine !== 'soundbank'; } },
+        // Soundbank. Hidden when the engine is System or the preload media
+        // mode is on (the group re-renders from applyChange on the row).
+        hidden: function () { return _isPreload() || _values.midi.engine !== 'soundbank'; } },
       { key: 'waveform',    l10nKey: 'synth_waveform',   label: 'Synth Waveform', type: 'enum',
-        choices: [['sine','Sine'],['square','Square'],['saw','Saw'],['triangle','Triangle']] },
-      { key: 'skipSlowOpen', l10nKey: 'skip_slow_intro', label: 'Skip Slow Intro', type: 'bool' },
+        choices: [['sine','Sine'],['square','Square'],['saw','Saw'],['triangle','Triangle']],
+        hidden: function () { return _isPreload(); } },
+      { key: 'skipSlowOpen', l10nKey: 'skip_slow_intro', label: 'Skip Slow Intro', type: 'bool',
+        hidden: function () { return _isPreload(); } },
+      // Preload media rows — only while Synth Engine = Preload.
+      { key: 'mediaLoad',   l10nKey: 'load_media',       label: 'Load Media', type: 'action', labelFn: mediaLoadLabel,
+        hidden: function () { return !_isPreload(); } },
+      // File-name + Delay Start rows appear only once a media is loaded.
+      { key: 'mediaName',   l10nKey: 'media_file',       label: 'Media File', type: 'info',
+        hidden: function () { return !_isPreload() || !_values.midi.mediaName; } },
+      { key: 'mediaDelay',  l10nKey: 'media_delay',      label: 'Media Delay', type: 'medtext',
+        hidden: function () { return !_isPreload() || !_values.midi.mediaName; } },
     ],
     visual: [
       { key: 'general',     label: 'General',         type: 'sub', subkind: 'general' },
@@ -291,6 +312,14 @@ var Settings = (function () {
     return L10n.t('load_soundfont', 'Load Soundfont');
   }
 
+  // Preload media row label — "Change Media" once a media file is loaded.
+  function mediaLoadLabel() {
+    try {
+      var mn = _values.midi.mediaName || '';
+      return mn ? L10n.t('change_media', 'Change Media') : L10n.t('load_media', 'Load Media');
+    } catch (e) { return L10n.t('load_media', 'Load Media'); }
+  }
+
   // â”€â”€ Local state â”€â”€
   var _values = clone(DEFAULTS);
   var _openGroup = null;     // 'hub' | 'midi' | 'visual' | 'dev' | null
@@ -298,6 +327,7 @@ var Settings = (function () {
   var _groupReturnIdx = 0;   // focus row to restore when backing to it
   var _focusIdx = 0;
   var _onCloseCb = null;     // notification when overlay closes
+  var _medRow = null;        // current preload Media Delay text-box row (if any)
 
   // Pipeline busy (MIDI / note analysis running) â€” drives the System
   // "Cancel Analysis" row: only visible WHILE an analysis is in progress.
@@ -374,6 +404,11 @@ var Settings = (function () {
         var parsed = JSON.parse(raw);
         if (parsed && typeof parsed === 'object') {
           _values = merge(DEFAULTS, parsed);
+          // Preload media is SESSION-ONLY: a fresh "Load Media" row every
+          // launch (the blob URL dies with the app anyway). Only the Media
+          // Delay value persists across restarts.
+          _values.midi.mediaName = '';
+          _values.midi.mediaSrc = '';
           // Migration (one-shot) for users of PREVIOUS builds: the first run
           // of this version forces Note Trail to its new default of 1.0 for
           // any persisted profile that predates this change (no __upgraded
@@ -420,6 +455,10 @@ var Settings = (function () {
     Store.setState({
       waveform:      _values.midi.waveform,
       engine:        _values.midi.engine,
+      synthEngine:   _values.midi.synthEngine,
+      mediaName:     _values.midi.mediaName,
+      mediaSrc:      _values.midi.mediaSrc,
+      mediaDelay:    _values.midi.mediaDelay,
       audio:         _values.midi.audio,
       sfBuffer:      _values.midi.sfBuffer,
       sfVoices:      _values.midi.sfVoices,
@@ -573,7 +612,7 @@ var Settings = (function () {
     // Instant show â€” visibility toggle only, no slide animation.
     overlay.classList.remove('hidden');
 
-    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider');
+    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider, .kai-text-input');
     if (rows.length) focusRow(rows, 0);
 
     if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
@@ -637,7 +676,7 @@ var Settings = (function () {
     if (header) header.textContent = groupHeader(group);
     overlay.setAttribute('data-group', group);
     rebuildRows(overlay, group);
-    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider');
+    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider, .kai-text-input');
     if (rows.length) focusRow(rows, 0);
     if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
   }
@@ -657,7 +696,7 @@ var Settings = (function () {
     if (header) header.textContent = groupHeader(target);
     overlay.setAttribute('data-group', target);
     rebuildRows(overlay, target);
-    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider');
+    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider, .kai-text-input');
     if (rows.length) focusRow(rows, _focusIdx);
     if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
   }
@@ -671,7 +710,7 @@ var Settings = (function () {
     if (header) header.textContent = groupHeader('hub');
     overlay.setAttribute('data-group', 'hub');
     rebuildRows(overlay, 'hub');
-    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider');
+    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider, .kai-text-input');
     if (rows.length) focusRow(rows, _focusIdx);
     if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
   }
@@ -1272,7 +1311,7 @@ var Settings = (function () {
       var parent = document.getElementById('settings-overlay');
       if (parent && _openGroup) {
         rebuildRows(parent, _openGroup);
-        var rows = parent.querySelectorAll('.setting-row, .setting-row-slider');
+        var rows = parent.querySelectorAll('.setting-row, .setting-row-slider, .kai-text-input');
         if (rows.length) {
           if (_focusIdx >= rows.length) _focusIdx = rows.length - 1;
           focusRow(rows, _focusIdx);
@@ -2006,10 +2045,11 @@ var Settings = (function () {
     _sub.items.push(item);
 
     input.addEventListener('input', function () {
-      var digits = input.value.replace(/[^0-9]/g, '');
-      if (digits.length > 0) {
-        var num = parseInt(digits, 10);
-        if (!isNaN(num)) {
+      // Track last valid number while typing — decimals with '.' or ','.
+      var numStr = input.value.trim().replace(/,/g, '.').replace(/[^\d.]/g, '');
+      if (numStr.length > 0) {
+        var num = parseFloat(numStr);
+        if (isFinite(num) && num >= 0) {
           item.lastValidValue = num;
         }
       }
@@ -2026,13 +2066,14 @@ var Settings = (function () {
       try { item.input.blur(); } catch (e) {}
     }
     var raw = item.input ? item.input.value : '';
-    var digits = String(raw).replace(/[^0-9]/g, '');
+    // Decimals with either '.' or ',' as the separator (e.g. "1.5" / "1,5").
+    var numStr = String(raw).trim().replace(/,/g, '.').replace(/[^\d.]/g, '');
     var n;
-    if (digits.length === 0) {
+    if (numStr.length === 0) {
       n = (item.lastValidValue != null) ? item.lastValidValue : (_values.visual[item.part] != null ? _values.visual[item.part] : 0);
     } else {
-      n = parseInt(digits, 10);
-      if (isNaN(n)) {
+      n = parseFloat(numStr);
+      if (!isFinite(n)) {
         n = (item.lastValidValue != null) ? item.lastValidValue : 0;
       }
     }
@@ -2803,7 +2844,7 @@ var Settings = (function () {
           var parent = document.getElementById('settings-overlay');
           if (parent && _openGroup) {
             rebuildRows(parent, _openGroup);
-            var rows = parent.querySelectorAll('.setting-row, .setting-row-slider');
+            var rows = parent.querySelectorAll('.setting-row, .setting-row-slider, .kai-text-input');
             if (rows.length) focusRow(rows, Math.min(_focusIdx, rows.length - 1));
           }
         }
@@ -3706,6 +3747,27 @@ var Settings = (function () {
         }(input, def, trk));
 
         list.appendChild(row);
+      } else if (def.type === 'medtext') {
+        // In-list numeric text box — EXACT same markup/style as the Visual
+        // General page's Start Delay box (pure .kai-text-input, no
+        // .setting-row chrome); the value is stored to midi.mediaDelay.
+        row.className = 'kai-text-input';
+        var mtLab = document.createElement('label');
+        mtLab.className = 'kai-text-input-label';
+        mtLab.textContent = L10n.t(def.l10nKey || def.key, def.label);
+        row.appendChild(mtLab);
+        var mtInput = document.createElement('input');
+        mtInput.className = 'kai-text-input-input';
+        mtInput.type = 'tel';
+        var mtVal = (val != null && !isNaN(Number(val))) ? Number(val) : 0;
+        mtInput.value = String(mtVal);
+        row.appendChild(mtInput);
+        var mtHint = document.createElement('div');
+        mtHint.className = 'kai-text-input-hint';
+        mtHint.textContent = L10n.t((def.l10nKey || def.key) + '_hint', 'Delay before the media starts (seconds, 0 = Off)');
+        row.appendChild(mtHint);
+        list.appendChild(row);
+        _medRow = { row: row, input: mtInput };
       } else {
         row.className = 'setting-row';
 
@@ -3744,10 +3806,23 @@ var Settings = (function () {
           } else {
             valEl.textContent = L10n.t('opt_auto', 'Auto');
           }
-        } else if (def.type === 'action') {
-          // One-shot action row (Export Log) â€” arrow glyph, no value text;
+} else if (def.type === 'action') {
+          // One-shot action row (Export Log) — arrow glyph, no value text;
           // Enter / ArrowRight fires the action, never cycles a value.
           row.classList.add('has-sub');
+        } else if (def.type === 'info') {
+          // Read-only display row (preloaded media file name). The file name
+          // sits on its OWN line below the "Media File" label, wrapping long
+          // names instead of clipping.
+          row.style.flexDirection = 'column';
+          row.style.alignItems = 'flex-start';
+          row.style.gap = '0.3rem';
+          valEl.style.whiteSpace = 'normal';
+          valEl.style.wordBreak = 'break-all';
+          valEl.style.textAlign = 'left';
+          valEl.style.marginLeft = '0';
+          valEl.style.width = '100%';
+          valEl.textContent = _values.midi.mediaName || L10n.t('opt_none', 'None');
         } else {
           valEl.textContent = formatValue(def, val);
         }
@@ -4010,7 +4085,7 @@ var Settings = (function () {
     var parent = document.getElementById('settings-overlay');
     if (!parent || !_openGroup) return;
     rebuildRows(parent, _openGroup);
-    var rows = parent.querySelectorAll('.setting-row, .setting-row-slider');
+    var rows = parent.querySelectorAll('.setting-row, .setting-row-slider, .kai-text-input');
     if (rows.length) focusRow(rows, Math.min(_focusIdx, rows.length - 1));
   }
 
@@ -4209,11 +4284,40 @@ var Settings = (function () {
         else if (bot > listBot) list.scrollTop = bot - list.clientHeight;
       }
     }
+    // Media Delay text box: selecting the row focuses its <input> directly
+    // (same as the Visual General page) so digits type straight away.
+    try {
+      if (focused.getAttribute && focused.getAttribute('data-type') === 'medtext') {
+        var _mi = focused.querySelector('input');
+        if (_mi) { _mi.focus(); }
+      }
+    } catch (e) {}
   }
 
   // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // Keyboard navigation when overlay is open
   // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+  /**
+   * Commit the preload Media Delay text box: parse digits, clamp, persist.
+   * Empty input keeps the last valid value; garbage resolves to 0.
+   */
+  function _medCommit() {
+    var m = _medRow;
+    if (!m || !m.input) return;
+    if (document.activeElement === m.input) { try { m.input.blur(); } catch (e) {} }
+    // Decimals with either '.' or ',' as the separator (e.g. "1.5" / "1,5").
+    var raw = String(m.input.value).trim().replace(/,/g, '.').replace(/[^\d.]/g, '');
+    var n = parseFloat(raw);
+    if (!isFinite(n) || n < 0) {
+      n = (_values.midi.mediaDelay != null && !isNaN(_values.midi.mediaDelay))
+        ? _values.midi.mediaDelay : 0;
+    }
+    _values.midi.mediaDelay = n;
+    m.input.value = String(n);
+    Store.setState({ mediaDelay: n });
+    save();
+  }
 
   /**
    * Handle a key event while overlay is open. Returns true if consumed.
@@ -4228,8 +4332,37 @@ var Settings = (function () {
 
     var overlay = document.getElementById('settings-overlay');
     if (!overlay) return false;
-    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider');
+    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider, .kai-text-input');
     if (!rows.length) return false;
+
+    // Preload Media Delay text box editing: while its <input> is focused,
+    // printable digits reach it natively (controls.js pass-through); these
+    // keys behave like the Visual General box — Backspace deletes a digit
+    // (empty → commit + exit), Enter/RSK commit + exit, and Up/Down commit
+    // then fall through to the normal navigation below.
+    if (_medRow && _medRow.input && document.activeElement === _medRow.input) {
+      if (key === 'Backspace' || key === Constants.KEY.BACKSPACE) {
+        var _medVal = String(_medRow.input.value || '');
+        if (_medVal.length > 0) {
+          _medRow.input.value = _medVal.slice(0, -1);
+          return true;
+        }
+        _medCommit();
+        try { _medRow.input.blur(); } catch (e) {}
+        return true;
+      }
+      if (key === 'ArrowUp' || key === Constants.KEY.ARROW_UP ||
+          key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN) {
+        _medCommit();
+        try { _medRow.input.blur(); } catch (e) {}
+        // fall through to the ArrowUp/Down handlers below (move away)
+      } else if (key === Constants.KEY.ENTER || key === 13 || key === 'Enter' ||
+                 key === Constants.KEY.SOFT_RIGHT || key === 'SoftRight') {
+        _medCommit();
+        try { _medRow.input.blur(); } catch (e) {}
+        return true;
+      }
+    }
 
     // Back â†’ return to the group we drilled in from (Developer inside
     // System â†’ System; any hub page â†’ hub), else close.
@@ -4270,6 +4403,14 @@ var Settings = (function () {
       if (t === 'action') {
         // One-shot dev action rows fire on Enter / ArrowRight.
         runDevAction(rowE);
+        return true;
+      }
+      if (t === 'medtext') {
+        // Focus the numeric text box — editing starts (digits reach the
+        // input natively); Back/Enter/RSK commit and return to list nav.
+        if (_medRow && _medRow.row === rowE && _medRow.input) {
+          try { _medRow.input.focus(); _medRow.input.select(); } catch (e) {}
+        }
         return true;
       }
       if (t === 'sfrow') {
@@ -4324,6 +4465,13 @@ var Settings = (function () {
       if (tR === 'color') { openSub('color', rowR.getAttribute('data-key')); return true; }
       if (tR === 'action') {
         runDevAction(rowR);
+        return true;
+      }
+      if (tR === 'medtext') {
+        // Same as Enter: focus the Media Delay text box for editing.
+        if (_medRow && _medRow.row === rowR && _medRow.input) {
+          try { _medRow.input.focus(); _medRow.input.select(); } catch (e) {}
+        }
         return true;
       }
       if (tR === 'sfrow') {
@@ -4387,7 +4535,7 @@ var Settings = (function () {
       _rebuildGroupRows();
       var overlay = document.getElementById('settings-overlay');
       if (!overlay) return;
-      var rows2 = overlay.querySelectorAll('.setting-row, .setting-row-slider');
+      var rows2 = overlay.querySelectorAll('.setting-row, .setting-row-slider, .kai-text-input');
       for (var k = 0; k < rows2.length; k++) {
         if (sfRowFor(rows2[k]) && sfRowId(rows2[k]) === String(id)) {
           focusRow(rows2, k);
@@ -4481,6 +4629,7 @@ var Settings = (function () {
       else if (k === 'resetAll' && typeof window.openResetConfirm === 'function') window.openResetConfirm();
       else if (k === 'about' && typeof window.showAboutApp === 'function') window.showAboutApp();
       else if (k === 'loadMidi' && typeof window.launchPickerAction === 'function') window.launchPickerAction();
+      else if (k === 'mediaLoad' && typeof window.launchMediaPicker === 'function') window.launchMediaPicker();
       else if (k === 'cancelAnalysis' && typeof window.cancelAnalyze === 'function') window.cancelAnalyze();
       else if (k === 'clearMidi' && typeof window.clearMidiAction === 'function') window.clearMidiAction();
       else if (k === 'fullscreen' && typeof window.toggleFullscreen === 'function') window.toggleFullscreen();
@@ -4567,11 +4716,15 @@ var Settings = (function () {
     }
     // Engine row: show/hide the Soundfont Settings row immediately (it only
     // exists while the engine is 'soundbank') â€” re-render the group in place.
-    if (group === 'midi' && key === 'engine' && !_sub) {
+    // Engine row: show/hide the Soundfont Settings row immediately (it only
+    // exists while the engine is 'soundbank') — re-render the group in place.
+    if ((group === 'midi' && key === 'engine' && !_sub) ||
+        (group === 'midi' && key === 'synthEngine' && !_sub)) {
+      _medRow = null;
       var ovE = document.getElementById('settings-overlay');
       if (ovE && !ovE.classList.contains('hidden')) {
         rebuildRows(ovE, 'midi');
-        var rowsE = ovE.querySelectorAll('.setting-row, .setting-row-slider');
+        var rowsE = ovE.querySelectorAll('.setting-row, .setting-row-slider, .kai-text-input');
         if (rowsE.length) focusRow(rowsE, Math.min(_focusIdx, rowsE.length - 1));
         if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
       }
@@ -4610,6 +4763,10 @@ var Settings = (function () {
   function _mapToStore(group, key, val) {
     if (group === 'midi') {
       if (key === 'engine')       return { engine: val };
+      if (key === 'synthEngine')  return { synthEngine: val };
+      if (key === 'mediaName')    return { mediaName: val };
+      if (key === 'mediaSrc')     return { mediaSrc: val };
+      if (key === 'mediaDelay')   return { mediaDelay: val };
       if (key === 'waveform')     return { waveform: val };
       if (key === 'audio')        return { audio: val };
       if (key === 'skipSlowOpen') return { skipSlowOpen: val };
@@ -4848,6 +5005,15 @@ var Settings = (function () {
     save();
   }
 
+  /** Set the preload media file (name for display + src for playback).
+   *  SESSION-ONLY: never persisted — a fresh "Load Media" on next launch.
+   *  Only the Media Delay value survives a restart. */
+  function setMedia(name, src) {
+    _values.midi.mediaName = name || '';
+    _values.midi.mediaSrc = src || '';
+    Store.setState({ mediaName: _values.midi.mediaName, mediaSrc: _values.midi.mediaSrc });
+  }
+
   /**
    * Apply a Keyboard Range preset from outside the settings UI (hotkeys):
    * '88' | '128' | 'custom' â€” same path as the in-page Key Count row.
@@ -4867,8 +5033,24 @@ var Settings = (function () {
     if (!overlay || overlay.classList.contains('hidden') || !_openGroup) return;
     if (_openGroup === 'hub') return;
     rebuildRows(overlay, _openGroup);
-    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider');
+    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider, .kai-text-input');
     if (rows.length) focusRow(rows, Math.min(_focusIdx, rows.length - 1));
+  }
+
+  /**
+   * Refresh the Synth (midi) group rows in place — used after a preload
+   * media file is picked so the Load → Change label and the file-name row
+   * update live. Exposed as window.refreshSynthMediaRow for main.js.
+   */
+  function refreshMidiGroup() {
+    if (_sub) return;
+    var overlay = document.getElementById('settings-overlay');
+    if (!overlay || overlay.classList.contains('hidden') || _openGroup !== 'midi') return;
+    _medRow = null;
+    rebuildRows(overlay, 'midi');
+    var rows = overlay.querySelectorAll('.setting-row, .setting-row-slider, .kai-text-input');
+    if (rows.length) focusRow(rows, Math.min(_focusIdx, rows.length - 1));
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
   }
 
   /**
@@ -4938,8 +5120,10 @@ var Settings = (function () {
     applyInfoCard:  applyInfoCard,
     applyVisual:    applyVisual,
     setAudio:       setAudio,
+    setMedia:       setMedia,
     setKbPreset:    setKbPreset,
     refreshCurrentRows: refreshCurrentRows,
+    refreshMidiGroup:   refreshMidiGroup,
     exportPayload:      exportPayload,
     applyImportedSettings: applyImportedSettings,
     // Read-only helpers for controls.js softkeys: whether a sub-page is

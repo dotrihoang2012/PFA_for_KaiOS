@@ -104,6 +104,38 @@
     "$v": "Аудио излаз"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Sintezator"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Učitaj medije"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Promeni medije"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Medijski fajl"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Kašnjenje medija"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Sekundi pre nego što medij počne (0 = Isklj.)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Nije medijski fajl"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Ovaj medijski format nije podržan na uređaju. Pokušajte MP3 / WAV / M4A fajl."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Соунд Енгине"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Заслуге и доприноси"
+    "$v": "Заслуге"
   },
   {
     "$i": "about_c1",
-    "$v": "Развио Т.Хоанг • КаиУИ компоненте дизајна"
+    "$v": "Развио Т.Хоанг"
   },
   {
     "$i": "about_c2",

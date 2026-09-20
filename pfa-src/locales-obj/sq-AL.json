@@ -104,6 +104,38 @@
     "$v": "Dalja audio"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Motori i sintezës"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Ngarko medien"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Ndrysho medien"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Skedar media"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Vonesa e medias"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Sekonda para se të fillojë media (0 = Fikur)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Nuk është skedar media"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Ky format media nuk mbështetet nga pajisja. Provoni një skedar MP3 / WAV / M4A."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Motori i zërit"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Kredite dhe kontribut"
+    "$v": "Kredite"
   },
   {
     "$i": "about_c1",
-    "$v": "Zhvilluar nga T.Hoang • Komponentët e dizajnit KaiUI"
+    "$v": "Zhvilluar nga T.Hoang"
   },
   {
     "$i": "about_c2",

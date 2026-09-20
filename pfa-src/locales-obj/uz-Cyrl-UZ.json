@@ -104,6 +104,38 @@
     "$v": "Ovoz chiqishi"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Синтезатор"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Медиа юклаш"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Медиани ўзгартириш"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Медиа файл"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Медиа кечикиши"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Медиа бошланишидан олдин секунд (0 = Ўчириқ)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Медиа файл эмас"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Бу медиа формати қурилма томонидан қўллаб-қувватланмайди. MP3 / WAV / M4A файлини синаб кўринг."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Ovoz mexanizmi"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Kreditlar va hissa"
+    "$v": "Kreditlar"
   },
   {
     "$i": "about_c1",
-    "$v": "T.Hoang tomonidan ishlab chiqilgan • KaiUI dizayn komponentlari"
+    "$v": "T.Hoang tomonidan ishlab chiqilgan"
   },
   {
     "$i": "about_c2",

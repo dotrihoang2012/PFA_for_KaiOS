@@ -104,6 +104,38 @@
     "$v": "Oudio-uitset"
   },
   {
+    "$i": "synth_engine",
+    "$v": "Sinch-enjin"
+  },
+  {
+    "$i": "load_media",
+    "$v": "Laai media"
+  },
+  {
+    "$i": "change_media",
+    "$v": "Verander media"
+  },
+  {
+    "$i": "media_file",
+    "$v": "Media-lêer"
+  },
+  {
+    "$i": "media_delay",
+    "$v": "Mediavertraging"
+  },
+  {
+    "$i": "media_delay_hint",
+    "$v": "Sekondes voordat die media begin (0 = Af)"
+  },
+  {
+    "$i": "err_not_media",
+    "$v": "Nie 'n medialêer nie"
+  },
+  {
+    "$i": "err_media_unsupported",
+    "$v": "Hierdie media-formaat word nie deur die toestel ondersteun nie. Probeer 'n MP3 / WAV / M4A-lêer."
+  },
+  {
     "$i": "sound_engine",
     "$v": "Klankenjin"
   },
@@ -749,11 +781,11 @@
   },
   {
     "$i": "about_credits_title",
-    "$v": "Krediete en bydraes"
+    "$v": "Krediete"
   },
   {
     "$i": "about_c1",
-    "$v": "Ontwikkel deur T.Hoang • KaiUI-ontwerpkomponente"
+    "$v": "Ontwikkel deur T.Hoang"
   },
   {
     "$i": "about_c2",
