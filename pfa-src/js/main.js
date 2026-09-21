@@ -1211,6 +1211,10 @@
 
   function _mediaPlay() {
     if (!_mediaActive()) return;
+    // A delayed (Media Delay) start is already pending — don't cancel it.
+    // This happens when the Start Delay countdown ends while the media was
+    // already started independently at Play time.
+    if (_mediaTimer) return;
     var el = _ensureMediaEl();
     if (!el) return;
     var st = Store.getState();
@@ -1393,7 +1397,14 @@
     } else if (state.play === 'pause' && prevPlay !== 'pause') {
       Sequencer.pause();
       _engine().silence();
-      _mediaPause();
+      // Start Delay keeps `play` at 'pause' while the MIDI waits its countdown.
+      // The preload media is an INDEPENDENT track: start it now (its own Media
+      // Delay applies) instead of holding it until the countdown ends.
+      if (state.startCountdown != null) {
+        _mediaPlay();
+      } else {
+        _mediaPause();
+      }
       // No audible output → release the status-bar play indicator.
       try { if (typeof _engine().setActive === 'function') _engine().setActive(false); } catch (eA) {}
     } else if (state.play === 'stop' && prevPlay !== 'stop') {
@@ -1978,9 +1989,8 @@
     // demo is still playing AND the case where it already finished (locked).
     if (_demoActive || _lockNoFile) clearDemo();
 
-    // Loading a new file ends fullscreen — user wants the chrome.
-    exitFullscreenIfActive();
-
+    // Loading a new file KEEPS the current fullscreen state — if the user is
+    // in fullscreen, stay in fullscreen (no auto-exit, no canvas resize).
     Sequencer.load(notes, tempo, div);
 
     // Store the NORMALISED map (deduped, sorted, guaranteed tick-0 entry) —
@@ -2126,7 +2136,7 @@
 
   function loadBinaryNote(ns, displayName) {
     if (_demoActive || _lockNoFile) clearDemo();
-    exitFullscreenIfActive();
+    // Loading keeps the current fullscreen state (no auto-exit).
     try { if (performance && performance.memory) console.log('[Heap] loadBinaryNote stream OPEN heapKB=' + Math.round(performance.memory.usedJSHeapSize / 1024)); } catch (e) {}
 
     Sequencer.load(ns, ns.tempoMap, ns.div);

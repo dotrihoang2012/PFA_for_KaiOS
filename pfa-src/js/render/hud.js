@@ -21,13 +21,38 @@ var HUD = (function () {
   var _totalNotes = 0;
   var _totalSet = false;
   var _lastDOM = 0;
-  var _DOM_INTERVAL = 250;
+  var _DOM_INTERVAL = 1; // ~every frame (throttle effectively off)
 
-  // NPS tracking — circular buffer of activeHead snapshots
-  var _npsBuf = new Float64Array(16);
-  var _npsHd  = new Float64Array(16);
+  // NPS tracking — circular buffer of passed-count snapshots. Sized so the
+  // buffer holds >1s of history at per-frame cadence (16–66ms/frame).
+  var _NPS_N = 96;
+  var _npsBuf = new Float64Array(_NPS_N);
+  var _npsHd  = new Float64Array(_NPS_N);
   var _npsIdx = 0;
   var _npsCnt = 0;
+
+  // Cached label prefixes — avoids 11 navigator.mozL10n.get() dictionary
+  // lookups per tick. Rebuilt only when the active language changes.
+  var _lbl = null, _lblLang = null;
+  function _labels() {
+    var lang = (typeof L10n !== 'undefined' && L10n.getLang) ? L10n.getLang() : 'en';
+    if (_lbl && _lblLang === lang) return _lbl;
+    _lblLang = lang;
+    _lbl = {
+      nps:       L10n.t('hud_nps', 'NPS: '),
+      nc:        L10n.t('hud_nc', 'NC: '),
+      passed:    L10n.t('hud_passed', 'Passed: '),
+      speed:     L10n.t('hud_speed', 'Speed: '),
+      fps:       L10n.t('hud_fps', 'FPS: '),
+      time:      L10n.t('hud_time', 'Time: '),
+      poly:      L10n.t('hud_polyphony', 'Polyphony: '),
+      rendered:  L10n.t('hud_rendered', 'Rendered Notes: '),
+      audioBuf:  L10n.t('hud_audio_buffer', 'Audio Buffer: '),
+      tick:      L10n.t('hud_tick', 'Tick: '),
+      bpm:       L10n.t('hud_bpm', 'BPM: ')
+    };
+    return _lbl;
+  }
 
   var _domReady = false;
   var _elCount = null;      // NPS
@@ -67,6 +92,13 @@ var HUD = (function () {
     _cacheDom();
     if (typeof state === 'undefined') return;
 
+    // Throttle FIRST: everything below (Sequencer reads, L10n lookups, DOM
+    // writes) runs only ~10×/s. Previously the Sequencer getTime/getTick/bpm
+    // calls ran on EVERY frame and were discarded ~3 out of 4 times.
+    var now = Date.now();
+    if (now - _lastDOM < _DOM_INTERVAL) return;
+    _lastDOM = now;
+
     var sp = (state.speed || 1.0).toFixed(1);
     var fp = (state.fps || 0);
     var tm = '--:--';
@@ -89,10 +121,6 @@ var HUD = (function () {
       try { bpmVal = Sequencer.bpm ? Sequencer.bpm() : 0; } catch (e) {}
     }
 
-    var now = Date.now();
-    if (now - _lastDOM < _DOM_INTERVAL) return;
-    _lastDOM = now;
-
     // Show the zeroed/demo readout while the bundled demo is playing AND after
     // it finishes but no real .mid/.note is loaded yet (isPlaybackLocked stays
     // true until a real file loads) — otherwise the demo's leftover
@@ -100,17 +128,18 @@ var HUD = (function () {
     var demo = ((typeof window.isDemoActive === 'function') && window.isDemoActive())
             || ((typeof window.isPlaybackLocked === 'function') && window.isPlaybackLocked());
     if (demo) {
-      _set(_elCount,     L10n.t('hud_nps', 'NPS: ') + '0');
-      _set(_elNC,        L10n.t('hud_nc', 'NC: ') + '0');
-      _set(_elPassed,    L10n.t('hud_passed', 'Passed: ') + '0');
-      _set(_elSpeed,     L10n.t('hud_speed', 'Speed: ') + '1.0x');
-      _set(_elFPS,       L10n.t('hud_fps', 'FPS: ') + fp);
-      _set(_elTime,      L10n.t('hud_time', 'Time: ') + '00:00');
-      _set(_elPoly,      L10n.t('hud_polyphony', 'Polyphony: ') + '0');
-      _set(_elRendered,  L10n.t('hud_rendered', 'Rendered Notes: ') + '0');
-      _set(_elAudioBuf,  L10n.t('hud_audio_buffer', 'Audio Buffer: ') + '0');
-      _set(_elTick,      L10n.t('hud_tick', 'Tick: ') + '0');
-      _set(_elBpm,       L10n.t('hud_bpm', 'BPM: ') + '0');
+      var L0 = _labels();
+      _set(_elCount,     L0.nps + '0');
+      _set(_elNC,        L0.nc + '0');
+      _set(_elPassed,    L0.passed + '0');
+      _set(_elSpeed,     L0.speed + '1.0x');
+      _set(_elFPS,       L0.fps + fp);
+      _set(_elTime,      L0.time + '00:00');
+      _set(_elPoly,      L0.poly + '0');
+      _set(_elRendered,  L0.rendered + '0');
+      _set(_elAudioBuf,  L0.audioBuf + '0');
+      _set(_elTick,      L0.tick + '0');
+      _set(_elBpm,       L0.bpm + '0');
       return;
     }
 
@@ -124,28 +153,29 @@ var HUD = (function () {
     var nc = _totalNotes;
     if (!nc && state.notes && state.notes.length) nc = state.notes.length;
 
-    // ── NPS — peak rate of passed-count growth in a 2s rolling window ──
-    var NPS_WINDOW = 2000;
+    // ── NPS — notes passed per second, averaged over a rolling ~1s window ──
+    // Was: peak rate over the SHORTEST sampled interval, which spiked wildly
+    // (4 notes in 50ms read as 80 NPS). A rolling average is intuitive.
+    var NPS_WINDOW = 1000;
     _npsBuf[_npsIdx] = now;
     _npsHd[_npsIdx] = passed;
-    _npsIdx = (_npsIdx + 1) % 16;
-    if (_npsCnt < 16) _npsCnt++;
+    _npsIdx = (_npsIdx + 1) % _NPS_N;
+    if (_npsCnt < _NPS_N) _npsCnt++;
 
     var nps = 0;
     if (_npsCnt >= 2) {
-      var bestRate = 0;
-      var last = (_npsIdx - 1 + 16) % 16; // most recent written sample
+      var last = (_npsIdx - 1 + _NPS_N) % _NPS_N;
+      var base = last; // oldest sample still inside the window
       for (var i = 1; i < _npsCnt; i++) {
-        var prev = (_npsIdx - 1 - i + 16) % 16;
-        var dt = _npsBuf[last] - _npsBuf[prev];
-        if (dt <= 0 || dt > NPS_WINDOW) break;
-        var dh = _npsHd[last] - _npsHd[prev];
-        if (dh > 0) {
-          var rate = dh / dt * 1000;
-          if (rate > bestRate) bestRate = rate;
-        }
+        var prev = (_npsIdx - 1 - i + _NPS_N) % _NPS_N;
+        if (_npsBuf[last] - _npsBuf[prev] > NPS_WINDOW) break;
+        base = prev;
       }
-      nps = Math.round(bestRate);
+      var span = _npsBuf[last] - _npsBuf[base];
+      if (span >= 500) { // need ~0.5s of history for a stable rate
+        var dh = _npsHd[last] - _npsHd[base];
+        if (dh > 0) nps = Math.round(dh / span * 1000);
+      }
     }
 
     // ── Polyphony — notes actually sounding (true voice count) ──
@@ -156,13 +186,17 @@ var HUD = (function () {
         if (eng && typeof eng.voiceCount === 'function') poly = eng.voiceCount();
       }
     } catch (e) {}
-    if (!poly && typeof Sequencer !== 'undefined' && typeof Sequencer.audioList === 'function') {
-      // Fallback: notes in the audible window if no engine exposes a count.
+
+    // Single audioList() fetch (was called twice) — reused for the polyphony
+    // fallback and the Audio Buffer readout.
+    var abuf = 0;
+    if (typeof Sequencer !== 'undefined' && typeof Sequencer.audioList === 'function') {
       try {
-        var al = Sequencer.audioList();
-        if (al && al.length) poly = al.length;
+        var aBuf = Sequencer.audioList();
+        if (aBuf) abuf = aBuf.length;
       } catch (e) {}
     }
+    if (!poly) poly = abuf;
 
     // ── Rendered Notes — notes in the on-screen window ──
     var rendered = 0;
@@ -173,32 +207,23 @@ var HUD = (function () {
       } catch (e) {}
     }
 
-    // ── Audio Buffer — notes currently in the sequencer's audible window ──
-    // (notes scheduled/forward that the sequencer is tracking for audio), not
-    // the whole remaining track. This stays correct when seeking backwards.
-    var abuf = 0;
-    if (typeof Sequencer !== 'undefined' && typeof Sequencer.audioList === 'function') {
-      try {
-        var aBuf = Sequencer.audioList();
-        if (aBuf) abuf = aBuf.length;
-      } catch (e) {}
-    }
-
     // ── Vertical layout: one metric per row ──
-    _set(_elCount,     L10n.t('hud_nps', 'NPS: ') + _fmt(nps));
-    _set(_elNC,        L10n.t('hud_nc', 'NC: ') + _fmt(nc));
-    _set(_elPassed,    L10n.t('hud_passed', 'Passed: ') + _fmt(passed));
-    _set(_elSpeed,     L10n.t('hud_speed', 'Speed: ') + sp + 'x');
-    _set(_elFPS,       L10n.t('hud_fps', 'FPS: ') + fp);
-    _set(_elTime,      L10n.t('hud_time', 'Time: ') + tm);
-    _set(_elPoly,      L10n.t('hud_polyphony', 'Polyphony: ') + _fmt(poly));
-    _set(_elRendered,  L10n.t('hud_rendered', 'Rendered Notes: ') + _fmt(rendered));
-    _set(_elAudioBuf,  L10n.t('hud_audio_buffer', 'Audio Buffer: ') + _fmt(abuf));
-    _set(_elTick,      L10n.t('hud_tick', 'Tick: ') + _fmt(tickVal));
-    _set(_elBpm,       L10n.t('hud_bpm', 'BPM: ') + Math.round(bpmVal));
+    var L = _labels();
+    _set(_elCount,     L.nps + _fmt(nps));
+    _set(_elNC,        L.nc + _fmt(nc));
+    _set(_elPassed,    L.passed + _fmt(passed));
+    _set(_elSpeed,     L.speed + sp + 'x');
+    _set(_elFPS,       L.fps + fp);
+    _set(_elTime,      L.time + tm);
+    _set(_elPoly,      L.poly + _fmt(poly));
+    _set(_elRendered,  L.rendered + _fmt(rendered));
+    _set(_elAudioBuf,  L.audioBuf + _fmt(abuf));
+    _set(_elTick,      L.tick + _fmt(tickVal));
+    _set(_elBpm,       L.bpm + Math.round(bpmVal));
   }
 
   function _fmt(n) {
+    n = Math.round(n) || 0; // integers only — never print raw float ticks
     if (n >= 1000) {
       var s = String(Math.floor(n));
       var out = '';
@@ -214,7 +239,12 @@ var HUD = (function () {
   }
 
   function _set(el, val) {
-    if (el) el.textContent = val;
+    // Skip the DOM write when the text is unchanged — most rows (NC, Speed,
+    // BPM, …) are static between ticks; only write what actually moved.
+    if (el && el._hudVal !== val) {
+      el._hudVal = val;
+      el.textContent = val;
+    }
   }
 
   function update(state) { tick(state, undefined); }
