@@ -116,6 +116,18 @@
     "$v": "Keisti mediją"
   },
   {
+    "$i": "clear_media",
+    "$v": "Išvalyti mediją"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Išvalyti iš anksto įkeltą medijos failą?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Medija išvalyta"
+  },
+  {
     "$i": "media_file",
     "$v": "Medijos failas"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D rodinys"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D efektai"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Natų kritimo blukimas"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Natų blukimo stiprumas (0–100; 0 = be blukimo)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Klavišų švytėjimas"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Efektų spalvos"
   },
   {
     "$i": "random_note_color",

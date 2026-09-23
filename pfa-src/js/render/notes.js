@@ -10,6 +10,8 @@
  * Visual Settings integration:
  *  - Channel colors are MUTABLE — Options → Note Color Palette Randomise
  *    regenerates all 16 with guaranteed-unique hues (randomizePalette).
+ *  - Visual → Graphics → 3D Effects controls the strength of the 3D
+ *    horizontal note fade (0..100, real-file playback only).
  *  - Visible note window comes from Store kbStart/kbEnd (Keyboard Range).
  *  - Falling-notes band bottom follows the Piano Size strip height.
  */
@@ -60,6 +62,10 @@ var Notes = (function () {
   // ~3.5px gap); LIP = black-note tongue protruding onto the bar (2px).
   var FALL3D_STOP = 6;
   var FALL3D_LIP = 2;
+  // Strongest horizontal fade: at a user setting of 100 the note's right
+  // edge is this fraction as bright as its left edge. A setting of 0 gives
+  // a fraction of 1 (flat, as in non-3D note fall).
+  var FADE_MIN_SHADE = 0.12;
 
   // Key cache (rebuild on camKey/keyWidth change)
   var _keyCache = null;
@@ -117,13 +123,14 @@ var Notes = (function () {
 
   /**
    * Per-note horizontal gradient: full palette color at the LEFT edge
-   * → ~12% (near black) at the RIGHT edge, WITHIN this note.
+   * → `shade` brightness at the RIGHT edge, WITHIN this note.
    */
-  function _noteGradient(ctx, rgb, nx, nw) {
+  function _noteGradient(ctx, rgb, nx, nw, shade) {
+    var q = isFinite(shade) ? Math.max(0, Math.min(1, shade)) : FADE_MIN_SHADE;
     var g = ctx.createLinearGradient(nx, 0, nx + nw, 0);
     g.addColorStop(0, 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')');
-    g.addColorStop(1, 'rgb(' + Math.round(rgb.r * 0.12) + ',' +
-      Math.round(rgb.g * 0.12) + ',' + Math.round(rgb.b * 0.12) + ')');
+    g.addColorStop(1, 'rgb(' + Math.round(rgb.r * q) + ',' +
+      Math.round(rgb.g * q) + ',' + Math.round(rgb.b * q) + ')');
     return g;
   }
 
@@ -208,6 +215,23 @@ var Notes = (function () {
       }
       _keyCache[note] = { x: Math.round(x), w: Math.round(w) };
     }
+  }
+
+  /** 3D note-fall fade strength, 0..100 from Visual → Graphics, as 0..1. */
+  function fallFade(state, fall3d) {
+    // The setting only affects real MIDI/note playback. The bundled demo
+    // keeps its standard fade.
+    if (!fall3d || _demoOverride) return 1;
+    var raw = state ? Number(state.view3dFallOpacity) : 100;
+    if (!isFinite(raw)) raw = 100;
+    return Math.min(100, Math.max(0, Math.round(raw))) / 100;
+  }
+
+  /** Fade amount → right-edge brightness (1 = flat; 0.12 = strongest fade). */
+  function fadeShade(amount) {
+    if (!(amount > 0)) return 1;
+    if (amount > 1) amount = 1;
+    return 1 - amount * (1 - FADE_MIN_SHADE);
   }
 
   function draw(state, ctx, w, h) {
@@ -319,24 +343,30 @@ var Notes = (function () {
     // Each note is filled with a gradient inside ITS OWN rectangle:
     // full palette color at its left edge → near-black at its right
     // edge. (No screen-wide fade — that looked like a global dim.)
+    // 3D note fade scales the right-edge darkness of every note fill together.
+    // A fade of 0 intentionally returns the exact non-3D note path below:
+    // no head gap, no connector lip, and a flat channel color.
+    var fadeAmt = fallFade(state, fall3d);
+    var fadeQ = fadeShade(fadeAmt);
+    var useFade = fall3d && fadeAmt > 0;
     if (_gradCache && (w !== _gradW || h !== _gradH)) _gradCache = null; // canvas resized
     if (!_gradCache) { _gradCache = {}; _gradW = w; _gradH = h; }
     var lastCh = -1, lastGrad = null, lastFlat = null;
     for (var wi = 0; wi < whites.length; wi++) {
       var e = whites[wi];
       // 3D: unlit heads stop short of the bar (gap); lit notes fill to it.
-      if (fall3d && !e.lit) {
+      if (useFade && !e.lit) {
         var wBot = e.ny + e.nh;
         if (wBot > fallStop && e.ny < fallStop) e.nh = fallStop - e.ny;
       }
       var rgb = _rgbCache[e.ch % 16] || { r: 204, g: 204, b: 204 };
       var gkey;
-      if (fall3d) {
-        gkey = e.ch + ':' + e.nx + ':' + e.nw;
+      if (useFade) {
+        gkey = e.ch + ':' + e.nx + ':' + e.nw + ':' + Math.round(fadeQ * 1000);
         var grad = _gradCache[gkey];
         if (e.ch !== lastCh || grad !== lastGrad) {
           if (!grad) {
-            grad = _noteGradient(ctx, rgb, e.nx, e.nw);
+            grad = _noteGradient(ctx, rgb, e.nx, e.nw, fadeQ);
             _gradCache[gkey] = grad;
           }
           ctx.fillStyle = grad;
@@ -358,18 +388,18 @@ var Notes = (function () {
       // An unlit head that reached the barrier grows a centered 2px tongue
       // onto the bar — it vanishes the moment the note lights.
       var arrived = (e.ny + e.nh) >= fallStop;
-      if (fall3d && !e.lit) {
+      if (useFade && !e.lit) {
         var bBot = e.ny + e.nh;
         if (bBot > fallStop && e.ny < fallStop) e.nh = fallStop - e.ny;
       }
       var rgb = _rgbCache[e.ch % 16] || { r: 204, g: 204, b: 204 };
       var gkey;
-      if (fall3d) {
-        gkey = e.ch + ':' + e.nx + ':' + e.nw;
+      if (useFade) {
+        gkey = e.ch + ':' + e.nx + ':' + e.nw + ':' + Math.round(fadeQ * 1000);
         var grad = _gradCache[gkey];
         if (e.ch !== lastCh || grad !== lastGrad) {
           if (!grad) {
-            grad = _noteGradient(ctx, rgb, e.nx, e.nw);
+            grad = _noteGradient(ctx, rgb, e.nx, e.nw, fadeQ);
             _gradCache[gkey] = grad;
           }
           ctx.fillStyle = grad;
@@ -384,7 +414,7 @@ var Notes = (function () {
       var fw = e.nw - 2, fx = e.nx + 1;
       if (fw < 1) fw = 1; // 128-key black notes are 2px wide — still draw 1px
       ctx.fillRect(fx, e.ny, fw, e.nh);
-      if (fall3d && !e.lit && arrived && e.ny < fallStop) {
+      if (useFade && !e.lit && arrived && e.ny < fallStop) {
         var lipW = Math.max(2, Math.floor(fw * 0.5));
         var lipX = fx + Math.floor((fw - lipW) / 2);
         ctx.fillRect(lipX, fallStop, lipW, FALL3D_STOP + FALL3D_LIP);
@@ -394,6 +424,8 @@ var Notes = (function () {
 
   return {
     draw: draw,
+    fallFade: fallFade,
+    fadeShade: fadeShade,
     channelColor: channelColor,
     randomizePalette: randomizePalette,
     setPaletteColors: setPaletteColors,

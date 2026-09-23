@@ -50,6 +50,9 @@ var Store = (function () {
 
     // 3D view mode: 'keyboard' | 'notefall' | 'both' | 'none'
     view3d: 'both',
+    view3dFallOpacity: 100,
+    view3dKeyGlow: true,
+    view3dGlowColor: '#FFFFFF',
 
     // Active note color palette id ('random' | 'randomAlpha' | etc.)
     palette: 'random',

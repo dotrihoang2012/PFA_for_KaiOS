@@ -116,6 +116,18 @@
     "$v": "Medyayı değiştir"
   },
   {
+    "$i": "clear_media",
+    "$v": "Medyayı temizle"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Önceden yüklenen medya dosyası temizlensin mi?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Medya temizlendi"
+  },
+  {
     "$i": "media_file",
     "$v": "Medya dosyası"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D Görünüm"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D Efektler"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Nota Düşüşü Solması"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Nota solma gücü (0–100; 0 = solma yok)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Tuş Parlaması"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Efekt Renkleri"
   },
   {
     "$i": "random_note_color",

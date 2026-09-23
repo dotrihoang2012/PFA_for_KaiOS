@@ -116,6 +116,18 @@
     "$v": "Change Media"
   },
   {
+    "$i": "clear_media",
+    "$v": "Clear Media"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Clear the preloaded media file?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Media cleared"
+  },
+  {
     "$i": "media_file",
     "$v": "Media File"
   },
@@ -1018,6 +1030,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D View"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D Effects"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Note Fall Fade"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Note fade strength (0–100; 0 = no fade)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Key Glow"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Effects Colors"
   },
   {
     "$i": "random_note_color",

@@ -5,9 +5,10 @@
  * highlights.
  *
  * Visual Settings integration:
- *   - pianoSize 'big'|'small'|'none' → strip height 60/32/0 px
- *   - kbStart/kbEnd                  → visible note window (21..108 default)
- *   - pianoColorHex                  → custom white-key fill color
+ *  - pianoSize 'big'|'small'|'none' → strip height 60/32/0 px
+ *  - kbStart/kbEnd                  → visible note window (21..108 default)
+ *  - pianoColorHex                  → custom white-key fill color
+ *  - view3dKeyGlow/view3dGlowColor  → 3D impact glow toggle and RGBA color
  */
 var Keyboard = (function () {
   'use strict';
@@ -39,6 +40,90 @@ var Keyboard = (function () {
   /** Black keys are ~60% of the strip height at any size. */
   function blackHeight(kbH) {
     return Math.round(kbH * 0.6);
+  }
+
+  /** 'white' is the factory default for the 3D key glow. */
+  function keyGlowOn(state, kb3d) {
+    if (!kb3d) return false;
+    if (state && state.view3dKeyGlow === false) return false;
+    return true;
+  }
+
+  /** Parse '#rgb'/'#rrggbb'/'rgb()'/'rgba()' into {r,g,b,a:0..1}. */
+  function glowRgba(css) {
+    var fallback = { r: 255, g: 255, b: 255, a: 1 };
+    if (css == null) return fallback;
+    var s = String(css).trim();
+    if (!s) return fallback;
+    var m = s.match(/^rgba?\s*\(\s*([+-]?\d+(?:\.\d+)?)\s*,\s*([+-]?\d+(?:\.\d+)?)\s*,\s*([+-]?\d+(?:\.\d+)?)\s*(?:,\s*([+-]?\d+(?:\.\d+)?%?)\s*)?\)$/i);
+    if (m) {
+      var alpha = 1;
+      if (m[4] != null && m[4] !== '') {
+        if (m[4].charAt(m[4].length - 1) === '%') alpha = parseFloat(m[4]) / 100;
+        else {
+          alpha = parseFloat(m[4]);
+          if (alpha > 1) alpha = alpha / 100;
+        }
+      }
+      return {
+        r: Math.max(0, Math.min(255, Math.round(parseFloat(m[1])))),
+        g: Math.max(0, Math.min(255, Math.round(parseFloat(m[2])))),
+        b: Math.max(0, Math.min(255, Math.round(parseFloat(m[3])))),
+        a: Math.max(0, Math.min(1, isFinite(alpha) ? alpha : 1))
+      };
+    }
+    var h = s.charAt(0) === '#' ? s.substring(1) : s;
+    if (h.length === 3) {
+      h = h.charAt(0) + h.charAt(0) + h.charAt(1) + h.charAt(1) + h.charAt(2) + h.charAt(2);
+    }
+    if (!/^[0-9a-fA-F]{6}$/.test(h)) return fallback;
+    return {
+      r: parseInt(h.substring(0, 2), 16),
+      g: parseInt(h.substring(2, 4), 16),
+      b: parseInt(h.substring(4, 6), 16),
+      a: 1
+    };
+  }
+
+  /** Current 3D key-glow color from Visual → Graphics → Effects Colors. */
+  function glowColor(state) {
+    var css = (state && state.view3dGlowColor) ? state.view3dGlowColor : '#FFFFFF';
+    try { if (typeof window.demoVisualValue === 'function') css = window.demoVisualValue('view3dGlowColor', css); } catch (e) {}
+    return glowRgba(css);
+  }
+
+  /**
+   * Draw the upgraded impact glow: an upward halo plus a bright core where
+   * the falling note meets the strip. The halo colors follow Effects Colors.
+   */
+  function drawKeyGlow(ctx, state, hits, y, coreH, kbH) {
+    var glow = glowColor(state);
+    if (glow.a <= 0) return;
+    var glowH = Math.max(4, Math.round(kbH * 0.14));
+    var haloH = glowH + coreH;
+    var haloOuter = 'rgba(' + glow.r + ',' + glow.g + ',' + glow.b + ',' + (glow.a * 0.18).toFixed(3) + ')';
+    var haloInner = 'rgba(' + glow.r + ',' + glow.g + ',' + glow.b + ',' + (glow.a * 0.42).toFixed(3) + ')';
+    var core = 'rgba(' + glow.r + ',' + glow.g + ',' + glow.b + ',' + glow.a.toFixed(3) + ')';
+    var i, e, innerH;
+
+    ctx.fillStyle = haloOuter;
+    for (i = 0; i < hits.length; i++) {
+      e = hits[i];
+      ctx.fillRect(e.dx, y - glowH, e.w, haloH);
+    }
+
+    innerH = Math.ceil(haloH / 2);
+    ctx.fillStyle = haloInner;
+    for (i = 0; i < hits.length; i++) {
+      e = hits[i];
+      ctx.fillRect(e.dx, y - glowH + haloH - innerH, e.w, innerH);
+    }
+
+    ctx.fillStyle = core;
+    for (i = 0; i < hits.length; i++) {
+      e = hits[i];
+      ctx.fillRect(e.dx, y, e.w, coreH);
+    }
   }
 
   function buildLayout(keyW) {
@@ -172,6 +257,7 @@ var Keyboard = (function () {
     var v3d = (state.view3d != null) ? state.view3d : 'both';
     try { if (typeof window.demoVisualValue === 'function') v3d = window.demoVisualValue('view3d', v3d); } catch (e) {}
     var kb3d = (v3d === 'keyboard' || v3d === 'both');
+    var glowOn = keyGlowOn(state, kb3d);
 
     // Rebuild the spritesheet whenever keyWidth, strip size, color or the
     // 3D depth flag changed.
@@ -332,15 +418,8 @@ var Keyboard = (function () {
             ctx.fillRect(wh[wi].dx, y, wh[wi].w, kbH);
           }
           ctx.globalAlpha = 1;
-          // 3D pop: bright rim where the lit key meets the bar.
-          if (kb3d) {
-            ctx.fillStyle = '#ffffff';
-            ctx.globalAlpha = 0.85;
-            for (var wr = 0; wr < wh.length; wr++) {
-              ctx.fillRect(wh[wr].dx, y, wh[wr].w, 2);
-            }
-            ctx.globalAlpha = 1;
-          }
+          // 3D pop: configurable impact glow where the lit key meets the bar.
+          if (glowOn) drawKeyGlow(ctx, state, wh, y, 2, kbH);
         }
 
         // Re-blit EVERY black key in the visible window whenever a white
@@ -365,15 +444,8 @@ var Keyboard = (function () {
             ctx.fillRect(bhl[bj].dx, y, bhl[bj].w, bh2);
           }
           ctx.globalAlpha = 1;
-          // 3D pop: bright rim where the lit key meets the bar.
-          if (kb3d) {
-            ctx.fillStyle = '#ffffff';
-            ctx.globalAlpha = 0.85;
-            for (var br = 0; br < bhl.length; br++) {
-              ctx.fillRect(bhl[br].dx, y, bhl[br].w, 1);
-            }
-            ctx.globalAlpha = 1;
-          }
+          // 3D pop: configurable impact glow where the lit key meets the bar.
+          if (glowOn) drawKeyGlow(ctx, state, bhl, y, 1, kbH);
         }
       }
     } catch(e) {}

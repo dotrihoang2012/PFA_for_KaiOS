@@ -116,6 +116,18 @@
     "$v": "Bytt media"
   },
   {
+    "$i": "clear_media",
+    "$v": "Tøm media"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Tømme den forhåndsinnlastede mediefilen?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Media er tømt"
+  },
+  {
     "$i": "media_file",
     "$v": "Mediafil"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D-visning"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D-effekter"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Uttoning av notefallet"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Styrken på uttoningen av notene (0–100; 0 = ingen uttoning)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Tasteglød"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Effektfarger"
   },
   {
     "$i": "random_note_color",

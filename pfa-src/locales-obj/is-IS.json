@@ -116,6 +116,18 @@
     "$v": "Skipta um fjölmiðla"
   },
   {
+    "$i": "clear_media",
+    "$v": "Hreinsa miðil"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Hreinsa fyrirfram hlaðna miðilsskrána?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Miðill hreinsaður"
+  },
+  {
     "$i": "media_file",
     "$v": "Fjölmiðlaskrá"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D útsýni"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D áhrif"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Doðvi á falli nótnanna"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Styrkur doðans á nótunum (0–100; 0 = enginn doði)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Ljómi lykla"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Litur áhrifa"
   },
   {
     "$i": "random_note_color",

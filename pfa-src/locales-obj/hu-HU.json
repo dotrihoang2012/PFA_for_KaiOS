@@ -116,6 +116,18 @@
     "$v": "Média módosítása"
   },
   {
+    "$i": "clear_media",
+    "$v": "Média törlése"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Törölje az előre betöltött médiafájlt?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "A média törölve"
+  },
+  {
     "$i": "media_file",
     "$v": "Médiafájl"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D-s nézet"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D effektek"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Kotta esésének halványulása"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "A kotta halványulásának erőssége (0–100; 0 = nincs halványulás)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Billentyű fénye"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Effekt színek"
   },
   {
     "$i": "random_note_color",

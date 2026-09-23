@@ -116,6 +116,18 @@
     "$v": "Mainīt mediju"
   },
   {
+    "$i": "clear_media",
+    "$v": "Notīrīt multividi"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Notīrīt iepriekš ielādētu multivides failu?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Multivide notīrīta"
+  },
+  {
     "$i": "media_file",
     "$v": "Mediju fails"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D skats"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D efekti"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Nošu kritiena izbalēšana"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Nošu izbalēšanas stiprums (0–100; 0 = bez izbalēšanas)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Taustiņu mirdzums"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Efektu krāsas"
   },
   {
     "$i": "random_note_color",

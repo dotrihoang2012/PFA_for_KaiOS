@@ -116,6 +116,18 @@
     "$v": "更改媒体"
   },
   {
+    "$i": "clear_media",
+    "$v": "清除媒体"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "清除已预加载的媒体文件？"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "媒体已清除"
+  },
+  {
     "$i": "media_file",
     "$v": "媒体文件"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "三维视图"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D 效果"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "音符下落淡出"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "音符淡化强度（0–100；0 = 不淡化）"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "按键发光"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "效果颜色"
   },
   {
     "$i": "random_note_color",

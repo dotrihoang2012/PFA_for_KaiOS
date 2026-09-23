@@ -116,6 +116,18 @@
     "$v": "Medien ändern"
   },
   {
+    "$i": "clear_media",
+    "$v": "Medien löschen"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Vorgeladene Mediendatei löschen?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Medien gelöscht"
+  },
+  {
     "$i": "media_file",
     "$v": "Mediendatei"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D-Ansicht"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D-Effekte"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Notenfall-Ausblendung"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Ausblendstärke der Noten (0–100; 0 = keine Ausblendung)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Tasten-Glühen"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Effektfarben"
   },
   {
     "$i": "random_note_color",

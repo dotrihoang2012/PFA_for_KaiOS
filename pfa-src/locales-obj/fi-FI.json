@@ -116,6 +116,18 @@
     "$v": "Vaihda media"
   },
   {
+    "$i": "clear_media",
+    "$v": "Tyhjennä media"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Tyhjennetäänkö esiladattu mediatiedosto?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Media tyhjennetty"
+  },
+  {
     "$i": "media_file",
     "$v": "Mediatiedosto"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D näkymä"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D-tehosteet"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Nuotin putoamisen häivytys"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Nuotin häivytyksen voimakkuus (0–100; 0 = ei häivytystä)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Koskettimien hehku"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Tehostevärit"
   },
   {
     "$i": "random_note_color",

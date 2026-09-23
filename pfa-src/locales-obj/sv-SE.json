@@ -116,6 +116,18 @@
     "$v": "Ändra media"
   },
   {
+    "$i": "clear_media",
+    "$v": "Rensa media"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Rensa den förinlästa mediafilen?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Media har rensats"
+  },
+  {
     "$i": "media_file",
     "$v": "Mediafil"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D-vy"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D-effekter"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Blekning av notens fall"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Styrka för notblekning (0–100; 0 = ingen blekning)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Tangentglöd"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Effektfärger"
   },
   {
     "$i": "random_note_color",

@@ -116,6 +116,18 @@
     "$v": "Promijeni medij"
   },
   {
+    "$i": "clear_media",
+    "$v": "Očisti medij"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Očistiti unaprijed učitani medijski zapis?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Mediji su očišćeni"
+  },
+  {
     "$i": "media_file",
     "$v": "Medijska datoteka"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D prikaz"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D efekti"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Blađenje pada nota"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Jačina blađenja nota (0–100; 0 = bez blađenja)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Sjaj tipaka"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Boje efekata"
   },
   {
     "$i": "random_note_color",

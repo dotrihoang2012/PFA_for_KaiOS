@@ -116,6 +116,18 @@
     "$v": "Skift medie"
   },
   {
+    "$i": "clear_media",
+    "$v": "Ryd medie"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Ryd den forudindlæste mediefil?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Mediet er ryddet"
+  },
+  {
     "$i": "media_file",
     "$v": "Mediefil"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D Visning"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D-effekter"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Blegning af nodens fald"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Styrke for nodeblegning (0–100; 0 = ingen blegning)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Tast glød"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Effektfarver"
   },
   {
     "$i": "random_note_color",

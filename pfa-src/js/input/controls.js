@@ -116,10 +116,28 @@
         Settings.doSfDelete();
         return;
       }
-      if (key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+if (key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
           key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
           key === 'Back' || key === Constants.KEY.BACK) {
         Settings.hideSfDeleteConfirm();
+        return;
+      }
+      return;
+    }
+
+    // ── Clear-Media confirm dialog (Synth → Preload): LSK = OK,
+    //    RSK / Back = Cancel.
+    if (typeof Settings !== 'undefined' && Settings.isMediaClearConfirmOpen && Settings.isMediaClearConfirmOpen()) {
+      e.preventDefault();
+      if (key === 'SoftLeft' || key === Constants.KEY.SOFT_LEFT ||
+          key === 13 || key === Constants.KEY.ENTER || key === 'Enter') {
+        Settings.doMediaClear();
+        return;
+      }
+      if (key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+          key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
+          key === 'Back' || key === Constants.KEY.BACK) {
+        Settings.hideMediaClearConfirm();
         return;
       }
       return;
@@ -192,13 +210,23 @@
     }
 
     if (typeof Settings !== 'undefined') {
-      if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
+if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
         e.preventDefault();
         if (key === 13 || key === Constants.KEY.ENTER || key === 'Enter' ||
             key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
             key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
             key === 'Back' || key === Constants.KEY.BACK) {
           Settings.hideSfDoneDialog();
+        }
+        return;
+      }
+      if (Settings.isMediaClearedConfirmOpen && Settings.isMediaClearedConfirmOpen()) {
+        e.preventDefault();
+        if (key === 13 || key === Constants.KEY.ENTER || key === 'Enter' ||
+            key === 'SoftRight' || key === Constants.KEY.SOFT_RIGHT ||
+            key === 'Backspace' || key === Constants.KEY.BACKSPACE ||
+            key === 'Back' || key === Constants.KEY.BACK) {
+          Settings.hideMediaClearedConfirm();
         }
         return;
       }
@@ -1497,7 +1525,13 @@
     }
 
     if (typeof Settings !== 'undefined') {
-      if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
+if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
+        if (leftE)  leftE.textContent  = '';
+        if (ctrE)   ctrE.textContent   = L10n.t('softkey_ok', 'OK');
+        if (rightE) rightE.textContent = '';
+        return;
+      }
+      if (Settings.isMediaClearedConfirmOpen && Settings.isMediaClearedConfirmOpen()) {
         if (leftE)  leftE.textContent  = '';
         if (ctrE)   ctrE.textContent   = L10n.t('softkey_ok', 'OK');
         if (rightE) rightE.textContent = '';
@@ -1521,6 +1555,14 @@
     }
 
     if (typeof Settings !== 'undefined' && Settings.isSfDeleteConfirmOpen && Settings.isSfDeleteConfirmOpen()) {
+      if (leftE)  leftE.textContent = L10n.t('softkey_ok', 'OK');
+      if (ctrE)   ctrE.textContent   = '';
+      if (rightE) rightE.textContent = L10n.t('softkey_cancel', 'Cancel');
+      return;
+    }
+
+    // Clear-Media confirm dialog — same OK / Cancel bar as above.
+    if (typeof Settings !== 'undefined' && Settings.isMediaClearConfirmOpen && Settings.isMediaClearConfirmOpen()) {
       if (leftE)  leftE.textContent = L10n.t('softkey_ok', 'OK');
       if (ctrE)   ctrE.textContent   = '';
       if (rightE) rightE.textContent = L10n.t('softkey_cancel', 'Cancel');

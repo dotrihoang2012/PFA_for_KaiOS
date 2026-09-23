@@ -116,6 +116,18 @@
     "$v": "Schimbă media"
   },
   {
+    "$i": "clear_media",
+    "$v": "Șterge media"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Ștergeți fișierul media preîncărcat?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Media șters"
+  },
+  {
     "$i": "media_file",
     "$v": "Fișier media"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "Vizualizare 3D"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "Efecte 3D"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Estomparea căderii notelor"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Intensitatea estompării notelor (0–100; 0 = fără estompare)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Strălucirea tastelor"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Culorile efectelor"
   },
   {
     "$i": "random_note_color",

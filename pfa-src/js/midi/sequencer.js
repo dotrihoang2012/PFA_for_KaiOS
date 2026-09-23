@@ -42,11 +42,13 @@ var Sequencer = (function () {
 
   function load(noteList, tempoList, division) {
     notes = noteList || [];
-    isStr = !!(notes && typeof notes.at === 'function');
+    // A streaming provider must quack fully (at + readyAt) — a plain RAM
+    // array on a modern engine has Array.prototype.at but must NOT count.
+    isStr = !!(notes && typeof notes.at === 'function' && typeof notes.readyAt === 'function');
     _seekPending = null; _resumeSeek = false;
     var _sso = (typeof Store !== 'undefined' && Store.getState) ? Store.getState().skipSlowOpen : true;
     Tempo.setMap(tempoList, division, _sso);
-    cursor = 0; tick = 0; active = []; audioActive = []; passedCount = 0; _ended = false; stopPlay();
+    cursor = 0; tick = 0; _killActiveVoices(); passedCount = 0; _ended = false; stopPlay();
     _startOffsetSec = 0;  // pre-roll is demo-only; cleared when any file loads
   }
 
@@ -61,6 +63,7 @@ var Sequencer = (function () {
 
   function _beginTimer() {
     playing = true; ctxBase = audioNow() + _startOffsetSec; tickStart = tick;
+    _refireSounding();
     if (isStr && notes.prefetch) { try { notes.prefetch(cursor); } catch (e) {} }
     timer = setInterval(pulse, 33);
   }
@@ -71,8 +74,32 @@ var Sequencer = (function () {
     _beginTimer();
   }
   function stopPlay() { playing = false; if (timer) { clearInterval(timer); timer = null; } }
-  function fullStop() { _seekPending = null; _resumeSeek = false; stopPlay(); cursor = 0; tick = 0; active = []; audioActive = []; passedCount = 0; _ended = false; }
+  function fullStop() { _seekPending = null; _resumeSeek = false; stopPlay(); _killActiveVoices(); cursor = 0; tick = 0; passedCount = 0; _ended = false; }
   function isEnded() { return _ended; }
+
+  // Kill every voice the sequencer thinks is out there. The synth pool holds
+  // scheduled envelopes (up to whole-note durations), so merely clearing the
+  // lists would let the old position's audio drone over the new one.
+  function _killActiveVoices() {
+    if (fireOff) {
+      for (var i = 0; i < active.length; i++) {
+        try { fireOff(active[i].note, active[i].channel); } catch (e) {}
+      }
+    }
+    active = []; audioActive = [];
+  }
+
+  // After a silence (pause) or a re-time (speed change), voices for notes
+  // still under the playhead are gone but their `fired` flags say otherwise.
+  // Clear the flags so the catch-up pass reschedules them with fresh timing
+  // (their visual noteOff still lands exactly, ending them on time).
+  function _refireSounding() {
+    var nowSec = Tempo.toSec(tick);
+    for (var i = 0; i < active.length; i++) {
+      var a = active[i];
+      if (a.startSec <= nowSec + 0.05 && a.endSec > nowSec - 0.05) a.fired = false;
+    }
+  }
 
   function _finishSeek(idx) {
     cursor = (idx > 0) ? idx : 0;
@@ -85,7 +112,7 @@ var Sequencer = (function () {
   }
 
   function seekDelta(ds) {
-    stopPlay(); active = []; audioActive = [];
+    stopPlay(); _killActiveVoices();
     var tps = Tempo.tps(tick); tick += ds * tps;
     if (tick < 0) tick = 0;
     if (isStr) {
@@ -98,7 +125,7 @@ var Sequencer = (function () {
     passedCount = Math.min(cursor, notes.length);
   }
   function jumpTo(tt) {
-    stopPlay(); active = []; audioActive = []; tick = tt;
+    stopPlay(); _killActiveVoices(); tick = tt;
     if (tick < 0) tick = 0;
     if (isStr) {
       _seekPending = notes.prepare(tick).then(function (idx) { _finishSeek(idx); })
@@ -172,10 +199,15 @@ var Sequencer = (function () {
     if (fireOn) {
       for (var ci = 0; ci < active.length; ci++) {
         var ca = active[ci];
-        if (ca.fired || ca.startSec > nowSec + 0.05) continue;
+        // Window and scheduling are wall-clock: divide the musical offsets
+        // by speed (at 2x a note 40ms out is only 20ms away, and its wall
+        // duration is halved). Without this every catch-up fire at speed≠1
+        // lands late/early and rings speed× too long/short.
+        if (ca.fired || (ca.startSec - nowSec) / speed > 0.05) continue;
         if (auCnt >= AUDIO_PER_PULSE) break;
         fireOn(ca.note, ca.channel, ca.velocity,
-               Math.max(0, ca.startSec - nowSec), ca.endSec - ca.startSec);
+               Math.max(0, (ca.startSec - nowSec) / speed),
+               (ca.endSec - ca.startSec) / speed);
         ca.fired = true;
         auCnt++;
       }
@@ -236,6 +268,19 @@ var Sequencer = (function () {
     if (playing && s !== speed) {
       tickStart = tick;
       ctxBase = audioNow() + _startOffsetSec;
+      // Envelopes scheduled under the old speed would ring too long/short
+      // while the playhead moves at the new one — kill the sounding voices
+      // and let the catch-up pass refire them with fresh delay/dur (each
+      // visual noteOff still lands exactly, so only a ≤33ms re-attack
+      // separates the old envelope from the new one).
+      var nowSec = Tempo.toSec(tick);
+      for (var i = 0; i < active.length; i++) {
+        var a = active[i];
+        if (a.startSec <= nowSec + 0.05 && a.endSec > nowSec - 0.05) {
+          if (fireOff) { try { fireOff(a.note, a.channel); } catch (e) {} }
+          a.fired = false;
+        }
+      }
     }
     speed = s;
   },

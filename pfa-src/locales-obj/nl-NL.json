@@ -116,6 +116,18 @@
     "$v": "Media wijzigen"
   },
   {
+    "$i": "clear_media",
+    "$v": "Media wissen"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Vooraf geladen mediabestand wissen?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Media gewist"
+  },
+  {
     "$i": "media_file",
     "$v": "Mediabestand"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D-weergave"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D-effecten"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Vervaging van de nootval"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Sterkte van de nootvervaging (0–100; 0 = geen vervaging)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Gloed van de toetsen"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Effectkleuren"
   },
   {
     "$i": "random_note_color",

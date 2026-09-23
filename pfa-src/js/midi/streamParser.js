@@ -55,10 +55,6 @@ var StreamParser = (function () {
                                 // 180). Above the cap the ramp is RESAMPLED, not
                                 // truncated (see finalizeTempo), so late-song
                                 // tempos stay correct even for 10M-event files.
-  var TEMPO_MIN_TICK_GAP = 10; // discard tempo changes closer than this many
-                                // ticks (< ~3ms of music) — inaudible, but
-                                // collapses 1-2-tick spam and duplicated value
-                                // runs that would explode RAM during parsing.
 
   // Single-flight conversion guard + per-conversion file token.
   // Two overlapping conversions share the same tmp dir on device; without this
@@ -390,8 +386,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
       off: 0, curTick: 0, runningStatus: 0, runningChannel: 0,
       active: {}, batch: [], noteCount: 0, maxTick: 0, closed: false, atEnd: false,
       tempo: [],           // FF 51 set-tempo records {t, u} gathered for this track
-      tempoLastU: 0,       // last tempo (usec/qn) kept for this track
-      tempoLastT: -Infinity// tick of the last tempo kept for this track
+      tempoLastU: 0        // last tempo (usec/qn) kept for this track
     };
   }
 
@@ -473,12 +468,9 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
       // All required bytes verified in-window → commit this event atomically.
       curTick += vlq.value;
       if (curTick > maxTick) maxTick = curTick;
-      if (tempoUsec > 0 &&
-          tempoUsec !== state.tempoLastU &&
-          curTick - state.tempoLastT >= TEMPO_MIN_TICK_GAP) {
+      if (tempoUsec > 0 && tempoUsec !== state.tempoLastU) {
         state.tempo.push({ t: curTick, u: tempoUsec });
         state.tempoLastU = tempoUsec;
-        state.tempoLastT = curTick;
       }
       off = p + skip;
 

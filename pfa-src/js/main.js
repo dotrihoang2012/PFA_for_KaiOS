@@ -1184,6 +1184,11 @@
       _mediaEl.addEventListener('playing', function () { console.log('[Media] playing'); });
       document.body.appendChild(_mediaEl);
       _assertMediaChannel();
+      // A NEW element starts unmuted. Apply the current Audio Output state
+      // here so it inherits a persisted "off" at boot — the store-diff in
+      // onStoreChange may have run before this element existed (boot order),
+      // leaving the fresh element permanently audible until a manual toggle.
+      _mediaApplyMute();
     } catch (e) {}
     return _mediaEl;
   }
@@ -1265,6 +1270,23 @@
     }
   }
 
+  // Full release (Clear Media): stop, drop the src and free the blob URL.
+  function _mediaRelease() {
+    clearTimeout(_mediaTimer);
+    _mediaStopped = true;
+    if (_mediaEl) {
+      try {
+        _mediaEl.pause();
+        _mediaEl.removeAttribute('src');
+        _mediaEl.load();
+      } catch (e) {}
+    }
+    if (_mediaUrl) {
+      try { URL.revokeObjectURL(_mediaUrl); } catch (e) {}
+      _mediaUrl = null;
+    }
+  }
+
   function _mediaSeek(delta) {
     if (!_mediaEl || !_mediaActive()) return;
     try {
@@ -1282,6 +1304,7 @@
   }
 
   window._mediaSeek = _mediaSeek; // hook for controls.js seekSeconds
+  window.pfaReleaseMedia = _mediaRelease; // hook for Settings "Clear Media"
 
   /** Accepted media extensions (blob.type may be empty on KaiOS). */
   function _isMediaFile(blob, name) {
@@ -1991,7 +2014,22 @@
 
     // Loading a new file KEEPS the current fullscreen state — if the user is
     // in fullscreen, stay in fullscreen (no auto-exit, no canvas resize).
-    Sequencer.load(notes, tempo, div);
+    // Insert a valid tempo (possibly with a dead-air gap compressed — see
+    // Tempo.trimDeadAir). Trim only applies when the app is NOT in the
+    // Preload engine and no media is attached: with an audio track the MIDI
+    // must stay on the file's own timeline (trim would desync the media by
+    // the compressed span). Media is always loaded in the Preload engine.
+    var _tempoForLoad = tempo;
+    if (typeof Tempo !== 'undefined' && typeof Tempo.trimDeadAir === 'function') {
+      var _st = Store.getState();
+      if (_st.synthEngine !== 'preload' && !_st.mediaSrc) {
+        try {
+          var _t = Tempo.trimDeadAir(tempo, div, notes);
+          if (_t) _tempoForLoad = _t;
+        } catch (e) {}
+      }
+    }
+    Sequencer.load(notes, _tempoForLoad, div);
 
     // Store the NORMALISED map (deduped, sorted, guaranteed tick-0 entry) —
     // the loader's values may contain duplicates/unsorted rows/gaps that

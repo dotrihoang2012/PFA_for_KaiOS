@@ -116,6 +116,18 @@
     "$v": "Ganti media"
   },
   {
+    "$i": "clear_media",
+    "$v": "Bersihkan media"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Bersihkan file media yang dimuat sebelumnya?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Media dibersihkan"
+  },
+  {
     "$i": "media_file",
     "$v": "Berkas media"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "Tampilan 3D"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "Efek 3D"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Peredupan Jatuhnya Not"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Kekuatan peredupan not (0–100; 0 = tanpa peredupan)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Cahaya Tombol"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Warna Efek"
   },
   {
     "$i": "random_note_color",

@@ -116,6 +116,18 @@
     "$v": "Zmeniť médiá"
   },
   {
+    "$i": "clear_media",
+    "$v": "Vymazať médiá"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Vymazať vopred načítaný mediálny súbor?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Médiá boli vymazané"
+  },
+  {
     "$i": "media_file",
     "$v": "Mediálny súbor"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D pohľad"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D efekty"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Stlmovanie pádu nôt"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Sila stlmovania nôt (0–100; 0 = bez stlmovania)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Žiara klávesov"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Farby efektov"
   },
   {
     "$i": "random_note_color",

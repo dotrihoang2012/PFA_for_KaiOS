@@ -116,6 +116,18 @@
     "$v": "Vaheta meediat"
   },
   {
+    "$i": "clear_media",
+    "$v": "Kustuta meedia"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Kustutada eellaaditud meediafail?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Meedia kustutatud"
+  },
+  {
     "$i": "media_file",
     "$v": "Meediafail"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "Ruumiline vaade"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D-efektid"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Noodi langemise hääbumine"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Noodi hääbumise tugevus (0–100; 0 = ei hääbu)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Klahvide kuma"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Efektide värvid"
   },
   {
     "$i": "random_note_color",

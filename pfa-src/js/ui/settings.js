@@ -5,9 +5,9 @@
  * the Options menu:
  *
  *   - MIDI Output   (sound engine, waveform)
- *   - Visual        (render mode, speed, Note Trail,
- *                    note labels, Info Card Options, Keyboard Range,
- *                    Background/Bar/Piano Color, Piano Size)
+  *   - Visual        (render mode, speed, Note Trail,
+  *                    note labels, Info Card Options, Keyboard Range,
+  *                    Background/Bar/Piano Color, Piano Size, Graphics 3D effects)
  *   - Developer     (On-screen verbose status, Verbose while analyzing,
  *                    Export log)
  *
@@ -48,6 +48,10 @@ var Settings = (function () {
       loadBarColor: 'loading_color',
       noteLabels: 'show_note_labels',
       pianoSize: 'piano_size',
+      view3d: 'view_3d',
+      view3dFallOpacity: 'note_fall_fade',
+      view3dKeyGlow: 'key_glow',
+      view3dGlowColor: 'effects_colors',
       middleMarker: 'middle_c_marker',
       autoPlay: 'auto_play',
       showOsd: 'show_osd',
@@ -166,6 +170,9 @@ var Settings = (function () {
       pianoColorHex:'#f2f2f2', // white-key fill
       pianoSize:    'big',     // 'big' | 'small' | 'none'
       view3d:       'both',    // 'keyboard' | 'notefall' | 'both' | 'none'
+      view3dFallOpacity: 100,  // Note-fall fade in 3D mode, 0..100 (0 = no fade)
+      view3dKeyGlow: true,     // 3D keyboard impact glow on/off
+      view3dGlowColor: '#FFFFFF', // 3D keyboard glow RGBA color (default white)
       palette:      'random',  // active note color palette id
     },
     dev: {
@@ -221,6 +228,10 @@ var Settings = (function () {
       // Preload media rows — only while Synth Engine = Preload.
       { key: 'mediaLoad',   l10nKey: 'load_media',       label: 'Load Media', type: 'action', labelFn: mediaLoadLabel,
         hidden: function () { return !_isPreload(); } },
+      // Clear Media — only once a media file is loaded. Hidden again after a
+      // Clear so only the Load Media row remains.
+      { key: 'mediaClear',  l10nKey: 'clear_media',      label: 'Clear Media', type: 'action', noArrow: true,
+        hidden: function () { return !_isPreload() || !_values.midi.mediaName; } },
       // File-name + Delay Start rows appear only once a media is loaded.
       { key: 'mediaName',   l10nKey: 'media_file',       label: 'Media File', type: 'info',
         hidden: function () { return !_isPreload() || !_values.midi.mediaName; } },
@@ -510,6 +521,9 @@ var Settings = (function () {
       pianoColorHex: _values.visual.pianoColorHex,
       pianoSize:     _values.visual.pianoSize,
       view3d:        _values.visual.view3d,
+      view3dFallOpacity: _values.visual.view3dFallOpacity,
+      view3dKeyGlow: _values.visual.view3dKeyGlow,
+      view3dGlowColor: _values.visual.view3dGlowColor,
       palette:       _values.visual.palette,
       osdLog:        _values.dev.osdLog,
       verboseAnalyze: _values.dev.verboseAnalyze,
@@ -731,6 +745,7 @@ var Settings = (function () {
     if (key === 'pctColor')      return DEFAULTS.visual.pctColor;
     if (key === 'dialogTextColor') return DEFAULTS.visual.dialogTextColor;
     if (key === 'dialogBgColor')   return DEFAULTS.visual.dialogBgColor;
+    if (key === 'view3dGlowColor') return DEFAULTS.visual.view3dGlowColor;
     return null;
   }
 
@@ -1073,6 +1088,7 @@ var Settings = (function () {
       infoTextColor:    'infoTextColor',
       dialogTextColor:  'dialog_text_color',
       dialogBgColor:    'dialog_bg_color',
+      view3dGlowColor:  'effects_colors',
       pctColor:         'pct_text_color'
     };
     var fallbacks = {
@@ -1087,6 +1103,7 @@ var Settings = (function () {
       infoTextColor:    'Info Card Text',
       dialogTextColor:  'Text Color',
       dialogBgColor:    'Background Color',
+      view3dGlowColor:  'Effects Colors',
       pctColor:         'Percentage Color'
     };
     var l10nKey = map[key] || key;
@@ -1400,8 +1417,8 @@ var Settings = (function () {
         _sub.ui.text = { input: item.input };
         try { item.input.focus(); } catch (e) {}
       }
-    } else if (item.type === 'gentext') {
-      // General Settings numeric text box — same as sftext.
+    } else if (item.type === 'gentext' || item.type === 'gfxtext') {
+      // Numeric text boxes — same focus/native-keyboard behavior as sftext.
       if (item.row) {
         item.row.classList.add('focused');
         try { item.row.scrollIntoView({ block: 'nearest' }); }
@@ -1590,6 +1607,11 @@ var Settings = (function () {
       genCommitText(item);
       return;
     }
+    if (item.type === 'gfxtext') {
+      // Graphics Settings text box — Enter commits the typed number.
+      gfxCommitText(item);
+      return;
+    }
     if (item.type === 'sfrow') {
       if (_sfMove) {
         _sfMove = false;
@@ -1663,7 +1685,7 @@ var Settings = (function () {
       return;
     }
     if (item.type === 'radio') {
-      // Radio row in Graphics page (renderMode / view3d) â€” set value,
+      // Radio row in Graphics page (renderMode / view3d) — set value,
       // update radio highlight, persist to Store + localStorage.
       var rKey = item.key;
       var rVal = item.value;
@@ -1671,6 +1693,19 @@ var Settings = (function () {
       Store.setState(_mapToStore(_openGroup, rKey, rVal));
       save();
       _highlightGraphicsRadio(rKey);
+      if (_sub.kind === 'graphics' && rKey === 'view3d') {
+        // Changing the 3D mode can add or remove the effects separator and
+        // its controls. Rebuild this page so the list always matches it.
+        var list = document.getElementById('subsettings-list');
+        if (list) {
+          var keepIdx = _sub.focusIdx;
+          while (list.firstChild) list.removeChild(list.firstChild);
+          buildGraphicsPage(list);
+          _sub.focusIdx = Math.max(0, Math.min(keepIdx, _sub.items.length - 1));
+          paintSubFocus();
+          if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+        }
+      }
       if (typeof window.showToast === 'function') {
         var rLabel = (rKey === 'renderMode') ? 'Render Mode' : '3D View';
         showToast(rLabel + ': ' + item.value.charAt(0).toUpperCase() + item.value.slice(1));
@@ -1722,6 +1757,7 @@ var Settings = (function () {
     var cur = _sub.items[_sub.focusIdx];
     if (cur && cur.type === 'sftext') sfCommitText(cur);
     if (cur && cur.type === 'gentext') genCommitText(cur);
+    if (cur && cur.type === 'gfxtext') gfxCommitText(cur);
     var n = _sub.items.length;
     if (!n) return;
     _sub.focusIdx = ((idx % n) + n) % n;
@@ -3012,6 +3048,85 @@ var Settings = (function () {
       _sub.ui.view3dRows.push({ value: vm[0], row: vrow });
       _sub.items.push({ type: 'radio', part: 'view3d', key: 'view3d', value: vm[0] });
     }
+
+    // 3D effects appear only when 3D is enabled for notes, keys, or both.
+    // The mode controls which rows belong under the separator.
+    var showFall3d = (curView === 'notefall' || curView === 'both');
+    var showKey3d = (curView === 'keyboard' || curView === 'both');
+    if (curView !== 'none') {
+      sep(L10n.t('sep_3d_effects', '3D Effects'));
+      if (showFall3d) {
+        addGraphicsTextRow(listEl, 'view3dFallOpacity', 'Note Fall Fade',
+          'Note fade strength (0–100; 0 = no fade)', 0, 100);
+      }
+      if (showKey3d) {
+        addSubRow(listEl, 'bool', 'view3dKeyGlow', 'Key Glow');
+        addSubRow(listEl, 'color', 'view3dGlowColor', 'Effects Colors', function () {
+          return _values.visual.view3dGlowColor || '#FFFFFF';
+        });
+      }
+    }
+  }
+
+  /** One integer text box for the Graphics page, using General's kai-text-input style. */
+  function addGraphicsTextRow(listEl, key, label, hint, min, max) {
+    var w = document.createElement('div');
+    w.className = 'kai-text-input';
+    w.setAttribute('tabindex', '-1');
+    w.setAttribute('data-type', 'gfxtext');
+    w.setAttribute('data-key', key);
+
+    var lab = document.createElement('label');
+    lab.className = 'kai-text-input-label';
+    lab.textContent = L10n.t(keyMap[key] || key, label);
+    w.appendChild(lab);
+
+    var input = document.createElement('input');
+    input.className = 'kai-text-input-input';
+    input.type = 'tel';
+    var curVal = _values.visual[key];
+    var initVal = (curVal != null && !isNaN(Number(curVal)))
+      ? Math.round(Number(curVal))
+      : max;
+    initVal = Math.max(min, Math.min(max, initVal));
+    input.value = String(initVal);
+    w.appendChild(input);
+
+    var hintEl = document.createElement('div');
+    hintEl.className = 'kai-text-input-hint';
+    hintEl.textContent = L10n.t((keyMap[key] || key) + '_hint', hint);
+    w.appendChild(hintEl);
+
+    listEl.appendChild(w);
+    var item = { type: 'gfxtext', part: key, row: w, input: input, min: min, max: max, lastValidValue: initVal };
+    _sub.items.push(item);
+    _sub.ui[key + 'Text'] = { row: w, input: input };
+    return { row: w, input: input };
+  }
+
+  /** Commit a Graphics-page numeric text box: whole numbers only, clamped to range. */
+  function gfxCommitText(item) {
+    if (!item || item.type !== 'gfxtext') return;
+    if (item.input && document.activeElement === item.input) {
+      try { item.input.blur(); } catch (e) {}
+    }
+    var raw = item.input ? item.input.value : '';
+    // Respect decimal separators, then round to an integer 0–100. This keeps
+    // entries such as "99.6" meaningful instead of concatenating their digits.
+    var numStr = String(raw).trim().replace(/,/g, '.').replace(/[^0-9.\-]/g, '');
+    var n = Math.round(parseFloat(numStr));
+    if (!isFinite(n)) {
+      n = (item.lastValidValue != null)
+        ? item.lastValidValue
+        : ((_values.visual[item.part] != null && !isNaN(Number(_values.visual[item.part])))
+          ? Math.round(Number(_values.visual[item.part])) : item.max);
+    }
+    n = Math.max(item.min, Math.min(item.max, n));
+    item.lastValidValue = n;
+    if (item.input) item.input.value = String(n);
+    _values.visual[item.part] = n;
+    Store.setState(_mapToStore('visual', item.part, n));
+    save();
   }
 
   /** Highlight the currently-selected radio row in the Graphics page. */
@@ -3580,6 +3695,10 @@ var Settings = (function () {
         var curG = _sub.items[_sub.focusIdx];
         if (curG && curG.type === 'gentext') genCommitText(curG);
       }
+      if (_sub.kind === 'graphics') {
+        var curFx = _sub.items[_sub.focusIdx];
+        if (curFx && curFx.type === 'gfxtext') gfxCommitText(curFx);
+      }
       closeSub();
       return true;
     }
@@ -3631,6 +3750,10 @@ var Settings = (function () {
         sfCaretStep(itL, -1);
         return true;
       }
+      if (_sub.kind === 'graphics' && itL && itL.type === 'gfxtext') {
+        sfCaretStep(itL, -1);
+        return true;
+      }
       adjustFocusedSub(-1);
       return true;
     }
@@ -3641,6 +3764,10 @@ var Settings = (function () {
         return true;
       }
       if (_sub.kind === 'general' && itR && itR.type === 'gentext') {
+        sfCaretStep(itR, +1);
+        return true;
+      }
+      if (_sub.kind === 'graphics' && itR && itR.type === 'gfxtext') {
         sfCaretStep(itR, +1);
         return true;
       }
@@ -3809,7 +3936,8 @@ var Settings = (function () {
 } else if (def.type === 'action') {
           // One-shot action row (Export Log) — arrow glyph, no value text;
           // Enter / ArrowRight fires the action, never cycles a value.
-          row.classList.add('has-sub');
+          // def.noArrow (Clear Media) suppresses the '>' glyph.
+          if (!def.noArrow) row.classList.add('has-sub');
         } else if (def.type === 'info') {
           // Read-only display row (preloaded media file name). The file name
           // sits on its OWN line below the "Media File" label, wrapping long
@@ -4057,7 +4185,7 @@ var Settings = (function () {
   /** â—€â–¶ on a focused text box: step the caret (typed digits still land
    *  natively â€” controls.js only blocks Back/Enter on text fields). */
   function sfCaretStep(item, dir) {
-    if (!item || (item.type !== 'sftext' && item.type !== 'gentext') || !item.input) return;
+    if (!item || (item.type !== 'sftext' && item.type !== 'gentext' && item.type !== 'gfxtext') || !item.input) return;
     var input = item.input;
     var pos = input.selectionStart != null ? input.selectionStart : input.value.length;
     pos += dir;
@@ -4630,6 +4758,7 @@ var Settings = (function () {
       else if (k === 'about' && typeof window.showAboutApp === 'function') window.showAboutApp();
       else if (k === 'loadMidi' && typeof window.launchPickerAction === 'function') window.launchPickerAction();
       else if (k === 'mediaLoad' && typeof window.launchMediaPicker === 'function') window.launchMediaPicker();
+      else if (k === 'mediaClear') openMediaClearConfirm();
       else if (k === 'cancelAnalysis' && typeof window.cancelAnalyze === 'function') window.cancelAnalyze();
       else if (k === 'clearMidi' && typeof window.clearMidiAction === 'function') window.clearMidiAction();
       else if (k === 'fullscreen' && typeof window.toggleFullscreen === 'function') window.toggleFullscreen();
@@ -4810,6 +4939,9 @@ var Settings = (function () {
       if (key === 'pianoColorHex') return { pianoColorHex: val };
       if (key === 'pianoSize')     return { pianoSize: val };
       if (key === 'view3d')        return { view3d: val };
+      if (key === 'view3dFallOpacity') return { view3dFallOpacity: val };
+      if (key === 'view3dKeyGlow') return { view3dKeyGlow: val };
+      if (key === 'view3dGlowColor') return { view3dGlowColor: val };
       if (key === 'palette')       return { palette: val };
       if (key === 'pctAnalyze')    return { pctAnalyze: val };
       if (key === 'pctMerge')      return { pctMerge: val };
@@ -5014,6 +5146,61 @@ var Settings = (function () {
     Store.setState({ mediaName: _values.midi.mediaName, mediaSrc: _values.midi.mediaSrc });
   }
 
+  /** Unload the preload media ("Clear Media" row): drop name/src, release the
+   *  blob in main.js and re-render the rows so only "Load Media" remains.
+   *  SESSION-ONLY like setMedia — nothing to persist. */
+  function clearMedia() {
+    _values.midi.mediaName = '';
+    _values.midi.mediaSrc = '';
+    _medRow = null;
+    Store.setState({ mediaName: '', mediaSrc: '' });
+    if (typeof window.pfaReleaseMedia === 'function') {
+      try { window.pfaReleaseMedia(); } catch (e) {}
+    }
+    refreshMidiGroup();
+  }
+
+  // ── "Clear Media" confirm dialog ──
+  // Modal asking before unloading the preload media. Follows the SoundFont
+  // delete-confirm pattern: settings.js owns the state and controls.js hooks
+  // the softkeys (LSK = OK → doMediaClear, RSK/Back = cancel).
+  var _mediaClearOpen = false;
+  function openMediaClearConfirm() {
+    _mediaClearOpen = true;
+    var ov = document.getElementById('media-clear-dialog');
+    if (ov) ov.classList.remove('hidden');
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+  function hideMediaClearConfirm() {
+    _mediaClearOpen = false;
+    var ov = document.getElementById('media-clear-dialog');
+    if (ov) ov.classList.add('hidden');
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+  function doMediaClear() {
+    hideMediaClearConfirm();
+    clearMedia();
+    openMediaClearedConfirm();
+  }
+
+  // ── "Media cleared" acknowledgment dialog ──
+  // Single centre-OK toast-style confirmation shown AFTER the media has been
+  // unloaded. Same pattern as the SoundFont Load Done dialog.
+  var _mediaClearedOpen = false;
+  function openMediaClearedConfirm() {
+    _mediaClearedOpen = true;
+    var ov = document.getElementById('media-cleared-dialog');
+    if (ov) ov.classList.remove('hidden');
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+  function hideMediaClearedConfirm() {
+    _mediaClearedOpen = false;
+    var ov = document.getElementById('media-cleared-dialog');
+    if (ov) ov.classList.add('hidden');
+    if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+  }
+  function isMediaClearedConfirmOpen() { return _mediaClearedOpen; }
+
   /**
    * Apply a Keyboard Range preset from outside the settings UI (hotkeys):
    * '88' | '128' | 'custom' â€” same path as the in-page Key Count row.
@@ -5121,6 +5308,11 @@ var Settings = (function () {
     applyVisual:    applyVisual,
     setAudio:       setAudio,
     setMedia:       setMedia,
+    doMediaClear: doMediaClear,
+    hideMediaClearConfirm: hideMediaClearConfirm,
+    isMediaClearConfirmOpen: function () { return _mediaClearOpen; },
+    hideMediaClearedConfirm: hideMediaClearedConfirm,
+    isMediaClearedConfirmOpen: isMediaClearedConfirmOpen,
     setKbPreset:    setKbPreset,
     refreshCurrentRows: refreshCurrentRows,
     refreshMidiGroup:   refreshMidiGroup,

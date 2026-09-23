@@ -116,6 +116,18 @@
     "$v": "Ndrysho medien"
   },
   {
+    "$i": "clear_media",
+    "$v": "Pastro median"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Të pastrohet skedari medial i para-ngarkuar?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Media u pastrua"
+  },
+  {
     "$i": "media_file",
     "$v": "Skedar media"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "Pamja 3D"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "Efektet 3D"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Zbehja e rënies së notave"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Fuqia e zbehjes së notave (0–100; 0 = pa zbehje)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Shkëlqimi i tasteve"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Ngjyrat e efekteve"
   },
   {
     "$i": "random_note_color",

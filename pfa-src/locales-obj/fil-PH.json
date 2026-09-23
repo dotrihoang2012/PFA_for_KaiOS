@@ -116,6 +116,18 @@
     "$v": "Palitan ang media"
   },
   {
+    "$i": "clear_media",
+    "$v": "I-clear ang media"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "I-clear ba ang preloaded na media file?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Na-clear ang media"
+  },
+  {
     "$i": "media_file",
     "$v": "Media file"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D na Pagtingin"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "Mga 3D Effect"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Paglalaho ng Pagbagsak ng Nota"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Lakas ng paglalaho ng nota (0–100; 0 = walang paglalaho)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Kidlap ng mga Susi"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Mga Kulay ng Epekto"
   },
   {
     "$i": "random_note_color",

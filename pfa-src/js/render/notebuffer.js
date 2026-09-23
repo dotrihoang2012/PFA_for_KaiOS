@@ -171,28 +171,37 @@ var NoteBuffer = (function () {
 
     // ── Draw with per-note horizontal gradient ──
     // Per-note horizontal gradient: full palette color at the note's left
-    // edge → near-black at its right edge, WITHIN each note (not a
-    // screen-wide fade). Gradients are cached per frame in a local map —
-    // note x/width is fixed per key column, so the palette only affects
-    // colors that were just created.
+    // edge → shaded at its right edge (fadeQ from view3dFallOpacity, same as
+    // notes.js), WITHIN each note (not a screen-wide fade). Gradients are
+    // cached per frame in a local map — note x/width is fixed per key
+    // column, so the palette only affects colors that were just created.
     var rgbTbl = _nbRgbTable();
     var gradMap = {};
     var lastCh = -1, lastGrad = null, lastFlat = null;
+    // 3D fade mirrors notes.js: view3dFallOpacity (0..100) → fadeAmt 0..1 →
+    // fadeQ (right-edge brightness; 1 = flat, 0.12 = strongest fade).
+    // A fade of 0 intentionally returns the exact non-3D note path: no head
+    // gap, no connector lip, flat color.
+    var fadeAmt = (typeof Notes !== 'undefined' && Notes.fallFade)
+      ? Notes.fallFade(state, nbFall3d) : 1;
+    var fadeQ = (typeof Notes !== 'undefined' && Notes.fadeShade)
+      ? Notes.fadeShade(fadeAmt) : 1;
+    var useFade = nbFall3d && fadeAmt > 0;
     for (var wi = 0; wi < whites.length; wi++) {
       var e = whites[wi];
       // 3D: unlit heads stop short of the bar (gap); lit notes fill to it.
-      if (nbFall3d && !e.lit) {
+      if (useFade && !e.lit) {
         var wBot = e.ny + e.nh;
         if (wBot > nbStop && e.ny < nbStop) e.nh = nbStop - e.ny;
       }
       var rgb = rgbTbl[e.ch % 16] || { r: 204, g: 204, b: 204 };
-      if (nbFall3d) {
-        var gkey = e.ch + ':' + e.nx + ':' + e.nw;
+      if (useFade) {
+        var gkey = e.ch + ':' + e.nx + ':' + e.nw + ':' + Math.round(fadeQ * 1000);
         var grad = gradMap[gkey] || (function () {
           var g = _offCtx.createLinearGradient(e.nx, 0, e.nx + e.nw, 0);
           g.addColorStop(0, 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')');
-          g.addColorStop(1, 'rgb(' + Math.round(rgb.r * 0.12) + ',' +
-            Math.round(rgb.g * 0.12) + ',' + Math.round(rgb.b * 0.12) + ')');
+          g.addColorStop(1, 'rgb(' + Math.round(rgb.r * fadeQ) + ',' +
+            Math.round(rgb.g * fadeQ) + ',' + Math.round(rgb.b * fadeQ) + ')');
           gradMap[gkey] = g;
           return g;
         })();
@@ -214,18 +223,18 @@ var NoteBuffer = (function () {
       // 3D: unlit heads stop short of the bar; an arrived head grows a
       // centered 2px tongue onto the bar (gone once the note lights).
       var arrived = (e2.ny + e2.nh) >= nbStop;
-      if (nbFall3d && !e2.lit) {
+      if (useFade && !e2.lit) {
         var bBot = e2.ny + e2.nh;
         if (bBot > nbStop && e2.ny < nbStop) e2.nh = nbStop - e2.ny;
       }
       var rgb = rgbTbl[e2.ch % 16] || { r: 204, g: 204, b: 204 };
-      if (nbFall3d) {
-        var gkey = e2.ch + ':' + e2.nx + ':' + e2.nw;
+      if (useFade) {
+        var gkey = e2.ch + ':' + e2.nx + ':' + e2.nw + ':' + Math.round(fadeQ * 1000);
         var grad = gradMap[gkey] || (function () {
           var g = _offCtx.createLinearGradient(e2.nx, 0, e2.nx + e2.nw, 0);
           g.addColorStop(0, 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')');
-          g.addColorStop(1, 'rgb(' + Math.round(rgb.r * 0.12) + ',' +
-            Math.round(rgb.g * 0.12) + ',' + Math.round(rgb.b * 0.12) + ')');
+          g.addColorStop(1, 'rgb(' + Math.round(rgb.r * fadeQ) + ',' +
+            Math.round(rgb.g * fadeQ) + ',' + Math.round(rgb.b * fadeQ) + ')');
           gradMap[gkey] = g;
           return g;
         })();
@@ -243,7 +252,7 @@ var NoteBuffer = (function () {
       var fx = e2.nx + 1;
       if (fw < 1) fw = 1; // 128-key black notes are 2px wide — still draw 1px
       _offCtx.fillRect(fx, e2.ny, fw, e2.nh);
-      if (nbFall3d && !e2.lit && arrived && e2.ny < nbStop) {
+      if (useFade && !e2.lit && arrived && e2.ny < nbStop) {
         var lipW = Math.max(2, Math.floor(fw * 0.5));
         var lipX = fx + Math.floor((fw - lipW) / 2);
         _offCtx.fillRect(lipX, nbStop, lipW, NB_STOP + NB_LIP);

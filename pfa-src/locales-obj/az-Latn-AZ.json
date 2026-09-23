@@ -116,6 +116,18 @@
     "$v": "Media dəyiş"
   },
   {
+    "$i": "clear_media",
+    "$v": "Mediyanı təmizlə"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Əvvəlcədən yüklənmiş media faylı təmizlənsin?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Media təmizləndi"
+  },
+  {
     "$i": "media_file",
     "$v": "Media faylı"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D Görünüş"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D effektlər"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Not düşmə solğunluğu"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Not solğunluğu gücü (0–100; 0 = solğunluq yoxdur)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Düymə parıltısı"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Effekt rəngləri"
   },
   {
     "$i": "random_note_color",

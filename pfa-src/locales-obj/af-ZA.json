@@ -116,6 +116,18 @@
     "$v": "Verander media"
   },
   {
+    "$i": "clear_media",
+    "$v": "Vee media"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Vee die voorafgelaaide media-lêer?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Media uitgevee"
+  },
+  {
     "$i": "media_file",
     "$v": "Media-lêer"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3d Besigtig"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "3D-effekte"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Nootval-vervaging"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Nootvervagingssterkte (0–100; 0 = geen vervaging)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Sleutelglans"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Effekkleure"
   },
   {
     "$i": "random_note_color",

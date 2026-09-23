@@ -116,6 +116,18 @@
     "$v": "Shintsha i-media"
   },
   {
+    "$i": "clear_media",
+    "$v": "Sula imidiya"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Sula ifayela lemidiya elifakwe ngaphambilini?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Imidiya ihlanziwe"
+  },
+  {
     "$i": "media_file",
     "$v": "Ifayela le-media"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "3D View"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "Imiphumela ye-3D"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Ukufiphala kokuwa kwamanothi"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Amandla okufiphala kwamanothi (0–100; 0 = akukho kufiphala)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Ukukhanya kwezinkinobho"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Imibala yemiphumela"
   },
   {
     "$i": "random_note_color",

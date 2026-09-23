@@ -116,6 +116,18 @@
     "$v": "Changer le média"
   },
   {
+    "$i": "clear_media",
+    "$v": "Effacer le média"
+  },
+  {
+    "$i": "media_clear_confirm",
+    "$v": "Effacer le fichier média préchargé ?"
+  },
+  {
+    "$i": "media_cleared",
+    "$v": "Médias effacés"
+  },
+  {
     "$i": "media_file",
     "$v": "Fichier média"
   },
@@ -1022,6 +1034,26 @@
   {
     "$i": "sep_3d_view",
     "$v": "Vue 3D"
+  },
+  {
+    "$i": "sep_3d_effects",
+    "$v": "Effets 3D"
+  },
+  {
+    "$i": "note_fall_fade",
+    "$v": "Estompage de la chute des notes"
+  },
+  {
+    "$i": "note_fall_fade_hint",
+    "$v": "Intensité de l’estompage des notes (0–100; 0 = sans estompage)"
+  },
+  {
+    "$i": "key_glow",
+    "$v": "Lueur des touches"
+  },
+  {
+    "$i": "effects_colors",
+    "$v": "Couleurs des effets"
   },
   {
     "$i": "random_note_color",
