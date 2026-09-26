@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "הסינתיסייזר הזה לא תומך ב-black MIDI ובקבצי .note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA פועל"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "מתנגן כעת: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA מנתח"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "מנתח קובץ: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "הניתוח הושלם"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "קובץ הושלם: "
   }
 ]

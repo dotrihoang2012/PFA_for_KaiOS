@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Այս սինթեզատորը չի աջակցում black MIDI և .note ֆայլեր։"
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA աշխատում է"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Հնչում է: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA վերլուծում է"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Ֆայլի վերլուծություն: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Վերլուծությունն ավարտված է"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Ավարտված ֆայլ: "
   }
 ]

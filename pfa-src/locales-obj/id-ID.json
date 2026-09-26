@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Synthesizer ini tidak mendukung black MIDI dan file .note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA berjalan"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Sedang diputar: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA menganalisis"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Menganalisis file: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Analisis selesai"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "File selesai: "
   }
 ]

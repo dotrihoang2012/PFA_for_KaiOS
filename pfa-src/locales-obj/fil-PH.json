@@ -1822,5 +1822,29 @@
   {
     "$i": "integrated_note",
     "$v": "Hindi sinusuportahan ng synthesizer na ito ang black MIDI at .note file."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "Tumatakbo ang PFA"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Tumutugtog ngayon: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "Sinusuri ng PFA"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Sinusuri ang file: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Tapos na ang pagsusuri"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Natapos na file: "
   }
 ]

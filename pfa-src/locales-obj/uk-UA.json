@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Цей синтезатор не підтримує black MIDI та файли .note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA працює"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Зараз грає: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA аналізує"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Аналіз файлу: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Аналіз завершено"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Завершений файл: "
   }
 ]

@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "دا سنتیسائزر د black MIDI او .note فایلونو ملاتړ نه کوي."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA چلیږي"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "اوس غږول کیږي: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA تحلیل کوي"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "دوتنه تحلیل کیږي: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "تحلیل بشپړ شو"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "بشپړه شوې دوتنه: "
   }
 ]

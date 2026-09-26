@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Synthesizer hii haitumii black MIDI na faili za .note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA inaendeshwa"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Inacheza sasa: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA inachanganua"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Inachanganua faili: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Uchanganuzi umekamilika"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Faili kamili: "
   }
 ]

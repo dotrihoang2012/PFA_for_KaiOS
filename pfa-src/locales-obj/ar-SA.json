@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "هذا المركب لا يدعم ملفات black MIDI و.note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "‏PFA يعمل"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "‏يتم التشغيل الآن: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "‏PFA يحلل"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "‏جارٍ تحليل الملف: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "‏اكتمل التحليل"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "‏اكتمل الملف: "
   }
 ]

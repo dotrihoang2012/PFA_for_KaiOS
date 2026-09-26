@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Αυτός ο συνθεσάιζερ δεν υποστηρίζει black MIDI και αρχεία .note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "Το PFA εκτελείται"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Παίζει τώρα: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "Το PFA αναλύει"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Ανάλυση αρχείου: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Η ανάλυση ολοκληρώθηκε"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Ολοκληρωμένο αρχείο: "
   }
 ]

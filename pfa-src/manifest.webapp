@@ -15,11 +15,41 @@
   "orientation": [
     "portrait-primary",
     "portrait-secondary",
+    "portrait",
     "landscape-primary",
-    "landscape-secondary"
+    "landscape-secondary",
+    "landscape"
   ],
   "version": "1.0.2",
   "type": "privileged",
+  "precompile": [
+    "js/ads/kaiads.v5.min.js",
+    "js/utils/constants.js",
+    "js/utils/mozL10n.js",
+    "js/utils/l10n.js",
+    "js/utils/storage.js",
+    "js/utils/writes.js",
+    "js/audio/sfparser.js",
+    "js/utils/sfscan.js",
+    "js/midi/streamParser.js",
+    "js/midi/noteStream.js",
+    "js/midi/tempo.js",
+    "js/midi/midiParser.js",
+    "js/midi/sequencer.js",
+    "js/audio/synth.js",
+    "js/audio/soundbank.js",
+    "js/render/keyboard.js",
+    "js/render/notebuffer.js",
+    "js/render/notes.js",
+    "js/render/hud.js",
+    "js/store/state.js",
+    "js/input/bindings.js",
+    "js/ui/settings.js",
+    "js/utils/noteWriter.js",
+    "js/input/controls.js",
+    "js/ads/kaiads.js",
+    "js/main.js"
+  ],
   "dependencies": {
     "ads-sdk": "1.5.8"
   },
@@ -386,7 +416,7 @@
         }
       },
       "href": "/index.html",
-      "disposition": "inline",
+      "disposition": "window",
       "returnValue": true
     },
     "share": {
@@ -402,6 +432,7 @@
     }
   },
   "categories": [
+    "entertainment",
     "utilities"
   ],
   "messages": [

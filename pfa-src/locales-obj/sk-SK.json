@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Tento syntetizátor nepodporuje black MIDI ani súbory .note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA beží"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Práve hrá: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA analyzuje"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Analyzovanie súboru: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Analýza dokončená"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Dokončený súbor: "
   }
 ]

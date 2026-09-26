@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "此合成器不支持 black MIDI 和 .note 文件。"
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA 正在运行"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "正在播放："
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA 正在分析"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "正在分析文件："
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "分析完成"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "已完成文件："
   }
 ]

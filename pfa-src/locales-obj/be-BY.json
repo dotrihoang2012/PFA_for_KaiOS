@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Гэты сінтэзатар не падтрымлівае black MIDI і файлы .note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA працуе"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Цяпер іграе: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA аналізуе"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Аналіз файла: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Аналіз завершаны"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Завершаны файл: "
   }
 ]

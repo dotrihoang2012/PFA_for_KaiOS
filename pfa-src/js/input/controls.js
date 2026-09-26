@@ -990,18 +990,27 @@ if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
   }
 
   // ── Rotate screen ──
+  // Fixed cycle: portrait-primary → landscape-primary →
+  // landscape-secondary → portrait-secondary → portrait-primary …
+  // (press 1 = landscape-primary, 2 = landscape-secondary,
+  // 3 = portrait-secondary, 4 = back to portrait-primary).
+  var ROT_CYCLE = ['portrait-primary', 'landscape-primary',
+                   'landscape-secondary', 'portrait-secondary'];
   function rotateScreen() {
     try {
-      if (!('orientation' in screen) || !screen.orientation) {
+      if (!('orientation' in screen) || !screen.orientation || !screen.orientation.lock) {
         showToast('Rotation not supported');
         return;
       }
-      var type = screen.orientation.type || '';
-      if (type.indexOf('portrait') === -1) {
-        screen.orientation.lock('portrait');
-      } else {
-        screen.orientation.lock('landscape');
-      }
+      var type = '';
+      try { type = screen.orientation.type || ''; } catch (e) {}
+      var idx = 0; // portrait-primary, plain 'portrait', or unknown
+      if (type.indexOf('landscape-primary') === 0) idx = 1;
+      else if (type.indexOf('landscape-secondary') === 0) idx = 2;
+      else if (type.indexOf('portrait-secondary') === 0) idx = 3;
+      var next = ROT_CYCLE[(idx + 1) % ROT_CYCLE.length];
+      var r = screen.orientation.lock(next);
+      if (r && r.catch) r.catch(function () { try { showToast('Rotation not supported'); } catch (e2) {} });
       // Refresh the label after a tick — the orientation.type changes
       // once the lock is actually applied.
       setTimeout(refreshMenuLabels, 250);

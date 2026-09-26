@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Bu sintezator black MIDI və .note fayllarını dəstəkləmir."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA işləyir"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "İndi oxunur: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA təhlil edir"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Fayl təhlil edilir: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Təhlil tamamlandı"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Tamamlanmış fayl: "
   }
 ]

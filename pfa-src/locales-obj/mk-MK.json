@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Овој синтисајзер не поддржува black MIDI и .note датотеки."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA работи"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Сега се репродуцира: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA анализира"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Анализа на датотека: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Анализата заврши"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Завршена датотека: "
   }
 ]

@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "ეს სინთეზატორი არ უჭერს მხარს black MIDI-ს და .note ფაილებს."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA მუშაობს"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "ახლა უკრავს: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA აანალიზებს"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "ფაილის ანალიზი: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "ანალიზი დასრულდა"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "დასრულებული ფაილი: "
   }
 ]

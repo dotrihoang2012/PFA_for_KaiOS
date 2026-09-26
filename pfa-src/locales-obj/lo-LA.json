@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "ເຄື່ອງສັງເຄາະສຽງນີ້ບໍ່ຮອງຮັບ black MIDI ແລະ ໄຟລ໌ .note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA ກຳລັງເຮັດວຽກ"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "ກຳລັງຫຼິ້ນ: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA ກຳລັງວິເຄາະ"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "ກຳລັງວິເຄາະໄຟລ໌: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "ການວິເຄາະສຳເລັດ"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "ໄຟລ໌ສຳເລັດ: "
   }
 ]

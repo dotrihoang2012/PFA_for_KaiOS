@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "මෙම සංස්ලේෂකය black MIDI සහ .note ගොනු සඳහා සහාය නොදක්වයි."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA ක්‍රියාත්මක වේ"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "දැන් වාදනය වේ: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA විශ්ලේෂණය කරයි"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "ගොනුව විශ්ලේෂණය වේ: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "විශ්ලේෂණය සම්පූර්ණයි"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "සම්පූර්ණ ගොනුව: "
   }
 ]

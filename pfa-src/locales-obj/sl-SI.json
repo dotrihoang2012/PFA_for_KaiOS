@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Ta sintetizator ne podpira black MIDI in datotek .note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA teče"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Predvaja se: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA analizira"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Analiziranje datoteke: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Analiza končana"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Končana datoteka: "
   }
 ]

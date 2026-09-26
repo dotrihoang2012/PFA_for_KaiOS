@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Ez a szintetizátor nem támogatja a black MIDI-t és a .note fájlokat."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA fut"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Most szól: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA elemez"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Fájl elemzése: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Elemzés kész"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Kész fájl: "
   }
 ]

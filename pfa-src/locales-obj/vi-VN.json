@@ -1810,5 +1810,29 @@
   {
     "$i": "integrated_note",
     "$v": "Bộ tổng hợp này không hỗ trợ nhạc black MIDI và file .note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA đang chạy"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Đang phát: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA đang phân tích"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Đang phân tích file: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Phân tích xong"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "File xong: "
   }
 ]

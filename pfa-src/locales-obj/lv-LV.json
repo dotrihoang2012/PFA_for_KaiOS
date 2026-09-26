@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Šis sintezators neatbalsta black MIDI un .note failus."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA darbojas"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Tagad skan: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA analizē"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Faila analīze: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Analīze pabeigta"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Pabeigts fails: "
   }
 ]

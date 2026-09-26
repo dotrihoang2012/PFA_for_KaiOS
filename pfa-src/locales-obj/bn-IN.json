@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "এই সিন্থেসাইজার black MIDI এবং .note ফাইল সমর্থন করে না।"
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA চলছে"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "এখন বাজছে: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA বিশ্লেষণ করছে"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "ফাইল বিশ্লেষণ করা হচ্ছে: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "বিশ্লেষণ সম্পন্ন"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "সম্পন্ন ফাইল: "
   }
 ]

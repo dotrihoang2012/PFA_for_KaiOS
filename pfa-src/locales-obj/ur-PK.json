@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "یہ سنتھیسائزر black MIDI اور .note فائلوں کو سپورٹ نہیں کرتا۔"
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA چل رہا ہے"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "ابھی چل رہا ہے: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA تجزیہ کر رہا ہے"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "فائل کا تجزیہ کیا جا رہا ہے: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "تجزیہ مکمل"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "مکمل فائل: "
   }
 ]

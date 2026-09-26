@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Þessi hljóðgjafi styður ekki black MIDI og .note skrár."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA er í gangi"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Spilar nú: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA greinir"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Greini skrá: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Greiningu lokið"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Fullgerð skrá: "
   }
 ]

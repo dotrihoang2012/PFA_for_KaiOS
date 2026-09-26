@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "இந்த சின்தசைசர் black MIDI மற்றும் .note கோப்புகளை ஆதரிக்காது."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA இயங்குகிறது"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "இப்போது இசைக்கிறது: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA பகுப்பாய்வு செய்கிறது"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "கோப்பு பகுப்பாய்வு: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "பகுப்பாய்வு முடிந்தது"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "முடிந்த கோப்பு: "
   }
 ]

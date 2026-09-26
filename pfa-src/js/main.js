@@ -1087,19 +1087,21 @@
           // under the reader. Do NOT loadMIDIData (would OOM) — stream the
           // binary .note back from disk instead.
           _openConvertedNote(path, name).then(
-            function () { _setPipelineBusy(false); },
-            function () { _setPipelineBusy(false); }
+            function () { _setPipelineBusy(false); _notifyAnalyzeDone(name); },
+            function () { _setPipelineBusy(false); _notifyAnalyzeGone(); }
           );
         },
         onError: function (msg) {
           console.error('[StreamParser] ' + msg);
           _setPipelineBusy(false);
+          _notifyAnalyzeGone();
           hideParsing();
           if (typeof showErrorDialog === 'function') {
             try { showErrorDialog(L10n.t('err_stream_failed', 'Streaming MIDI analysis failed: ') + msg); } catch (e) {}
           }
         },
         onCancel: function (msg) {
+          _notifyAnalyzeGone();
           _onAnalyzeCancelled(msg);
         }
       });
@@ -1129,6 +1131,7 @@
         _setPipelineBusy(false);
         hideParsing();
         loadMIDIData(midiData);
+        _notifyAnalyzeDone(name);
       },
       onError: function (msg) {
         console.error('[NoteWriter] ' + msg);
@@ -1138,11 +1141,13 @@
         // dialog is already on screen (OK → exit). Do NOT fall back to
         // playback behind the dialog.
         if (typeof storageGranted === 'function') {
-          try { if (storageGranted()) { loadMIDIData(midiData); return; } } catch (e) { loadMIDIData(midiData); return; }
+          try { if (storageGranted()) { loadMIDIData(midiData); _notifyAnalyzeDone(name); return; } } catch (e) { loadMIDIData(midiData); _notifyAnalyzeDone(name); return; }
         }
         loadMIDIData(midiData); // still play even if the copy failed
+        _notifyAnalyzeDone(name);
       },
       onCancel: function (msg) {
+        _notifyAnalyzeGone();
         _onAnalyzeCancelled(msg);
       }
     });
@@ -2913,20 +2918,40 @@
 
   // A locale switch (manual pick, boot pin, or system change) retranslates the
   // static DOM itself; dynamic settings rows are rebuilt through this hook.
+  // Plus a safety net for Auto-Off: if a system-driven switch just landed
+  // while a fixed language is pinned, pin it back (covers builds where the
+  // 'languagechange' event below never fires). Terminates: setLanguageRuntime
+  // no-ops once already on the pinned code, so this can never loop.
   window.addEventListener('localized', function () {
     try {
       if (typeof Settings !== 'undefined' && Settings.onLocaleChanged) Settings.onLocaleChanged();
     } catch (e) {}
+    try {
+      if (typeof Settings !== 'undefined' && Settings.applyLanguagePreference) {
+        Settings.applyLanguagePreference();
+      }
+    } catch (e2) {}
   });
 
   // While Auto change language is Off, a device language change must not
-  // change the app language — re-assert the pinned locale.
+  // change the app language — re-assert the pinned locale. Done twice: once
+  // synchronously, once deferred — mozL10n may apply the system locale
+  // BEFORE this listener runs (then the sync re-pin no-ops on the still-old
+  // code) or asynchronously AFTER it. The deferred pass wins either way,
+  // and both are no-ops when already correct so nothing can loop.
   window.addEventListener('languagechange', function () {
     try {
       if (typeof Settings !== 'undefined' && Settings.applyLanguagePreference) {
         Settings.applyLanguagePreference();
       }
     } catch (e) {}
+    setTimeout(function () {
+      try {
+        if (typeof Settings !== 'undefined' && Settings.applyLanguagePreference) {
+          Settings.applyLanguagePreference();
+        }
+      } catch (e2) {}
+    }, 350);
   });
 
   window.addEventListener('localized', tryBoot);
@@ -3148,8 +3173,8 @@
       var raw = name || Store.getState().fileName || '';
       var base = _nowPlayingBasename(raw) || raw || 'Unknown';
       if (_nowPlayingNotif) { try { _nowPlayingNotif.close(); } catch (e2) {} _nowPlayingNotif = null; }
-      _nowPlayingNotif = new Notification('PFA is running', {
-        body: 'Now playing: ' + base,
+      _nowPlayingNotif = new Notification(L10n.t('notif_running', 'PFA is running'), {
+        body: L10n.t('notif_now_playing', 'Now playing: ') + base,
         tag: 'pfa-nowplaying',
         icon: 'style/icons/running.png'
       });
@@ -3184,6 +3209,76 @@
           if (p && typeof p.then === 'function') { p.catch(function () {}); }
         } catch (e2) {}
       }
+    } catch (e) {}
+  }
+  // ── Background analysis notifications ────────────────────────────────
+// Pressing Back mid-conversion backgrounds the app while analysis keeps
+// running: surface "PFA is analyzing / Analyzing file: X" (loading.png),
+// then replace it with "Analysis complete / Completed file: X"
+// (success.png) when the load finishes. Both clear when the app returns
+// to the foreground. Shown only for long pipelines (never for fast
+// in-RAM parses) and only if the completion happens while hidden.
+  var _analyzeNotif = null, _analyzeDoneNotif = null;
+  function _notifLaunch() {
+    try {
+      if (navigator.mozApps && navigator.mozApps.getSelf) {
+        var req = navigator.mozApps.getSelf();
+        req.onsuccess = function () { if (req.result) req.result.launch(); };
+      } else {
+        window.focus();
+      }
+    } catch (e) {}
+  }
+  function _analyzeNotifName(name) {
+    try {
+      var raw = name || Store.getState().fileName || '';
+      var base = (typeof _nowPlayingBasename === 'function') ? _nowPlayingBasename(raw) : raw;
+      return base || raw || 'Unknown';
+    } catch (e) { return name || 'Unknown'; }
+  }
+  function _showAnalyzeNotif(name) {
+    try {
+      if (typeof Notification === 'undefined') return;
+      if (Notification.permission !== 'granted') return;
+      if (_analyzeNotif) return; // already shown
+      var base = _analyzeNotifName(name);
+      _analyzeNotif = new Notification(L10n.t('notif_analyzing', 'PFA is analyzing'), {
+        body: L10n.t('notif_analyzing_file', 'Analyzing file: ') + base,
+        tag: 'pfa-analyzing',
+        icon: 'style/icons/loading.png'
+      });
+      _analyzeNotif.onclick = _notifLaunch;
+      console.log('[Analyze] background notification shown: ' + base);
+    } catch (e) { console.warn('[Analyze] notify failed: ' + e.message); }
+  }
+  function _notifyAnalyzeDone(name) {
+    // Only meaningful if the analyzing notification was shown (i.e. the
+    // user backgrounded mid-analysis and is still away); otherwise silent.
+    try {
+      if (!_analyzeNotif) return;
+      try { _analyzeNotif.close(); } catch (e) {}
+      _analyzeNotif = null;
+      if (typeof Notification === 'undefined') return;
+      if (Notification.permission !== 'granted') return;
+      if (_analyzeDoneNotif) { try { _analyzeDoneNotif.close(); } catch (e2) {} _analyzeDoneNotif = null; }
+      _analyzeDoneNotif = new Notification(L10n.t('notif_complete', 'Analysis complete'), {
+        body: L10n.t('notif_completed_file', 'Completed file: ') + _analyzeNotifName(name),
+        tag: 'pfa-analyze-done',
+        icon: 'style/icons/success.png'
+      });
+      _analyzeDoneNotif.onclick = _notifLaunch;
+      console.log('[Analyze] completion notification shown');
+    } catch (e) { console.warn('[Analyze] done-notify failed: ' + e.message); }
+  }
+  function _notifyAnalyzeGone() {
+    try {
+      if (_analyzeNotif) { try { _analyzeNotif.close(); } catch (e) {} _analyzeNotif = null; }
+    } catch (e) {}
+  }
+  function _notifyAnalyzeClearAll() {
+    _notifyAnalyzeGone();
+    try {
+      if (_analyzeDoneNotif) { try { _analyzeDoneNotif.close(); } catch (e) {} _analyzeDoneNotif = null; }
     } catch (e) {}
   }
   function acquireCpuWakeLock() {
@@ -3422,7 +3517,13 @@ vols.forEach(function (vol) {
         if (hasFile && !isDemo && st.play === 'play') {
           showNowPlayingNotification(st.fileName);
         }
+        // Backgrounded mid-analysis (conversion keeps running headless):
+        // surface progress; completion replaces it (or clears on return).
+        try { if (_pipelineBusy) _showAnalyzeNotif(st.fileName); } catch (eA) {}
       } else {
+        // Back in foreground — stale analysis notifications served their
+        // purpose (user can see the app itself again).
+        try { _notifyAnalyzeClearAll(); } catch (eC) {}
         try { if (st.play === 'play') _engine().ensure(); } catch (e5) {}
         try { onResize(); } catch (e6) {}
         // Re-acquire screen wake lock for foreground play (released on hidden).

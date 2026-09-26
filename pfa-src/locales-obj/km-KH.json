@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "ឧបករណ៍សំយោគនេះមិនគាំទ្រ black MIDI និងឯកសារ .note ទេ។"
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA កំពុងដំណើរការ"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "កំពុងចាក់: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA កំពុងវិភាគ"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "កំពុងវិភាគឯកសារ: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "ការវិភាគបានបញ្ចប់"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "ឯកសារបានបញ្ចប់: "
   }
 ]

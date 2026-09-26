@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Dieser Synthesizer unterstützt keine Black-MIDI- und .note-Dateien."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA läuft"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Läuft gerade: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA analysiert"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Datei wird analysiert: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Analyse abgeschlossen"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Fertige Datei: "
   }
 ]

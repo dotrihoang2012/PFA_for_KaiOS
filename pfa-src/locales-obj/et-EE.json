@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "See süntesaator ei toeta black MIDI-d ega .note-faile."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA töötab"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Mängib: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA analüüsib"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Faili analüüsimine: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Analüüs valmis"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Valmis fail: "
   }
 ]

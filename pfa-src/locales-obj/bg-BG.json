@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Този синтезатор не поддържа black MIDI и .note файлове."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA работи"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "В момента се изпълнява: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA анализира"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Анализиране на файл: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Анализът завърши"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Завършен файл: "
   }
 ]

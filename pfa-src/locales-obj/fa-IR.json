@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "این سینتی‌سایزر از black MIDI و فایل‌های .note پشتیبانی نمی‌کند."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA در حال اجراست"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "در حال پخش: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA در حال تحلیل است"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "در حال تحلیل فایل: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "تحلیل کامل شد"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "فایل تکمیل شد: "
   }
 ]

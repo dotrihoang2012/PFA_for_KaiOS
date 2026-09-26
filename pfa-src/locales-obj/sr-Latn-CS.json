@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Ovaj sintisajzer ne podržava black MIDI i .note datoteke."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA radi"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Svira: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA analizira"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Analiziranje datoteke: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Analiza završena"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Završena datoteka: "
   }
 ]

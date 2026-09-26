@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Le synthesizer ayisekeli i-black MIDI namafayela e-.note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "i-PFA iyasebenza"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Kudlalwa manje: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "i-PFA iyahlaziya"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Kuhlaziywa ifayela: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Ukuhlaziya kuqediwe"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Ifayela eliqediwe: "
   }
 ]

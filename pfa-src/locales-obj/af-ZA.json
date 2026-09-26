@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Hierdie sintetiseerder ondersteun nie black MIDI en .note-lêers nie."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA loop"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Speel nou: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA ontleed"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Ontleed lêer: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Ontleding voltooi"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Voltooide lêer: "
   }
 ]

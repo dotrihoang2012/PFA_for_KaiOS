@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Šis sintezatorius nepalaiko black MIDI ir .note failų."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA veikia"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Dabar groja: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA analizuoja"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Analizuojamas failas: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Analizė baigta"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Baigtas failas: "
   }
 ]

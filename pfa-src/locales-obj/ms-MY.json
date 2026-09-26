@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Pensintesis ini tidak menyokong black MIDI dan fail .note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA sedang berjalan"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Sedang dimainkan: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA sedang menganalisis"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Menganalisis fail: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Analisis selesai"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Fail selesai: "
   }
 ]

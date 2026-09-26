@@ -1818,5 +1818,29 @@
   {
     "$i": "integrated_note",
     "$v": "Tento syntezátor nepodporuje black MIDI a soubory .note."
+  },
+  {
+    "$i": "notif_running",
+    "$v": "PFA běží"
+  },
+  {
+    "$i": "notif_now_playing",
+    "$v": "Právě hraje: "
+  },
+  {
+    "$i": "notif_analyzing",
+    "$v": "PFA analyzuje"
+  },
+  {
+    "$i": "notif_analyzing_file",
+    "$v": "Analyzování souboru: "
+  },
+  {
+    "$i": "notif_complete",
+    "$v": "Analýza dokončena"
+  },
+  {
+    "$i": "notif_completed_file",
+    "$v": "Dokončený soubor: "
   }
 ]

@@ -2358,6 +2358,17 @@ var Settings = (function () {
       syncLanguageToSystem();
       return;
     }
+    // Self-heal: Auto was turned off without ever picking a radio (empty
+    // language) — pin whatever is showing now so later system changes have
+    // something to re-assert (mirrors the toggle-off path).
+    if (!_values.sys.language) {
+      var cur0 = null;
+      try { cur0 = currentLocaleCode(); } catch (e0) {}
+      if (!cur0) return;
+      _values.sys.language = cur0;
+      try { save(); } catch (e1) {}
+      try { Store.setState(_mapToStore('sys', 'language', cur0)); } catch (e2) {}
+    }
     if (_values.sys.language) setLanguageRuntime(_values.sys.language);
   }
 
