@@ -26,6 +26,39 @@ var NoteBuffer = (function () {
   var NB_STOP = 6;
   var NB_LIP = 2;
   var NB_SLACK = 6;
+  // Spam bridge: close same-column slit gaps so a tight staccato run reads
+  // as a solid column instead of a ruled ladder. Two guards keep
+  // musically-separated notes distinct: the pixel gap must be small, AND
+  // the two notes must belong to the same rapid run (onset spacing within
+  // NB_BRIDGE_ONSET). The slit is filled with the *previous* note's color,
+  // so different channels never merge.
+  var NB_BRIDGE_MIN   = 4;
+  var NB_BRIDGE_PX    = 14;
+  var NB_BRIDGE_PX_m  = 0.06; // scale cap with fall speed, clipped to NB_BRIDGE_PX
+  var NB_BRIDGE_ONSET = 0.18; // s — same-key onsets closer than this are one run
+
+  function _bridgeRuns(list, maxGap) {
+    if (list.length < 2) return;
+    var cols = {}, keys = [], n = 0;
+    for (var i = 0; i < list.length; i++) {
+      var key = list[i].nx + '|' + list[i].nw;
+      if (!cols[key]) { cols[key] = []; keys.push(key); }
+      cols[key].push(list[i]);
+    }
+    for (var ki = 0; ki < keys.length; ki++) {
+      var arr = cols[keys[ki]];
+      arr.sort(function (a, b) { return a.ny - b.ny; });
+      for (var j = 1; j < arr.length; j++) {
+        var gap = arr[j].ny - (arr[j - 1].ny + arr[j - 1].nh);
+        if (gap > 0 && gap <= maxGap &&
+            Math.abs(arr[j].ssec - arr[j - 1].ssec) <= NB_BRIDGE_ONSET) {
+          arr[j - 1].nh += gap;
+        }
+      }
+      for (var k = 0; k < arr.length; k++) list[n++] = arr[k];
+    }
+    list.length = n;
+  }
 
   function ensureKeyCache(camKey, keyW) {
     if (_keyCache && _keyCacheKey === camKey && _keyCacheW === keyW) return;
@@ -158,13 +191,19 @@ var NoteBuffer = (function () {
       if (ss > ns + effectiveLK) continue;
 
       var nyBottom = fbBot - (ss - ns) * FALL;
-      var nh = Math.max(2, (es - ss) * FALL);
+      // Buffer-native minimum dash: at high fall speeds sub-5ms notes would
+      // render as 2px hairlines (the "striped lines" look). Floor them to
+      // 5ms of fall so every note reads as a bar. Low trails are untouched
+      // (0.005*FALL <= 2 there, so the floor stays exactly 2px).
+      var nh = Math.max(2, 0.005 * FALL, (es - ss) * FALL);
       var ny = nyBottom - nh;
       if (nyBottom < 0) continue;
       if (ny > fbBot) continue;
 
       var entry = { nx: nx, ny: ny, nw: pos.w, nh: nh,
-                    ch: a.channel, black: pos.black, lit: (ns >= ss && ns <= es) };
+                    ch: a.channel, black: pos.black,
+                    ssec: ss,
+                    lit: (ns >= ss && ns <= es), arrv: (ns > ss) };
       if (pos.black) blacks.push(entry);
       else           whites.push(entry);
     }
@@ -187,13 +226,39 @@ var NoteBuffer = (function () {
     var fadeQ = (typeof Notes !== 'undefined' && Notes.fadeShade)
       ? Notes.fadeShade(fadeAmt) : 1;
     var useFade = nbFall3d && fadeAmt > 0;
+
+    // 3D head-stop: unlit, not-yet-arrived heads stop short of the bar.
+    // Applied BEFORE the spam bridge so a tight run bridges seamlessly past
+    // the stop band (no vanishing/flicker as notes overlap at the bar),
+    // while an isolated approaching note keeps its stop gap.
+    if (useFade) {
+      for (var si = 0; si < whites.length; si++) {
+        var se = whites[si];
+        if (!se.lit && !se.arrv) {
+          var sBot = se.ny + se.nh;
+          if (sBot > nbStop && se.ny < nbStop) se.nh = nbStop - se.ny;
+        }
+      }
+      for (var si2 = 0; si2 < blacks.length; si2++) {
+        var se2 = blacks[si2];
+        if (!se2.lit && !se2.arrv) {
+          var sBot2 = se2.ny + se2.nh;
+          if (sBot2 > nbStop && se2.ny < nbStop) se2.nh = nbStop - se2.ny;
+        }
+      }
+    }
+
+    // Close small same-column slit gaps (tight staccato spam) so the column
+    // renders as one continuous bar instead of a dashed stack, but stay
+    // clear of musically-separated notes (cap is small, in pixels).
+    var maxGap = Math.round(FALL * NB_BRIDGE_PX_m);
+    if (maxGap < NB_BRIDGE_MIN) maxGap = NB_BRIDGE_MIN;
+    else if (maxGap > NB_BRIDGE_PX) maxGap = NB_BRIDGE_PX;
+    _bridgeRuns(whites, maxGap);
+    _bridgeRuns(blacks, maxGap);
+
     for (var wi = 0; wi < whites.length; wi++) {
       var e = whites[wi];
-      // 3D: unlit heads stop short of the bar (gap); lit notes fill to it.
-      if (useFade && !e.lit) {
-        var wBot = e.ny + e.nh;
-        if (wBot > nbStop && e.ny < nbStop) e.nh = nbStop - e.ny;
-      }
       var rgb = rgbTbl[e.ch % 16] || { r: 204, g: 204, b: 204 };
       if (useFade) {
         var gkey = e.ch + ':' + e.nx + ':' + e.nw + ':' + Math.round(fadeQ * 1000);
@@ -223,10 +288,6 @@ var NoteBuffer = (function () {
       // 3D: unlit heads stop short of the bar; an arrived head grows a
       // centered 2px tongue onto the bar (gone once the note lights).
       var arrived = (e2.ny + e2.nh) >= nbStop;
-      if (useFade && !e2.lit) {
-        var bBot = e2.ny + e2.nh;
-        if (bBot > nbStop && e2.ny < nbStop) e2.nh = nbStop - e2.ny;
-      }
       var rgb = rgbTbl[e2.ch % 16] || { r: 204, g: 204, b: 204 };
       if (useFade) {
         var gkey = e2.ch + ':' + e2.nx + ':' + e2.nw + ':' + Math.round(fadeQ * 1000);

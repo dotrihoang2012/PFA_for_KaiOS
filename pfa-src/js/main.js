@@ -217,23 +217,7 @@
         }
 
         if (blob) {
-          if (!name) name = 'picked.mid';
-          if (_isJsonName(name)) {
-            console.log('[Activity] reading blob as .note/.json...');
-            showParsing(_parsingLabel(name)); // Reading Data...
-            Store.setState({ fileName: name });
-            window._midiBlob = blob; // expose for native audio
-            window._midiName = name;
-            _openNoteFile(blob, name);
-            _foregroundAfterActivity();
-            return;
-          }
-          console.log('[Activity] routing MIDI blob, size=', blob.size);
-          showParsing(_parsingLabel(name)); // Analyzing MIDI Data...
-          Store.setState({ fileName: name });
-          window._midiBlob = blob; // expose for native audio
-          window._midiName = name;
-          _routeMidiBlob(blob, name);
+          _routeHotBlob(blob, name);
           // Do NOT call activity.postResult() — on some KaiOS 2.5
           // builds posting a result from within an async path is
           // interpreted as "handler finished" and the B2G shell
@@ -241,7 +225,6 @@
           // looking at (File Manager). Caller (File Manager) is
           // satisfied by the host app just by us having handled
           // the message handler.
-          _foregroundAfterActivity();
           return;
         }
 
@@ -258,17 +241,8 @@
           xhr.onload = function () {
             if (xhr.status >= 200 && xhr.status < 300 && xhr.response) {
               var fileBlob = xhr.response;
-              window._midiBlob = fileBlob; // expose for native audio
-              window._midiName = fname;
-              if (_isJsonName(fname)) {
-                // .note/.json MIDI — PFA2 binary streams from disk, else restore
-                // the legacy JSON text path.
-                _openNoteFile(fileBlob, fname, _foregroundAfterActivity);
-                return;
-              }
-              // Route MIDI blob (large files skip the full ArrayBuffer read)
-              _routeMidiBlob(fileBlob, fname);
-              _foregroundAfterActivity();
+              _routeHotBlob(fileBlob, fname);
+              return;
             } else {
               console.error('[Main] XHR fetch failed', xhr.status);
               hideParsing();
@@ -707,18 +681,29 @@
   // payload. Same logic as the picker path in controls.js.
   function handlePickedBlob(blob, name) {
     _activityBusy = true;
+    var placeholder = !name;
+    if (placeholder) name = 'picked.mid';
     showParsing(_parsingLabel(name)); // Reading Data... for .note/.json
     Store.setState({ fileName: name });
     window._midiBlob = blob; // expose for native audio + debug
     window._midiName = name;
     if (_isJsonName(name)) {
-      var readerT = new FileReader();
-      readerT.onload = function () { loadMIDIJson(readerT.result); };
-      readerT.onerror = function () { console.error('[Main] FileReader error'); hideParsing(); };
-      readerT.readAsText(blob);
+      // PFA2 binary streams from disk; legacy JSON text restores.
+      // (Never readAsText+JSON.parse directly — binary would die here.)
+      _openNoteFile(blob, name);
       return;
     }
-    _routeMidiBlob(blob, name);
+    var ln = String(name).toLowerCase();
+    if (!placeholder && (ln.endsWith('.mid') || ln.endsWith('.midi'))) {
+      _routeMidiBlob(blob, name);
+      return;
+    }
+    // No trustworthy extension (queued hot-open defaults the name):
+    // sniff content like the live activity path does.
+    _sniffBlobKind(blob).then(function (kind) {
+      if (kind === 'note' || kind === 'json') _openNoteFile(blob, name);
+      else _routeMidiBlob(blob, name);
+    });
   }
 
   function fetchAndLoad(filepath, name) {
@@ -732,7 +717,14 @@
     xhr.onload = function () {
       if (xhr.status >= 200 && xhr.status < 300 && xhr.response) {
         try {
-          _routeMidiBlob(xhr.response, name);
+          var fb = xhr.response;
+          if (_isJsonName(name)) { _openNoteFile(fb, name); return; }
+          var fln = String(name).toLowerCase();
+          if (fln.endsWith('.mid') || fln.endsWith('.midi')) { _routeMidiBlob(fb, name); return; }
+          _sniffBlobKind(fb).then(function (kind) {
+            if (kind === 'note' || kind === 'json') _openNoteFile(fb, name);
+            else _routeMidiBlob(fb, name);
+          });
         } catch (e) {
           console.error('[Main] XHR MIDI parse error', e);
           hideParsing();
@@ -2103,6 +2095,56 @@
     var n = String(name).toLowerCase();
     if (n.endsWith('.soundbank.json')) return false;
     return n.endsWith('.json') || n.endsWith('.note');
+  }
+
+  // Sniff the first 4 bytes of a blob: 'PFA2' → binary .note, 'MThd' →
+  // MIDI, '{'/'[' → JSON text. Hot-open (File Manager) often arrives
+  // without a usable filename (defaulting to 'picked.mid'), which used to
+  // force binary .note files down the MIDI parser → "invalid file".
+  function _sniffBlobKind(blob) {
+    return new Promise(function (resolve) {
+      if (!blob || !blob.size) { resolve('unknown'); return; }
+      var fr = new FileReader();
+      var to = setTimeout(function () {
+        try { fr.abort(); } catch (e) {}
+        resolve('unknown');
+      }, 5000);
+      fr.onload = function () {
+        clearTimeout(to);
+        try {
+          var dv = new DataView(fr.result);
+          var b0 = dv.getUint8(0), b1 = dv.getUint8(1),
+              b2 = dv.getUint8(2), b3 = dv.getUint8(3);
+          if (b0 === 0x50 && b1 === 0x46 && b2 === 0x41 && b3 === 0x32) resolve('note');
+          else if (b0 === 0x4D && b1 === 0x54 && b2 === 0x68 && b3 === 0x64) resolve('midi');
+          else if (b0 === 0x7B || b0 === 0x5B) resolve('json');
+          else resolve('unknown');
+        } catch (e) { resolve('unknown'); }
+      };
+      fr.onerror = function () { clearTimeout(to); resolve('unknown'); };
+      try { fr.readAsArrayBuffer(blob.slice(0, 4)); }
+      catch (e) { clearTimeout(to); resolve('unknown'); }
+    });
+  }
+
+  // Route a hot-opened blob: trust an explicit extension, else sniff content.
+  // Matches the in-app picker behavior (non-.mid → note path with PFA2 sniff).
+  function _routeHotBlob(blob, name) {
+    var placeholder = !name;
+    if (placeholder) name = 'picked.mid';
+    showParsing(_parsingLabel(name));
+    Store.setState({ fileName: name });
+    window._midiBlob = blob;
+    window._midiName = name;
+    function goMidi() { _routeMidiBlob(blob, name); _foregroundAfterActivity(); }
+    function goNote() { _openNoteFile(blob, name); _foregroundAfterActivity(); }
+    if (_isJsonName(name)) { goNote(); return; }
+    var ln = String(name).toLowerCase();
+    if (!placeholder && (ln.endsWith('.mid') || ln.endsWith('.midi'))) { goMidi(); return; }
+    _sniffBlobKind(blob).then(function (kind) {
+      if (kind === 'note' || kind === 'json') goNote();
+      else goMidi();
+    });
   }
 
   // Parsing pill label: MIDI-JSON files (.json/.note) read as text show
