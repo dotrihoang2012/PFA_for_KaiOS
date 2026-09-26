@@ -234,6 +234,39 @@ var Notes = (function () {
     return 1 - amount * (1 - FADE_MIN_SHADE);
   }
 
+  /**
+   * Effective visible keyboard range for this frame.
+   * kbSize 'dynamic': base 88 keys (21..108); jumps to full 128 (0..127)
+   * as soon as any note outside 21..108 is sounding now or starts within
+   * the next 3s (predicted from the lookahead buffer). Back to 88 when
+   * clear. Every other kbSize returns the plain kbStart/kbEnd settings.
+   * All readers (note fall, piano strip, keyWidth fit) must use this so
+   * they stay in sync with each other.
+   */
+  function dynRange(state) {
+    var s0 = (state && state.kbStart != null) ? state.kbStart : 21;
+    var s1 = (state && state.kbEnd != null) ? state.kbEnd : 108;
+    if (!state || state.kbSize !== 'dynamic') return { start: s0, end: s1 };
+    var expand = false;
+    try {
+      var nowSec = (typeof Sequencer !== 'undefined' && Sequencer.getTime) ? Sequencer.getTime() : 0;
+      var horizon = nowSec + 3;
+      var live = null;
+      try { live = Sequencer.activeList(); } catch (e) { live = null; }
+      if (live) {
+        for (var i = 0; i < live.length; i++) {
+          var a = live[i];
+          if (a.note < 21 || a.note > 108) {
+            var ss = (a.startSec != null) ? a.startSec : horizon + 1;
+            var es = (a.endSec != null) ? a.endSec : ss;
+            if (ss <= horizon && es >= nowSec) { expand = true; break; }
+          }
+        }
+      }
+    } catch (e) {}
+    return expand ? { start: 0, end: 127 } : { start: 21, end: 108 };
+  }
+
   function draw(state, ctx, w, h) {
     // Band bottom follows the Piano Size strip height ('none' → full canvas).
     var kbH = (typeof Keyboard !== 'undefined' && Keyboard.height)
@@ -254,8 +287,10 @@ var Notes = (function () {
     var kw = state.keyWidth || 16;
     kw = dv('keyWidth', kw);
     // Visible window — Keyboard Range [kbStart..kbEnd] replaces camKey.
-    var ckStart = (state.kbStart != null) ? state.kbStart : 21;
-    var ckEnd   = (state.kbEnd   != null) ? state.kbEnd   : 108;
+    // kbSize 'dynamic' auto-expands past 88 keys for out-of-range notes.
+    var _dr = dynRange(state);
+    var ckStart = (_dr.start != null) ? _dr.start : 21;
+    var ckEnd   = (_dr.end != null) ? _dr.end : 108;
     ckStart = dv('kbStart', ckStart);
     ckEnd   = dv('kbEnd', ckEnd);
     ckStart = Math.max(0, Math.min(127, ckStart));
@@ -426,6 +461,7 @@ var Notes = (function () {
     draw: draw,
     fallFade: fallFade,
     fadeShade: fadeShade,
+    dynRange: dynRange,
     channelColor: channelColor,
     randomizePalette: randomizePalette,
     setPaletteColors: setPaletteColors,

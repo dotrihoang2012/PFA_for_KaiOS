@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Audio"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dinamično"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Sistem"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Preload"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integrisano"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Ovaj sintisajzer ne podržava black MIDI i .note datoteke."
   }
 ]

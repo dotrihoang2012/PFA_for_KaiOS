@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "ශ්රව්ය උපකරණ"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "ගතික"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "පද්ධතිය"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "පෙරපූරණය"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "ඒකාබද්ධ"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "මෙම සංස්ලේෂකය black MIDI සහ .note ගොනු සඳහා සහාය නොදක්වයි."
   }
 ]

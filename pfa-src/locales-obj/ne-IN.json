@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "अडियो"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "डायनामिक"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "प्रणाली"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "प्रिलोड"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "एकीकृत"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "यो सिन्थेसाइजरले black MIDI र .note फाइलहरूलाई समर्थन गर्दैन।"
   }
 ]

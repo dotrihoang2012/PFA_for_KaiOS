@@ -1790,5 +1790,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Âm thanh"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Động"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Hệ thống"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Tải trước"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Tích hợp"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Bộ tổng hợp này không hỗ trợ nhạc black MIDI và file .note."
   }
 ]

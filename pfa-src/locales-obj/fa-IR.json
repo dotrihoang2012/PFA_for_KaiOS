@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "صوتی"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "پویا"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "سیستم"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "پیش‌بارگذاری"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "یکپارچه"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "این سینتی‌سایزر از black MIDI و فایل‌های .note پشتیبانی نمی‌کند."
   }
 ]

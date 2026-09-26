@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Ääni"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dynaaminen"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Järjestelmä"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Esilataus"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integroitu"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Tämä syntetisaattori ei tue black MIDI- eikä .note-tiedostoja."
   }
 ]

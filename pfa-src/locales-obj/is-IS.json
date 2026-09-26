@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Hljóð"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Kvik"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Kerfi"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Forhleðsla"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Samþætt"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Þessi hljóðgjafi styður ekki black MIDI og .note skrár."
   }
 ]

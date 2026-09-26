@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Zvuk"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dynamický"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Systém"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Přednačtení"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integrovaný"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Tento syntezátor nepodporuje black MIDI a soubory .note."
   }
 ]

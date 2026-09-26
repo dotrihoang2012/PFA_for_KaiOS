@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "เสียง"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "ไดนามิก"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "ระบบ"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "พรีโหลด"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "ในตัว"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "ซินธิไซเซอร์นี้ไม่รองรับ black MIDI และไฟล์ .note."
   }
 ]

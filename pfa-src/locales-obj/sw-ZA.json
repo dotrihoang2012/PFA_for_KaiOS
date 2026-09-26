@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Sauti"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dynamic"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Mfumo"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Preload"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integrated"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Synthesizer hii haitumii black MIDI na faili za .note."
   }
 ]

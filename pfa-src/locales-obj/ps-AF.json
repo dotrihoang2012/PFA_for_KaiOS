@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "آډیو"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "متحرک"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "سیستم"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "پری لوډ"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "مدغم"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "دا سنتیسائزر د black MIDI او .note فایلونو ملاتړ نه کوي."
   }
 ]

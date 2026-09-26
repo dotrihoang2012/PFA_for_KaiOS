@@ -631,8 +631,11 @@
 
       if (typeof NoteBuffer !== 'undefined') {
         NoteBuffer.init(width, height);
-        NoteBuffer.ensureKeyCache(Store.getState().kbStart || 21,
-                                  Store.getState().keyWidth || 16);
+        var _bootSt = Store.getState();
+        var _bootdr = (typeof Notes !== 'undefined' && Notes.dynRange)
+          ? Notes.dynRange(_bootSt) : { start: null, end: null };
+        NoteBuffer.ensureKeyCache((_bootdr.start != null) ? _bootdr.start : (_bootSt.kbStart || 21),
+                                  _bootSt.keyWidth || 16);
       }
 
       updateBootProgress(100, L10n.t('boot_ready', 'Ready'), '');
@@ -879,6 +882,11 @@
    * that has almost none to spare). Smaller files are read fully for playback.
    */
   function _routeMidiBlob(blob, name) {
+    // Integrated engine plays the MIDI itself through the platform element:
+    // snapshot the source blob at entry (single funnel for every .mid path).
+    try {
+      if (Store.getState().synthEngine === 'integrated' && blob && blob.size) _integSetSource(blob);
+    } catch (e) {}
     if (blob && blob.size >= HUGE_MIDI_BYTES && typeof StreamParser !== 'undefined') {
       _analyzeAndLoadMIDI(null, name, blob);
       return;
@@ -1298,6 +1306,96 @@
   window._mediaSeek = _mediaSeek; // hook for controls.js seekSeconds
   window.pfaReleaseMedia = _mediaRelease; // hook for Settings "Clear Media"
 
+  // ── Integrated synth engine (platform MIDI audio) ────────────────────
+  // Third Synth Engine choice: the loaded .mid is ALSO handed to a native
+  // <audio> element so the device's own system synthesizer renders it,
+  // while our oscillator/soundbank stay muted (same as preload). PFA2
+  // .note files are NOT platform-playable → silence under Integrated
+  // (the settings note explains this). Transport (play/pause/stop/seek/
+  // speed) mirrors the preload-media hooks; alignment with the visual
+  // playhead is best-effort (no tempo-map resync).
+  var _integEl = null, _integUrl = null, _integStopped = true;
+
+  function _integActive() {
+    var st = Store.getState();
+    return st.synthEngine === 'integrated' && !!_integUrl;
+  }
+  function _ensureIntegEl() {
+    if (_integEl) return _integEl;
+    try {
+      _integEl = document.createElement('audio');
+      try { _integEl.mozAudioChannelType = 'content'; } catch (e) {}
+      try { _integEl.setAttribute('mozAudioChannelType', 'content'); } catch (e) {}
+      _integEl.preload = 'none';
+      _integEl.addEventListener('error', function () {
+        try { console.warn('[Integ] element error', _integEl.error ? _integEl.error.code : '?'); } catch (e) {}
+      });
+      document.body.appendChild(_integEl);
+      _assertMediaChannel();
+      _integApplyMute();
+    } catch (e) {}
+    return _integEl;
+  }
+  function _integApplyMute() {
+    var st = Store.getState();
+    if (_integEl) { try { _integEl.muted = (st.audio === false); } catch (e) {} }
+  }
+  // (Re)build the platform source from a MIDI blob (revokes the old URL).
+  function _integSetSource(blob) {
+    _integReleaseUrl();
+    _integStopped = true;
+    if (!blob) return;
+    try {
+      _integUrl = URL.createObjectURL(blob);
+      var el = _ensureIntegEl();
+      if (el) { try { el.src = _integUrl; el.load(); } catch (e) {} }
+    } catch (e) { _integUrl = null; }
+  }
+  function _integReleaseUrl() {
+    if (_integUrl) { try { URL.revokeObjectURL(_integUrl); } catch (e) {} _integUrl = null; }
+  }
+  // Full release (note load, engine switch away, unload).
+  function _integRelease() {
+    _integStopped = true;
+    if (_integEl) {
+      try { _integEl.pause(); _integEl.removeAttribute('src'); _integEl.load(); } catch (e) {}
+    }
+    _integReleaseUrl();
+  }
+  function _integPlay() {
+    if (!_integActive()) return;
+    var el = _ensureIntegEl();
+    if (!el) return;
+    _integApplyMute();
+    var fresh = _integStopped;
+    _integStopped = false;
+    if (fresh) { try { el.currentTime = 0; } catch (e) {} }
+    try {
+      var p = el.play();
+      if (p && p.catch) p.catch(function (er) { console.warn('[Integ] play blocked:', er); });
+    } catch (e) { console.warn('[Integ] play() threw:', e); }
+  }
+  function _integPause() {
+    if (_integEl) { try { _integEl.pause(); } catch (e) {} }
+  }
+  function _integStop() {
+    _integStopped = true;
+    if (_integEl) { try { _integEl.pause(); _integEl.currentTime = 0; } catch (e) {} }
+  }
+  function _integSeek(delta) {
+    if (!_integEl || !_integActive()) return;
+    try {
+      var nt = (_integEl.currentTime || 0) + (Number(delta) || 0);
+      if (nt < 0) nt = 0;
+      _integEl.currentTime = nt;
+    } catch (e) {}
+  }
+  function _integSetSpeed(sp) {
+    if (!_integEl) return;
+    try { _integEl.playbackRate = (sp && sp > 0) ? sp : 1.0; } catch (e) {}
+  }
+  window._integSeek = _integSeek; // hook for controls.js seekSeconds
+
   /** Accepted media extensions (blob.type may be empty on KaiOS). */
   function _isMediaFile(blob, name) {
     var t = (blob && blob.type) ? String(blob.type).toLowerCase() : '';
@@ -1407,6 +1505,7 @@
       _engine().ensure();
       Sequencer.play();
       _mediaPlay();
+      _integPlay();
       acquireCpuWakeLock();
       acquireScreenWakeLock();
     } else if (state.play === 'pause' && prevPlay !== 'pause') {
@@ -1419,6 +1518,7 @@
         _mediaPlay();
       } else {
         _mediaPause();
+        _integPause();
       }
       // No audible output → release the status-bar play indicator.
       try { if (typeof _engine().setActive === 'function') _engine().setActive(false); } catch (eA) {}
@@ -1431,6 +1531,7 @@
       if (!seqEnded) { try { Sequencer.stop(); } catch (e) {} }
       _engine().silence();
       _mediaStop();
+      _integStop();
       // Nothing sounding anymore → suspend AudioContext so the OS status-bar
       // play icon disappears (a latent 'content'-channel context keeps showing
       // "playing" even after the song ends).
@@ -1458,9 +1559,10 @@
     // this toggle — toggling audio only mutes/unmutes the media itself.
     if (state.audio !== _prevAudio) {
       _prevAudio = state.audio;
-      var _preAudio = (state.synthEngine === 'preload');
+      var _preAudio = (state.synthEngine === 'preload' || state.synthEngine === 'integrated');
       Synth.mute(_preAudio || !state.audio);
       _mediaApplyMute();
+      _integApplyMute();
       // Soundbank routes straight to the context destination, so the master
       // Audio On/Off toggle must mute it explicitly too (SF engine).
       if (typeof Soundbank !== 'undefined' && Soundbank.mute) {
@@ -1468,14 +1570,40 @@
       }
     }
 
-    // Synth Engine (System / Preload): preload mode DISABLES the system
-    // synth — only the media file sounds, playing alongside the MIDI.
+    // Synth Engine (System / Preload / Integrated): preload AND integrated
+    // DISABLE the system synth — only the media file (preload) or the
+    // platform element (integrated) sounds.
     if (state.synthEngine !== _prevSynthEngine) {
       _prevSynthEngine = state.synthEngine;
-      var _pre = (state.synthEngine === 'preload');
+      var _pre = (state.synthEngine === 'preload' || state.synthEngine === 'integrated');
       try { Synth.mute(_pre || !state.audio); } catch (eS) {}
       if (typeof Soundbank !== 'undefined' && Soundbank.mute) {
         try { Soundbank.mute(_pre || !state.audio); } catch (eSB) {}
+      }
+      if (state.synthEngine === 'integrated') {
+        // Rebuild the platform source if a MIDI is loaded (fileName-gated —
+        // never guess for .note, those stay silent). Best-effort resync when
+        // switching mid-playback: restart the element at the visual time.
+        var _fn = '';
+        try { _fn = String(Store.getState().fileName || ''); } catch (eF) {}
+        if (/\.midi?$/i.test(_fn)) {
+          var _bb = null;
+          try { _bb = window._midiBlob || null; } catch (eB) {}
+          if (!_bb) { try { if (window._rawMidiBuffer) _bb = new Blob([window._rawMidiBuffer]); } catch (eB2) {} }
+          if (_bb) {
+            _integSetSource(_bb);
+            if (state.play === 'play') {
+              var _nt = 0;
+              try { _nt = Sequencer.getTime(); } catch (eT) {}
+              try { if (_integEl && isFinite(_nt) && _nt > 0) _integEl.currentTime = _nt; } catch (eC) {}
+              _integPlay();
+            }
+          }
+        } else {
+          _integRelease();
+        }
+      } else {
+        _integRelease();
       }
     }
 
@@ -1508,6 +1636,7 @@
       _prevSpeed = state.speed;
       Sequencer.setSpeed(state.speed);
       _mediaSetSpeed(state.speed);
+      _integSetSpeed(state.speed);
     }
 
     // File selected from picker
@@ -1544,6 +1673,11 @@
     if (_pipelineBusy) return;
 
     var st = Store.getState();
+
+    // Keep keyWidth fitted to the current (possibly dynamic) range every
+    // frame, gliding toward the fit so range flips animate as a smooth
+    // zoom instead of snapping. No-op once converged.
+    try { fitKeyboardWidth(st, dt); } catch (e) {}
 
     // NOTE: keyboard spritesheet rebuilds are handled inside
     // Keyboard.draw() (keyWidth / pianoSize / pianoColorHex trackers),
@@ -1652,9 +1786,13 @@
   // Called from resizeCanvas AND once per frame in renderLoop, so slider
   // edits to Keyboard Range refit immediately no matter which code path
   // wrote kbStart/kbEnd.
-  function fitKeyboardWidth(st) {
-    var rStart = (st.kbStart != null) ? st.kbStart : 21;
-    var rEnd   = (st.kbEnd   != null) ? st.kbEnd   : 108;
+  function fitKeyboardWidth(st, dtMs) {
+    var _fitdr = (typeof Notes !== 'undefined' && Notes.dynRange)
+      ? Notes.dynRange(st) : { start: null, end: null };
+    var rStart = (_fitdr.start != null) ? _fitdr.start
+      : ((st.kbStart != null) ? st.kbStart : 21);
+    var rEnd   = (_fitdr.end != null) ? _fitdr.end
+      : ((st.kbEnd   != null) ? st.kbEnd   : 108);
     // During the demo / locked state, fit width from the FIXED demo range so
     // a saved Keyboard Range can never change the demo's note spacing.
     if (typeof window.demoVisualValue === 'function') {
@@ -1675,7 +1813,21 @@
     var newKeyW = width / whitesInRange;
     newKeyW = Math.max(Constants.UI.KEY_W_MIN,
               Math.min(Constants.UI.KEY_W_MAX, newKeyW));
-    if ((st.keyWidth || 16) !== newKeyW) Store.setState({ keyWidth: newKeyW });
+    var curKW = st.keyWidth || 16;
+    if (curKW === newKeyW) return;
+    // Zoom easing: glide toward the new fit instead of snapping, so a
+    // dynamic range flip (88 ↔ 128) visibly zooms out/in over ~0.4s.
+    // dtMs > 0 eases (per-frame caller); otherwise snap (resize path).
+    if (dtMs > 0) {
+      var kk = 1 - Math.exp(-dtMs / 120);
+      if (kk < 1) {
+        var easedKW = curKW + (newKeyW - curKW) * kk;
+        if (Math.abs(easedKW - newKeyW) < 0.01) easedKW = newKeyW;
+        Store.setState({ keyWidth: easedKW });
+        return;
+      }
+    }
+    Store.setState({ keyWidth: newKeyW });
   }
 
   function resizeCanvas() {
@@ -2266,7 +2418,12 @@
 
   // Open a .note that may be PFA2 binary (stream) or legacy JSON text.
   // onDone runs after the load finishes (activity foreground, etc.).
+  // A .note is never platform-playable: release any Integrated source so a
+  // previous MIDI's audio can't drone over the note visuals.
   function _openNoteFile(blob, name, onDone) {
+    try {
+      if (Store.getState().synthEngine === 'integrated') _integRelease();
+    } catch (e) {}
     var display = String(name || 'file').split('/').pop();
     _isPFA2(blob).then(function (isBin) {
       if (isBin) {

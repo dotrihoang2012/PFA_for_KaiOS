@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "אודיו"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "דינמי"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "מערכת"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "טעינה מוקדמת"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "משולב"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "הסינתיסייזר הזה לא תומך ב-black MIDI ובקבצי .note."
   }
 ]

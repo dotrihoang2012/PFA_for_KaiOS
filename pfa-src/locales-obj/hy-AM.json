@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Աուդիո"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Դինամիկ"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Համակարգ"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Նախաբեռնում"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Ինտեգրված"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Այս սինթեզատորը չի աջակցում black MIDI և .note ֆայլեր։"
   }
 ]

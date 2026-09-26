@@ -206,23 +206,28 @@ var Settings = (function () {
   // Preload engine: the system synth rows are hidden and the media rows
   // (Load/Change Media, file name, Delay Start) appear instead.
   function _isPreload() { return _values.midi.synthEngine === 'preload'; }
+  function _isIntegrated() { return _values.midi.synthEngine === 'integrated'; }
 
   var SCHEMA = {
     midi: [
       { key: 'audio',       l10nKey: 'audio_output',     label: 'Audio Output', type: 'bool' },
       { key: 'synthEngine', l10nKey: 'synth_engine',     label: 'Synth Engine', type: 'enum',
-        choices: [['system','System'],['preload','Preload']] },
+        choices: [['system','System'],['preload','Preload'],['integrated','Integrated']] },
+      { key: 'integNote',   l10nKey: 'integrated_note',  label: 'Note',
+        labelFn: function () { return ''; }, type: 'info',
+        staticText: 'This synthesizer is not supported for black MIDI, and .note file',
+        hidden: function () { return !_isIntegrated(); } },
       { key: 'engine',      l10nKey: 'sound_engine',     label: 'Sound Engine', type: 'enum',
         choices: [['synth','Oscillator'],['soundbank','SoundFont']],
-        hidden: function () { return _isPreload(); } },
+        hidden: function () { return _isPreload() || _isIntegrated(); } },
       { key: 'sfsettings',  l10nKey: 'soundfont_settings', label: 'Soundfont Settings', type: 'sub', subkind: 'sfsettings',
         // Soundfont engine options — only meaningful while the engine is
         // Soundbank. Hidden when the engine is System or the preload media
         // mode is on (the group re-renders from applyChange on the row).
-        hidden: function () { return _isPreload() || _values.midi.engine !== 'soundbank'; } },
+        hidden: function () { return _isPreload() || _isIntegrated() || _values.midi.engine !== 'soundbank'; } },
       { key: 'waveform',    l10nKey: 'synth_waveform',   label: 'Synth Waveform', type: 'enum',
         choices: [['sine','Sine'],['square','Square'],['saw','Saw'],['triangle','Triangle']],
-        hidden: function () { return _isPreload(); } },
+        hidden: function () { return _isPreload() || _isIntegrated(); } },
       { key: 'skipSlowOpen', l10nKey: 'skip_slow_intro', label: 'Skip Slow Intro', type: 'bool',
         hidden: function () { return _isPreload(); } },
       // Preload media rows — only while Synth Engine = Preload.
@@ -982,7 +987,7 @@ var Settings = (function () {
   }
 
   /** Keyboard Range Key Count presets â€” 88 keys (A0..C8), 128 (full MIDI), custom. */
-  var KB_SIZE_CHOICES = [['88', '88 Keys'], ['128', '128 Keys'], ['custom', 'Custom']];
+  var KB_SIZE_CHOICES = [['88', '88 Keys'], ['128', '128 Keys'], ['custom', 'Custom'], ['dynamic', 'Dynamic']];
 
   /** Human label for a Key Count preset id. */
   function kbSizeLabel(size) {
@@ -1997,6 +2002,13 @@ var Settings = (function () {
     // Keyboard section
     sepsis('Keyboard');
     addSubRow(listEl, 'sub', 'kbRange', 'Keyboard Range', null, function () {
+      // Outside summary follows the Key Count mode: preset labels for
+      // every known mode, raw numbers only as a legacy fallback.
+      var sz = _values.visual.kbSize;
+      if (sz === 'dynamic') return kbSizeLabel('dynamic');
+      if (sz === '128') return kbSizeLabel('128');
+      if (sz === '88') return kbSizeLabel('88');
+      if (sz === 'custom') return kbSizeLabel('custom');
       return _values.visual.kbStart + ' \u00B7 ' + _values.visual.kbEnd;
     });
     addSubRow(listEl, 'enum', 'pianoSize', 'Piano Size',
@@ -3950,7 +3962,9 @@ var Settings = (function () {
           valEl.style.textAlign = 'left';
           valEl.style.marginLeft = '0';
           valEl.style.width = '100%';
-          valEl.textContent = _values.midi.mediaName || L10n.t('opt_none', 'None');
+          valEl.textContent = def.staticText
+            ? L10n.t(def.l10nKey || def.key, def.staticText)
+            : (_values.midi.mediaName || L10n.t('opt_none', 'None'));
         } else {
           valEl.textContent = formatValue(def, val);
         }

@@ -41,8 +41,9 @@ var Store = (function () {
     kbStart: 21,
     kbEnd:   108,
 
-    // Keyboard Range preset: '88' | '128' | 'custom'.
+    // Keyboard Range preset: '88' | '128' | 'custom' | 'dynamic'.
     // 'custom' keeps kbStart/kbEnd as-is and shows the Start/End sliders.
+    // 'dynamic' bases on 88 and auto-expands past it for out-of-range notes.
     kbSize:   '88',
 
     // Piano strip size: 'big' (60px) | 'small' (32px) | 'none' (hidden)

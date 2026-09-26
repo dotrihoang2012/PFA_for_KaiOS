@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Heli"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dünaamiline"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Süsteem"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Eellaadimine"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integreeritud"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "See süntesaator ei toeta black MIDI-d ega .note-faile."
   }
 ]

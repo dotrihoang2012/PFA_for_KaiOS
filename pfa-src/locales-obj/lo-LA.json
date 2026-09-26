@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "ສຽງ"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "ໄດນາມິກ"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "ລະບົບ"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "ໂຫຼດລ່ວງໜ້າ"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "ປະສົມປະສານ"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "ເຄື່ອງສັງເຄາະສຽງນີ້ບໍ່ຮອງຮັບ black MIDI ແລະ ໄຟລ໌ .note."
   }
 ]

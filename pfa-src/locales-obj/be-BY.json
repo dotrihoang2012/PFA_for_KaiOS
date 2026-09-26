@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Аўдыё"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Дынамічны"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Сістэма"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Preload"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Інтэграваны"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Гэты сінтэзатар не падтрымлівае black MIDI і файлы .note."
   }
 ]

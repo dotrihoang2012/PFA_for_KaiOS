@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "الصوت"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "ديناميكي"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "النظام"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "تحميل مسبق"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "مدمج"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "هذا المركب لا يدعم ملفات black MIDI و.note."
   }
 ]

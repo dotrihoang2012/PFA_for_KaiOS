@@ -272,8 +272,13 @@ var Keyboard = (function () {
 
     // Visible window — Keyboard Range [kbStart..kbEnd] replaces the old
     // camKey scroll (Left/Right are bound to seeking now).
-    var startN = (state.kbStart != null) ? state.kbStart : 21;
-    var endN   = (state.kbEnd   != null) ? state.kbEnd   : 108;
+    // kbSize 'dynamic' auto-expands past 88 keys for out-of-range notes.
+    var _kbdr = (typeof Notes !== 'undefined' && Notes.dynRange)
+      ? Notes.dynRange(state) : { start: null, end: null };
+    var startN = (_kbdr.start != null) ? _kbdr.start
+      : ((state.kbStart != null) ? state.kbStart : 21);
+    var endN   = (_kbdr.end != null) ? _kbdr.end
+      : ((state.kbEnd   != null) ? state.kbEnd   : 108);
     try {
       if (typeof window.demoVisualValue === 'function') {
         startN = window.demoVisualValue('kbStart', startN);
@@ -465,8 +470,12 @@ var Keyboard = (function () {
    * (demo self-play forces 21..108 via demoVisualValue).
    */
   function _visibleRange(state) {
-    var startN = (state && state.kbStart != null) ? state.kbStart : 21;
-    var endN   = (state && state.kbEnd   != null) ? state.kbEnd   : 108;
+    var _vrdr = (typeof Notes !== 'undefined' && Notes.dynRange)
+      ? Notes.dynRange(state) : { start: null, end: null };
+    var startN = (_vrdr.start != null) ? _vrdr.start
+      : ((state && state.kbStart != null) ? state.kbStart : 21);
+    var endN   = (_vrdr.end != null) ? _vrdr.end
+      : ((state && state.kbEnd   != null) ? state.kbEnd   : 108);
     try {
       if (typeof window.demoVisualValue === 'function') {
         startN = window.demoVisualValue('kbStart', startN);

@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "آڈیو"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "متحرک"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "سسٹم"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "پری لوڈ"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "مربوط"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "یہ سنتھیسائزر black MIDI اور .note فائلوں کو سپورٹ نہیں کرتا۔"
   }
 ]

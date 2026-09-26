@@ -1394,6 +1394,8 @@ if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
     try { Sequencer.seek(delta); } catch (e) { return; }
     // Preload media follows the ±1s seek too (main.js hook).
     if (typeof window._mediaSeek === 'function') { try { window._mediaSeek(delta); } catch (e) {} }
+    // Integrated platform audio follows seeks the same way.
+    if (typeof window._integSeek === 'function') { try { window._integSeek(delta); } catch (e) {} }
     try {
       if (wasPlaying) {
         Sequencer.play();

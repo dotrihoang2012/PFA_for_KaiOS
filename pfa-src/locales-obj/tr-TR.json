@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Ses"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dinamik"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Sistem"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Önyükleme"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Tümleşik"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Bu sentezleyici black MIDI ve .note dosyalarını desteklemez."
   }
 ]

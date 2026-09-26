@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Audio"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dinamik"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Sistem"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Pramuat"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Bersepadu"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Pensintesis ini tidak menyokong black MIDI dan fail .note."
   }
 ]

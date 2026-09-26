@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Oudio"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dinamies"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Stelsel"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Voorlaai"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Geïntegreerde"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Hierdie sintetiseerder ondersteun nie black MIDI en .note-lêers nie."
   }
 ]

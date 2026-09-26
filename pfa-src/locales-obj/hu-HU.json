@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Hang"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dinamikus"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Rendszer"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Előtöltés"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integrált"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Ez a szintetizátor nem támogatja a black MIDI-t és a .note fájlokat."
   }
 ]

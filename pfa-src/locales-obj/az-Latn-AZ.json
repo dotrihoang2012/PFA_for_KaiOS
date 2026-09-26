@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Axtarış"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dinamik"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Sistem"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Preload"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "İnteqre"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Bu sintezator black MIDI və .note fayllarını dəstəkləmir."
   }
 ]

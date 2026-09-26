@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "অডিও"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "ডায়নামিক"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "সিস্টেম"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "প্রিলোড"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "ইন্টিগ্রেটেড"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "এই সিন্থেসাইজার black MIDI এবং .note ফাইল সমর্থন করে না।"
   }
 ]

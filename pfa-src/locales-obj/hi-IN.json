@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "ऑडियो"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "डायनामिक"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "सिस्टम"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "प्रीलोड"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "एकीकृत"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "यह सिंथेसाइज़र black MIDI और .note फ़ाइलें समर्थित नहीं हैं।"
   }
 ]

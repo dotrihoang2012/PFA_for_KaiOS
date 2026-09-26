@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Audio"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dynamique"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Système"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Précharger"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Intégré"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Ce synthétiseur ne prend pas en charge le black MIDI ni les fichiers .note."
   }
 ]

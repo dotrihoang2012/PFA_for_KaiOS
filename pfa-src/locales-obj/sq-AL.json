@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Zëri"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dinamik"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Sistemi"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Parangarkim"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integruar"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Ky sintetizues nuk mbështet black MIDI dhe skedarët .note."
   }
 ]

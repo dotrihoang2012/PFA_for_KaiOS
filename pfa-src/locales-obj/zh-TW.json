@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "音訊"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "動態"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "系統"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "預先載入"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "整合的"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "此合成器不支援 black MIDI 和 .note 檔案。"
   }
 ]

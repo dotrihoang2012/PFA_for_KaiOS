@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Audio"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dynamisch"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Systeem"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Voorladen"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Geïntegreerd"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Deze synthesizer ondersteunt geen black MIDI en .note-bestanden."
   }
 ]

@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Audio"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Динамик"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Tizim"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Preload"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integrated"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Ушбу синтезатор black MIDI ва .note файлларни қўллаб-қувватламайди."
   }
 ]

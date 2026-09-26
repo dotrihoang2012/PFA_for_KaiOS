@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Audio"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dinamis"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Sistem"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Pramuat"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Terintegrasi"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Synthesizer ini tidak mendukung black MIDI dan file .note."
   }
 ]

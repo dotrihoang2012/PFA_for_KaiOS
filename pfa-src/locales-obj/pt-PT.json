@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Áudio"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dinâmico"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Sistema"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Pré-carga"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integrado"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Este sintetizador não admite black MIDI nem ficheiros .note."
   }
 ]

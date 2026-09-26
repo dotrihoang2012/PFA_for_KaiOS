@@ -1802,5 +1802,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Audio"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dynamic"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "System"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Preload"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integrated"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Hindi sinusuportahan ng synthesizer na ito ang black MIDI at .note file."
   }
 ]

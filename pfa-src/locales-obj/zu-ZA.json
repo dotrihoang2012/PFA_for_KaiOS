@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Umsindo"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Eguqukayo"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Isistimu"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Preload"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integrated"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Le synthesizer ayisekeli i-black MIDI namafayela e-.note."
   }
 ]

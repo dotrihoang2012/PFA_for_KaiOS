@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Audio"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dinamisks"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Sistēma"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Preload"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integrēts"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Šis sintezators neatbalsta black MIDI un .note failus."
   }
 ]

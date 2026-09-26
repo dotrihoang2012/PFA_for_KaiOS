@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "აუდიო"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "დინამიური"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "სისტემა"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Preload"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "ინტეგრირებული"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "ეს სინთეზატორი არ უჭერს მხარს black MIDI-ს და .note ფაილებს."
   }
 ]

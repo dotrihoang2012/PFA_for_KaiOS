@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Avdio"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dinamično"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Sistem"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Prednalaganje"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integrirano"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Ta sintetizator ne podpira black MIDI in datotek .note."
   }
 ]

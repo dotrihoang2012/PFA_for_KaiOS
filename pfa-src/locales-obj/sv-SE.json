@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Ljud"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Dynamisk"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "System"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Preload"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Integrerad"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Den här synthesizern stöder inte black MIDI och .note-filer."
   }
 ]

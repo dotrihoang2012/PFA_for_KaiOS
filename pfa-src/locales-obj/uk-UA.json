@@ -1798,5 +1798,25 @@
   {
     "$i": "softkey_audio",
     "$v": "Аудіо"
+  },
+  {
+    "$i": "opt_dynamic",
+    "$v": "Динамічний"
+  },
+  {
+    "$i": "opt_system",
+    "$v": "Система"
+  },
+  {
+    "$i": "opt_preload",
+    "$v": "Preload"
+  },
+  {
+    "$i": "opt_integrated",
+    "$v": "Інтегрований"
+  },
+  {
+    "$i": "integrated_note",
+    "$v": "Цей синтезатор не підтримує black MIDI та файли .note."
   }
 ]
