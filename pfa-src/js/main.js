@@ -2456,6 +2456,12 @@
   function loadMIDIJson(jsonText) {
     try {
       var midi = JSON.parse(jsonText);
+      // A JSON text file is only a MIDI export when it carries a notes
+      // array — anything else (config, empty object, …) must fail loudly
+      // instead of loading as a silent empty song with no error.
+      if (!midi || typeof midi !== 'object' || Array.isArray(midi) || !Array.isArray(midi.notes)) {
+        throw new Error('not a MIDI JSON export (missing notes array)');
+      }
       loadMIDIData(midi);
       return true;
     } catch (e) {
@@ -2469,7 +2475,12 @@
       // in-app picks keep the stay-in-app dialog.
       if (_hotOpenPending) {
         _hotOpenPending = false;
-        showErrorDialog(L10n.t('err_cannot_read_midi', 'Could not read this file. It may not be a valid MIDI or (.note) export.'), _pfaExit);
+        // NOTE: use window.pfaExit (not bare _pfaExit — that binding lives
+        // inside boot() and is invisible here; referencing it throws
+        // ReferenceError and kills the dialog entirely).
+        var _exitCb = null;
+        try { _exitCb = window.pfaExit || null; } catch (e) {}
+        showErrorDialog(L10n.t('err_cannot_read_midi', 'Could not read this file. It may not be a valid MIDI or (.note) export.'), _exitCb);
       } else {
         showErrorDialog(L10n.t('err_cannot_read_midi', 'Could not read this file. It may not be a valid MIDI or (.note) export.'));
       }
