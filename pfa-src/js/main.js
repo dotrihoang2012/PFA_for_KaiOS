@@ -33,6 +33,11 @@
   // and Sequencer.play(). That kills the analyzing/reading OSD and lets the
   // demo track play behind the real conversion.
   var _activityBusy = false;
+  // Hot-open session flag: set at File Manager activity intake, cleared at
+  // the first resolution (successful load OR the format-error dialog). Lets
+  // loadMIDIJson show the exit-on-OK dialog only for hot-opened files —
+  // in-app picks keep the stay-in-app dialog.
+  var _hotOpenPending = false;
 
   // ── Hot-open permission gate ──
   // A MIDI picked via File Manager (MozActivity 'open') is parsed in memory,
@@ -88,6 +93,10 @@
   // and lock transport + speed controls. Loading a real .mid/.note (or the
   // demo finishing) unlocks everything again.
   var _demoActive = false;
+  // Engine stashed when the demo forces Integrated (restored in clearDemo).
+  // Store-only (never persisted): a legacy 'system'/'preload' profile keeps
+  // working, and exiting mid-demo cannot pollute the saved setting.
+  var _demoForcedEngine = null;
   // True from demo start through the end of the demo AND after it finishes,
   // until a real .mid/.note is loaded. While true the speed/transport hot
   // keys and Note Color Randomise stay locked (greyed); loading a file is
@@ -202,6 +211,7 @@
         // Any real file serviced now means the auto-started demo must NOT
         // also boot under it (see boot()'s else-branch → startDemo()).
         _activityBusy = true;
+        _hotOpenPending = true;
 
         // Hot-open still needs storage permission for convert / export / WAV,
         // so when it is NOT granted we block the load and show the standard
@@ -497,8 +507,27 @@
     // HUD and controls can ask it for voices without knowing the concrete
     // engine.
     _activeEngine = Synth; // default engine until Settings.load() runs
+    // Isolated engine routing — single funnel for every noteOn. The Sound
+    // Engine SETTING picks exactly one voice renderer: soundbank only when
+    // selected AND loaded (a bank loading mid-song never hijacks the
+    // timbre). The engines own their voices independently; switching
+    // reroutes new notes while old tails decay naturally, so there is no
+    // gap, click or restart. noteOff stays broadcast (next callback), which
+    // is a safe no-op on engines holding no such voice.
+    function _routeNoteToEngine(note, ch, vel, delay, dur) {
+      var useBank = false;
+      try {
+        useBank = (Store.getState().engine === 'soundbank') &&
+                  (typeof Soundbank !== 'undefined' && Soundbank.isReady && Soundbank.isReady());
+      } catch (e) {}
+      if (useBank) {
+        try { Soundbank.play(note, vel, delay, dur); } catch (e2) {}
+      } else {
+        _engine().noteOn(note, ch, vel, delay, dur);
+      }
+    }
     Sequencer.noteDown(function (note, ch, vel, delay, dur) {
-      _engine().noteOn(note, ch, vel, delay, dur);
+      _routeNoteToEngine(note, ch, vel, delay, dur);
       // Feed NoteBuffer for O(1) render
     var st = Store.getState();
 
@@ -1320,6 +1349,7 @@
   // speed) mirrors the preload-media hooks; alignment with the visual
   // playhead is best-effort (no tempo-map resync).
   var _integEl = null, _integUrl = null, _integStopped = true;
+  var _integDemoHold = false, _integHoldTimer = null;
 
   function _integActive() {
     var st = Store.getState();
@@ -1346,7 +1376,10 @@
     if (_integEl) { try { _integEl.muted = (st.audio === false); } catch (e) {} }
   }
   // (Re)build the platform source from a MIDI blob (revokes the old URL).
+  // Also cancels any pending demo pre-roll hold (a real file takes over).
   function _integSetSource(blob) {
+    _integDemoHold = false;
+    try { if (_integHoldTimer) { clearTimeout(_integHoldTimer); _integHoldTimer = null; } } catch (e) {}
     _integReleaseUrl();
     _integStopped = true;
     if (!blob) return;
@@ -1362,17 +1395,24 @@
   // Full release (note load, engine switch away, unload).
   function _integRelease() {
     _integStopped = true;
+    _integDemoHold = false;
+    try { if (_integHoldTimer) { clearTimeout(_integHoldTimer); _integHoldTimer = null; } } catch (e) {}
     if (_integEl) {
       try { _integEl.pause(); _integEl.removeAttribute('src'); _integEl.load(); } catch (e) {}
     }
     _integReleaseUrl();
   }
-  function _integPlay() {
+  function _integPlay(keepPos) {
     if (!_integActive()) return;
+    // Demo pre-roll hold (armed by startDemo): the visuals need a head
+    // start, so the element must NOT start with the transport.
+    if (_integDemoHold) return;
     var el = _ensureIntegEl();
     if (!el) return;
     _integApplyMute();
-    var fresh = _integStopped;
+    // keepPos (engine-switch resync): the caller already positioned the
+    // element — playing must NOT rewind to 0 (that restarted the music).
+    var fresh = _integStopped && !keepPos;
     _integStopped = false;
     if (fresh) { try { el.currentTime = 0; } catch (e) {} }
     try {
@@ -1381,10 +1421,14 @@
     } catch (e) { console.warn('[Integ] play() threw:', e); }
   }
   function _integPause() {
+    _integDemoHold = false;
+    try { if (_integHoldTimer) { clearTimeout(_integHoldTimer); _integHoldTimer = null; } } catch (e) {}
     if (_integEl) { try { _integEl.pause(); } catch (e) {} }
   }
   function _integStop() {
     _integStopped = true;
+    _integDemoHold = false;
+    try { if (_integHoldTimer) { clearTimeout(_integHoldTimer); _integHoldTimer = null; } } catch (e) {}
     if (_integEl) { try { _integEl.pause(); _integEl.currentTime = 0; } catch (e) {} }
   }
   function _integSeek(delta) {
@@ -1400,6 +1444,58 @@
     try { _integEl.playbackRate = (sp && sp > 0) ? sp : 1.0; } catch (e) {}
   }
   window._integSeek = _integSeek; // hook for controls.js seekSeconds
+
+  // Deferred sequencer start for Integrated fresh plays: the platform
+  // element needs a spin-up moment (decode init, ~350ms on weak hardware)
+  // before it is audible, while the sequencer/visuals would start instantly
+  // — a permanent -0.35s-style offset. So the visuals wait for the
+  // element's own 'playing' event (self-calibrating on any device), with a
+  // 2s fallback so a dead element never hangs playback. Pause/stop/load in
+  // between simply no-ops the pending start (play state is re-checked).
+  var _integAwaitTimer = null;
+  function _integFreshPending() {
+    try {
+      return Store.getState().synthEngine === 'integrated' && !!_integUrl && _integStopped;
+    } catch (e) { return false; }
+  }
+  function _integAwaitPlaying() {
+    try { if (_integAwaitTimer) clearTimeout(_integAwaitTimer); } catch (e) {}
+    var done = false;
+    var t0 = 0;
+    try { t0 = performance.now(); } catch (e) {}
+    function go() {
+      if (done) return; done = true;
+      try { if (_integEl) _integEl.removeEventListener('playing', onPlaying); } catch (e) {}
+      try { if (_integAwaitTimer) clearTimeout(_integAwaitTimer); } catch (e) {}
+      _integAwaitTimer = null;
+      try {
+        var st = Store.getState();
+        if (st.play === 'play' && typeof Sequencer !== 'undefined' && Sequencer.play) Sequencer.play();
+      } catch (e2) {}
+    }
+    function onPlaying() {
+      if (done) return;
+      // Fast event (<150ms): the platform signaled start long before first
+      // audible output (output latency). Hold visuals until ~350ms
+      // post-press so they meet the sound (measured startup lag on the
+      // reference device; tune per hardware if needed). Slow event: the
+      // spin-up itself dominated — start visuals at once.
+      var el = 0;
+      try { el = performance.now() - t0; } catch (e) {}
+      if (el < 150) {
+        var wait = 350 - el;
+        if (wait < 0) wait = 0;
+        try { if (_integAwaitTimer) clearTimeout(_integAwaitTimer); } catch (e) {}
+        try { _integAwaitTimer = setTimeout(go, wait); } catch (e) { go(); }
+      } else {
+        go();
+      }
+    }
+    try {
+      if (_integEl) _integEl.addEventListener('playing', onPlaying);
+    } catch (e) {}
+    try { _integAwaitTimer = setTimeout(go, 2000); } catch (e) {}
+  }
 
   /** Accepted media extensions (blob.type may be empty on KaiOS). */
   function _isMediaFile(blob, name) {
@@ -1508,9 +1604,16 @@
       // the context; otherwise the first Play would no-op the bootstrap.
       try { if (typeof _engine().setActive === 'function') _engine().setActive(true); } catch (eA) {}
       _engine().ensure();
-      Sequencer.play();
+      // Integrated fresh start: hold the visuals until the platform element
+      // actually sounds (its spin-up lags ~hundreds of ms, otherwise audio
+      // sits permanently behind). _integAwaitPlaying self-calibrates via the
+      // element's own 'playing' event; everything else starts immediately.
+      var _waitAudio = false;
+      try { _waitAudio = _integFreshPending(); } catch (eD) {}
+      if (!_waitAudio) { try { Sequencer.play(); } catch (eP) {} }
       _mediaPlay();
       _integPlay();
+      if (_waitAudio) { try { _integAwaitPlaying(); } catch (eA2) {} }
       acquireCpuWakeLock();
       acquireScreenWakeLock();
     } else if (state.play === 'pause' && prevPlay !== 'pause') {
@@ -1579,6 +1682,18 @@
     // DISABLE the system synth — only the media file (preload) or the
     // platform element (integrated) sounds.
     if (state.synthEngine !== _prevSynthEngine) {
+      // Demo locks the engine to Integrated until a real MIDI/.note file
+      // loads — bounce any mid-demo change straight back (persisted too, so
+      // the settings rows stay truthful). The nested applyVisual runs its
+      // own full round, so this round returns after the bounce.
+      if ((_demoActive || _lockNoFile) && state.synthEngine !== 'integrated') {
+        _prevSynthEngine = state.synthEngine; // swallow this transition
+        try {
+          if (typeof Settings !== 'undefined' && Settings.applyVisual) Settings.applyVisual('synthEngine', 'integrated');
+          else Store.setState({ synthEngine: 'integrated' });
+        } catch (e) {}
+        return;
+      }
       _prevSynthEngine = state.synthEngine;
       var _pre = (state.synthEngine === 'preload' || state.synthEngine === 'integrated');
       try { Synth.mute(_pre || !state.audio); } catch (eS) {}
@@ -1586,12 +1701,26 @@
         try { Soundbank.mute(_pre || !state.audio); } catch (eSB) {}
       }
       if (state.synthEngine === 'integrated') {
+        // Resume the platform element if it already carries this file:
+        // only our own code sets its src (cleared on note loads), so a
+        // present src is always current — resync + play, no rebuild gap,
+        // no rewind-to-0 music restart. Otherwise build from a blob.
+        var _hasSrc = false;
+        try { _hasSrc = !!(_integEl && _integEl.src); } catch (eH) {}
+        if (_hasSrc) {
+          if (state.play === 'play') {
+            var _nt2 = 0;
+            try { _nt2 = Sequencer.getTime(); } catch (eT2) {}
+            try { if (_integEl && isFinite(_nt2) && _nt2 > 0) _integEl.currentTime = _nt2; } catch (eC2) {}
+            _integPlay(true);
+          }
+        } else {
         // Rebuild the platform source if a MIDI is loaded (fileName-gated —
         // never guess for .note, those stay silent). Best-effort resync when
         // switching mid-playback: restart the element at the visual time.
         var _fn = '';
         try { _fn = String(Store.getState().fileName || ''); } catch (eF) {}
-        if (/\.midi?$/i.test(_fn)) {
+        if (/\.midi?$/i.test(_fn) || _demoActive) {
           var _bb = null;
           try { _bb = window._midiBlob || null; } catch (eB) {}
           if (!_bb) { try { if (window._rawMidiBuffer) _bb = new Blob([window._rawMidiBuffer]); } catch (eB2) {} }
@@ -1601,14 +1730,22 @@
               var _nt = 0;
               try { _nt = Sequencer.getTime(); } catch (eT) {}
               try { if (_integEl && isFinite(_nt) && _nt > 0) _integEl.currentTime = _nt; } catch (eC) {}
-              _integPlay();
+              _integPlay(true);
             }
+          } else {
+            // No source blob available (e.g. huge file whose buffer was
+            // freed) — silence rather than keep a stale file's audio.
+            _integRelease();
           }
         } else {
           _integRelease();
         }
+        }
       } else {
-        _integRelease();
+        // Leaving Integrated: pause only and KEEP the source, so toggling
+        // back resumes instantly instead of re-decoding. (A new .mid
+        // replaces it; a .note releases it.)
+        try { if (_integEl) _integEl.pause(); } catch (eP) {}
       }
     }
 
@@ -2152,6 +2289,7 @@
   };
 
   function loadMIDIData(midiData) {
+    _hotOpenPending = false; // a real file resolved the hot-open session
     var notes = midiData.notes || [];
     var tempo = midiData.tempo || [{ t: 0, u: 500000 }];
     var div   = midiData.div || 480;
@@ -2171,7 +2309,9 @@
     var _tempoForLoad = tempo;
     if (typeof Tempo !== 'undefined' && typeof Tempo.trimDeadAir === 'function') {
       var _st = Store.getState();
-      if (_st.synthEngine !== 'preload' && !_st.mediaSrc) {
+      // Skip trim under preload AND integrated: both play an external
+      // timeline (media file / platform MIDI audio) that trimming would desync.
+      if (_st.synthEngine !== 'preload' && _st.synthEngine !== 'integrated' && !_st.mediaSrc) {
         try {
           var _t = Tempo.trimDeadAir(tempo, div, notes);
           if (_t) _tempoForLoad = _t;
@@ -2325,7 +2465,14 @@
       resetLoadOnError();
       // Keep demo locked after the error (no restart) — unlock only on
       // a successful .mid/.note load via loadMIDIData -> clearDemo().
-      showErrorDialog(L10n.t('err_cannot_read_midi', 'Could not read this file. It may not be a valid MIDI or (.note) export.'));
+      // Hot-opened file: OK exits back out (same as the grant dialog);
+      // in-app picks keep the stay-in-app dialog.
+      if (_hotOpenPending) {
+        _hotOpenPending = false;
+        showErrorDialog(L10n.t('err_cannot_read_midi', 'Could not read this file. It may not be a valid MIDI or (.note) export.'), _pfaExit);
+      } else {
+        showErrorDialog(L10n.t('err_cannot_read_midi', 'Could not read this file. It may not be a valid MIDI or (.note) export.'));
+      }
       return false;
     }
   }
@@ -2372,6 +2519,7 @@
   }
 
   function loadBinaryNote(ns, displayName) {
+    _hotOpenPending = false; // a real file resolved the hot-open session
     if (_demoActive || _lockNoFile) clearDemo();
     // Loading keeps the current fullscreen state (no auto-exit).
     try { if (performance && performance.memory) console.log('[Heap] loadBinaryNote stream OPEN heapKB=' + Math.round(performance.memory.usedJSHeapSize / 1024)); } catch (e) {}
@@ -2573,6 +2721,11 @@
   function clearDemo() {
     _demoActive = false;
     _lockNoFile = false;
+    // Restore a user engine the demo forced to Integrated.
+    if (_demoForcedEngine) {
+      try { Store.setState({ synthEngine: _demoForcedEngine }); } catch (e) {}
+      _demoForcedEngine = null;
+    }
     // A real file is in — the demo's fixed track colors no longer apply;
     // the user's Note Color palette takes over.
     if (typeof Notes !== 'undefined' && Notes.setDemoOverride) {
@@ -2599,6 +2752,7 @@
     if (!_demoActive && !_lockNoFile) return;
     _demoActive = false;
     try { _engine().silence(); } catch (e) {}
+    try { _integStop(); } catch (eI) {}
     if (typeof Sequencer !== 'undefined' && Sequencer.stop) {
       try { Sequencer.stop(); } catch (e) {}
     }
@@ -2629,6 +2783,17 @@
       .then(function (txt) {
         var midi = JSON.parse(txt);
         loadMIDIData(midi);          // load notes/tempo/div, resets sequencer
+        // Demo defaults to the Integrated engine (platform demo.mid audio)
+        // regardless of the persisted engine. Store-only force — restored in
+        // clearDemo(), never persisted.
+        _demoForcedEngine = null;
+        try {
+          var _curEng = Store.getState().synthEngine;
+          if (_curEng && _curEng !== 'integrated') {
+            _demoForcedEngine = _curEng;
+            Store.setState({ synthEngine: 'integrated' });
+          }
+        } catch (e) {}
         _demoActive = true;          // set AFTER load so clearDemo isn't triggered
         _lockNoFile = true;          // hot keys + Note Color Randomise stay locked
         // Force the two demo tracks' fixed colors (yellow + water blue),
@@ -2658,11 +2823,46 @@
           try { Sequencer.setStartOffset(1.0); } catch (e) {}
         }
         HUD.setTotal(0);             // HUD shows 0/0
-        Sequencer.play();            // self-play with audio + visuals
-        Store.setState({ play: 'play', npPending: false });
-        if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
-        if (typeof window.refreshDemoLock === 'function') window.refreshDemoLock();
-        console.log('[Main] demo track started');
+        // Integrated default engine needs platform audio for the demo: run
+        // the bundled demo.mid too (visuals stay on demo.note). Never block
+        // the demo if the mid is missing — go live either way.
+        function goLive() {
+          Sequencer.play();            // self-play with audio + visuals
+          Store.setState({ play: 'play', npPending: false });
+          if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
+          if (typeof window.refreshDemoLock === 'function') window.refreshDemoLock();
+          console.log('[Main] demo track started');
+        }
+        try {
+          fetch('js/demo.mid').then(function (res) {
+            if (!res.ok) throw new Error('js/demo.mid missing (HTTP ' + res.status + ')');
+            return res.arrayBuffer();
+          }).then(function (ab) {
+            try {
+              var _dbb = new Blob([ab], { type: 'audio/midi' });
+              window._midiBlob = _dbb; // stash for engine-switch rebuilds
+              var _isInt = false;
+              try { _isInt = Store.getState().synthEngine === 'integrated'; } catch (eS) {}
+              if (_dbb && _isInt && typeof _integSetSource === 'function') {
+                _integSetSource(_dbb);
+                // Hold the element for the full 1s visual pre-roll so
+                // demo.mid-0 emerges exactly on the first hit instead of
+                // playing a second early at boot.
+                _integDemoHold = true;
+                try { if (_integHoldTimer) clearTimeout(_integHoldTimer); } catch (eT) {}
+                _integHoldTimer = setTimeout(function () {
+                  _integDemoHold = false;
+                  _integHoldTimer = null;
+                  _integPlay();
+                }, 1000);
+              }
+            } catch (e) {}
+            goLive();
+          }, function (e) {
+            console.warn('[Main] demo.mid unavailable:', e);
+            goLive();
+          });
+        } catch (e) { goLive(); }
       })
       .catch(function (e) {
         console.error('[Main] demo start failed:', e);

@@ -109,7 +109,7 @@ var Settings = (function () {
   var DEFAULTS = {
     midi: {
       engine:       'synth',   // 'synth' | 'soundbank'
-      synthEngine:  'system',  // 'system' | 'preload' — preload plays a media alongside the MIDI
+      synthEngine:  'integrated',  // 'system' | 'preload' | 'integrated' — default platform MIDI audio
       mediaName:    '',        // display name of the preloaded media (no path)
       mediaSrc:     '',        // internal blob URL of the preloaded media
       mediaDelay:   0,         // seconds before the media starts, 0 = off

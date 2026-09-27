@@ -1007,7 +1007,12 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
     var seenTick = null;
     for (var k = 0; k < all.length; k++) {
       var c = all[k], u = (c.u > 0) ? c.u : defU;
-      if (seenTick !== null && c.t === seenTick) continue; // first-wins dedupe
+      // Same tick: LAST event wins (sequencer processes in order).
+      if (seenTick !== null && c.t === seenTick) {
+        if (out.length && out[out.length - 1].t === c.t) out[out.length - 1] = { t: c.t, u: u };
+        else if (!(out.length && out[out.length - 1].u === u)) out.push({ t: c.t, u: u });
+        continue;
+      }
       seenTick = c.t;
       if (out.length && out[out.length - 1].u === u) continue; // redundant repeat
       out.push({ t: c.t, u: u });

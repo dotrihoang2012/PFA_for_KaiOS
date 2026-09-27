@@ -168,10 +168,11 @@ var MidiParser = (function () {
     notes.sort(function (a, b) { return a.t - b.t; });
 
     // Ensure tempo array is sane: sorted ascending, deduped at equal ticks
-    // (FIRST event at a tick wins — the conductor track's value, independent
-    // of how many later tracks repeat the tick), invalid zero/usec rows
-    // dropped, and a guaranteed entry at tick 0 (spec default when the first
-    // tempo change happens later in the song).
+    // (LAST event at a tick wins — a sequencer processes events in order,
+    // so a stepped pair at one tick, e.g. a hard brake 233→31.9 BPM, takes
+    // its final value; first-wins here once played whole sections at the
+    // wrong tempo), invalid zero/usec rows dropped, and a guaranteed entry
+    // at tick 0 (spec default when the first change happens later).
     var valid = [];
     for (var ti = 0; ti < tempo.length; ti++) {
       if (tempo[ti].u > 0) valid.push(tempo[ti]);
@@ -180,7 +181,14 @@ var MidiParser = (function () {
     var dedup = [];
     var seenTick = null;
     for (var di = 0; di < sorted.length; di++) {
-      if (seenTick !== null && sorted[di].t === seenTick) continue;
+      if (seenTick !== null && sorted[di].t === seenTick) {
+        if (dedup.length && dedup[dedup.length - 1].t === sorted[di].t) {
+          dedup[dedup.length - 1] = sorted[di];
+        } else {
+          dedup.push(sorted[di]);
+        }
+        continue;
+      }
       seenTick = sorted[di].t;
       dedup.push(sorted[di]);
     }

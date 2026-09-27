@@ -235,10 +235,9 @@ var Synth = (function () {
 
   function noteOn(note, ch, vel, delaySec, durSec) {
     if (_muted) return;
-    if (window.Soundbank && Soundbank.isReady()) {
-      Soundbank.play(note, vel, delaySec, durSec);
-      return;
-    }
+    // Pure oscillator path — soundbank routing lives in main.js
+    // (_routeNoteToEngine picks by the Sound Engine setting), so a bank
+    // loading mid-song can never hijack this voice mid-stream.
     if (!ctx || !masterGain) return;
     if (ctx.state !== 'running') {
       _resume();
@@ -251,10 +250,12 @@ var Synth = (function () {
       return;
     }
     if (delaySec < 0) delaySec = 0;
-    // Micro-notes can't be heard as notes — as 5ms blips they only ADD a
-    // "pop" to the mix, so skip them in audio (they still render).
-    if (durSec < 0.02) return;
-    if (durSec < 0.005) durSec = 0.005;
+    // Sub-5ms dust can't carry pitch — as blips it only ADDs "pop" to the
+    // mix, so skip it in audio (it still renders). Anything at/above ~5ms
+    // MUST sound: a 0.02 floor here once muted nearly half of dense black
+    // MIDI (short spam reads as clear pips, not pops — density/clipping is
+    // handled by the dynamic headroom cap below, not by deleting music).
+    if (durSec < 0.005) return;
     if (vel < 1) return;
 
     ch = ch || 0;

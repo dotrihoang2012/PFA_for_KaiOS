@@ -206,8 +206,8 @@ quietMax: 12,     // note/sec inside the gap (still "silence")
 
   /** Build a safe, sorted tempo map from a raw list.
    *  - copies the list, keeps only numeric entries with u > 0
-   *  - sorts by tick (stable), keeps the FIRST entry at any duplicated tick
-   *    (conductor track wins in Format-1), so repeats never change the map
+   *  - sorts by tick (stable), keeps the LAST entry at any duplicated tick
+   *    (sequencer order — a stepped pair takes its final value),
    *  - guarantees a tick-0 entry (spec default when the first change is later),
    *    so toSec/toTick never apply a mid-song tempo to the intro
    *  - optionally "fast-forwards" an absurdly slow opening (< SLOW_OPEN_BPM)
@@ -236,12 +236,18 @@ quietMax: 12,     // note/sec inside the gap (still "silence")
     var map = [];
     var seenTick = null;
     for (var k = 0; k < raw.length; k++) {
-      // Duplicated tick: keep only the FIRST occurrence — in a Format-1 MIDI
-      // the conductor (first) track carries the authoritative tempo; later
-      // tracks may repeat stale/wrong values (e.g. a leftover "default" or a
-      // different-rate event). First-wins also makes the result independent
-      // of how many tracks each duplicate appears in.
-      if (seenTick !== null && raw[k].t === seenTick) continue;
+      // Duplicated tick: the LAST event wins — a sequencer processes events
+      // in order, so a stepped pair at one tick (e.g. a hard brake 233→31.9
+      // BPM) takes its final value. First-wins here once played whole
+      // sections of a song at the wrong tempo.
+      if (seenTick !== null && raw[k].t === seenTick) {
+        if (map.length && map[map.length - 1].t === raw[k].t) {
+          map[map.length - 1] = { t: raw[k].t, u: raw[k].u };
+        } else {
+          map.push({ t: raw[k].t, u: raw[k].u });
+        }
+        continue;
+      }
       seenTick = raw[k].t;
       map.push({ t: raw[k].t, u: raw[k].u });
     }
