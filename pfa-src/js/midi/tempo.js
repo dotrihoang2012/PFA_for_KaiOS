@@ -7,21 +7,42 @@ var Tempo = {
 
   /** tick → seconds */
   toSec: function (tick) {
+    var m = this.map, n = m.length;
+    var i = this._segOf(tick);
+    if (i < 0) return tick * m[0].u / 1000000 / this.div;
+    var c = this._cum;
+    if (c && c.length === n) {
+      // Prefix-sum fast path: O(log n) instead of a full linear scan.
+      return c[i] + (tick - m[i].t) * m[i].u / 1000000 / this.div;
+    }
     var sec = 0, left = tick;
-    for (var i = 0; i < this.map.length; i++) {
-      var next = (i + 1 < this.map.length) ? this.map[i + 1].t : Infinity;
-      var span = Math.min(left, next - this.map[i].t);
-      sec += span * this.map[i].u / 1000000 / this.div;
+    for (var k = 0; k < n; k++) {
+      var next = (k + 1 < n) ? m[k + 1].t : Infinity;
+      var span = Math.min(left, next - m[k].t);
+      sec += span * m[k].u / 1000000 / this.div;
       left -= span;
       if (left <= 0) break;
     }
     return sec;
   },
 
+  /** Largest segment index with map[i].t <= tick (-1 when tick precedes map[0]). */
+  _segOf: function (tick) {
+    var m = this.map, lo = 0, hi = m.length - 1, ans = -1;
+    while (lo <= hi) {
+      var mid = (lo + hi) >> 1;
+      if (m[mid].t <= tick) { ans = mid; lo = mid + 1; }
+      else hi = mid - 1;
+    }
+    return ans;
+  },
+
   /** Usec/qn at tick */
   at: function (tick) {
-    for (var i = this.map.length - 1; i >= 0; i--) {
-      if (this.map[i].t <= tick) return this.map[i].u;
+    var i = this._segOf(tick);
+    if (i >= 0) return this.map[i].u;
+    for (var k = this.map.length - 1; k >= 0; k--) {
+      if (this.map[k].t <= tick) return this.map[k].u;
     }
     return 500000;
   },
@@ -33,13 +54,26 @@ var Tempo = {
 
   /** seconds → tick (inverse of toSec) */
   toTick: function (sec) {
+    var m = this.map, n = m.length, c = this._cum;
+    if (c && c.length === n && sec > 0) {
+      // Binary-search the prefix sums for the segment holding sec.
+      var lo = 0, hi = n - 1, ans = 0;
+      while (lo <= hi) {
+        var mid = (lo + hi) >> 1;
+        if (c[mid] <= sec) { ans = mid; lo = mid + 1; }
+        else hi = mid - 1;
+      }
+      var rate = m[ans].u / 1000000 / this.div; // sec per tick
+      return m[ans].t + (sec - c[ans]) / rate;
+    }
+    if (!(sec > 0)) return sec / (m[0].u / 1000000 / this.div);
     var left = sec, tick = 0;
-    for (var i = 0; i < this.map.length; i++) {
-      var next = (i + 1 < this.map.length) ? this.map[i + 1].t : Infinity;
-      var segTicks = next - this.map[i].t;
-      var segSec   = segTicks * this.map[i].u / 1000000 / this.div;
+    for (var i = 0; i < n; i++) {
+      var next = (i + 1 < n) ? m[i + 1].t : Infinity;
+      var segTicks = next - m[i].t;
+      var segSec   = segTicks * m[i].u / 1000000 / this.div;
       if (left <= segSec) {
-        tick += left / (this.map[i].u / 1000000 / this.div);
+        tick += left / (m[i].u / 1000000 / this.div);
         return tick;
       }
       tick += segTicks;
@@ -280,5 +314,15 @@ quietMax: 12,     // note/sec inside the gap (still "silence")
     var n = this.normalize(list, div, skipSlow);
     this.map = n.map;
     this.div = n.div;
+    // Prefix sums: wall seconds at each boundary. Lets toSec/toTick/at
+    // answer in O(log n) — the per-pulse drain calls these twice per note,
+    // and a linear scan over a 1594-entry black-MIDI map was the top CPU
+    // cost in dense sections (setInterval violations up to 658ms on PC).
+    var m = n.map, d = n.div, cum = new Array(m.length), s = 0;
+    for (var i = 0; i < m.length; i++) {
+      cum[i] = s;
+      if (i + 1 < m.length) s += (m[i + 1].t - m[i].t) * m[i].u / 1000000 / d;
+    }
+    this._cum = cum;
   }
 };

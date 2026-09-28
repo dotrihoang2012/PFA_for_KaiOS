@@ -213,15 +213,18 @@ var Sequencer = (function () {
       }
     }
 
-    // Cleanup: remove notes outside window [nowSec-0.5, nowSec+LK]
-    for (var i = active.length - 1; i >= 0; i--) {
+    // Cleanup: drop notes outside [nowSec-0.05, hor]. In-place compaction
+    // (same array reference — activeList() hands it to the renderer):
+    // the old reverse-splice was O(n²) per pulse with a 3.5k-note window.
+    var w = 0;
+    for (var i = 0; i < active.length; i++) {
       var a = active[i];
-      // Remove if note ended more than 0.5s ago OR starts after lookahead
-      if (a.endSec < nowSec - 0.05 || a.startSec > hor) {
-        if (a.endSec < nowSec - 0.05) passedCount++; // note already hit the band
-        active.splice(i, 1);
-      }
+      // Remove if note ended more than 0.05s ago OR starts after lookahead
+      if (a.endSec < nowSec - 0.05) { passedCount++; continue; } // hit the band
+      if (a.startSec > hor) continue;
+      active[w++] = a;
     }
+    active.length = w;
     // Rebuild audioActive: notes currently playing + trail window
     // Keep notes for 0.5s after they end so keyboard stays lit
     audioActive = [];
