@@ -167,8 +167,11 @@ var NoteBuffer = (function () {
       // render as 2px hairlines (the "striped lines" look). Floor them to
       // 5ms of fall so every note reads as a bar. Low trails are untouched
       // (0.005*FALL <= 2 there, so the floor stays exactly 2px).
-      var nh = Math.max(2, 0.005 * FALL, (es - ss) * FALL);
-      var ny = nyBottom - nh;
+      // Integer snap: fractional rects force edge antialiasing on the
+      // software canvas (several × slower per fillRect). Every note is
+      // still drawn — only edges land on whole pixels.
+      var nh = Math.max(2, Math.round(0.005 * FALL), Math.round((es - ss) * FALL));
+      var ny = Math.round(nyBottom) - nh;
       if (nyBottom < 0) continue;
       if (ny > fbBot) continue;
 
