@@ -589,12 +589,19 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
           });
         }
         function writeBatch(u8) {
-          return dsAppendNamed(st, new Blob([u8.buffer], { type: 'application/octet-stream' }), outPath);
+          var tA = Date.now();
+          return dsAppendNamed(st, new Blob([u8.buffer], { type: 'application/octet-stream' }), outPath).then(function (r) {
+            var dt = Date.now() - tA;
+            appCount++; appMs += dt;
+            if (appCount % 10 === 0 || dt > 3000) console.log('[StreamParser] append #' + appCount + ' ' + (u8.byteLength >> 10) + 'KB in ' + dt + 'ms');
+            return r;
+          });
         }
         // Output is packed straight into a byte buffer — no per-note objects.
         var out = new Uint8Array(FIN_BATCH * NOTE_SIZE);
         var n = 0;       // notes currently packed in out
         var written = 0; // notes flushed to disk
+        var appCount = 0, appMs = 0; // append ops + total append latency
         var loopLogAt = 0;
         function flush() {
           if (!n) return Promise.resolve();
@@ -669,7 +676,7 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
           console.log('[StreamParser] merge openAll done, readers=' + readers.length);
           return run();
         }).then(function () {
-          console.log('[StreamParser] merge loop done, heapKB=' + heapKB());
+          console.log('[StreamParser] merge loop done, heapKB=' + heapKB() + ' appends=' + appCount + ' appMs=' + appMs);
           // Free every reader's file+buffer and the output buffer so the merge
           // closure can't pin them. SpiderMonkey won't return this heap to the
           // OS, so the only way Device Manager drops back after a big merge is
@@ -1101,11 +1108,22 @@ var PARSE_QUOTA_BYTES = 256 * 1024;   // ~256KB of track bytes parsed per slice
         }
         var group = groups[gi++];
         var outPath = dir + '/m' + token + '_' + (level++) + '_' + gi + '.bin';
-        return mergeRuns(st, group, outPath, null, swept).then(function () {
+        var gT0 = Date.now();
+        console.log('[StreamParser] group ' + gi + '/' + groups.length + ' start (' + group.length + ' inputs)');
+        // Macrotask yield between groups: lets the event loop, UI timers and
+        // lazy GC breathe between merges (pure microtask chaining can starve
+        // them while native request objects pile up).
+        return new Promise(function (r) { setTimeout(r, 0); }).then(function () {
+          return mergeRuns(st, group, outPath, null, swept);
+        }).then(function () {
           step();
+          var gT1 = Date.now();
           // remove the consumed run files
           return Promise.all(group.map(function (p) { return dsDelete(st, p); }))
-            .then(function () { mergedPaths.push(outPath); return nextGroup(); });
+            .then(function () {
+              console.log('[StreamParser] group ' + gi + '/' + groups.length + ' done mergeMs=' + (gT1 - gT0) + ' delMs=' + (Date.now() - gT1));
+              mergedPaths.push(outPath); return nextGroup();
+            });
         });
       }
       return nextGroup();

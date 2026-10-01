@@ -19,15 +19,6 @@ var NoteBuffer = (function () {
 
   var _keyCache = null, _keyCacheW = -1, _keyCacheKey = -1;
 
-  // Draw-list pool: reused every frame so the scan allocates nothing
-  // (was ~1k short-lived entry objects + 2 arrays per frame → GC pauses
-  // that killed fps while the machine sat idle). Same order, same pixels.
-  var _whites = [], _blacks = [], _pool = [], _poolLen = 0;
-  // Flat-union run state per key (min/max y, channel, x/w, active flag).
-  // Same-channel overlapping notes merge into one fillRect: pixel-identical
-  // coverage+color in flat mode, far fewer canvas calls at density.
-  var _runMin = [], _runMax = [], _runCh = [], _runOn = [], _runNx = [], _runNw = [];
-
   // 3D note-fall (mirrors notes.js): STOP = unlit head barrier above the
   // bar (5px stroke covers ±2.5px, so 6 leaves a clear ~3.5px gap),
   // LIP = black-note tongue onto the bar. SLACK = extra offscreen
@@ -152,8 +143,7 @@ var NoteBuffer = (function () {
     // Render whites then blacks into offscreen.
     // Colors come from the shared Notes palette so Options →
     // Note Color Palette Randomise applies here too.
-    var whites = _whites, blacks = _blacks;
-    whites.length = 0; blacks.length = 0; _poolLen = 0;
+    var whites = [], blacks = [];
     var liveLen = live.length;
 
     for (var i = 0; i < liveLen; i++) {
@@ -185,11 +175,8 @@ var NoteBuffer = (function () {
       if (nyBottom < 0) continue;
       if (ny > fbBot) continue;
 
-      var entry = _pool[_poolLen] || (_pool[_poolLen] = {});
-      _poolLen++;
-      entry.nx = nx; entry.ny = ny; entry.nw = pos.w; entry.nh = nh;
-      entry.ch = a.channel; entry.black = pos.black; entry.nn = n;
-      entry.lit = (ns >= ss && ns <= es);
+      var entry = { nx: nx, ny: ny, nw: pos.w, nh: nh,
+                    ch: a.channel, black: pos.black, lit: (ns >= ss && ns <= es) };
       if (pos.black) blacks.push(entry);
       else           whites.push(entry);
     }
@@ -212,20 +199,6 @@ var NoteBuffer = (function () {
     var fadeQ = (typeof Notes !== 'undefined' && Notes.fadeShade)
       ? Notes.fadeShade(fadeAmt) : 1;
     var useFade = nbFall3d && fadeAmt > 0;
-    function emitFlatRun(k, inset) {
-      var rgb2 = rgbTbl[_runCh[k] % 16] || { r: 204, g: 204, b: 204 };
-      var flatS = 'rgb(' + rgb2.r + ',' + rgb2.g + ',' + rgb2.b + ')';
-      if (flatS !== lastFlat) { _offCtx.fillStyle = flatS; lastFlat = flatS; }
-      var h = _runMax[k] - _runMin[k];
-      if (h < 1) h = 1;
-      if (inset) {
-        var fw = _runNw[k] - 2, fx = _runNx[k] + 1;
-        if (fw < 1) fw = 1; // 128-key black notes are 2px wide — still draw 1px
-        _offCtx.fillRect(fx, _runMin[k], fw, h);
-      } else {
-        _offCtx.fillRect(_runNx[k], _runMin[k], _runNw[k], h);
-      }
-    }
     for (var wi = 0; wi < whites.length; wi++) {
       var e = whites[wi];
       // 3D: unlit heads stop short of the bar (gap); lit notes fill to it.
@@ -249,23 +222,13 @@ var NoteBuffer = (function () {
           lastCh = e.ch;
           lastGrad = grad;
         }
-        _offCtx.fillRect(e.nx, e.ny, e.nw, e.nh);
       } else {
-        // Flat union feed: same-channel overlapping notes merge (drawn at
-        // run breaks + flush below) — pixel-identical, far fewer rects.
-        var un = e.nn, uch = e.ch, ueB = e.ny + e.nh;
-        if (_runOn[un] && _runCh[un] === uch && e.ny <= _runMax[un] + 1 && ueB >= _runMin[un] - 1) {
-          if (e.ny < _runMin[un]) _runMin[un] = e.ny;
-          if (ueB > _runMax[un]) _runMax[un] = ueB;
-        } else {
-          if (_runOn[un]) emitFlatRun(un, false);
-          _runOn[un] = 1; _runCh[un] = uch;
-          _runMin[un] = e.ny; _runMax[un] = ueB;
-          _runNx[un] = e.nx; _runNw[un] = e.nw;
-        }
+        // 3D off ('keyboard'/'none'): flat solid channel color, no fade.
+        var flatS = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
+        if (flatS !== lastFlat) { _offCtx.fillStyle = flatS; lastFlat = flatS; }
       }
+      _offCtx.fillRect(e.nx, e.ny, e.nw, e.nh);
     }
-    if (!useFade) { for (var fi = 0; fi < 128; fi++) if (_runOn[fi]) { emitFlatRun(fi, false); _runOn[fi] = 0; } }
     lastCh = -1; lastGrad = null; lastFlat = null;
     for (var bi = 0; bi < blacks.length; bi++) {
       var e2 = blacks[bi];
@@ -293,31 +256,20 @@ var NoteBuffer = (function () {
           lastGrad = grad;
         }
       } else {
-        // Flat union feed (black inset applied at emit).
-        var un2 = e2.nn, uch2 = e2.ch, ueB2 = e2.ny + e2.nh;
-        if (_runOn[un2] && _runCh[un2] === uch2 && e2.ny <= _runMax[un2] + 1 && ueB2 >= _runMin[un2] - 1) {
-          if (e2.ny < _runMin[un2]) _runMin[un2] = e2.ny;
-          if (ueB2 > _runMax[un2]) _runMax[un2] = ueB2;
-        } else {
-          if (_runOn[un2]) emitFlatRun(un2, true);
-          _runOn[un2] = 1; _runCh[un2] = uch2;
-          _runMin[un2] = e2.ny; _runMax[un2] = ueB2;
-          _runNx[un2] = e2.nx; _runNw[un2] = e2.nw;
-        }
+        // 3D off ('keyboard'/'none'): flat solid channel color, no fade.
+        var flatS = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
+        if (flatS !== lastFlat) { _offCtx.fillStyle = flatS; lastFlat = flatS; }
       }
-      if (useFade) {
       var fw = e2.nw - 2;
       var fx = e2.nx + 1;
       if (fw < 1) fw = 1; // 128-key black notes are 2px wide — still draw 1px
       _offCtx.fillRect(fx, e2.ny, fw, e2.nh);
-      if (!e2.lit && arrived && e2.ny < nbStop) {
+      if (useFade && !e2.lit && arrived && e2.ny < nbStop) {
         var lipW = Math.max(2, Math.floor(fw * 0.5));
         var lipX = fx + Math.floor((fw - lipW) / 2);
         _offCtx.fillRect(lipX, nbStop, lipW, NB_STOP + NB_LIP);
       }
-      }
     }
-    if (!useFade) { for (var fi2 = 0; fi2 < 128; fi2++) if (_runOn[fi2]) { emitFlatRun(fi2, true); _runOn[fi2] = 0; } }
 
     // Single blit to screen (SLACK rows composite transparently over the bar)
     ctx.drawImage(_offscreen, 0, 0, screenW, fbH + NB_SLACK, 0, 0, screenW, fbH + NB_SLACK);

@@ -208,6 +208,19 @@ var Settings = (function () {
   function _isPreload() { return _values.midi.synthEngine === 'preload'; }
   function _isIntegrated() { return _values.midi.synthEngine === 'integrated'; }
 
+  // Integrated-engine Clear-gate: 'integrated' is offered by the left/right
+  // toggle only after a Clear (clean stopped slate) and never mid-playback
+  // (mid-play switches buy decoder spin-up + resync churn for nothing).
+  // Boot/demo/import/direct-set bypass the toggle, so they are unaffected.
+  var _integUnlocked = false;
+  function unlockIntegrated() { _integUnlocked = true; }
+  function integChoices(base) {
+    var playing = false;
+    try { playing = (typeof Store !== 'undefined' && Store.getState && Store.getState().play === 'play'); } catch (e) {}
+    if (_integUnlocked && !playing) return base;
+    return base.filter(function (c) { return !c || c[0] !== 'integrated'; });
+  }
+
   var SCHEMA = {
     midi: [
       { key: 'audio',       l10nKey: 'audio_output',     label: 'Audio Output', type: 'bool' },
@@ -3588,11 +3601,13 @@ var Settings = (function () {
    */
   function cycleSubEnum(item, dir) {
     if (!_sub || !item || !item.choices || !item.choices.length) return;
+    var choices = (item.part === 'synthEngine') ? integChoices(item.choices) : item.choices;
+    if (!choices.length) return;
     var cur = _values.visual[item.part];
-    var idx = indexOfChoice(item.choices, cur);
-    var n = item.choices.length;
+    var idx = indexOfChoice(choices, cur);
+    var n = choices.length;
     idx = (idx + dir + n) % n;
-    var next = item.choices[idx][0];
+    var next = choices[idx][0];
     // Keyboard Range Key Count: applying a preset rewrites kbStart/kbEnd
     // and rebuilds the page in place (sliders only exist in 'custom').
     if (item.part === 'kbSize' && _sub.kind === 'range') {
@@ -3604,7 +3619,7 @@ var Settings = (function () {
     save();
     if (_sub.kind === 'bools') applyInfoCard();
     var ref = _sub.ui.boolRows && _sub.ui.boolRows[item.part];
-    if (ref && ref.valEl) ref.valEl.textContent = L10n.t('opt_' + item.choices[idx][0], item.choices[idx][1]);
+    if (ref && ref.valEl) ref.valEl.textContent = L10n.t('opt_' + choices[idx][0], choices[idx][1]);
   }
 
   /**
@@ -4711,10 +4726,12 @@ var Settings = (function () {
     if (type === 'bool') {
       next = !current;
     } else if (type === 'enum') {
-      var idx = indexOfChoice(def.choices, current);
-      var n = def.choices.length;
+      var ch = (key === 'synthEngine') ? integChoices(def.choices) : def.choices;
+      if (!ch.length) return;
+      var idx = indexOfChoice(ch, current);
+      var n = ch.length;
       idx = (idx + dir + n) % n;
-      next = def.choices[idx][0];
+      next = ch[idx][0];
     } else if (type === 'number') {
       // Compute next value by stepping forward/backward. The <input>
       // may or may not hold a different value (e.g. user dragged it),
@@ -5351,6 +5368,7 @@ var Settings = (function () {
     open:           open,
     close:          close,
     isOpen:         isOpen,
+    unlockIntegrated: unlockIntegrated,
     openGroup:      openGroup,
     handleKey:      handleKey,
     applyTheme:     applyTheme,

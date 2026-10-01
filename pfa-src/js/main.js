@@ -19,19 +19,6 @@
   var width, height;
   var rafId;
   var lastFrameTime = 0, fpsCounter = 0, fpsAcc = 0;
-  // Theme bg cache: getComputedStyle every frame forces a style flush.
-  var _themeBgCache = null, _themeTick = 0;
-  // Peak safety valve: when the rAF interval itself averages over 50ms —
-  // genuine overload, far above any healthy baseline — draw visuals every
-  // other frame. Every note kept, motion steps 30fps only while drowning;
-  // release under 34ms. Never engages during healthy operation.
-  var _dtEMA = 0, _slow = false, _frameParity = 0;
-  // Peak safety valve (option B): when the rAF interval itself averages
-  // over 50ms — genuine overload, far above any healthy baseline (60fps PC
-  // = 16ms, healthy KaiOS = ~33ms) — draw visuals every other frame.
-  // Every note kept, motion steps 30fps only while drowning; release under
-  // 34ms with hysteresis. Never engages during healthy operation.
-  var _dtEMA = 0, _slow = false, _frameParity = 0;
 
   // Pending activity payload — MozActivity may fire before boot()
   // has registered the canvas / wired the Synth. Park it here and
@@ -924,11 +911,9 @@
    * that has almost none to spare). Smaller files are read fully for playback.
    */
   function _routeMidiBlob(blob, name) {
-    // Integrated engine plays the MIDI itself through the platform element:
-    // snapshot the source blob at entry (single funnel for every .mid path).
-    try {
-      if (Store.getState().synthEngine === 'integrated' && blob && blob.size) _integSetSource(blob);
-    } catch (e) {}
+    // Integrated source is set up post-load (RAM parse / conversion done),
+    // never here: snapshotting at pick time made the platform element decode
+    // the MIDI all through analyzing for nothing.
     if (blob && blob.size >= HUGE_MIDI_BYTES && typeof StreamParser !== 'undefined') {
       _analyzeAndLoadMIDI(null, name, blob);
       return;
@@ -1119,11 +1104,19 @@
           console.log('[StreamParser] wrote ' + path);
           window._midiNotePath = path;
           // Free the source MIDI Blob now that the .note is written and we're
-          // about to stream it back from disk. Nothing consumes _midiBlob /
-          // _rawMidiBuffer (they're only exposed "for native audio" that is
-          // never wired up), so keeping them just pins ~25MB in RAM per load.
-          window._midiBlob = null;
-          window._rawMidiBuffer = null;
+          // about to stream it back from disk — UNLESS Integrated is selected:
+          // the platform element needs the bytes, and it is set up here (post
+          // conversion, never during analyze) so no background decode runs
+          // while converting.
+          var keepBlob = false;
+          try { keepBlob = (Store.getState().synthEngine === 'integrated'); } catch (e) {}
+          if (keepBlob && blob) {
+            window._midiBlob = blob;
+            try { if (typeof _integSetSource === 'function') _integSetSource(blob); } catch (e2) {}
+          } else {
+            window._midiBlob = null;
+            window._rawMidiBuffer = null;
+          }
           // _pipelineBusy stays true until the stream playback is open, so an
           // app close exactly at this boundary can't wipe the file out from
           // under the reader. Do NOT loadMIDIData (would OOM) — stream the
@@ -1152,6 +1145,14 @@
 
     var midiData = MidiParser.parseMIDI(arrayBuffer);
     window._rawMidiBuffer = arrayBuffer;
+    // Integrated source, deferred to post-parse (never during analyze): the
+    // platform element first touches the MIDI once the song is loaded.
+    try {
+      if (Store.getState().synthEngine === 'integrated' && blob && blob.size && typeof _integSetSource === 'function') {
+        window._midiBlob = blob;
+        _integSetSource(blob);
+      }
+    } catch (e) {}
 
     var isLarge = arrayBuffer.byteLength >= LARGE_MIDI_BYTES;
     if (!isLarge || typeof NoteWriter === 'undefined') {
@@ -1755,10 +1756,13 @@
         }
         }
       } else {
-        // Leaving Integrated: pause only and KEEP the source, so toggling
-        // back resumes instantly instead of re-decoding. (A new .mid
-        // replaces it; a .note releases it.)
-        try { if (_integEl) _integEl.pause(); } catch (eP) {}
+        // Leaving Integrated: FULL stop + release (pause, drop source, revoke
+        // URL) so the platform synth never runs/analyzes silently in the
+        // background eating CPU/RAM. Trade-off: switching back re-decodes
+        // (no instant resume), but it restarts at the visual time (keepPos)
+        // so no position is lost; a new .mid replaces the source, a .note
+        // releases it, and the demo rebuilds its own source on return.
+        _integRelease();
       }
     }
 
@@ -1811,20 +1815,6 @@
     // early-return so the HUD FPS stays live during conversions too.
     var dt = now - lastFrameTime;
     lastFrameTime = now;
-    var _dtC = (dt > 250 || dt < 0) ? 16 : dt;
-    _dtEMA = _dtEMA ? _dtEMA * 0.9 + _dtC * 0.1 : _dtC;
-    if (_slow) { if (_dtEMA < 34) _slow = false; }
-    else if (_dtEMA > 50) _slow = true;
-    var _drawFrame = true;
-    if (_slow) {
-      var _trEff = null;
-      try { _trEff = st.trail; } catch (e) {}
-      try { if (typeof demoVisualValue === 'function') _trEff = demoVisualValue('trail', _trEff); } catch (e2) {}
-      // Fast falls (trail > 2) live only a few frames per note — skipping
-      // would swallow most notes visually (blank fall at trail 5). Skip
-      // only slow falls, where halving the rate is invisible.
-      if (!(isFinite(_trEff) && _trEff > 2)) { _frameParity = 1 - _frameParity; _drawFrame = !_frameParity; }
-    }
     fpsCounter++;
     fpsAcc += dt;
     if (fpsAcc >= 1000) {
@@ -1862,22 +1852,13 @@
       } catch (e) { st._activeList = []; }
     }
 
-    // Skipped frames keep the previous image (no bg clear) so motion just
-    // steps at 30fps while overloaded. FPS counter, fit and HUD stay live.
-    if (_drawFrame) {
     // 1. Background — Visual → Background Color overrides the theme token
     //    when set; otherwise fall back to CSS var --theme-bg / dark gray.
     //    A loaded Background Image (Visual → Load Background Image) wins
     //    over both, stretched to fill — same demo lock as bgColor: while
     //    _demoActive / _lockNoFile the image is ignored (theme stays).
-    var themeBg = _themeBgCache;
-    if (!themeBg || ((_themeTick = (_themeTick + 1) % 60) === 0)) {
-      try {
-        var cs = getComputedStyle(document.documentElement);
-        themeBg = cs.getPropertyValue('--theme-bg').trim() || '#0a0a0a';
-      } catch (e) { themeBg = '#0a0a0a'; }
-      _themeBgCache = themeBg;
-    }
+    var cs = getComputedStyle(document.documentElement);
+    var themeBg = cs.getPropertyValue('--theme-bg').trim() || '#0a0a0a';
     // Demo lock: keep the demo background on the theme default (black) no
     // matter what Visual → Background Color says — until a real file loads.
     var bgImg = (_demoActive || _lockNoFile) ? null : _bgImage;
@@ -1933,7 +1914,6 @@
         }
       }
     }
-    } // _drawFrame
 
     // 5. HUD overlay (throttled DOM writes — internal 250ms interval)
     HUD.tick(st, liveCount);
@@ -3633,6 +3613,9 @@ vols.forEach(function (vol) {
         var left = 0;
         try { left = (typeof Written !== 'undefined' && Written.list) ? Written.list().length : 0; } catch (e) {}
         console.log('[Main] pfa_tmp CLEAR DONE: ' + total + ' files removed; write-log now ' + left + ' path(s)');
+        // Clear unlocks Integrated for the toggle (clean stopped slate — the
+        // only state it may be selected from; mid-playback offers 2 engines).
+        try { if (typeof Settings !== 'undefined' && Settings.unlockIntegrated) Settings.unlockIntegrated(); } catch (eU) {}
         if (typeof showDevDialog === 'function') {
           showDevDialog(L10n.t('dev_cleared', 'Cleared:\n') + total + L10n.t('dev_cleared_files', ' file(s) from the conversion cache.'));
         }
