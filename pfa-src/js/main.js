@@ -19,6 +19,19 @@
   var width, height;
   var rafId;
   var lastFrameTime = 0, fpsCounter = 0, fpsAcc = 0;
+  // Theme bg cache: getComputedStyle every frame forces a style flush.
+  var _themeBgCache = null, _themeTick = 0;
+  // Peak safety valve: when the rAF interval itself averages over 50ms —
+  // genuine overload, far above any healthy baseline — draw visuals every
+  // other frame. Every note kept, motion steps 30fps only while drowning;
+  // release under 34ms. Never engages during healthy operation.
+  var _dtEMA = 0, _slow = false, _frameParity = 0;
+  // Peak safety valve (option B): when the rAF interval itself averages
+  // over 50ms — genuine overload, far above any healthy baseline (60fps PC
+  // = 16ms, healthy KaiOS = ~33ms) — draw visuals every other frame.
+  // Every note kept, motion steps 30fps only while drowning; release under
+  // 34ms with hysteresis. Never engages during healthy operation.
+  var _dtEMA = 0, _slow = false, _frameParity = 0;
 
   // Pending activity payload — MozActivity may fire before boot()
   // has registered the canvas / wired the Synth. Park it here and
@@ -1798,6 +1811,20 @@
     // early-return so the HUD FPS stays live during conversions too.
     var dt = now - lastFrameTime;
     lastFrameTime = now;
+    var _dtC = (dt > 250 || dt < 0) ? 16 : dt;
+    _dtEMA = _dtEMA ? _dtEMA * 0.9 + _dtC * 0.1 : _dtC;
+    if (_slow) { if (_dtEMA < 34) _slow = false; }
+    else if (_dtEMA > 50) _slow = true;
+    var _drawFrame = true;
+    if (_slow) {
+      var _trEff = null;
+      try { _trEff = st.trail; } catch (e) {}
+      try { if (typeof demoVisualValue === 'function') _trEff = demoVisualValue('trail', _trEff); } catch (e2) {}
+      // Fast falls (trail > 2) live only a few frames per note — skipping
+      // would swallow most notes visually (blank fall at trail 5). Skip
+      // only slow falls, where halving the rate is invisible.
+      if (!(isFinite(_trEff) && _trEff > 2)) { _frameParity = 1 - _frameParity; _drawFrame = !_frameParity; }
+    }
     fpsCounter++;
     fpsAcc += dt;
     if (fpsAcc >= 1000) {
@@ -1835,13 +1862,22 @@
       } catch (e) { st._activeList = []; }
     }
 
+    // Skipped frames keep the previous image (no bg clear) so motion just
+    // steps at 30fps while overloaded. FPS counter, fit and HUD stay live.
+    if (_drawFrame) {
     // 1. Background — Visual → Background Color overrides the theme token
     //    when set; otherwise fall back to CSS var --theme-bg / dark gray.
     //    A loaded Background Image (Visual → Load Background Image) wins
     //    over both, stretched to fill — same demo lock as bgColor: while
     //    _demoActive / _lockNoFile the image is ignored (theme stays).
-    var cs = getComputedStyle(document.documentElement);
-    var themeBg = cs.getPropertyValue('--theme-bg').trim() || '#0a0a0a';
+    var themeBg = _themeBgCache;
+    if (!themeBg || ((_themeTick = (_themeTick + 1) % 60) === 0)) {
+      try {
+        var cs = getComputedStyle(document.documentElement);
+        themeBg = cs.getPropertyValue('--theme-bg').trim() || '#0a0a0a';
+      } catch (e) { themeBg = '#0a0a0a'; }
+      _themeBgCache = themeBg;
+    }
     // Demo lock: keep the demo background on the theme default (black) no
     // matter what Visual → Background Color says — until a real file loads.
     var bgImg = (_demoActive || _lockNoFile) ? null : _bgImage;
@@ -1897,6 +1933,7 @@
         }
       }
     }
+    } // _drawFrame
 
     // 5. HUD overlay (throttled DOM writes — internal 250ms interval)
     HUD.tick(st, liveCount);
@@ -4139,30 +4176,36 @@ vols.forEach(function (vol) {
       });
     }
     function parseAndApply(name, blob) {
-      blobAsText(blob).then(function (text) {
-        var parsed;
-        try { parsed = JSON.parse(text); }
-        catch (e) {
-          // Not JSON — check for the PFA1/PFA2 binary header so the error
-          // message can say exactly why this .note was refused.
-          blobHead(blob).then(function (head) {
-            if (head && head.length >= 4 && head[0] === 0x50 && head[1] === 0x46) {
-              say(L10n.t('err_import_binary', 'This .note is a binary MIDI export,\nnot a Settings config.\n\nImport only Settings files exported via Export Settings.'));
-            } else {
-              say(L10n.t('err_import_bad', 'Could not read this file.\n\nIt is not a Settings export.'));
-            }
-          }, function () { say(L10n.t('err_import_bad', 'Could not read this file.\n\nIt is not a Settings export.')); });
+      function readTextPath() {
+        blobAsText(blob).then(function (text) {
+          var parsed;
+          try { parsed = JSON.parse(text); }
+          catch (e) {
+            say(L10n.t('err_import_bad', 'Could not read this file.\n\nIt is not a Settings export.'));
+            return;
+          }
+          if (!parsed || typeof parsed !== 'object' ||
+              parsed.pfaSettings !== 1 || !parsed.values) {
+            say(L10n.t('err_import_no_marker', 'This .note is not a Settings export\n(missing the Settings marker).'));
+            return;
+          }
+          var ok = (typeof Settings !== 'undefined' && Settings.applyImportedSettings)
+            ? Settings.applyImportedSettings(parsed) : false;
+          if (!ok) say(L10n.t('err_import_apply', 'Could not apply the imported settings.'));
+        }, function () { say(L10n.t('err_import_read', 'Could not read this file.')); });
+      }
+      // Sniff BEFORE reading: a 75MB binary .note must be refused from its
+      // first bytes — decoding it wholesale to text wedges a 512MB device
+      // long before validation even runs.
+      blobHead(blob).then(function (head) {
+        if (head && head.length >= 4 &&
+            ((head[0] === 0x50 && head[1] === 0x46) || // PFA1/PFA2 .note
+             (head[0] === 0x4D && head[1] === 0x54))) { // MThd MIDI
+          say(L10n.t('err_import_binary', 'This .note is a binary MIDI export,\nnot a Settings config.\n\nImport only Settings files exported via Export Settings.'));
           return;
         }
-        if (!parsed || typeof parsed !== 'object' ||
-            parsed.pfaSettings !== 1 || !parsed.values) {
-          say(L10n.t('err_import_no_marker', 'This .note is not a Settings export\n(missing the Settings marker).'));
-          return;
-        }
-        var ok = (typeof Settings !== 'undefined' && Settings.applyImportedSettings)
-          ? Settings.applyImportedSettings(parsed) : false;
-        if (!ok) say(L10n.t('err_import_apply', 'Could not apply the imported settings.'));
-      }, function () { say(L10n.t('err_import_read', 'Could not read this file.')); });
+        readTextPath();
+      }, function () { readTextPath(); });
     }
     try {
       if (window._pickImportOpen) return;

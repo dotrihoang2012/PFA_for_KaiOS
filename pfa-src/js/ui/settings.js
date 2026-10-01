@@ -5289,12 +5289,37 @@ var Settings = (function () {
    * soundfont engine, auto fullscreen/rotate) and refreshes the open list.
    * Returns true on success.
    */
+  // Import ranges mirror the settings rows (speed/trail rows: 0.1..8.0).
+  // The UI clamps every numeric box, but import bypassed it: trail=1e18,
+  // speed="x" or NaN merged raw wedges render/sequencer math (divide by
+  // zero → NaN → freeze/lag). Cleaned here; unknown keys pass through inert.
+  var _IMPORT_RANGES = { speed: [0.1, 8.0], trail: [0.1, 8.0] };
+  function sanitizeImportNumbers(obj) {
+    if (!obj || typeof obj !== 'object') return;
+    for (var k in obj) {
+      if (!obj.hasOwnProperty(k)) continue;
+      var v = obj[k];
+      if (v && typeof v === 'object') { sanitizeImportNumbers(v); continue; }
+      var r = _IMPORT_RANGES[k];
+      if (typeof v !== 'number') {
+        if (r) delete obj[k]; // ranged keys must arrive numeric
+        continue;
+      }
+      if (!isFinite(v)) { delete obj[k]; continue; }
+      if (r) {
+        if (v < r[0]) obj[k] = r[0];
+        else if (v > r[1]) obj[k] = r[1];
+      }
+    }
+  }
+
   function applyImportedSettings(parsed) {
     if (!parsed || typeof parsed !== 'object') return false;
     if (parsed.pfaSettings !== 1 || !parsed.values || typeof parsed.values !== 'object') {
       return false;
     }
     try {
+      try { sanitizeImportNumbers(parsed.values); } catch (eS) {}
       _values = merge(DEFAULTS, parsed.values);
       _values.__upgraded = true;
       save();
