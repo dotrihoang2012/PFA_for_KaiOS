@@ -296,6 +296,10 @@
     "$v": "وضعیت پرمخاطب"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "غیرفعال کردن هشدارها در Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "هنگام تجزیه و تحلیل پرمخاطب"
   },

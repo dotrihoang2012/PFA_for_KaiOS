@@ -296,6 +296,10 @@
     "$v": "სიტყვიერი სტატუსი"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "გამორთეთ გაფრთხილებები Integrated-ში"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "სიტყვიერი ანალიზის დროს"
   },

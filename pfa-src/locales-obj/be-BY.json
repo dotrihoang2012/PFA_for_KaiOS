@@ -296,6 +296,10 @@
     "$v": "Падрабязны статус"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Адключыць папярэджанні ў Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Шматслоўна падчас аналізу"
   },

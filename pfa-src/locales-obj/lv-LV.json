@@ -296,6 +296,10 @@
     "$v": "Runājošs statuss"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Atspējot brīdinājumus sadaļā Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Daudznozīmīgs analīzes laikā"
   },

@@ -26,15 +26,22 @@ var NoteStream = (function () {
   var NOTE_SIZE    = 12;
   var HEADER_BASE  = 20;
 
-  var WINDOW_NOTES = 43690; // 524280 bytes per window (multiple of NOTE_SIZE,
-                            // same size as streamParser's merge window)
+  var WINDOW_NOTES = 131070; // 1572840 bytes per window (~1.5MB): at black-
+                             // MIDI peak density a 43k window covers <1s of
+                             // song → relentless reloads exactly when the CPU
+                             // is busiest. 3x fewer loads, same total bytes;
+                             // 4 slots pin ~6MB (fine on 512MB).
+
+  // Per-read logging costs real time at ~1 window/s during dense passages;
+  // enable it from the console with  window.PFA_DEBUG_STREAM = 1
+  function dbg() { return typeof window !== 'undefined' && !!window.PFA_DEBUG_STREAM; }
 
   // Low-level Blob slice read. KaiOS 2.5 (Gecko 48) has no Blob.arrayBuffer(),
   // so use FileReader there; modern/Node use the spec path.
   function readSliceAB(blob, start, len) {
     var b;
     try { b = blob.slice(start, start + len); } catch (e) { return Promise.reject(e); }
-    console.log('[NoteStream] readSliceAB start=' + start + ' len=' + len + ' blob.size=' + blob.size + ' slice.size=' + b.size);
+    if (dbg()) console.log('[NoteStream] readSliceAB start=' + start + ' len=' + len + ' blob.size=' + blob.size + ' slice.size=' + b.size);
     if (typeof b.arrayBuffer === 'function') {
       return Promise.resolve(b.arrayBuffer()).then(function (ab) {
         if (!ab || ab.byteLength !== len) throw new Error('slice size mismatch got=' + (ab && ab.byteLength) + ' want=' + len);
@@ -46,7 +53,7 @@ var NoteStream = (function () {
       function doRes(v) { if (!settled) { settled = true; resolve(v); } }
       function doRej(e) { if (!settled) { settled = true; reject(e); } }
       var fr = new FileReader();
-      fr.onload = function () { clearTimeout(t); console.log('[NoteStream] FR.onload len=' + (fr.result && fr.result.byteLength)); doRes(fr.result); };
+      fr.onload = function () { clearTimeout(t); if (dbg()) console.log('[NoteStream] FR.onload len=' + (fr.result && fr.result.byteLength)); doRes(fr.result); };
       fr.onerror = function () { clearTimeout(t); console.error('[NoteStream] FR.onerror'); doRej(new Error('readSliceAB failed')); };
       var t = setTimeout(function () { try { fr.abort(); } catch (e) {} console.error('[NoteStream] readSliceAB TIMEOUT start=' + start + ' len=' + len); doRej(new Error('readSliceAB timeout')); }, 20000);
       fr.readAsArrayBuffer(b);
@@ -75,44 +82,89 @@ var NoteStream = (function () {
         var dataStart = HEADER_BASE + tempoBytes;
         var winBytes  = WINDOW_NOTES * NOTE_SIZE;
 
-        var slotA = { w: -1, ab: null, dv: null, first: 0, tick: 0, use: 0 };
-        var slotB = { w: -1, ab: null, dv: null, first: 0, tick: 0, use: 0 };
-        var bound = [];          // bound[w] = first tick of window w (lazy, counter)
-        var useSeq = 0;
-        var loader = null;       // in-flight { w, p }
+        // Window cache. History: two LRU slots + single-flight only on the
+        // prefetch path meant a seek/fast-forward `prepare` could load a window
+        // that was already (being) loaded, or evict the window the cursor was
+        // reading; on a dense passage every window was then read 2-3x and the
+        // sequencer stalled on !readyAt() while the notefall ran dry.
+        //   * every window is read at most once at a time (inflight map)
+        //   * the cursor's window (pinW) is never evicted
+        //   * windows behind the cursor go first, then those far ahead
+        //   * the next AHEAD windows are loaded in order, one read at a time
+        var MAXSLOTS = 4;
+        var AHEAD    = 2;
+        var wins     = [];       // loaded windows: { w, ab, dv, first, tick, use }
+        var inflight = {};       // w -> Promise<slot|null>
+        var bound    = [];       // bound[w] = first tick of window w (lazy)
+        var useSeq   = 0;
+        var pinW     = 0;        // window holding the cursor
+        var pumping  = false;
         var XV = { t: 0, c: 0, n: 0, v: 0, d: 0 };
 
-        function slots() { return [slotA, slotB]; }
+        function slots() { return wins.slice(); }
         function slotFor(w) {
-          if (slotA.w === w) return slotA;
-          if (slotB.w === w) return slotB;
+          for (var i = 0; i < wins.length; i++) if (wins[i].w === w) return wins[i];
           return null;
         }
-        function pickSlot() {
-          var a = slotA, b = slotB;
-          if (a.w === -1) return a;
-          if (b.w === -1) return b;
-          return (a.use <= b.use) ? a : b;
-        }
-
         function winIdxOf(i) { return (i / WINDOW_NOTES) | 0; }
 
-        // Load window w → DataView into an LRU slot, record bound[w].
+        function place(slot) {
+          if (wins.length < MAXSLOTS) { wins.push(slot); return; }
+          if (slot.w < pinW) return;                 // stale arrival, behind the cursor
+          var vi = -1, i, s;
+          for (i = 0; i < wins.length; i++) {        // farthest behind the cursor
+            s = wins[i];
+            if (s.w < pinW && (vi < 0 || s.w < wins[vi].w)) vi = i;
+          }
+          if (vi < 0) for (i = 0; i < wins.length; i++) {   // farthest ahead
+            s = wins[i];
+            if (s.w > pinW + AHEAD && (vi < 0 || s.w > wins[vi].w)) vi = i;
+          }
+          if (vi < 0) for (i = 0; i < wins.length; i++) {   // plain LRU, never pinW
+            s = wins[i];
+            if (s.w !== pinW && (vi < 0 || s.use < wins[vi].use)) vi = i;
+          }
+          if (vi < 0) vi = 0;
+          wins[vi] = slot;
+        }
+
+        // Load window w into the cache, record bound[w]. Shared by prefetch,
+        // seeks and whenReady; concurrent callers get the same promise.
         function load(w) {
           if (w < 0 || w >= numWins) return Promise.resolve(null);
+          var have = slotFor(w);
+          if (have) return Promise.resolve(have);
+          if (inflight[w]) return inflight[w];
           var start = dataStart + w * winBytes;
           if (start >= blob.size) { bound[w] = Infinity; return Promise.resolve(null); }
           var len = Math.min(winBytes, blob.size - start);
-          return readSliceAB(blob, start, len).then(function (ab) {
+          var p = readSliceAB(blob, start, len).then(function (ab) {
+            delete inflight[w];
             var d = new DataView(ab);
-            var slot = pickSlot();
-            slot.w = w; slot.ab = ab; slot.dv = d;
-            slot.first = w * WINDOW_NOTES;
-            slot.tick = (d.byteLength >= NOTE_SIZE) ? d.getUint32(0, true) : Infinity;
-            slot.use = ++useSeq;
+            var slot = { w: w, ab: ab, dv: d, first: w * WINDOW_NOTES,
+                         tick: (d.byteLength >= NOTE_SIZE) ? d.getUint32(0, true) : Infinity,
+                         use: ++useSeq };
             if (bound[w] === undefined) bound[w] = slot.tick;
+            place(slot);
             return slot;
-          });
+          }, function (e) { delete inflight[w]; throw e; });
+          inflight[w] = p;
+          return p;
+        }
+
+        // Keep pinW .. pinW+AHEAD loaded, one background read at a time.
+        function pump() {
+          if (pumping) return;
+          for (var k = 0; k <= AHEAD; k++) {
+            var w = pinW + k;
+            if (w >= numWins) break;
+            if (!slotFor(w) && !inflight[w]) {
+              pumping = true;
+              load(w).then(function () { pumping = false; pump(); },
+                           function () { setTimeout(function () { pumping = false; pump(); }, 200); });
+              return;
+            }
+          }
         }
 
         function boundAsync(w) {
@@ -120,24 +172,37 @@ var NoteStream = (function () {
           if (bound[w] !== undefined) return Promise.resolve(bound[w]);
           var s = slotFor(w);
           if (s) { bound[w] = s.tick; return Promise.resolve(bound[w]); }
-          return load(w).then(function (slot) {
-            bound[w] = slot ? slot.tick : Infinity;
-            return bound[w];
+          return boundProbe(w);
+        }
+
+        // Bound probe: first tick of window w via a 4-byte read — never a
+        // full window load. Seeks used to full-load O(log n) windows
+        // (~20MB storm per seek) just to compare boundary ticks.
+        function boundProbe(w) {
+          if (w < 0 || w >= numWins) return Promise.resolve(Infinity);
+          if (bound[w] !== undefined) return Promise.resolve(bound[w]);
+          var s = slotFor(w);
+          if (s) { bound[w] = s.tick; return Promise.resolve(bound[w]); }
+          var start = dataStart + w * winBytes;
+          if (start >= blob.size) { bound[w] = Infinity; return Promise.resolve(Infinity); }
+          return readSliceAB(blob, start, 4).then(function (ab) {
+            var t = new DataView(ab).getUint32(0, true);
+            bound[w] = t;
+            return t;
           });
         }
 
-        // First index with t >= tick, walking within an already-loaded window.
-        function scanGE(w, tick, minIdx) {
-          var s = slotFor(w);
-          if (!s || !s.dv) return -1;
-          var from = Math.max(s.first, minIdx || 0);
-          var to = Math.min(numNotes, s.first + WINDOW_NOTES);
-          var dv = s.dv;
-          for (var i = from; i < to; i++) {
-            var o = (i - s.first) * NOTE_SIZE;
-            if (dv.getUint32(o, true) >= tick) return i;
+        // First index with t >= tick inside a loaded window (binary search;
+        // records are fixed-size and sorted), or -1 when every note in it is
+        // earlier than tick.
+        function lowerBound(slot, tick) {
+          var cnt = Math.min(WINDOW_NOTES, numNotes - slot.first);
+          var a = 0, b = cnt, dv = slot.dv;
+          while (a < b) {
+            var m = (a + b) >> 1;
+            if (dv.getUint32(m * NOTE_SIZE, true) >= tick) b = m; else a = m + 1;
           }
-          return -2; // not in this window → look ahead
+          return a < cnt ? slot.first + a : -1;
         }
 
         var ns = {
@@ -170,45 +235,22 @@ var NoteStream = (function () {
             return XV;
           },
 
-          // Fire-and-forget: ensure the window containing note i (and, when a
-          // slot is free, the NEXT one) is loaded. Single-flight.
+          // Fire-and-forget: pin the window holding note i and keep it plus
+          // the next AHEAD windows loaded. Called every sequencer pulse.
           prefetch: function (i) {
             var w = winIdxOf(Math.max(0, Math.min(i, numNotes - 1)));
             if (w < 0 || w >= numWins) return;
-            if (slotFor(w)) { this.prefetchNext(w); return; }
-            if (loader) return;
-            var self = this;
-            loader = { w: w, p: load(w).then(function () {
-              loader = null;
-              try { self.prefetchNext(w); } catch (e) {}
-            }).catch(function () { loader = null; }) };
+            pinW = w;
+            pump();
           },
 
-          prefetchNext: function (w) {
-            var nw = w + 1;
-            if (nw >= numWins || slotFor(nw) || loader) return;
-            var self = this;
-            loader = { w: nw, p: load(nw).then(function () {
-              loader = null;
-            }).catch(function () { loader = null; }) };
-          },
+          prefetchNext: function () { pump(); },
 
           // Resolve when note i's window is loaded (used by tests).
           whenReady: function (i) {
             var w = winIdxOf(Math.max(0, Math.min(i, numNotes - 1)));
             if (w < 0 || w >= numWins) return Promise.resolve();
-            if (slotFor(w)) return Promise.resolve();
-            if (loader) {
-              return loader.p.then(function () {
-                return slotFor(w) ? Promise.resolve() : load(w).then(function () {});
-              });
-            }
-            var self = this;
-            var p = load(w);
-            loader = { w: w, p: p.then(function () {
-              loader = null;
-            }).catch(function () { loader = null; }) };
-            return p.then(function () {});
+            return load(w).then(function () {});
           },
 
           // Binary search over window boundary ticks → load the target window
@@ -226,20 +268,20 @@ var NoteStream = (function () {
             }
             function settle(w) {
               if (w >= numWins) return numNotes;
-              var s = slotFor(w);
-              return (s ? Promise.resolve(s) : load(w)).then(function (slot) {
+              pinW = w;                               // protect the target window
+              return load(w).then(function (slot) {
                 if (!slot) return 0;
-                var res = scanGE(w, tick, 0);
+                var res = lowerBound(slot, tick);
                 if (res >= 0) return res;
-                // Not found in w → move to the next window (or end of file).
-                if (res === -2 && w + 1 < numWins) {
-                  return load(w + 1).then(function () {
-                    var r2 = scanGE(w + 1, tick, 0);
-                    return r2 >= 0 ? r2 : numNotes;
-                  });
-                }
-                return numNotes;
-              });
+                // Not found in w → first note of the next window (or end of file).
+                if (w + 1 >= numWins) return numNotes;
+                pinW = w + 1;
+                return load(w + 1).then(function (s2) {
+                  if (!s2) return numNotes;
+                  var r2 = lowerBound(s2, tick);
+                  return r2 >= 0 ? r2 : numNotes;
+                });
+              }).then(function (idx) { pump(); return idx; });
             }
             return step();
           }

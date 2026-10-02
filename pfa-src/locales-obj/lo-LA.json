@@ -296,6 +296,10 @@
     "$v": "ສະຖານະ verbose"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "ປິດການແຈ້ງເຕືອນໃນ Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Verbose ໃນຂະນະທີ່ການວິເຄາະ"
   },

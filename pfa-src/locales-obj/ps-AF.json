@@ -296,6 +296,10 @@
     "$v": "د فعل حالت"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "په Integrated کې خبرداري غیر فعال کړئ"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "د تحلیل په وخت کې فعل"
   },

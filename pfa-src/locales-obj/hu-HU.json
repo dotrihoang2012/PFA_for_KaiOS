@@ -296,6 +296,10 @@
     "$v": "Bőbeszédű állapot"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Figyelmeztetések letiltása az Integratedben"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Bőbeszédű elemzés közben"
   },

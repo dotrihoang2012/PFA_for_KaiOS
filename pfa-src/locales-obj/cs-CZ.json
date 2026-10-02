@@ -296,6 +296,10 @@
     "$v": "Podrobný stav"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Zakázat upozornění v Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Při analýze podrobné"
   },

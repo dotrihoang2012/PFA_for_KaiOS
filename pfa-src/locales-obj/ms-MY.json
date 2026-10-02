@@ -296,6 +296,10 @@
     "$v": "Status Verbose"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Lumpuhkan amaran dalam Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Verbose semasa menganalisis"
   },

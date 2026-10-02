@@ -296,6 +296,10 @@
     "$v": "لفظی حیثیت"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Integrated میں تنبیہات غیر فعال کریں"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "تجزیہ کرتے وقت فعل"
   },

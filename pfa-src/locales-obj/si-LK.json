@@ -296,6 +296,10 @@
     "$v": "වාචික තත්ත්වය"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Integrated හි අනතුරු ඇඟවීම් අක්‍රිය කරන්න"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "විශ්ලේෂණය කිරීමේදී වාචික"
   },

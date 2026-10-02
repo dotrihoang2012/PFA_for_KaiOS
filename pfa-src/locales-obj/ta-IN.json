@@ -296,6 +296,10 @@
     "$v": "வாய்மொழி நிலை"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Integrated இல் எச்சரிக்கைகளை முடக்கு"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "பகுப்பாய்வு செய்யும் போது வாய்மொழி"
   },

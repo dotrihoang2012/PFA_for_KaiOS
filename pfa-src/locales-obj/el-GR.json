@@ -296,6 +296,10 @@
     "$v": "Λεπτή κατάσταση"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Απενεργοποίηση προειδοποιήσεων στο Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Λεπτομερής κατά την ανάλυση"
   },

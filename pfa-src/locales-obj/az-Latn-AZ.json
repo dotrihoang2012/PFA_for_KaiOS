@@ -296,6 +296,10 @@
     "$v": "Verboz statusu"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Integrated-də xəbərdarlıqları deaktiv et"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Təhlil edərkən ətraflı"
   },

@@ -296,6 +296,10 @@
     "$v": "Բացարձակ կարգավիճակ"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Անջատել նախազգուշացումները Integrated-ում"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Վերլուծելիս խոսուն"
   },

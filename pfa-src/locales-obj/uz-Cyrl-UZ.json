@@ -296,6 +296,10 @@
     "$v": "Batafsil holat"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Integrated ичида огоҳлантиришларни ўчириш"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Tahlil qilishda batafsil"
   },

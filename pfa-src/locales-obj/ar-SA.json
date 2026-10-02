@@ -296,6 +296,10 @@
     "$v": "حالة مطول"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "تعطيل التحذيرات في Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "مطول أثناء التحليل"
   },

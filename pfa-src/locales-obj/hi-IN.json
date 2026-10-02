@@ -296,6 +296,10 @@
     "$v": "वर्बोज़ स्थिति"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Integrated में चेतावनियाँ अक्षम करें"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "विश्लेषण करते समय शब्दशः"
   },

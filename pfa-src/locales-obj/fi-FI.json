@@ -296,6 +296,10 @@
     "$v": "Monisanainen tila"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Poista varoitukset käytöstä Integratedissä"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Monisanainen analysoinnin aikana"
   },

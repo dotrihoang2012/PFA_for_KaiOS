@@ -296,6 +296,10 @@
     "$v": "Statut verbeux"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Désactiver les avertissements dans Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Verbeux lors de l'analyse"
   },

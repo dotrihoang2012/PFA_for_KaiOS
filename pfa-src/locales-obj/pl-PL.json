@@ -296,6 +296,10 @@
     "$v": "Szczegółowy status"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Wyłącz ostrzeżenia w Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Szczegółowo podczas analizy"
   },

@@ -296,6 +296,10 @@
     "$v": "Daugiakalbis statusas"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Išjungti įspėjimus Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Daugiakalbis analizuojant"
   },

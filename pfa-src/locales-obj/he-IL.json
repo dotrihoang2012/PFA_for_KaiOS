@@ -296,6 +296,10 @@
     "$v": "סטטוס מפורט"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "השבת התראות ב-Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "מילולית תוך כדי ניתוח"
   },

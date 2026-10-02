@@ -32,11 +32,15 @@
 var Settings = (function () {
   'use strict';
 
+  // Build tag for on-device version checks (console: window._pfaSettingsTag).
+  try { window._pfaSettingsTag = 'settings@integ-gate-02'; } catch (eBT) {}
+
   var keyMap = {
     verboseSfLoad: 'verbose_while_reading_soundfonts',
     verboseAnalyze: 'verbose_while_analyzing',
     verboseInit: 'verbose_while_init',
     osdLog: 'verbose_status',
+    disIntegGuard: 'disable_warnings_in_integrated',
     exportLog: 'export_log',
     memory: 'memory_stats',
       // Visual
@@ -181,6 +185,7 @@ var Settings = (function () {
       verboseAnalyze: false,   // show [LOG] detail in analysis progress
       verboseInit:    false,   // show text log above % in launch/boot screen (default false/Off)
       verboseLoadLog: false,   // show text log in launch/soundfont loading screen (default false/Off)
+      disIntegGuard: false,   // master kill-switch for Integrated guards (default: guards ON)
     },
     sys: {
       autoFullscreen: false,   // enter fullscreen automatically on launch
@@ -208,17 +213,29 @@ var Settings = (function () {
   function _isPreload() { return _values.midi.synthEngine === 'preload'; }
   function _isIntegrated() { return _values.midi.synthEngine === 'integrated'; }
 
-  // Integrated-engine Clear-gate: 'integrated' is offered by the left/right
-  // toggle only after a Clear (clean stopped slate) and never mid-playback
-  // (mid-play switches buy decoder spin-up + resync churn for nothing).
-  // Boot/demo/import/direct-set bypass the toggle, so they are unaffected.
-  var _integUnlocked = false;
-  function unlockIntegrated() { _integUnlocked = true; }
+  // Integrated toggle gate (single rule): big MIDI (>1MB) is never offered,
+  // playing or stopped — auto-switch already moved playback to preload and
+  // platform analyzing is forbidden for it. Kill-switch ON bypasses (full
+  // manual). Small sources/demo/none toggle freely. Boot / import /
+  // direct-set bypass the toggle, so they are unaffected.
+  // Set by real synthEngine toggles (cycle paths + setSynthEngine). Demo
+  // forces via direct setState and never sets it, so a heal gated on it can
+  // never clobber the saved choice with a demo-forced value.
+  var _synthTouched = false;
   function integChoices(base) {
-    var playing = false;
-    try { playing = (typeof Store !== 'undefined' && Store.getState && Store.getState().play === 'play'); } catch (e) {}
-    if (_integUnlocked && !playing) return base;
-    return base.filter(function (c) { return !c || c[0] !== 'integrated'; });
+    // Kill-switch ON = full manual control: offer every engine (user accepts
+    // all resync/decode cost; auto-switch and size checks are off too).
+    try { if (typeof Store !== 'undefined' && Store.getState && Store.getState().disIntegGuard) return base; } catch (e) {}
+    // Big MIDI (>1MB) is never offered, playing or stopped: auto-switch
+    // already moved playback to preload, and platform analyzing is forbidden
+    // for it at load. (window._srcMidiBytes is set on every midi entry,
+    // cleared for .note; demo clears it at start.)
+    var _big = false;
+    try { _big = ((typeof window !== 'undefined' && window._srcMidiBytes) || 0) > 1048576; } catch (eB) {}
+    if (_big) return base.filter(function (c) { return !c || c[0] !== 'integrated'; });
+    // Small sources (and demo/none): free toggle; keep-alive continuity means
+    // switching back loses nothing.
+    return base;
   }
 
   var SCHEMA = {
@@ -270,6 +287,7 @@ var Settings = (function () {
       { key: 'verboseAnalyze', l10nKey: 'verbose_while_analyzing',  label: 'Verbose while analyzing',  type: 'bool' },
       { key: 'verboseSfLoad', l10nKey: 'verbose_while_reading_soundfonts', label: 'Verbose while reading soundfonts', type: 'bool' },
         { key: 'verboseInit',    l10nKey: 'verbose_while_init',       label: 'Verbose while init',       type: 'bool' },
+      { key: 'disIntegGuard', l10nKey: 'disable_warnings_in_integrated', label: 'Disable warnings in integrated', type: 'bool' },
       { key: 'memory',         l10nKey: 'memory_stats',             label: 'Memory Stats',             type: 'action' },
       { key: 'exportLog',      l10nKey: 'export_log',               label: 'Export Log',               type: 'action' },
       { key: 'storageTest',    l10nKey: 'storage_test',             label: 'Storage Test',             type: 'action' },
@@ -548,6 +566,7 @@ var Settings = (function () {
         verboseSfLoad:  _values.dev.verboseSfLoad,
       verboseInit:    _values.dev.verboseInit || _values.dev.verboseLoadLog || false,
       verboseLoadLog: _values.dev.verboseInit || _values.dev.verboseLoadLog || false,
+      disIntegGuard: _values.dev.disIntegGuard,
       autoFullscreen: _values.sys.autoFullscreen,
       autoRotate:     _values.sys.autoRotate,
       autoLang:       _values.sys.autoLang !== false,
@@ -1915,17 +1934,20 @@ var Settings = (function () {
     r.appendChild(lbl);
 
     var valEl = null;
+    // Group-aware fallback slot (Store first = runtime truth; then the
+    // group slot so rebuilt rows match what toggles wrote).
+    var _rg = (_openGroup && _values[_openGroup]) ? _openGroup : 'visual';
     if (kind === 'bool') {
       valEl = document.createElement('span');
       valEl.className = 'setting-row-value';
       var st = Store.getState();
-      var val = st[key] !== undefined ? st[key] : _values.visual[key];
+      var val = st[key] !== undefined ? st[key] : (_values[_rg][key] !== undefined ? _values[_rg][key] : _values.visual[key]);
       valEl.textContent = getVal ? (getVal() ? L10n.t('on', 'On') : L10n.t('off', 'Off')) : (val ? L10n.t('on', 'On') : L10n.t('off', 'Off'));
       r.appendChild(valEl);
     } else if (kind === 'enum') {
       valEl = document.createElement('span');
       valEl.className = 'setting-row-value';
-      valEl.textContent = getVal ? getVal() : choiceLabel(choices, _values.visual[key]);
+      valEl.textContent = getVal ? getVal() : choiceLabel(choices, (_values[_rg][key] !== undefined) ? _values[_rg][key] : _values.visual[key]);
       r.appendChild(valEl);
     } else if (kind === 'sub' || kind === 'color') {
       r.classList.add('has-sub');
@@ -2212,6 +2234,9 @@ var Settings = (function () {
     });
     addSubRow(listEl, 'bool', 'verboseInit', 'Verbose while init', null, function () {
       return _values.dev.verboseInit || _values.dev.verboseLoadLog;
+    });
+    addSubRow(listEl, 'bool', 'disIntegGuard', 'Disable warnings in integrated', null, function () {
+      return _values.dev.disIntegGuard;
     });
     addActionRow(listEl, 'memory', 'Memory Stats');
     addActionRow(listEl, 'exportLog', 'Export Log');
@@ -3603,18 +3628,24 @@ var Settings = (function () {
     if (!_sub || !item || !item.choices || !item.choices.length) return;
     var choices = (item.part === 'synthEngine') ? integChoices(item.choices) : item.choices;
     if (!choices.length) return;
-    var cur = _values.visual[item.part];
+    // Group-aware slot: midi keys live in _values.midi (same slot the main
+    // page, boot-load, export and hidden() checks use). The old hardcoded
+    // .visual left _values.midi.synthEngine stale forever, so rebuilt rows
+    // kept showing 'integrated' no matter the runtime engine.
+    var _vg = (_openGroup && _values[_openGroup]) ? _openGroup : 'visual';
+    var cur = _values[_vg][item.part];
     var idx = indexOfChoice(choices, cur);
     var n = choices.length;
     idx = (idx + dir + n) % n;
     var next = choices[idx][0];
+    if (item.part === 'synthEngine') _synthTouched = true;
     // Keyboard Range Key Count: applying a preset rewrites kbStart/kbEnd
     // and rebuilds the page in place (sliders only exist in 'custom').
     if (item.part === 'kbSize' && _sub.kind === 'range') {
       applyKbPresetSize(next);
       return;
     }
-    _values.visual[item.part] = next;
+    _values[_vg][item.part] = next;
     Store.setState(_mapToStore(_openGroup, item.part, next));
     save();
     if (_sub.kind === 'bools') applyInfoCard();
@@ -3676,8 +3707,11 @@ var Settings = (function () {
       if (dRef && dRef.valEl) dRef.valEl.textContent = next ? L10n.t('on', 'On') : L10n.t('off', 'Off');
       return;
     }
-    var next = !_values.visual[key];
-    _values.visual[key] = next;
+    // Group-aware slot (see cycleSubEnum): visual contexts behave exactly as
+    // before (_openGroup is 'visual' there); midi keys land in _values.midi.
+    var _wg = (_openGroup && _values[_openGroup]) ? _openGroup : 'visual';
+    var next = !_values[_wg][key];
+    _values[_wg][key] = next;
     Store.setState(_mapToStore(_openGroup, key, next));
     save();
     if (_sub.kind === 'bools') {
@@ -4732,6 +4766,7 @@ var Settings = (function () {
       var n = ch.length;
       idx = (idx + dir + n) % n;
       next = ch[idx][0];
+      if (key === 'synthEngine') _synthTouched = true;
     } else if (type === 'number') {
       // Compute next value by stepping forward/backward. The <input>
       // may or may not hold a different value (e.g. user dragged it),
@@ -4999,6 +5034,7 @@ var Settings = (function () {
         if (key === 'verboseSfLoad') return { verboseSfLoad: val };
       if (key === 'verboseInit')    return { verboseInit: val, verboseLoadLog: val };
       if (key === 'verboseLoadLog') return { verboseInit: val, verboseLoadLog: val };
+      if (key === 'disIntegGuard') return { disIntegGuard: val };
     } else if (group === 'sys') {
       if (key === 'autoFullscreen') return { autoFullscreen: val };
       if (key === 'autoRotate')     return { autoRotate: val };
@@ -5179,6 +5215,19 @@ var Settings = (function () {
     save();
   }
 
+  /** Programmatic synth-engine set (big-MIDI guard in main.js): values +
+   * store + persist + row repaint — everything a user toggle does. A bare
+   * Store.setState leaves the row text and the saved profile on the old
+   * engine (stale display + persistence divergence).
+   */
+  function setSynthEngine(v) {
+    _synthTouched = true;
+    _values.midi.synthEngine = v;
+    Store.setState(_mapToStore('midi', 'synthEngine', v));
+    save();
+    refreshMidiGroup();
+  }
+
   /** Set the preload media file (name for display + src for playback).
    *  SESSION-ONLY: never persisted — a fresh "Load Media" on next launch.
    *  Only the Media Delay value survives a restart. */
@@ -5273,6 +5322,21 @@ var Settings = (function () {
    */
   function refreshMidiGroup() {
     if (_sub) return;
+    // One-time heal (legacy divergence): pre-fix toggles wrote the wrong
+    // _values slot, so a rebuilt row could show 'integrated' while the
+    // runtime runs something else. If a real toggle just set the runtime,
+    // adopt it into _values + persist. Demo-forced values never set the flag.
+    try {
+      var _demoH = (typeof window !== 'undefined' && typeof window.isDemoActive === 'function') ? !!window.isDemoActive() : false;
+      if (!_demoH && _synthTouched) {
+        _synthTouched = false;
+        var _rs = (typeof Store !== 'undefined' && Store.getState) ? Store.getState().synthEngine : undefined;
+        if (_rs !== undefined && _values.midi && _values.midi.synthEngine !== _rs) {
+          _values.midi.synthEngine = _rs;
+          try { save(); } catch (eS) {}
+        }
+      }
+    } catch (eH) {}
     var overlay = document.getElementById('settings-overlay');
     if (!overlay || overlay.classList.contains('hidden') || _openGroup !== 'midi') return;
     _medRow = null;
@@ -5368,13 +5432,13 @@ var Settings = (function () {
     open:           open,
     close:          close,
     isOpen:         isOpen,
-    unlockIntegrated: unlockIntegrated,
     openGroup:      openGroup,
     handleKey:      handleKey,
     applyTheme:     applyTheme,
     applyInfoCard:  applyInfoCard,
     applyVisual:    applyVisual,
     setAudio:       setAudio,
+    setSynthEngine: setSynthEngine,
     setMedia:       setMedia,
     doMediaClear: doMediaClear,
     hideMediaClearConfirm: hideMediaClearConfirm,

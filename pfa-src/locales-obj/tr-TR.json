@@ -296,6 +296,10 @@
     "$v": "Ayrıntılı Durum"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Integrated'de uyarıları devre dışı bırak"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Analiz sırasında ayrıntılı"
   },

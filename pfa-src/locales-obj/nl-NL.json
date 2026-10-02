@@ -296,6 +296,10 @@
     "$v": "Uitgebreide status"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Waarschuwingen in Integrated uitschakelen"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Uitgebreid tijdens het analyseren"
   },

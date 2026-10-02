@@ -296,6 +296,10 @@
     "$v": "Stare detaliată"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Dezactivați avertismentele în Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Verbos în timpul analizei"
   },

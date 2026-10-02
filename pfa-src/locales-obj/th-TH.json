@@ -296,6 +296,10 @@
     "$v": "สถานะรายละเอียด"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "ปิดใช้งานคำเตือนใน Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "ละเอียดในขณะที่วิเคราะห์"
   },

@@ -296,6 +296,10 @@
     "$v": "Podrobno stanje"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Onemogoči opozorila v Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Dobesedno med analiziranjem"
   },

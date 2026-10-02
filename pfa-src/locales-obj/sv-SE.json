@@ -296,6 +296,10 @@
     "$v": "Utförlig status"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Inaktivera varningar i Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Omfattande medan du analyserar"
   },

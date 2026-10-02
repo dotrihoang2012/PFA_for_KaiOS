@@ -296,6 +296,10 @@
     "$v": "Imo yeVerbose"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Khubaza izilumkiso kwi-Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Verbose ngelixa uhlalutya"
   },

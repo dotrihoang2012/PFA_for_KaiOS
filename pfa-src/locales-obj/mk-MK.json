@@ -296,6 +296,10 @@
     "$v": "Разговорен статус"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Оневозможи предупредувања во Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Разговорно додека анализирате"
   },

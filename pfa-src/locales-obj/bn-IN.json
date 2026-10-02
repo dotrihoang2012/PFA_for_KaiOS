@@ -296,6 +296,10 @@
     "$v": "ভার্বোস স্ট্যাটাস"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Integrated-এ সতর্কতা নিষ্ক্রিয় করুন"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "বিশ্লেষণ করার সময় ভার্বোস"
   },

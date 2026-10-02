@@ -856,6 +856,9 @@ if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
     }
 
     if (isMidi) {
+      // Track source size for the big-MIDI guard (routeMidiBlob sets it too;
+      // the direct fallbacks below need it as well).
+      try { window._srcMidiBytes = (blob && (blob.size || blob.byteLength)) || 0; } catch (eS) {}
       // Route through main.js: large .mid files are streamed straight from the
       // Blob to a binary .note (StreamParser) and never read fully into RAM;
       // smaller files are read and played in memory.
@@ -880,6 +883,8 @@ if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
         reader3.onload = function () {
           try {
             var midiData = MidiParser.parseMIDI(reader3.result);
+            try { window._rawMidiBuffer = reader3.result; } catch (eB) {} // stash for integrated rebuilds
+            try { if (typeof window._integRelease === 'function') window._integRelease(); } catch (eR) {} // drop stale platform source
             window.loadMIDIData(midiData);
           } catch (e) {
             console.error('[Ctrl] MIDI parse error', e);

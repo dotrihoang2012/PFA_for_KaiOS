@@ -296,6 +296,10 @@
     "$v": "वर्बोस स्थिति"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Integrated मा चेतावनीहरू असक्षम गर्नुहोस्"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "विश्लेषण गर्दा वर्बोस"
   },

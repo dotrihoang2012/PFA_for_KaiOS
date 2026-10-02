@@ -52,7 +52,7 @@ var Synth = (function () {
   // suspended would otherwise be woken by any stray keydown/click and the
   // status-bar play indicator would reappear with nothing playing.
   function _autoResume() {
-    if (_audible && ctx && ctx.state === 'suspended') {
+    if (_audible && !_muted && ctx && ctx.state === 'suspended') {
       ctx.resume().then(function () {
         console.log('[Synth] auto-resumed OK, state=' + ctx.state);
       }).catch(function (e) {

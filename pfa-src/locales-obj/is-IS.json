@@ -296,6 +296,10 @@
     "$v": "Röð staða"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Slökkva á viðvörunum í Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Orðrétt á meðan verið er að greina"
   },

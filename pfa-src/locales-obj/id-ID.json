@@ -296,6 +296,10 @@
     "$v": "Status Bertele-tele"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Nonaktifkan peringatan di Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Bertele-tele saat menganalisis"
   },

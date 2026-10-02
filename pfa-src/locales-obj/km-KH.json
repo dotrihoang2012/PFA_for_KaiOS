@@ -296,6 +296,10 @@
     "$v": "ស្ថានភាពពាក្យសំដី"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "បិទការព្រមាននៅក្នុង Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "ពាក្យសំដីពេលវិភាគ"
   },

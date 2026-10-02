@@ -108,6 +108,7 @@ var Store = (function () {
     verboseAnalyze: false, // show [LOG] detail in analysis progress
     verboseInit:    false, // show text log above % in launch/boot screen (default false/Off)
     verboseLoadLog: false, // show text log in launch/soundfont loading screen (default false/Off)
+    disIntegGuard:  false, // master kill-switch for Integrated guards (default: guards ON)
     pctAnalyze:     false, // show the percentage readout during analysis (parse)
     pctMerge:       false, // show the percentage readout during the merge stage
     pctBarVisible:  true,  // show/hide the loading bar itself (Visual → Loading Bar)

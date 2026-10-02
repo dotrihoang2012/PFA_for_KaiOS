@@ -296,6 +296,10 @@
     "$v": "詳細狀態"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "停用 Integrated 中的警告"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "分析時顯示細節"
   },

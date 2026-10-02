@@ -296,6 +296,10 @@
     "$v": "Opširni status"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Onemogući upozorenja u Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Opširno dok analizirate"
   },

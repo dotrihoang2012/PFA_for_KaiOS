@@ -296,6 +296,10 @@
     "$v": "Толық күй"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Integrated ішінде ескертулерді өшіру"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Талдау кезінде егжей-тегжейлі"
   },

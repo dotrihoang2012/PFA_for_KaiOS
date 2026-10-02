@@ -296,6 +296,10 @@
     "$v": "Stato dettagliato"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Disabilita avvisi in Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Verbo durante l'analisi"
   },

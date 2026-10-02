@@ -296,6 +296,10 @@
     "$v": "Hali ya Verbose"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Zima maonyo katika Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Verbose wakati wa kuchambua"
   },

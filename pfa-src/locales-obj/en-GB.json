@@ -296,6 +296,10 @@
     "$v": "Verbose Status"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Disable warnings in Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Verbose while analyzing"
   },

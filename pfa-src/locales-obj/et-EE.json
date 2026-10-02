@@ -296,6 +296,10 @@
     "$v": "Paljusõnaline olek"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Keela hoiatused Integratedis"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Paljusõnaline analüüsimise ajal"
   },

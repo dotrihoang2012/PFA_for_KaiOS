@@ -296,6 +296,10 @@
     "$v": "Trạng thái chi tiết"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Tắt cảnh báo trong Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Chi tiết khi phân tích"
   },

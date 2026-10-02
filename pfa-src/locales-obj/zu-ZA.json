@@ -296,6 +296,10 @@
     "$v": "Isimo se-Verbose"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Khubaza izixwayiso ku-Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Verbose ngenkathi ehlaziya"
   },

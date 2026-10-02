@@ -296,6 +296,10 @@
     "$v": "Ausführlicher Status"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Warnungen in Integrated deaktivieren"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Ausführlich bei Analyse"
   },

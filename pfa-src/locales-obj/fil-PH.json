@@ -296,6 +296,10 @@
     "$v": "Katayuan ng Verbose"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "I-disable ang mga babala sa Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Verbose habang nagsusuri"
   },

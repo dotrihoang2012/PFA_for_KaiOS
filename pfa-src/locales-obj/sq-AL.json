@@ -296,6 +296,10 @@
     "$v": "Statusi me fjalë"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Çaktivizo paralajmërimet në Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Fjala gjatë analizimit"
   },

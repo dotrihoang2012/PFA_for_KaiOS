@@ -15,6 +15,10 @@
 (function () {
   'use strict';
 
+  // Build tag for on-device version checks (console: window._pfaBuildTag).
+  // Update the suffix whenever this file's behavior changes.
+  try { window._pfaBuildTag = 'main@integ-auto1mb-02'; } catch (eBT) {}
+
   var canvas, ctx;
   var width, height;
   var rafId;
@@ -914,6 +918,26 @@
     // Integrated source is set up post-load (RAM parse / conversion done),
     // never here: snapshotting at pick time made the platform element decode
     // the MIDI all through analyzing for nothing.
+    // Hot-open may hand us a bare ArrayBuffer (no Blob): wrap it so size,
+    // slice and stream paths all work instead of throwing in FileReader.
+    if (blob && !blob.size && blob.byteLength) {
+      try { blob = new Blob([blob]); } catch (eB) {}
+    }
+    // Track the source size for the big-MIDI guard (Blob or buffer alike).
+    try { window._srcMidiBytes = (blob && (blob.size || blob.byteLength)) || 0; } catch (eS) {}
+    // Big MIDI picked while on Integrated: switch to preload right away
+    // (full toggle parity so display/values/persist follow). If the demo
+    // lock swallows it, the post-load guard completes the switch instead.
+    try {
+      if (((window._srcMidiBytes || 0) > 1048576) && !_integGuardsOff()) {
+        var _ce = null;
+        try { _ce = Store.getState().synthEngine; } catch (eC) {}
+        if (_ce === 'integrated') {
+          if (typeof Settings !== 'undefined' && Settings.setSynthEngine) Settings.setSynthEngine('preload');
+          else Store.setState({ synthEngine: 'preload' });
+        }
+      }
+    } catch (eI) {}
     if (blob && blob.size >= HUGE_MIDI_BYTES && typeof StreamParser !== 'undefined') {
       _analyzeAndLoadMIDI(null, name, blob);
       return;
@@ -1075,6 +1099,11 @@
    *    for ≥ LARGE_MIDI_BYTES).
    */
   function _analyzeAndLoadMIDI(arrayBuffer, name, blob) {
+    // Any real load kills a stale platform source first (demo.mid or a
+    // previous song lingering in the element would otherwise play over the
+    // new visuals when switching back to Integrated later). Fresh sources
+    // are (re)built post-parse/post-conversion where allowed.
+    try { if (typeof _integRelease === 'function') _integRelease(); } catch (eR) {}
     var bSize = (blob && blob.size !== undefined) ? blob.size : (arrayBuffer ? arrayBuffer.byteLength : 0);
     try { if (performance && performance.memory) console.log('[Heap] _analyzeAndLoadMIDI enter heapKB=' + Math.round(performance.memory.usedJSHeapSize / 1024) + ' bSize=' + bSize); } catch (e) {}
     console.log('[Main] _analyzeAndLoadMIDI name=' + name + ' blob=' + !!blob + ' bSize=' + bSize + ' hugeThresh=' + HUGE_MIDI_BYTES);
@@ -1104,12 +1133,14 @@
           console.log('[StreamParser] wrote ' + path);
           window._midiNotePath = path;
           // Free the source MIDI Blob now that the .note is written and we're
-          // about to stream it back from disk — UNLESS Integrated is selected:
-          // the platform element needs the bytes, and it is set up here (post
-          // conversion, never during analyze) so no background decode runs
-          // while converting.
+          // about to stream it back from disk — UNLESS Integrated is selected
+          // (and the file isn't big): the platform element needs the bytes,
+          // and it is set up here (post conversion, never during analyze) so
+          // no background decode runs while converting. Big files switch to
+          // preload at open instead (helper below) — no URL, no pin — unless
+          // the kill-switch is ON (big decodes allowed again).
           var keepBlob = false;
-          try { keepBlob = (Store.getState().synthEngine === 'integrated'); } catch (e) {}
+          try { keepBlob = (Store.getState().synthEngine === 'integrated') && (!(blob && blob.size > 1048576) || _integGuardsOff()); } catch (e) {}
           if (keepBlob && blob) {
             window._midiBlob = blob;
             try { if (typeof _integSetSource === 'function') _integSetSource(blob); } catch (e2) {}
@@ -1147,8 +1178,10 @@
     window._rawMidiBuffer = arrayBuffer;
     // Integrated source, deferred to post-parse (never during analyze): the
     // platform element first touches the MIDI once the song is loaded.
+    // Big files (>1MB) skip it here — they auto-switch to preload at load
+    // (unless the kill-switch is ON, which allows big decodes again).
     try {
-      if (Store.getState().synthEngine === 'integrated' && blob && blob.size && typeof _integSetSource === 'function') {
+      if (Store.getState().synthEngine === 'integrated' && blob && blob.size && (!(blob.size > 1048576) || _integGuardsOff()) && typeof _integSetSource === 'function') {
         window._midiBlob = blob;
         _integSetSource(blob);
       }
@@ -1363,6 +1396,14 @@
   // speed) mirrors the preload-media hooks; alignment with the visual
   // playhead is best-effort (no tempo-map resync).
   var _integEl = null, _integUrl = null, _integStopped = true;
+  // Dev kill-switch (Developer → Disable warnings in integrated): ON disables
+  // the auto-switch and the >1MB check (big decodes allowed again, no forced
+  // preload). Keep-alive across switches is unconditional (pause + kept
+  // source — cheap instant-resume; background decode was killed at its root
+  // by deferred setup, not by releasing here). OFF (default) keeps guards on.
+  function _integGuardsOff() {
+    try { return !!(Store.getState && Store.getState() && Store.getState().disIntegGuard); } catch (e) { return false; }
+  }
   var _integDemoHold = false, _integHoldTimer = null;
 
   function _integActive() {
@@ -1458,6 +1499,7 @@
     try { _integEl.playbackRate = (sp && sp > 0) ? sp : 1.0; } catch (e) {}
   }
   window._integSeek = _integSeek; // hook for controls.js seekSeconds
+  window._integRelease = _integRelease; // hook for controls.js direct loads
 
   // Deferred sequencer start for Integrated fresh plays: the platform
   // element needs a spin-up moment (decode init, ~350ms on weak hardware)
@@ -1618,6 +1660,17 @@
       // the context; otherwise the first Play would no-op the bootstrap.
       try { if (typeof _engine().setActive === 'function') _engine().setActive(true); } catch (eA) {}
       _engine().ensure();
+      // Mute assertion (not just on engine transitions): a persisted/boot
+      // integrated (or preload) that never transitioned would otherwise voice
+      // the pool/soundbank audibly under (or instead of) the platform element.
+      // Idempotent — same values re-applied are a no-op.
+      try {
+        var _preM = false, _auM = true;
+        try { var _stm = Store.getState(); _preM = (_stm.synthEngine === 'preload' || _stm.synthEngine === 'integrated'); } catch (eM) {}
+        try { _auM = Store.getState().audio !== false; } catch (eA2) {}
+        try { _engine().mute(_preM || !_auM); } catch (eMM) {}
+        if (typeof Soundbank !== 'undefined' && Soundbank.mute) { try { Soundbank.mute(_preM || !_auM); } catch (eSM) {} }
+      } catch (eMA) {}
       // Integrated fresh start: hold the visuals until the platform element
       // actually sounds (its spin-up lags ~hundreds of ms, otherwise audio
       // sits permanently behind). _integAwaitPlaying self-calibrates via the
@@ -1756,13 +1809,12 @@
         }
         }
       } else {
-        // Leaving Integrated: FULL stop + release (pause, drop source, revoke
-        // URL) so the platform synth never runs/analyzes silently in the
-        // background eating CPU/RAM. Trade-off: switching back re-decodes
-        // (no instant resume), but it restarts at the visual time (keepPos)
-        // so no position is lost; a new .mid replaces the source, a .note
-        // releases it, and the demo rebuilds its own source on return.
-        _integRelease();
+        // Leaving Integrated: pause only and KEEP the source, so switching
+        // back resumes instantly at the kept position and keeps following the
+        // notes (no re-decode, no background analyze — a paused element does
+        // nothing; the pool/soundbank stay muted by the play assertion).
+        // (A new .mid replaces the source; a .note releases it.)
+        try { if (_integEl) _integEl.pause(); } catch (eP) {}
       }
     }
 
@@ -2305,6 +2357,32 @@
     return _origParseMIDI(buf);
   };
 
+  // Big-MIDI guard: a MIDI source over 1MB never stays on Integrated (the
+  // platform decode of huge MIDIs eats RAM/CPU on this hardware; preload
+  // carries them through the pool instead). Runs post clearDemo (the
+  // demo-lock would swallow the transition earlier). Demo itself is exempt
+  // (tiny file, forced integrated). Hot-open midis funnel through the same
+  // loads, so they are covered too.
+  function _bigMidToPreload() {
+    if (_integGuardsOff()) return; // kill-switch ON: no auto-switch
+    var sz = 0;
+    try { sz = window._srcMidiBytes || 0; } catch (e) {}
+    if (!(sz > 1048576)) return;
+    var cur = null;
+    try { cur = Store.getState().synthEngine; } catch (e2) {}
+    if (cur !== 'integrated') return;
+    var demo = true;
+    try { demo = (typeof isDemoActive === 'function') ? isDemoActive() : !!_demoActive; } catch (e3) {}
+    if (demo) return;
+    // Full toggle parity (values + store + persist + row repaint): a bare
+    // setState would leave the settings row showing the old engine.
+    try {
+      if (typeof Settings !== 'undefined' && Settings.setSynthEngine) Settings.setSynthEngine('preload');
+      else Store.setState({ synthEngine: 'preload' });
+    } catch (e4) {}
+    try { console.log('[Main] big MIDI ' + sz + 'B on integrated → preload'); } catch (e5) {}
+  }
+
   function loadMIDIData(midiData) {
     _hotOpenPending = false; // a real file resolved the hot-open session
     var notes = midiData.notes || [];
@@ -2315,6 +2393,7 @@
     // (hot keys + Note Color Randomise). Must cover both the case where the
     // demo is still playing AND the case where it already finished (locked).
     if (_demoActive || _lockNoFile) clearDemo();
+    _bigMidToPreload();
 
     // Loading a new file KEEPS the current fullscreen state — if the user is
     // in fullscreen, stay in fullscreen (no auto-exit, no canvas resize).
@@ -2548,7 +2627,12 @@
 
   function loadBinaryNote(ns, displayName) {
     _hotOpenPending = false; // a real file resolved the hot-open session
+    // Unconditional release: no .note is platform-playable, so any URL here
+    // is stale (demo.mid / previous song) — it must never sound over these
+    // visuals. (Covers converted + picked + hot-open binary opens alike.)
+    try { if (typeof _integRelease === 'function') _integRelease(); } catch (eR) {}
     if (_demoActive || _lockNoFile) clearDemo();
+    _bigMidToPreload(); // converted big-midi opens switch off integrated here
     // Loading keeps the current fullscreen state (no auto-exit).
     try { if (performance && performance.memory) console.log('[Heap] loadBinaryNote stream OPEN heapKB=' + Math.round(performance.memory.usedJSHeapSize / 1024)); } catch (e) {}
 
@@ -2602,9 +2686,10 @@
   // A .note is never platform-playable: release any Integrated source so a
   // previous MIDI's audio can't drone over the note visuals.
   function _openNoteFile(blob, name, onDone) {
-    try {
-      if (Store.getState().synthEngine === 'integrated') _integRelease();
-    } catch (e) {}
+    // Unconditional release (same reason as loadBinaryNote): JSON notes are
+    // not platform-playable either, and this path bypasses loadBinaryNote.
+    try { if (typeof _integRelease === 'function') _integRelease(); } catch (eR) {}
+    try { window._srcMidiBytes = 0; } catch (eS) {} // picked .note: never a big-midi source
     var display = String(name || 'file').split('/').pop();
     _isPFA2(blob).then(function (isBin) {
       if (isBin) {
@@ -2803,6 +2888,7 @@
     // demo's own loadMIDIData()→hideParsing() kills the analyze OSD and the
     // demo plays underneath the real conversion.
     if (_pendingActivity || _activityBusy) return;
+    try { window._srcMidiBytes = 0; } catch (eS) {} // demo carries no big-midi state
     fetch('js/demo.note')
       .then(function (res) {
         if (!res.ok) throw new Error('js/demo.note missing (HTTP ' + res.status + ')');
@@ -3613,9 +3699,6 @@ vols.forEach(function (vol) {
         var left = 0;
         try { left = (typeof Written !== 'undefined' && Written.list) ? Written.list().length : 0; } catch (e) {}
         console.log('[Main] pfa_tmp CLEAR DONE: ' + total + ' files removed; write-log now ' + left + ' path(s)');
-        // Clear unlocks Integrated for the toggle (clean stopped slate — the
-        // only state it may be selected from; mid-playback offers 2 engines).
-        try { if (typeof Settings !== 'undefined' && Settings.unlockIntegrated) Settings.unlockIntegrated(); } catch (eU) {}
         if (typeof showDevDialog === 'function') {
           showDevDialog(L10n.t('dev_cleared', 'Cleared:\n') + total + L10n.t('dev_cleared_files', ' file(s) from the conversion cache.'));
         }

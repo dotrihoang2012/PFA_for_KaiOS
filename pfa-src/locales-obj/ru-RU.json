@@ -296,6 +296,10 @@
     "$v": "Подробный статус"
   },
   {
+    "$i": "disable_warnings_in_integrated",
+    "$v": "Отключить предупреждения в Integrated"
+  },
+  {
     "$i": "verbose_while_analyzing",
     "$v": "Подробности при анализе"
   },
