@@ -30,6 +30,15 @@ var Keyboard = (function () {
   var NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
   var SHOW_OCTAVE = true;
 
+  // Highlight pool: one slot per key + frame stamp dedupes without per-frame
+  // map/entry allocations (was ~2k short-lived objects/frame at density →
+  // GC pauses). Same last-wins, same pixels, same draw order.
+  var _hlW = [], _hlB = [], _hlWh = [], _hlBh = [], _hlStamp = 0;
+  for (var _hi = 0; _hi < 128; _hi++) {
+    _hlW.push({ dx: 0, w: 0, col: null, stamp: 0 });
+    _hlB.push({ dx: 0, w: 0, col: null, sx: 0, stamp: 0 });
+  }
+
   /** Strip height in px for the current pianoSize setting ('none' → 0). */
   function height(state) {
     var ps = (state && state.pianoSize) || 'big';
@@ -370,13 +379,21 @@ var Keyboard = (function () {
       }
       if (live && live.length) {
         var ns = Sequencer.getTime();
-        var wh = [], bhl = [];
+        var wh = _hlWh, bhl = _hlBh;
+        wh.length = 0; bhl.length = 0;
+        _hlStamp++;
+        // Dedupe per key via frame-stamped slots (pooled, zero alloc):
+        // the TOP overlapping note wins — same last-wins as the old maps
+        // (later entries overwrite the same slot). Early-out: at wall density
+        // every key lights within the first few hundred entries — the rest can
+        // add nothing new. Only engages when ALL range keys are lit, never in
+        // normal sections.
+        var _litNeed = (endN - startN + 1), _litGot = 0;
         // Dedupe per key: the TOP overlapping note wins — on the falling band
         // the last-drawn note covers the earlier ones, so the lit key shows
         // the SAME resulting color the falling notes display at the overlap
         // (later live entries overwrite earlier ones → "last wins"). Each key
         // still draws exactly ONCE so alpha never accumulates (no darkening).
-        var _whMap = {}, _bhMap = {};
         var CH = (typeof Notes !== 'undefined' && Notes.channelColor) ? Notes.channelColor : null;
         var SCAN_LIMIT = 1180591620717411303424;
         // Trail: state.trail is a number 0.1..8.0 (seconds × scale)
@@ -404,14 +421,16 @@ var Keyboard = (function () {
           // by key so every lit key is drawn exactly ONCE per frame.
           var col = CH ? CH(live[i].channel) : '#00C8FF';
           if (kl.black) {
-            _bhMap[nn] = { dx: dx, w: kl.w, col: col, sx: kl.x };
+            var sb = _hlB[nn];
+            sb.dx = dx; sb.w = kl.w; sb.col = col; sb.sx = kl.x;
+            if (sb.stamp !== _hlStamp) { sb.stamp = _hlStamp; bhl.push(sb); _litGot++; }
           } else {
-            _whMap[nn] = { dx: dx, w: kl.w, col: col };
+            var sw = _hlW[nn];
+            sw.dx = dx; sw.w = kl.w; sw.col = col;
+            if (sw.stamp !== _hlStamp) { sw.stamp = _hlStamp; wh.push(sw); _litGot++; }
           }
+          if (_litGot >= _litNeed) break;
         }
-        // Collapse the maps into the draw lists (key order = ascending note).
-        for (var _wk in _whMap) wh.push(_whMap[_wk]);
-        for (var _bk in _bhMap) bhl.push(_bhMap[_bk]);
 
         // White highlights (drawn UNDER the black keys — they are re-blitted
         // below so a lit white key's glow never washes over the black key
