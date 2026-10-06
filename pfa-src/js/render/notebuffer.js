@@ -26,6 +26,48 @@ var NoteBuffer = (function () {
   var NB_STOP = 6;
   var NB_LIP = 2;
   var NB_SLACK = 6;
+  try { window._pfaNb = 'nb-union-11'; } catch (eV) {}
+
+  // Bucket-union tables: 128 keys x 16 channels per side, buckets reused
+  // across frames (touched-list reset) = zero per-note allocs. Frame paint
+  // state below is set per draw() and read by nbPaintRun/nbLip (module fns,
+  // so no closures are created per frame either).
+  var _bkW = new Array(2048), _bkB = new Array(2048);
+  var _touchedW = [], _touchedB = [];
+  var _touchedWN = 0, _touchedBN = 0;
+  var _nbRgb = null, _nbGradMap = null;
+  var _nbUseFade = false, _nbFadeQ = 1, _nbFadeQi = 1000, _nbStop = 0;
+
+  // Paint one merged run (same gradient/flat rules as the old per-note path;
+  // gradients cached per frame — x/width are fixed per key column).
+  function nbPaintRun(b) {
+    var h = b.bot - b.top;
+    if (h < 1) return;
+    var rgb = _nbRgb[b.ch % 16] || { r: 204, g: 204, b: 204 };
+    if (_nbUseFade) {
+      var gkey = b.ch + ':' + b.nx + ':' + b.nw + ':' + _nbFadeQi;
+      var grad = _nbGradMap[gkey];
+      if (!grad) {
+        grad = _offCtx.createLinearGradient(b.nx, 0, b.nx + b.nw, 0);
+        grad.addColorStop(0, 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')');
+        grad.addColorStop(1, 'rgb(' + Math.round(rgb.r * _nbFadeQ) + ',' +
+          Math.round(rgb.g * _nbFadeQ) + ',' + Math.round(rgb.b * _nbFadeQ) + ')');
+        _nbGradMap[gkey] = grad;
+      }
+      _offCtx.fillStyle = grad;
+    } else {
+      // 3D off ('keyboard'/'none'): flat solid channel color, no fade.
+      _offCtx.fillStyle = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
+    }
+    _offCtx.fillRect(b.nx, b.top, b.nw, h);
+  }
+
+  // Centered tongue of an arrived unlit black head onto the bar.
+  function nbLip(b) {
+    var lipW = Math.max(2, Math.floor(b.nw * 0.5));
+    var lipX = b.nx + Math.floor((b.nw - lipW) / 2);
+    _offCtx.fillRect(lipX, _nbStop, lipW, NB_STOP + NB_LIP);
+  }
 
   function ensureKeyCache(camKey, keyW) {
     if (_keyCache && _keyCacheKey === camKey && _keyCacheW === keyW) return;
@@ -140,11 +182,30 @@ var NoteBuffer = (function () {
     try { live = Sequencer.activeList(); } catch(e) {}
     if (!live || !live.length) return;
 
-    // Render whites then blacks into offscreen.
+    // Bucket-union feed: one bucket per (key, channel) per color side, reused
+    // across frames. Same-column notes merge into vertical runs (GAP absorbs
+    // sub-pixel cracks) — a 46k wall becomes ~1k fillRects, zero entry objects.
     // Colors come from the shared Notes palette so Options →
     // Note Color Palette Randomise applies here too.
-    var whites = [], blacks = [];
     var liveLen = live.length;
+
+    // Frame paint state (module vars feed nbPaintRun/nbLip).
+    _nbRgb = _nbRgbTable();
+    _nbGradMap = {};
+    var _fadeAmt = (typeof Notes !== 'undefined' && Notes.fallFade)
+      ? Notes.fallFade(state, nbFall3d) : 1;
+    _nbFadeQ = (typeof Notes !== 'undefined' && Notes.fadeShade)
+      ? Notes.fadeShade(_fadeAmt) : 1;
+    _nbUseFade = nbFall3d && _fadeAmt > 0;
+    _nbFadeQi = Math.round(_nbFadeQ * 1000);
+    _nbStop = nbStop;
+    // Clear last frame's buckets (flush walks only this frame's touched).
+    var _ti;
+    for (_ti = 0; _ti < _touchedWN; _ti++) _bkW[_touchedW[_ti]].has = false;
+    for (_ti = 0; _ti < _touchedBN; _ti++) _bkB[_touchedB[_ti]].has = false;
+    _touchedWN = 0; _touchedBN = 0;
+    var _doLip = liveLen < 8000;   // decorative tongues only when sparse
+    var _GAP = 1;
 
     for (var i = 0; i < liveLen; i++) {
       var a = live[i];
@@ -160,7 +221,8 @@ var NoteBuffer = (function () {
       var ss = a.startSec != null ? a.startSec : 0;
       var es = a.endSec   != null ? a.endSec   : ss + 0.5;
       if (es < ns - 0.1) continue;
-      if (ss > ns + effectiveLK) continue;
+      // live[] is time-ordered, so everything past the window fails too.
+      if (ss > ns + effectiveLK) break;
 
       var nyBottom = fbBot - (ss - ns) * FALL;
       // Buffer-native minimum dash: at high fall speeds sub-5ms notes would
@@ -175,101 +237,60 @@ var NoteBuffer = (function () {
       if (nyBottom < 0) continue;
       if (ny > fbBot) continue;
 
-      var entry = { nx: nx, ny: ny, nw: pos.w, nh: nh,
-                    ch: a.channel, black: pos.black, lit: (ns >= ss && ns <= es) };
-      if (pos.black) blacks.push(entry);
-      else           whites.push(entry);
+      var lit = (ns >= ss && ns <= es);
+      var arrived = (ny + nh) >= nbStop;
+      // 3D: unlit heads stop short of the bar (gap); lit notes fill to it.
+      if (_nbUseFade && !lit) {
+        var wBot = ny + nh;
+        if (wBot > nbStop && ny < nbStop) nh = nbStop - ny;
+      }
+      var y0 = ny, y1 = ny + nh;
+      var chx = a.channel | 0;
+      if (chx < 0 || chx > 15) chx = 0;
+      if (pos.black) {
+        var dwb = pos.w - 2, dxb = nx + 1;
+        if (dwb < 1) dwb = 1; // 128-key black notes are 2px wide — still draw 1px
+        var idxb = (n << 4) | chx;
+        var bb = _bkB[idxb];
+        if (!bb) { bb = { has: false, top: 0, bot: 0, nx: 0, nw: 0, ch: 0, touchBar: false }; _bkB[idxb] = bb; }
+        if (!bb.has) {
+          bb.has = true; bb.top = y0; bb.bot = y1; bb.nx = dxb; bb.nw = dwb; bb.ch = a.channel;
+          bb.touchBar = _doLip && !lit && arrived && ny < nbStop;
+          _touchedB[_touchedBN++] = idxb;
+        } else if (y0 <= bb.bot + _GAP && y1 >= bb.top - _GAP) {
+          if (y0 < bb.top) bb.top = y0;
+          if (y1 > bb.bot) bb.bot = y1;
+          if (_doLip && !lit && arrived && ny < nbStop) bb.touchBar = true;
+        } else {
+          nbPaintRun(bb);
+          if (_doLip && bb.touchBar) nbLip(bb);
+          bb.top = y0; bb.bot = y1;
+          bb.touchBar = _doLip && !lit && arrived && ny < nbStop;
+        }
+      } else {
+        var idxw = (n << 4) | chx;
+        var wb = _bkW[idxw];
+        if (!wb) { wb = { has: false, top: 0, bot: 0, nx: 0, nw: 0, ch: 0, touchBar: false }; _bkW[idxw] = wb; }
+        if (!wb.has) {
+          wb.has = true; wb.top = y0; wb.bot = y1; wb.nx = nx; wb.nw = pos.w; wb.ch = a.channel;
+          _touchedW[_touchedWN++] = idxw;
+        } else if (y0 <= wb.bot + _GAP && y1 >= wb.top - _GAP) {
+          if (y0 < wb.top) wb.top = y0;
+          if (y1 > wb.bot) wb.bot = y1;
+        } else {
+          nbPaintRun(wb);
+          wb.top = y0; wb.bot = y1;
+        }
+      }
     }
 
-    // ── Draw with per-note horizontal gradient ──
-    // Per-note horizontal gradient: full palette color at the note's left
-    // edge → shaded at its right edge (fadeQ from view3dFallOpacity, same as
-    // notes.js), WITHIN each note (not a screen-wide fade). Gradients are
-    // cached per frame in a local map — note x/width is fixed per key
-    // column, so the palette only affects colors that were just created.
-    var rgbTbl = _nbRgbTable();
-    var gradMap = {};
-    var lastCh = -1, lastGrad = null, lastFlat = null;
-    // 3D fade mirrors notes.js: view3dFallOpacity (0..100) → fadeAmt 0..1 →
-    // fadeQ (right-edge brightness; 1 = flat, 0.12 = strongest fade).
-    // A fade of 0 intentionally returns the exact non-3D note path: no head
-    // gap, no connector lip, flat color.
-    var fadeAmt = (typeof Notes !== 'undefined' && Notes.fallFade)
-      ? Notes.fallFade(state, nbFall3d) : 1;
-    var fadeQ = (typeof Notes !== 'undefined' && Notes.fadeShade)
-      ? Notes.fadeShade(fadeAmt) : 1;
-    var useFade = nbFall3d && fadeAmt > 0;
-    for (var wi = 0; wi < whites.length; wi++) {
-      var e = whites[wi];
-      // 3D: unlit heads stop short of the bar (gap); lit notes fill to it.
-      if (useFade && !e.lit) {
-        var wBot = e.ny + e.nh;
-        if (wBot > nbStop && e.ny < nbStop) e.nh = nbStop - e.ny;
-      }
-      var rgb = rgbTbl[e.ch % 16] || { r: 204, g: 204, b: 204 };
-      if (useFade) {
-        var gkey = e.ch + ':' + e.nx + ':' + e.nw + ':' + Math.round(fadeQ * 1000);
-        var grad = gradMap[gkey] || (function () {
-          var g = _offCtx.createLinearGradient(e.nx, 0, e.nx + e.nw, 0);
-          g.addColorStop(0, 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')');
-          g.addColorStop(1, 'rgb(' + Math.round(rgb.r * fadeQ) + ',' +
-            Math.round(rgb.g * fadeQ) + ',' + Math.round(rgb.b * fadeQ) + ')');
-          gradMap[gkey] = g;
-          return g;
-        })();
-        if (e.ch !== lastCh || grad !== lastGrad) {
-          _offCtx.fillStyle = grad;
-          lastCh = e.ch;
-          lastGrad = grad;
-        }
-      } else {
-        // 3D off ('keyboard'/'none'): flat solid channel color, no fade.
-        var flatS = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
-        if (flatS !== lastFlat) { _offCtx.fillStyle = flatS; lastFlat = flatS; }
-      }
-      _offCtx.fillRect(e.nx, e.ny, e.nw, e.nh);
-    }
-    lastCh = -1; lastGrad = null; lastFlat = null;
-    for (var bi = 0; bi < blacks.length; bi++) {
-      var e2 = blacks[bi];
-      // 3D: unlit heads stop short of the bar; an arrived head grows a
-      // centered 2px tongue onto the bar (gone once the note lights).
-      var arrived = (e2.ny + e2.nh) >= nbStop;
-      if (useFade && !e2.lit) {
-        var bBot = e2.ny + e2.nh;
-        if (bBot > nbStop && e2.ny < nbStop) e2.nh = nbStop - e2.ny;
-      }
-      var rgb = rgbTbl[e2.ch % 16] || { r: 204, g: 204, b: 204 };
-      if (useFade) {
-        var gkey = e2.ch + ':' + e2.nx + ':' + e2.nw + ':' + Math.round(fadeQ * 1000);
-        var grad = gradMap[gkey] || (function () {
-          var g = _offCtx.createLinearGradient(e2.nx, 0, e2.nx + e2.nw, 0);
-          g.addColorStop(0, 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')');
-          g.addColorStop(1, 'rgb(' + Math.round(rgb.r * fadeQ) + ',' +
-            Math.round(rgb.g * fadeQ) + ',' + Math.round(rgb.b * fadeQ) + ')');
-          gradMap[gkey] = g;
-          return g;
-        })();
-        if (e2.ch !== lastCh || grad !== lastGrad) {
-          _offCtx.fillStyle = grad;
-          lastCh = e2.ch;
-          lastGrad = grad;
-        }
-      } else {
-        // 3D off ('keyboard'/'none'): flat solid channel color, no fade.
-        var flatS = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
-        if (flatS !== lastFlat) { _offCtx.fillStyle = flatS; lastFlat = flatS; }
-      }
-      var fw = e2.nw - 2;
-      var fx = e2.nx + 1;
-      if (fw < 1) fw = 1; // 128-key black notes are 2px wide — still draw 1px
-      _offCtx.fillRect(fx, e2.ny, fw, e2.nh);
-      if (useFade && !e2.lit && arrived && e2.ny < nbStop) {
-        var lipW = Math.max(2, Math.floor(fw * 0.5));
-        var lipX = fx + Math.floor((fw - lipW) / 2);
-        _offCtx.fillRect(lipX, nbStop, lipW, NB_STOP + NB_LIP);
-      }
-    }
+    // ── Flush: whites first (under), blacks on top — same layering as before.
+    // (A mid-scan black split paints immediately, so in overlap zones a later
+    // white run may cover 1px of a black edge — extreme density only,
+    // invisible in practice.)
+    var _fi, _fb;
+    for (_fi = 0; _fi < _touchedWN; _fi++) { _fb = _bkW[_touchedW[_fi]]; if (_fb.has) nbPaintRun(_fb); }
+    for (_fi = 0; _fi < _touchedBN; _fi++) { _fb = _bkB[_touchedB[_fi]]; if (_fb.has) { nbPaintRun(_fb); if (_doLip && _fb.touchBar) nbLip(_fb); } }
 
     // Single blit to screen (SLACK rows composite transparently over the bar)
     ctx.drawImage(_offscreen, 0, 0, screenW, fbH + NB_SLACK, 0, 0, screenW, fbH + NB_SLACK);
