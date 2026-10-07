@@ -32,9 +32,9 @@ This project focuses on optimizing the Canvas rendering pipeline to smoothly dis
 
 ---
 
-## Installation Guide for KaiOS 2.5 (Sideloading)
+## Installation Guide for KaiOS 2.5
 
-To install this app on your KaiOS 2.5 device, choose **one of the two methods** below:
+To install this app on your KaiOS 2.5 device, choose **one of the three methods** below:
 
 ### Prerequisites
 Enable **Debug Mode** on your KaiOS 2.5 phone:
@@ -69,13 +69,21 @@ Enable **Debug Mode** on your KaiOS 2.5 phone:
 ### Method 2: OmniSD / Gerda File Manager / Wallace Toolbox (.zip File)
 
 1. **Package the App:**
-   * Zip all files in the project folder (including `manifest.webapp`, `index.html`, `js/`, `css/`, `icons/`, etc.) into a `.zip` archive (e.g., `pfa.zip`).
+   * Zip all files in the project folder (including manifest.webapp, index.html, js/, style/, locales-obj/) into a `.zip` archive (e.g., `pfa.zip`).
    * *Note:* Zip the contents directly inside the project root, not the parent folder itself.
 2. **On your Phone:**
    * Copy `pfa.zip` to your SD card or internal storage.
    * Open **OmniSD**, **Gerda File Manager**, or **Wallace Toolbox** on KaiOS 2.5.
    * Select `pfa.zip` and press **Install**.
    * Once installed, **Piano From Above** will appear on your app launcher menu.
+
+---
+
+### Method 3: Direct Download from the Store (Easiest)
+
+1. Open the **Store** app on your KaiOS 2.5 phone.
+2. Search for **Piano From Above**.
+3. Press **Download/Install** and open it from your app launcher menu once installed.
 
 ---
 
