@@ -23,6 +23,7 @@
   var width, height;
   var rafId;
   var lastFrameTime = 0, fpsCounter = 0, fpsAcc = 0;
+  var _lastPaintT = 0;   // 30fps paint gate: last painted rAF timestamp
 
   // Pending activity payload — MozActivity may fire before boot()
   // has registered the canvas / wired the Synth. Park it here and
@@ -664,6 +665,7 @@
 
       if (typeof NoteBuffer !== 'undefined') {
         NoteBuffer.init(width, height);
+        try { window._pfaMn = 'main-30fps-01'; } catch (eV) {}
         var _bootSt = Store.getState();
         var _bootdr = (typeof Notes !== 'undefined' && Notes.dynRange)
           ? Notes.dynRange(_bootSt) : { start: null, end: null };
@@ -1868,8 +1870,15 @@
     // early-return so the HUD FPS stays live during conversions too.
     var dt = now - lastFrameTime;
     lastFrameTime = now;
-    fpsCounter++;
     fpsAcc += dt;
+    // Paint gate (30fps lock): rAF may run at 60Hz while this hardware
+    // sustains ~30fps of frame work — painting every callback doubles all
+    // per-frame cost (lag + heat + GC). Skip painting callbacks arriving
+    // sooner than 33ms after the last painted frame; rAF keeps scheduling
+    // (compositor-friendly) and the FPS readout counts painted frames.
+    if (now - _lastPaintT < 33) return;
+    _lastPaintT = now;
+    fpsCounter++;
     if (fpsAcc >= 1000) {
       Store.setState({ fps: Math.round(fpsCounter * 1000 / fpsAcc) });
       fpsCounter = 0;
