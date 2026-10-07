@@ -1308,13 +1308,14 @@
     try {
       if (el.src !== src) { el.src = src; el.load(); }
     } catch (e) {}
-    clearTimeout(_mediaTimer);
+    clearTimeout(_mediaTimer); _mediaTimer = null;
     _mediaApplyMute();
     _mediaErrShown = false;
     _assertMediaChannel();
     try { console.log('[Media] ch=' + (el.mozAudioChannelType || '?') + ' muted=' + el.muted); } catch (e) {}
     var delay = Math.max(0, Number(st.mediaDelay) || 0);
     var kick = function () {
+      _mediaTimer = null; // fired (or firing now) — no longer pending
       try {
         var p = el.play();
         if (p && p.catch) p.catch(function (er) { console.warn('[Media] play blocked:', er); });
@@ -1339,12 +1340,12 @@
   }
 
   function _mediaPause() {
-    clearTimeout(_mediaTimer);
+    clearTimeout(_mediaTimer); _mediaTimer = null;
     if (_mediaEl) { try { _mediaEl.pause(); } catch (e) {} }
   }
 
   function _mediaStop() {
-    clearTimeout(_mediaTimer);
+    clearTimeout(_mediaTimer); _mediaTimer = null;
     _mediaStopped = true;
     if (_mediaEl) {
       try { _mediaEl.pause(); _mediaEl.currentTime = 0; } catch (e) {}
