@@ -26,7 +26,7 @@ var NoteBuffer = (function () {
   var NB_STOP = 6;
   var NB_LIP = 2;
   var NB_SLACK = 6;
-  try { window._pfaNb = 'nb-flat-14'; } catch (eV) {}
+  try { window._pfaNb = 'nb-flat-15'; } catch (eV) {}
 
   // Bucket-union tables: 128 keys x 16 channels per side, buckets reused
   // across frames (touched-list reset) = zero per-note allocs. Frame paint
