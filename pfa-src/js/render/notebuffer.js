@@ -26,7 +26,7 @@ var NoteBuffer = (function () {
   var NB_STOP = 6;
   var NB_LIP = 2;
   var NB_SLACK = 6;
-  try { window._pfaNb = 'nb-union-11'; } catch (eV) {}
+  try { window._pfaNb = 'nb-flat-14'; } catch (eV) {}
 
   // Bucket-union tables: 128 keys x 16 channels per side, buckets reused
   // across frames (touched-list reset) = zero per-note allocs. Frame paint
@@ -36,6 +36,8 @@ var NoteBuffer = (function () {
   var _touchedW = [], _touchedB = [];
   var _touchedWN = 0, _touchedBN = 0;
   var _nbRgb = null, _nbGradMap = null;
+  var _nbFlatTbl = new Array(16);
+  var _nbFp = null, _nbKw = -1;
   var _nbUseFade = false, _nbFadeQ = 1, _nbFadeQi = 1000, _nbStop = 0;
 
   // Paint one merged run (same gradient/flat rules as the old per-note path;
@@ -57,7 +59,7 @@ var NoteBuffer = (function () {
       _offCtx.fillStyle = grad;
     } else {
       // 3D off ('keyboard'/'none'): flat solid channel color, no fade.
-      _offCtx.fillStyle = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
+      _offCtx.fillStyle = _nbFlatTbl[b.ch % 16] || 'rgb(204,204,204)';
     }
     _offCtx.fillRect(b.nx, b.top, b.nw, h);
   }
@@ -190,8 +192,35 @@ var NoteBuffer = (function () {
     var liveLen = live.length;
 
     // Frame paint state (module vars feed nbPaintRun/nbLip).
-    _nbRgb = _nbRgbTable();
-    _nbGradMap = {};
+    // Persistent palette/gradient cache: rebuild only when the palette
+    // actually changes (fingerprint all 16 channels — exact, ~1µs/frame).
+    // Saves ~16 hex parses + hundreds of gradient creations per frame.
+    var _fp = null, _fpSame = false;
+    try {
+      if (typeof Notes !== 'undefined' && Notes.channelColor) {
+        _fp = [];
+        for (var _fi2 = 0; _fi2 < 16; _fi2++) _fp.push(Notes.channelColor(_fi2));
+        _fpSame = !!(_fp && _nbFp);
+        if (_fpSame) {
+          for (var _fi3 = 0; _fi3 < 16; _fi3++) {
+            if (_fp[_fi3] !== _nbFp[_fi3]) { _fpSame = false; break; }
+          }
+        }
+      }
+    } catch (eFP) { _fpSame = false; }
+    if (!_fpSame) {
+      _nbRgb = _nbRgbTable();
+      _nbGradMap = {};
+      _nbFp = _fp;
+    }
+    // Key columns moved (zoom/refit) — old gradients never hit again.
+    if (_nbKw !== kw) { _nbGradMap = {}; _nbKw = kw; }
+    // Flat-color table (built every frame, ~2µs): the else-branch below
+    // looks these up instead of concatenating per run.
+    for (var _fi4 = 0; _fi4 < 16; _fi4++) {
+      var _frgb = (_nbRgb && _nbRgb[_fi4]) || null;
+      _nbFlatTbl[_fi4] = _frgb ? ('rgb(' + _frgb.r + ',' + _frgb.g + ',' + _frgb.b + ')') : 'rgb(204,204,204)';
+    }
     var _fadeAmt = (typeof Notes !== 'undefined' && Notes.fallFade)
       ? Notes.fallFade(state, nbFall3d) : 1;
     _nbFadeQ = (typeof Notes !== 'undefined' && Notes.fadeShade)
