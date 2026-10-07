@@ -20,7 +20,7 @@
     "landscape-secondary",
     "landscape"
   ],
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "privileged",
   "precompile": [
     "js/ads/kaiads.v5.min.js",

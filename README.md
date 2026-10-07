@@ -94,7 +94,6 @@ Contributions to optimize Canvas rendering performance or reduce memory consumpt
 ## TODO
 
 * Fix audio playback while running.
-* Fix rendering while running.
 
 ---
 
