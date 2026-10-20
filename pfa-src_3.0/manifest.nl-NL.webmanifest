@@ -1,0 +1,78 @@
+{
+  "lang": "nl-NL",
+  "name": "Piano From Above",
+  "id": "PFA (BETA)",
+  "short_name": "Piano From Above",
+  "categories": [
+    "entertainment",
+    "utilities"
+  ],
+  "description": "Een MIDI-speler met live pianovisuals.",
+  "icons": [
+    {
+      "src": "/style/icons/piano_56.png",
+      "type": "image/png",
+      "sizes": "56x56"
+    },
+    {
+      "src": "/style/icons/piano_112.png",
+      "type": "image/png",
+      "sizes": "112x112"
+    }
+  ],
+  "start_url": "/index.html",
+  "theme_color": "#0a9bf5",
+  "background_color": "#0a0a0a",
+  "orientation": "any",
+  "b2g_features": {
+    "version": "1.0",
+    "core": true,
+    "subtitle": "MIDI-speler met toetsenbordvisualisatie",
+    "origin": "pfa",
+    "developer": {
+      "name": "T.Hoang",
+      "url": "https://github.com/dotrihoang2012"
+    },
+    "permissions": {
+      "device-storage:sdcard": {
+        "access": "readwrite"
+      },
+      "audio-channel-content": {},
+      "volumemanager": {},
+      "desktop-notification": {}
+    },
+    "chrome": {
+      "navigation": false
+    },
+    "focus_color": "#0a9bf5",
+    "activities": {
+      "open": {
+        "filters": {
+          "filename": {
+            "pattern": ".*(mid$|MID$|midi$|MIDI$|note$|NOTE$)",
+            "patternFlags": "gi"
+          }
+        },
+        "href": "/index.html",
+        "disposition": "window",
+        "returnValue": true
+      },
+      "share": {
+        "filters": {
+          "filenames": {
+            "pattern": ".*(mid$|MID$|midi$|MIDI$|note$|NOTE$)",
+            "patternFlags": "gi"
+          }
+        },
+        "href": "/index.html",
+        "disposition": "window",
+        "returnValue": true
+      }
+    },
+    "messages": [
+      {
+        "activity": "/index.html"
+      }
+    ]
+  }
+}
