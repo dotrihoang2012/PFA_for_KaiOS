@@ -1,0 +1,787 @@
+/* === APP-SPECIFIC LAYOUT (absolute positioning — no flexbox) ===
+   Matches reference audio-visualizer pattern: canvas is base layer,
+   chrome elements are absolutely positioned on top. No flex = no
+   per-frame layout recalculation on KaiOS Gecko 48 compositor. */
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Status-bar placeholder — transparent strip at the top mimicking
+   the KaiOS system status bar zone. Prevents the OS bar from
+   overlapping our HUD/canvas when the app window shifts during
+   MozActivity wake-up (the shell briefly reports a different
+   viewport height before settling). Kept transparent (no black bar)
+   while still reserving the strip so real content sits below the
+   system bar area. */
+#statusbar-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: transparent;
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* Header REMOVED — no chrome at the top of the app. Only softkey now. */
+#softkey-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+}
+
+#viewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Canvas fills the whole viewport — sized from screen.availWidth/Height in JS */
+#main-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+/* === HUD (overlay on canvas — vertical stack, pointer-events:none) ===
+   Appearance (bg/text/border/position) is driven by Settings → Info
+   Card Options via inline styles from applyInfoCard(); these rules only
+   provide the base layout + a non-flash fallback (solid black card).
+   The right edge variant is aligned via inline styles (flex-end). */
+#hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 2px 5px;
+  font-size: 8px;
+  color: #ffffff;
+  background: #000000;
+  pointer-events: none;
+  z-index: 20;
+  line-height: 1.25;
+  box-sizing: border-box;
+  border-radius: 0;
+}
+
+#hud-note-count { color: #fff; font-weight: bold; }
+#hud-speed      { color: #ccc; }
+#hud-time       { color: #ccc; }
+#hud-fps        { color: #888; }
+#hud-nc         { color: #fff; font-weight: bold; }
+#hud-passed     { color: #ccc; }
+#hud-polyphony  { color: #ccc; }
+#hud-rendered   { color: #ccc; }
+#hud-audio-buffer { color: #888; }
+
+/* === DEV LOG OSD (Developer Options → On-screen verbose status) ===
+   Invisible panel — white text floats straight ON the piano/canvas so the
+   artwork shows through (no dim backdrop). pointer-events:none keeps the UI
+   alive beneath. Newest lines are printed at the bottom (follows the log). */
+#dev-osd {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 25;
+  padding: 4px 6px;
+  overflow: hidden;
+  background: transparent;
+  color: #ffffff;
+  font-family: monospace;
+  font-size: 8px;
+  line-height: 1.3;
+  white-space: pre;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8), 0 0 2px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+#dev-osd.hidden { display: none; }
+
+/* === FULLSCREEN ADJUSTMENTS === */
+#app.fullscreen #softkey-bar {
+  display: none;
+}
+
+/* ===========================================
+   VISUAL THEMES — selected via Visual → Theme.
+   Theme tokens apply to canvas background,
+   HUD text color, and piano black-key tint.
+   Settings sub-page UI (flat blue) is NOT
+   themed; only mention-of-canvas/HUD/piano change.
+   =========================================== */
+:root,
+:root[data-theme="dark"] {
+  --theme-bg:      #0a0a0a;
+  --theme-fg:      #ffffff;
+  --theme-fg-dim:  #cccccc;
+  --theme-piano-black: #1a1a1a;
+}
+
+:root[data-theme="light"] {
+  --theme-bg:      #f7f7f3;
+  --theme-fg:      #202020;
+  --theme-fg-dim:  #555555;
+  --theme-piano-black: #2a2a2a;
+}
+
+:root[data-theme="blue"] {
+  --theme-bg:      #001a33;
+  --theme-fg:      #cce6ff;
+  --theme-fg-dim:  #6699cc;
+  --theme-piano-black: #051a2a;
+}
+
+:root[data-theme="purple"] {
+  --theme-bg:      #1a0a26;
+  --theme-fg:      #e0cce6;
+  --theme-fg-dim:  #996699;
+  --theme-piano-black: #180520;
+}
+
+/* HUD adapts to theme foreground */
+:root[data-theme="light"] #hud { color: var(--theme-fg); }
+:root[data-theme="light"] #hud-note-count { color: var(--theme-fg); }
+
+/* ===========================================
+   LEVEL-2 SETTINGS SUB-PAGES (settings.js)
+   Color picker swatch grid + RGBA sliders,
+   and the small chip previews in group rows.
+   =========================================== */
+
+/* Panel chrome — kaiui.css scopes its OptionMenu panel layout to
+   #menu-overlay/#settings-overlay only, so the level-2 overlay
+   repeats those rules here (same tokens: full-bleed white sheet,
+   header bar from .kai-om > header, scrollable nav). */
+#subsettings-overlay .kai-om {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--color-gs00);
+  display: flex;
+  flex-direction: column;
+}
+#subsettings-list {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  background: var(--color-gs00);
+}
+
+/* Swatch grid — flex-wrap, SWATCH_COLS=5 columns per visual row.
+   Navigation math in settings.js jumps by 5 for Up/Down. */
+.swatch-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.8rem;
+  background: var(--color-gs00);
+}
+
+/* One selectable preset cell. Focused = project highlight blue,
+   matching .kai-om-item.focused / .setting-row.focused. */
+.swatch {
+  width: 3.6rem;
+  height: 3.6rem;
+  margin: 0.35rem;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  border: 0.2rem solid transparent;
+}
+.swatch.focused {
+  border-color: var(--color-gs00);
+  outline: 0.25rem solid var(--color-focus, #0066cc);
+}
+
+/* First cell of the grid — restores factory default / theme color. */
+.swatch-default {
+  background: transparent;
+  border: 0.2rem dashed var(--color-gs45);
+  color: var(--color-gs70);
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  line-height: 3.2rem;
+}
+.swatch-default.focused {
+  border-color: var(--color-gs00);
+  outline: 0.25rem solid var(--color-focus, #0066cc);
+  color: var(--color-gs00);
+}
+
+/* Small inline color preview used on Visual group rows and the
+   sub-page Preview row. */
+.color-chip {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.6rem;
+  border-radius: 0.4rem;
+  border: 1px solid var(--color-gs45);
+  vertical-align: middle;
+  background: transparent;
+}
+.color-preview-row {
+  display: flex;
+  align-items: center;
+  min-height: 4.5rem;
+  padding: 0 1.6rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gs90);
+  background: var(--color-gs00);
+}
+.color-preview-chip {
+  margin-left: auto;
+  margin-right: 0.4rem;
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Forward arrow for drill-in setting rows (Keyboard Range, Background
+   Color …). Uses the SAME gaia-icons 'forward' glyph as
+   .kai-om-item.has-submenu so both settings levels look identical. */
+.setting-row.has-sub {
+  position: relative;
+  padding-right: 3.2rem;
+}
+.setting-row.has-sub::after {
+  position: absolute;
+  top: calc(50% - 1.5rem);
+  right: 0.5rem;
+  font-family: 'gaia-icons';
+  content: 'forward';
+  font-size: 3.2rem;
+  line-height: 3rem;
+  color: #c7c7c7;
+  pointer-events: none;
+}
+/* Focused row: arrow flips to white (matches menu behaviour). */
+.setting-row.has-sub.focused::after { color: #ffffff; }
+.setting-row.focused .color-chip    { border-color: #ffffff; }
+
+/* ===========================================
+   ABOUT PANEL (Options → About This App)
+   Static read-only page. Panel chrome mirrors the OptionMenu
+   sheets in kaiui.css, which are scoped to #menu-overlay /
+   #settings-overlay only — repeat the rules for #about-overlay.
+   =========================================== */
+#about-overlay .kai-om {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--color-gs00);
+  display: flex;
+  flex-direction: column;
+}
+#about-list {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-gs00);
+  will-change: scroll-position;
+}
+.about-body {
+  padding: 2rem 1.6rem;
+  color: var(--color-gs90);
+  font-size: 1.5rem;
+  line-height: 1.55;
+}
+.about-name {
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: #0066cc;
+  margin-bottom: 0.4rem;
+}
+.about-beta {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #e2443a;               /* --color-destructive */
+  background: rgba(226,68,58,.1);
+  border-radius: 0.4rem;
+  padding: 0.2rem 0.8rem;
+  vertical-align: middle;
+}
+.about-ver {
+  color: var(--color-gs45);
+  margin-bottom: 1.4rem;
+}
+.about-tag {
+  margin-bottom: 0.6rem;
+}
+/* Section headings — small caps style like Gaia separators */
+.about-sec {
+  font-weight: 700;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-gs70);
+  border-bottom: 1px solid var(--color-gs10);
+  padding-bottom: 0.3rem;
+  margin: 1.8rem 0 0.7rem;
+}
+.about-body ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.about-body li {
+  position: relative;
+  padding-left: 1.3rem;
+  margin: 0.35rem 0;
+}
+.about-body li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: #0066cc;
+}
+.about-foot {
+  margin-top: 2.2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--color-gs10);
+  color: var(--color-gs45);
+  font-size: 1.3rem;
+}
+
+/* ===========================================
+   NOW PLAYING PILL — FADE BEHAVIOUR
+   The generic .hidden utility is display:none !important, which
+   prevents any opacity transition. This overlay therefore uses its
+   own .np-hide class (opacity only) so it can fade in/out smoothly:
+   visible on Play, holds 3s, then fades out gradually.
+   =========================================== */
+#now-playing-overlay {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+#now-playing-overlay.np-hide { opacity: 0; }
+
+/* ===========================================
+   SEEK OSD (+1 sec / -1 sec …)
+   While active the four HUD stats hide and the
+   accumulated seek total shows centered in the
+   info bar instead.
+   =========================================== */
+#hud-osd {
+  display: none;
+  color: #ffffff;
+  font-weight: bold;
+}
+#hud.osd-active .hud-stat { display: none; }
+#hud.osd-active #hud-osd {
+  display: block;
+  text-align: left;
+}
+
+/* ===========================================
+   TEXT ENTRY SUB-PAGE (settings.js kind 'text')
+   Adapted from KaiUI-master TextInput.scss
+   (kai-text-input): small gray label above a
+   bordered input line; focused row flips to the
+   project highlight blue with white text.
+   =========================================== */
+.kai-text-input {
+  padding: 1rem;
+  background: var(--color-gs00);
+  outline: none;
+}
+.kai-text-input-label {
+  display: block;
+  padding-bottom: 0.5rem;
+  color: var(--color-gs45);      /* KaiUI --color-epsilon ≈ gs45 */
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+.kai-text-input-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  line-height: 3.6rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--color-gs45);
+  border-radius: 2px;
+  background-color: var(--color-gs00);
+  color: var(--color-gs90);
+  font-size: 1.7rem;
+  font-weight: 400;
+}
+.kai-text-input-hint {
+  padding-top: 0.6rem;
+  font-size: 1.2rem;
+  color: var(--color-gs45);
+}
+/* Focused: KaiUI --focused modifier + project focus highlight */
+.kai-text-input.focused { background: var(--color-focus, #0066cc); }
+.kai-text-input.focused .kai-text-input-label,
+.kai-text-input.focused .kai-text-input-hint { color: #ffffff; }
+.kai-text-input.focused .kai-text-input-input {
+  border-color: var(--color-focus, #0066cc);
+  background: #ffffff;
+  color: #000000;
+}
+
+/* ===========================================
+   NOTE COLOR SETTINGS — Separator + Palette Strip
+   Separator styled after KaiUI-master
+   Separator.scss (kai-separator).
+   =========================================== */
+
+/* Separator — matches KaiUI kai-separator: light gray background,
+   centered uppercase text, compact height. */
+.kai-separator {
+  width: 100%;
+  height: 2.4rem;
+  text-align: center;
+  background: var(--color-gs10);
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+.kai-separator-text {
+  margin: 0 1rem;
+  text-align: center;
+  color: var(--color-gs70);
+  text-transform: none;
+  font-size: 1.5rem;
+  line-height: 2.4rem;
+}
+
+/* Palette row — KaiUI radio-button list item (kai-rbl) style: name on
+   left, radio glyph on the right, filled dot when selected. */
+.palette-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.6rem 0 1.6rem;
+  background: var(--color-gs00);
+  min-height: 4.5rem;
+  box-sizing: border-box;
+}
+.palette-row.focused {
+  background: var(--color-focus, #0066cc);
+}
+.palette-row-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gs90);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.palette-row.focused .palette-row-name {
+  color: #ffffff;
+}
+/* Radio glyph — kai-icons font (like KaiUI kai-rbl). */
+.palette-radio {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  margin-left: 1rem;
+  font-family: 'kai-icons';
+  font-size: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  color: var(--color-gs70);
+}
+.palette-radio::before {
+  content: '\e90f'; /* kai-icon-radio-button-unselected */
+}
+.palette-row.selected .palette-radio::before {
+  content: '\e906'; /* kai-icon-radio-button-selected */
+  color: var(--color-focus, #0066cc);
+}
+.palette-row.selected.focused .palette-radio::before {
+  color: #ffffff;
+}
+
+/* Radio rows in Graphics settings page (renderMode / view3d) */
+.setting-row.selected .palette-radio::before {
+  content: '\e906'; /* kai-icon-radio-button-selected */
+  color: var(--color-focus, #0066cc);
+}
+.setting-row.selected.focused .palette-radio::before {
+  color: #ffffff;
+}
+
+/* "Random note color" action row at the top of the palette list. */
+.palette-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 1.6rem;
+  background: var(--color-gs00);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gs90);
+  min-height: 4.5rem;
+  box-sizing: border-box;
+}
+.palette-action.focused {
+  background: var(--color-focus, #0066cc);
+  color: #ffffff;
+}
+
+/* "Load more" row at the bottom of the palette list. */
+.palette-loadmore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 1.6rem;
+  background: var(--color-gs00);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gs90);
+  min-height: 4.5rem;
+  box-sizing: border-box;
+}
+.palette-loadmore.focused {
+  background: var(--color-focus, #0066cc);
+  color: #ffffff;
+}
+
+/* ── SoundFont rows (Settings → Synth → Load Soundfont) ─────────────── */
+
+/* Square CHECKBOX glyph — kai-icons font (NOT the circular radio set:
+   \e902 unchecked square, \e901 checked square with a tick). */
+.sf-check {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  margin-left: 1rem;
+  margin-right: 1.2rem;
+  font-family: 'kai-icons';
+  font-size: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  color: var(--color-gs70);
+}
+.sf-check::before {
+  content: '\e902'; /* kai-icon-checkbox-unchecked */
+  display: block;
+  width: 100%;
+}
+.sf-check.selected::before {
+  content: '\e901'; /* kai-icon-checkbox-checked */
+  color: var(--color-focus, #0066cc);
+}
+.sf-row.focused .sf-check.selected::before {
+  color: #ffffff;
+}
+
+/* Scan-page rows (subsettings): checkbox + name + partition/path meta. */
+.sf-row {
+  display: flex;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  font-size: 1.6rem;
+  color: var(--color-gs90);
+  box-sizing: border-box;
+  min-height: 4.5rem;
+}
+.sf-row.focused {
+  background: var(--color-focus, #0066cc);
+  color: #ffffff;
+}
+.sf-row-label {
+  flex: 1 1 auto;
+  margin: 0 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 1.6rem;
+}
+.sf-row-meta {
+  flex-shrink: 0;
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1.3rem;
+  color: var(--color-gs70);
+}
+
+/* Scan-page hint (scanning… / nothing found). */
+.sf-hint {
+  padding: 1.2rem 1.6rem;
+  font-size: 1.5rem;
+  color: var(--color-gs90);
+  white-space: pre-wrap;
+}
+
+.setting-row.sf-row .sf-check {
+  margin-left: 0.8rem;
+  margin-right: 1rem;
+}
+
+/* Loaded-SoundFont rows multi-line text wrapping & flex alignment */
+.setting-row.sf-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: auto;
+  min-height: 5rem;
+  line-height: 1.3;
+  padding: 0.8rem 1.2rem;
+  box-sizing: border-box;
+}
+.setting-row.sf-row .setting-row-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-right: 1rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+.setting-row.sf-row .setting-row-value {
+  flex-shrink: 0;
+  margin-left: auto;
+  font-weight: 500;
+  font-size: 1.4rem;
+  text-align: right;
+}
+
+/* Ensure dialog header is non-bold (regular weight) */
+.kai-dialog .kai-dialog-header,
+#sf-loading-header {
+  font-weight: normal !important;
+}
+
+/* ── Fullscreen Black Loading Screen (icons/init.png centered + bottom progress & log) ── */
+#app-boot-dialog.sf-loading-fullscreen,
+.sf-loading-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000000 url('icons/init_background.png') no-repeat center center / cover !important;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  opacity: 1;
+  transition: opacity 0.4s ease-out;
+}
+#app-boot-dialog.sf-loading-fullscreen.sf-loading-fade-out,
+.sf-loading-fullscreen.sf-loading-fade-out {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+#app-boot-dialog.sf-loading-fullscreen.hidden,
+.sf-loading-fullscreen.hidden {
+  display: none !important;
+}
+
+.sf-loading-container {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+}
+
+.sf-loading-center {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.sf-loading-init-icon {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.sf-loading-bottom {
+  flex: 0 0 auto;
+  width: 100%;
+  padding-bottom: 0.5rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.sf-loading-log {
+  font-size: 1.4rem;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+.sf-loading-log-detail {
+  font-size: 1.2rem;
+  color: #aaaaaa;
+  margin-bottom: 0.4rem;
+  text-align: center;
+  max-height: 3rem;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.sf-loading-bar-wrapper {
+  width: 100%;
+  background: #333333;
+  border-radius: 3px;
+  height: 6px;
+  overflow: hidden;
+  margin: 0.4rem 0;
+}
+
+.sf-loading-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: #0066cc;
+  transition: width 0.1s linear;
+}
+
+.sf-loading-percent-text {
+  text-align: center;
+  margin: 0.3rem 0 0 0;
+  font-size: 1.5rem;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+
+/* RTL fixes for setting row */
+html[dir="rtl"] .setting-row.has-sub {
+  padding-right: 1.6rem;
+  padding-left: 3.2rem;
+}
+html[dir="rtl"] .setting-row.has-sub::after {
+  right: auto;
+  left: 0.5rem;
+  transform: scaleX(-1);
+}
+
