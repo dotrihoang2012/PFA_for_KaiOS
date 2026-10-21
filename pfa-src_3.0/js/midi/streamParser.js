@@ -145,7 +145,7 @@ var StreamParser = (function () {
     return new Promise(function (resolve) {
       var settled = false;
       function doRes(v) { if (!settled) { settled = true; resolve(v); } }
-      var r = st.delete(path);
+      var r = st.delete(PfaPlatform.normalizeStoragePath(path, st));
       var t = setTimeout(function () { doRes(false); }, 8000);
       r.onsuccess = function () { clearTimeout(t); doRes(true); };
       r.onerror = function () { clearTimeout(t); doRes(false); };
@@ -155,7 +155,7 @@ var StreamParser = (function () {
     return new Promise(function (resolve) {
       var settled = false;
       function doRes(v) { if (!settled) { settled = true; resolve(v); } }
-      var r = st.get(path);
+      var r = st.get(PfaPlatform.normalizeStoragePath(path, st));
       var t = setTimeout(function () { doRes(null); }, 8000);
       r.onsuccess = function () { clearTimeout(t); doRes(r.result || null); };
       r.onerror = function () { clearTimeout(t); doRes(null); };
@@ -177,21 +177,25 @@ var StreamParser = (function () {
   function cleanTmpDir(st, dir, token) {
     return new Promise(function (resolve) {
       var settled = false;
-      function done() { if (!settled) { settled = true; resolve(); } }
+      var req = null;
+      function done() {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        try { if (req && req.cancel) req.cancel(); } catch (e) {}
+        resolve();
+      }
       var timer = setTimeout(done, 3000); // enumerate hang → skip cleanup
-      var request = st.enumerate(dir);
-      request.onsuccess = function () {
-        var file = request.result;
-        if (!file) { clearTimeout(timer); done(); return; } // null = enumeration done
-        var name = file.name || '';
-        var base = name.split('/').pop() || '';
-        // Only stale bins (from an earlier/crashed session) are removed. A bin
-        // carrying THIS conversion's token is live — never touch it, even while
-        // another conversion is scraping the same dir.
-        if (endsWith(base, '.bin') && base.indexOf(token) === -1) dsDelete(st, name);
-        request.continue();
-      };
-      request.onerror = function () { clearTimeout(timer); done(); };
+      try {
+        req = PfaPlatform.enumerate(st, dir, function (file) {
+          var name = PfaPlatform.normalizeStoragePath(file.name, st);
+          var base = name.split('/').pop() || '';
+          // Only stale bins (from an earlier/crashed session) are removed. A bin
+          // carrying THIS conversion's token is live — never touch it, even while
+          // another conversion is scraping the same dir.
+          if (endsWith(base, '.bin') && base.indexOf(token) === -1) dsDelete(st, name);
+        }, done);
+      } catch (e) { done(); }
     });
   }
   function endsWith(s, suffix) {
@@ -208,13 +212,15 @@ var StreamParser = (function () {
         // the plain 'sdcard' volume so the pipeline never deadlocks.
         var settled = false;
         function done(v) { if (!settled) { settled = true; resolve(v); } }
-        var timer = setTimeout(function () {
-          done({ st: navigator.getDeviceStorage('sdcard'), free: -1 });
-        }, 4000);
-        if (typeof StorageSel === 'undefined' || !StorageSel.detect) { clearTimeout(timer); done({ st: navigator.getDeviceStorage('sdcard'), free: -1 }); return; }
+        function fallback() {
+          var st = PfaPlatform.getDeviceStorage('sdcard');
+          return st ? { st: st, free: -1 } : null;
+        }
+        var timer = setTimeout(function () { done(fallback()); }, 4000);
+        if (typeof StorageSel === 'undefined' || !StorageSel.detect) { clearTimeout(timer); done(fallback()); return; }
         StorageSel.detect(function (infos) {
           clearTimeout(timer);
-          if (!infos.length) { done({ st: navigator.getDeviceStorage('sdcard'), free: -1 }); return; }
+          if (!infos.length) { done(fallback()); return; }
           // Use the single volume StorageSel chose (removable SD if mounted,
           // else internal). If that one is known full — or its free space
           // can't be read — switch to the volume with the most readable free

@@ -40,7 +40,9 @@ var NoteWriter = (function () {
     function real() {
       if (typeof StorageSel === 'undefined' || !StorageSel.detect) {
         // Fallback: whatever getDeviceStorage returns.
-        var fallback = { st: navigator.getDeviceStorage('sdcard'), name: 'sdcard', free: -1, path: null, kind: 'unknown' };
+        var st = PfaPlatform.getDeviceStorage('sdcard');
+        if (!st) { onDone(null); return; }
+        var fallback = { st: st, name: 'sdcard', free: -1, path: null, kind: 'unknown' };
         onDone(fallback);
         return;
       }
@@ -183,7 +185,7 @@ var NoteWriter = (function () {
           console.log('[NoteWriter] ' + msg + ' — deleting partial ' + path);
           try { if (typeof Written !== 'undefined' && Written.forget) Written.forget(path); } catch (e) {}
           var dr;
-          try { dr = st.delete(path); } catch (e) { if (opts.onCancel) opts.onCancel(msg); return; }
+          try { dr = st.delete(PfaPlatform.normalizeStoragePath(path, st)); } catch (e) { if (opts.onCancel) opts.onCancel(msg); return; }
           var dt = setTimeout(function () { if (opts.onCancel) opts.onCancel(msg); }, 8000);
           dr.onsuccess = function () { clearTimeout(dt); if (opts.onCancel) opts.onCancel(msg); };
           dr.onerror = function () { clearTimeout(dt); if (opts.onCancel) opts.onCancel(msg); };

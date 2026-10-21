@@ -36,12 +36,32 @@
     dispatchAction(k === 42 || k === '*' || k === 'Star' ? 'trailDown' : 'trailUp');
   }
 
+  function _physicalVolumeDir(key, ev) {
+    var name = ev && ev.key;
+    if (key === Constants.KEY.VOLUME_UP ||
+        key === Constants.KEY.VOLUME_UP_LEGACY ||
+        key === 'VolumeUp' || key === 'AudioVolumeUp' ||
+        name === 'VolumeUp' || name === 'AudioVolumeUp') return +1;
+    if (key === Constants.KEY.VOLUME_DOWN ||
+        key === Constants.KEY.VOLUME_DOWN_LEGACY ||
+        key === 'VolumeDown' || key === 'AudioVolumeDown' ||
+        name === 'VolumeDown' || name === 'AudioVolumeDown') return -1;
+    return 0;
+  }
+
   function onKeyDown(e) {
     // Bootstrap AudioContext on first interaction
     try { if (typeof _engine === 'function') _engine().ensure(); else Synth.ensure(); } catch (ign) {}
 
     var key = e.keyCode || e.key;
     if (key === undefined || key === null || key === '') return;
+    var vdir = _physicalVolumeDir(key, e);
+    if (vdir) {
+      e.preventDefault();
+      try { console.log('[Volume] physical key', e.keyCode, e.key, 'dir=' + vdir); } catch (ign) {}
+      adjustVolume(vdir);
+      return;
+    }
 
     var st = Store.getState();
     var menuOpen = st.menu && st.menu.open;
@@ -252,27 +272,12 @@ if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
     // Sits ABOVE gameplay so user can navigate settings while a MIDI
     // is loaded. handleKey returns true when it consumed the key.
     if (typeof Settings !== 'undefined' && Settings.isOpen && Settings.isOpen()) {
-      // KaiOS hardware VOLUME ROCKER stays LIVE inside System settings.
-      // The rocker is keyCode 175 (VolumeUp) / 174 (VolumeDown) with e.key
-      // 'VolumeUp'/'VolumeDown' — NOT ArrowUp/Down (38/40), which Settings
-      // uses to navigate its list. Swallowing the rocker here would leave
-      // ONLY the OSD showing with no actual step (exactly the bug: "it just
-      // brings up the volume display, but doesn't raise/lower the volume").
-      // Bypass the guard and let adjustVolume() step the OS media volume
-      // (requestUp/Down slides the OSD AND changes the level).
-      if (key === 'VolumeUp' || key === Constants.KEY.VOLUME_UP ||
-          key === 'VolumeDown' || key === Constants.KEY.VOLUME_DOWN) {
-        e.preventDefault();
-        adjustVolume(key === 'VolumeUp' || key === Constants.KEY.VOLUME_UP ? +1 : -1);
-        return;
-      }
-      // Many KaiOS handsets do NOT have a separate hardware volume rocker
-      // (keyCode 175/174) — only a D-pad. On those devices the bypass branch
-      // above never runs. Desired behavior: only once the user actually
-      // PRESSES (Enter/OK) the "Volume" row — i.e. showOSDVolume() has run —
-      // do we enter "volume-adjust mode" (_volumeAdjustActive = true); only
-      // then do Up/Down adjust the volume. Just having FOCUS on that row
-      // (without pressing Enter) still moves focus like any other row.
+      // Many KaiOS handsets do NOT have a separate hardware volume rocker —
+      // only a D-pad. Only once the user actually PRESSES (Enter/OK) the
+      // "Volume" row — i.e. showOSDVolume() has run — do we enter
+      // "volume-adjust mode" (_volumeAdjustActive = true); only then do
+      // Up/Down adjust the volume. Just having FOCUS on that row (without
+      // pressing Enter) still moves focus like any other row.
       if (_volumeAdjustActive) {
         if (key === 'ArrowUp' || key === Constants.KEY.ARROW_UP ||
             key === 'ArrowDown' || key === Constants.KEY.ARROW_DOWN) {
@@ -793,36 +798,33 @@ if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
       // the "PFA is running" notification suppressed while the picker is up
       // (our blur/visibilitychange handlers check window._pickerOpen).
       window._pickerOpen = true;
-      var act = new MozActivity({ name: 'pick' });
-      act.onsuccess = function (res) {
+      PfaPlatform.pickFile().then(function (res) {
         window._pickerOpen = false;
         // Restore fullscreen chrome state
         updateChromeAfterPicker();
-        var blob = null;
-        if (res.target && res.target.result) {
-          blob = res.target.result.blob || res.target.result;
-        } else if (res.result && res.result.blob) {
-          blob = res.result.blob;
-        } else if (res.blob) {
-          blob = res.blob;
-        } else if (res instanceof Blob) {
-          blob = res;
-        }
+        var blob = PfaPlatform.resultBlob(res);
         if (blob) {
+          var picked = PfaPlatform.resultName(res) || blob.name || 'picked.mid';
+          picked = String(picked).split('/').pop();
           window._midiBlob = blob; // expose for native audio — disk reference, no RAM copy
-          window._midiName = blob.name || 'picked.mid';
-          handlePickedBlob(blob, blob.name || 'picked.mid');
+          window._midiName = picked;
+          handlePickedBlob(blob, picked);
         }
-      };
-      act.onerror = function () {
+      }, function (e) {
         window._pickerOpen = false;
         updateChromeAfterPicker();
-        console.log('[Ctrl] MozActivity pick cancelled');
-      };
+        if (PfaPlatform.isActivityCancel(e)) {
+          console.log('[Ctrl] pick cancelled');
+          return;
+        }
+        console.error('[Ctrl] pick failed:', e);
+        if (typeof showToast === 'function') showToast(L10n.t('toast_no_picker', 'File picker not available'));
+      });
     } catch (e) {
       window._pickerOpen = false;
       updateChromeAfterPicker();
-      console.error('[Ctrl] MozActivity error:', e);
+      console.error('[Ctrl] pick error:', e);
+      if (typeof showToast === 'function') showToast(L10n.t('toast_no_picker', 'File picker not available'));
     }
   }
 
@@ -1729,36 +1731,55 @@ if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
     }, 3000);
   }
 
-  function kaiOSVolumeManager() {
-    return (typeof navigator !== 'undefined' && navigator.volumeManager) || null;
-  }
-
   /**
-   * Step the OS media volume up or down via KaiOS navigator.volumeManager.
-   * Mirrors the Audio Visualizer reference implementation, which fires
-   * requestUp/requestDown on Arrow Up/Down and the user sees the OS
-   * OSD slide.
+   * Step the OS media volume up or down through the platform volume manager.
+   * If that service is unavailable (for example a PWA without the volume
+   * permission), fall back to the app-level master gain instead of failing.
    *
    * @param dir  +1 to step up, -1 to step down
    */
+  var _appVolume = null;
+
+  function _getAppVolume() {
+    if (_appVolume === null) {
+      var v = 1.0;
+      try {
+        if (typeof Synth !== 'undefined' && Synth.getVolume) v = Synth.getVolume();
+        else if (typeof Soundbank !== 'undefined' && Soundbank.getVolume) v = Soundbank.getVolume();
+      } catch (e) {}
+      v = Number(v);
+      _appVolume = isFinite(v) ? Math.max(0, Math.min(1, v)) : 1.0;
+    }
+    return _appVolume;
+  }
+
+  function _setAppVolume(v) {
+    v = Number(v);
+    if (!isFinite(v)) v = 1.0;
+    _appVolume = Math.max(0, Math.min(1, v));
+    try { if (typeof Synth !== 'undefined' && Synth.setVolume) Synth.setVolume(_appVolume); } catch (e) {}
+    try { if (typeof Soundbank !== 'undefined' && Soundbank.setVolume) Soundbank.setVolume(_appVolume); } catch (e) {}
+    try { if (typeof window.pfaSetMediaVolume === 'function') window.pfaSetMediaVolume(_appVolume); } catch (e) {}
+  }
+
+  function _fallbackVolume(dir) {
+    if (dir > 0 || dir < 0) _setAppVolume(_getAppVolume() + (dir > 0 ? 0.1 : -0.1));
+    showInfoOsd('Media ' + Math.round(_getAppVolume() * 100) + '%', 1500);
+  }
+
   function adjustVolume(dir) {
-    var vm = kaiOSVolumeManager();
-    if (!vm) {
-      // Fallback: show toast so the user knows nothing happened
-      showToast('Volume: KaiOS API unavailable');
+    if (typeof PfaPlatform === 'undefined' || !PfaPlatform.requestVolume) {
+      _fallbackVolume(dir);
       return;
     }
-    if (dir > 0) {
-      try { vm.requestUp(); } catch (e) { showToast('Vol up failed'); return; }
-    } else if (dir < 0) {
-      try { vm.requestDown(); } catch (e) { showToast('Vol down failed'); return; }
-    } else {
-      try { vm.requestShow(); } catch (e) {}
-      return;
-    }
-    // OS handles the OSD slide. We deliberately do NOT touch sk-center so
-    // the softkey row stays as "SELECT" / "Back" while user adjusts volume
-    // from inside the Options menu.
+    PfaPlatform.requestVolume(dir, function (err) {
+      if (!err) {
+        try { console.log('[Volume] platform step ok', dir); } catch (e) {}
+        return;
+      }
+      try { console.warn('[Volume] platform request failed, using app gain', err); } catch (e) {}
+      _fallbackVolume(dir);
+    });
   }
 
   // ── OS volume OSD (picked from Options menu) ──
@@ -1773,14 +1794,12 @@ if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
     var settingsOpen = !!(typeof Settings !== 'undefined' &&
                           Settings.isOpen && Settings.isOpen());
     if (!settingsOpen) closeMenuOverlay();
-    var vm = kaiOSVolumeManager();
-    if (!vm) {
-      showToast('Volume: KaiOS API unavailable');
-      return;
-    }
-    try { vm.requestShow(); } catch (e) {
-      showToast('Volume show failed');
-      return;
+    if (typeof PfaPlatform === 'undefined' || !PfaPlatform.requestVolume) {
+      _fallbackVolume(0);
+    } else {
+      PfaPlatform.requestVolume(0, function (err) {
+        if (err) _fallbackVolume(0);
+      });
     }
     // The user just ACTIVELY pressed the "Volume" row → turn on
     // volume-adjust mode so Up/Down (D-pad) adjusts the volume instead of

@@ -62,15 +62,17 @@
     'ArrowUp': 'volumeUp', 'ArrowDown': 'volumeDown',
     'EndCall': 'quitApp', 'Backspace': 'back', 'Back': 'back',
 
-    // KaiOS physical volume rocker — hardware side buttons. KaiOS sends
-    // keyCode 175 (VolumeUp) / 174 (VolumeDown) with e.key 'VolumeUp' /
-    // 'VolumeDown' on the ROCker — NOT ArrowUp/Down (38/40). Map BOTH
-    // the keyCode and the e.key string so adjustVolume(±1) fires and the
-    // user sees the OSD STEP, not just the static slide.
-    'VolumeUp':   'volumeUp',
-    'VolumeDown': 'volumeDown',
-    [K.VOLUME_UP]:   'volumeUp',
-    [K.VOLUME_DOWN]: 'volumeDown',
+    // KaiOS physical volume rocker — hardware side buttons, NOT ArrowUp/Down.
+    // Standard keyCodes are 182/183; some builds use legacy 175/174, and
+    // e.key may be 'VolumeUp'/'VolumeDown' or 'AudioVolumeUp'/'AudioVolumeDown'.
+    'VolumeUp':        'volumeUp',
+    'VolumeDown':      'volumeDown',
+    'AudioVolumeUp':   'volumeUp',
+    'AudioVolumeDown': 'volumeDown',
+    [K.VOLUME_UP]:           'volumeUp',
+    [K.VOLUME_DOWN]:         'volumeDown',
+    [K.VOLUME_UP_LEGACY]:    'volumeUp',
+    [K.VOLUME_DOWN_LEGACY]:  'volumeDown',
 
     // Trail — * slower, # longer (note trail length ±0.1)
     [K.STAR]: 'trailDown',

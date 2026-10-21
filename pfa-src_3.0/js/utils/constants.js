@@ -45,11 +45,14 @@ var Constants = {
     END_CALL:   'EndCall',
     BACK:       'Back',
 
-    // KaiOS physical volume rocker — keyCode 175 (VolumeUp) / 174
-    // (VolumeDown). NOT the same as ArrowUp/Down (38/40): KaiOS sends
-    // these on the hardware rocker with e.key 'VolumeUp'/'VolumeDown'.
-    VOLUME_UP:   175,
-    VOLUME_DOWN: 174,
+    // KaiOS physical volume rocker — standard keyCode 182 (VolumeUp) /
+    // 183 (VolumeDown); some builds use the legacy 175 / 174. NOT the
+    // same as ArrowUp/Down (38/40): the rocker emits 'VolumeUp' /
+    // 'VolumeDown' (or 'AudioVolumeUp' / 'AudioVolumeDown') in e.key.
+    VOLUME_UP:          182,
+    VOLUME_DOWN:        183,
+    VOLUME_UP_LEGACY:   175,
+    VOLUME_DOWN_LEGACY: 174,
 
     NUMBER_0: 48,
     NUMBER_1: 49,
@@ -65,13 +68,6 @@ var Constants = {
     STAR: 42,
     HASH: 35,
 
-    // KaiOS volume rocker — HARDWARE side buttons, NOT the D-pad. KaiOS
-    // reports keyCode 175 (VolumeUp) / 174 (VolumeDown) with e.key
-    // 'VolumeUp' / 'VolumeDown' on the physical rocker. Distinct from
-    // ArrowUp/Down (38/40), so they can be mapped independently even
-    // while ArrowUp/Down drive pivot-navigation in Settings.
-    VOLUME_UP:   175,
-    VOLUME_DOWN: 174,
   },
 
   /** Mutable key→action mapping (filled by bindings.js) */

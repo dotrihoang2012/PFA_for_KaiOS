@@ -42,11 +42,8 @@ var SfScan = (function () {
                     'others/pfa_config', 'others/pfa_tmp'];
 
   function storageList() {
-    try {
-      if (navigator.getDeviceStorages) return navigator.getDeviceStorages('sdcard') || [];
-      if (navigator.getDeviceStorage) return [navigator.getDeviceStorage('sdcard')];
-    } catch (e) {}
-    return [];
+    try { return PfaPlatform.getDeviceStorages('sdcard') || []; }
+    catch (e) { return []; }
   }
 
   function endsWith(s, suffix) {
@@ -81,21 +78,23 @@ var SfScan = (function () {
       var out = [];
       var settled = false;
       var req;
+      function finish() {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        resolve(out);
+      }
       var timer = setTimeout(function () {
         if (settled) return;
         settled = true;
         try { if (req && req.cancel) req.cancel(); } catch (e) {}
         resolve(out);
       }, PROBE_TIMEOUT);
-      try { req = st.enumerate(dir); }
-      catch (e) { clearTimeout(timer); resolve(out); return; }
-      req.onsuccess = function () {
-        var file = req.result;
-        if (!file) { clearTimeout(timer); settled = true; resolve(out); return; }
-        out.push({ name: file.name || '', size: file.size || 0 });
-        try { req.continue(); } catch (e) { clearTimeout(timer); settled = true; resolve(out); }
-      };
-      req.onerror = function () { clearTimeout(timer); settled = true; resolve(out); };
+      try {
+        req = PfaPlatform.enumerate(st, dir, function (file) {
+          out.push({ name: PfaPlatform.normalizeStoragePath(file.name, st), size: file.size || 0 });
+        }, finish);
+      } catch (e) { finish(); }
     });
   }
 
@@ -224,9 +223,7 @@ var SfScan = (function () {
       var settled = false;
       var req;
       var timer = setTimeout(function () { if (!settled) { settled = true; resolve(null); } }, READ_TIMEOUT);
-      var safePath = stripSlash(path);
-      // DeviceStorage.get expects a path relative to the mount point.
-      safePath = safePath.replace(/^(sdcard|sdcard1|internal|internal\/storage|volume)\//, '');
+      var safePath = PfaPlatform.normalizeStoragePath(path, st);
       try { req = st.get(safePath); }
       catch (e) { clearTimeout(timer); settled = true; resolve(null); return; }
       req.onsuccess = function () {

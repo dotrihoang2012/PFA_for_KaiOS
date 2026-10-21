@@ -28,9 +28,8 @@ var Synth = (function () {
   var _audible = false;
   var LIMIT = 16;
   var waveform = 'square';
-  // OS media volume (KaiOS navigator.volumeManager) is the
-  // single source of truth for loudness. We keep masterGain at 1.0 so
-  // the user hears exactly what the OS slider shows, with no double dip.
+  // OS media volume is the primary control. masterGain is the in-app
+  // fallback for builds where the volume permission/service is unavailable.
   var volume = 1.0;
   // Voices die on their SCHEDULED envelope end (+margin), not a flat 600ms
   // timeout — the flat cut truncates long notes mid-sustain into a "pop".
@@ -74,7 +73,7 @@ var Synth = (function () {
   function boot() {
     if (ctx) return;
     try {
-      var AC = window.AudioContext || window.webkitAudioContext;
+      var AC = PfaPlatform.getAudioContextCtor();
       console.log('[Synth] AudioContext impl:', AC ? AC.name || typeof AC : 'NONE');
       // KaiOS 2.5: must pass 'content' RIGHT IN the constructor (positional
       // string arg). `new AC()` then setting `mozAudioChannelType='content'`
@@ -82,7 +81,7 @@ var Synth = (function () {
       // routed through the wrong channel → "background hum + pop" noise.
       // Passing it in the constructor routes on the correct content channel →
       // no more pop. (Verified CLEAN in testing.)
-      ctx = new AC('content');
+      ctx = PfaPlatform.createAudioContext();
       console.log('[Synth] ctx.state=' + ctx.state + ' sampleRate=' + ctx.sampleRate + ' ch=' + (ctx.mozAudioChannelType || (ctx.destination && ctx.destination.mozAudioChannelType)));
 
       // KaiOS volume rocker + HUD must step the MEDIA ('content') volume —
@@ -91,20 +90,7 @@ var Synth = (function () {
       // slides but the content-channel gain heard by the user never changes
       // = the exact "OSD shows but volume doesn't move" bug. Bind the rocker
       // to 'content' so requestUp()/requestDown() hit what we actually hear.
-      try {
-        var acm = navigator.mozAudioChannelManager || navigator.audioChannelManager;
-        if (acm && typeof acm.volumeControlChannel === 'string') {
-          acm.volumeControlChannel = 'content';
-          console.log('[Synth] volumeControlChannel=' + acm.volumeControlChannel +
-            ' → rocker now steps the MEDIA (content) channel');
-        } else if (acm) {
-          console.warn('[Synth] volumeControlChannel is not writable on this build');
-        } else {
-          console.warn('[Synth] no AudioChannelManager — rocker may step the wrong channel');
-        }
-      } catch (e) {
-        console.warn('[Synth] volumeControlChannel set fail: ' + e);
-      }
+      PfaPlatform.setVolumeChannel();
 
       masterGain = ctx.createGain();
       masterGain.gain.value = volume;
@@ -272,7 +258,7 @@ var Synth = (function () {
 
     var now = ctx.currentTime;
     var f = 440 * Math.pow(2, (note - 69) / 12);
-    var g = (vel / 127) * volume;
+    var g = (vel / 127);
     // Loudness compensation: tiny speaker can't reproduce low sines, and a
     // pure sine has only the fundamental — so bass gets +gain relative to
     // pitch, or it disappears under higher notes. ~0.35 → ~+4dB per octave
@@ -418,7 +404,7 @@ var Synth = (function () {
       _suspend();
       console.log('[Synth] audio OFF');
     } else {
-      if (masterGain) masterGain.gain.value = 1.0;
+      if (masterGain) masterGain.gain.value = volume;
       // Only resume when we actually want audible output — toggling
       // audio ON while idle must not re-show the status-bar play icon.
       if (_audible) ensure();
@@ -453,14 +439,14 @@ var Synth = (function () {
   }
 
   function setVolume(v) {
-    // No-op: OS media volume (navigator.volumeManager) is now authoritative.
-    // Master gain is pinned at 1.0; legacy callers from earlier code still
-    // resolve but no longer influence loudness.
-    volume = 1.0;
+    v = Number(v);
+    if (!isFinite(v)) v = 1.0;
+    volume = Math.max(0, Math.min(1, v));
+    if (masterGain && !_muted) masterGain.gain.value = volume;
   }
 
   function getVolume() {
-    return 1.0;
+    return volume;
   }
 
 	  function getVoiceCount() {

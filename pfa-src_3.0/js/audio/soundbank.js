@@ -36,19 +36,18 @@ var Soundbank = (function () {
   var ctx = null;          // AudioContext shared with Synth
   var masterGain = null;   // master output bus — lets Audio On/Off mute every bank
   var muted = false;       // current mute state (masterGain pin)
+  var volume = 1.0;        // app-level volume fallback when OS volume is unavailable
   var banks = [];          // [{id, name, path, volName, selected, presetCount, noteMap}]
 
   /** Initialise AudioContext (or reuse existing one from Synth) */
   function ensureContext() {
     if (ctx) return ctx;
-    if (window.AudioContext) ctx = new AudioContext('content');
-    else if (window.webkitAudioContext) ctx = new webkitAudioContext('content');
-    else throw new Error('Web Audio API not available');
+    ctx = PfaPlatform.createAudioContext();
     // Master output bus (Audio On/Off). All bank voices route through it so a
     // single gain write mutes/unmutes the whole engine instantly.
     if (!masterGain) {
       masterGain = ctx.createGain();
-      masterGain.gain.value = muted ? 0 : 1.0;
+      masterGain.gain.value = muted ? 0 : volume;
       masterGain.connect(ctx.destination);
     }
     return ctx;
@@ -434,7 +433,18 @@ var Soundbank = (function () {
   /** Mute / unmute the whole soundbank engine (Audio On/Off toggle). */
   function mute(on) {
     muted = !!on;
-    if (masterGain) masterGain.gain.value = muted ? 0 : 1.0;
+    if (masterGain) masterGain.gain.value = muted ? 0 : volume;
+  }
+
+  function setVolume(v) {
+    v = Number(v);
+    if (!isFinite(v)) v = 1.0;
+    volume = Math.max(0, Math.min(1, v));
+    if (masterGain && !muted) masterGain.gain.value = volume;
+  }
+
+  function getVolume() {
+    return volume;
   }
 
   /**
@@ -515,6 +525,8 @@ var Soundbank = (function () {
     readRegistry: readRegistry,
     setVoices: setVoices,
     mute: mute,
+    setVolume: setVolume,
+    getVolume: getVolume,
     isReady: isReady
   };
 })();

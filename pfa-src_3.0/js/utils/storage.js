@@ -207,7 +207,7 @@ var StorageSel = (function () {
     // install asks twice" bug) — writes are allowed here ONLY after grant.
     if (!readOnly && _perm !== 'granted') readOnly = true;
     var all;
-    try { all = (navigator.getDeviceStorages && navigator.getDeviceStorages('sdcard')) || []; }
+    try { all = PfaPlatform.getDeviceStorages('sdcard') || []; }
     catch (e) { all = []; }
     var infos = [];
     var idx = 0;
@@ -250,7 +250,7 @@ var StorageSel = (function () {
   }
 
   function _storageList() {
-    try { return (navigator.getDeviceStorages && navigator.getDeviceStorages('sdcard')) || []; }
+    try { return PfaPlatform.getDeviceStorages('sdcard') || []; }
     catch (e) { return []; }
   }
 

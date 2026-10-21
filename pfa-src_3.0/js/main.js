@@ -162,8 +162,7 @@
   //   - filepaths-only route:     activity.source.data.filepaths[0] (must fetch)
   //   - some File Manager:        activity.source.data.filename only (path given)
   // We probe all four. If we get only a path, fetch it via XHR → arraybuffer.
-  if (typeof navigator !== 'undefined' && typeof navigator.mozSetMessageHandler === 'function') {
-    navigator.mozSetMessageHandler('activity', function (activity) {
+  function handleActivity(activity) {
       try {
         console.log('[Activity] HANDLER FIRED');
         var src = activity && activity.source;
@@ -194,7 +193,7 @@
           console.log('[Activity] got data.target.result blob');
         }
 
-        if (blob && blob.name) name = blob.name;
+        if (blob && blob.name) name = String(blob.name).split('/').pop();
         if (data.filename)  { name = data.filename; console.log('[Activity] name from data.filename:', name); }
         if (data.filenames && data.filenames.length) name = data.filenames[0];
         if (data.url)       name = data.url.split('/').pop();
@@ -204,6 +203,7 @@
           filepath = data.filename;
           console.log('[Activity] filepath from filename:', filepath);
         }
+        if (name) name = String(name).split('/').pop();
 
         console.log('[Activity] resolved: blob?', !!blob, 'filepath?', !!filepath, 'name=', name);
 
@@ -244,33 +244,7 @@
         }
 
         if (filepath) {
-          // Filepath-only route: fetch as Blob (stream from disk, no OOM for large files)
-          var fname = name || filepath.split('/').pop() || 'picked.mid';
-          showParsing(_parsingLabel(fname));
-          Store.setState({ fileName: fname });
-          var url = filepath;
-          if (filepath[0] === '/') url = 'file://' + filepath;
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', url, true);
-          xhr.responseType = 'blob';  // Blob = disk reference, not RAM copy
-          xhr.onload = function () {
-            if (xhr.status >= 200 && xhr.status < 300 && xhr.response) {
-              var fileBlob = xhr.response;
-              _routeHotBlob(fileBlob, fname);
-              return;
-            } else {
-              console.error('[Main] XHR fetch failed', xhr.status);
-              hideParsing();
-            }
-          };
-          xhr.onerror = function () {
-            console.error('[Main] XHR fetch error');
-            hideParsing();
-          };
-          try { xhr.send(); } catch (e) {
-            console.error('[Main] XHR send failed', e);
-            hideParsing();
-          }
+          fetchAndLoad(filepath, name || filepath.split('/').pop() || 'picked.mid');
           return;
         }
 
@@ -281,7 +255,13 @@
         console.error('[Main] activity handler error:', e);
         try { activity.postError(e.message); } catch (e2) {}
       }
-    });
+  }
+
+  if (typeof navigator !== 'undefined' && typeof navigator.mozSetMessageHandler === 'function') {
+    navigator.mozSetMessageHandler('activity', handleActivity);
+  }
+  if (typeof PfaPlatform !== 'undefined' && PfaPlatform.onActivity) {
+    PfaPlatform.onActivity(function (src) { handleActivity({ source: src }); });
   }
 
   // ── BOOT ──
@@ -744,36 +724,81 @@
     });
   }
 
+  function readFilepathBlob(filepath, onBlob, onFail) {
+    var storages = [];
+    try { storages = PfaPlatform.getDeviceStorages('sdcard') || []; }
+    catch (e) { storages = []; }
+    var i = 0;
+
+    function fail(err) {
+      if (typeof onFail === 'function') { try { onFail(err); } catch (e) {} }
+    }
+
+    function fetchUrl() {
+      var raw = String(filepath || '');
+      if (!raw) { fail(new Error('Empty filepath')); return; }
+      var url = raw;
+      if (url.charAt(0) === '/') url = 'file://' + url;
+      var xhr;
+      try { xhr = new XMLHttpRequest({ mozSystem: true }); }
+      catch (e) { try { xhr = new XMLHttpRequest(); } catch (e2) { fail(e2); return; } }
+      try {
+        xhr.open('GET', url, true);
+        xhr.responseType = 'blob';
+      } catch (e) { fail(e); return; }
+      xhr.onload = function () {
+        var ok = (xhr.status >= 200 && xhr.status < 300) || xhr.status === 0;
+        if (ok && xhr.response) {
+          try { onBlob(xhr.response); } catch (e) { fail(e); }
+          return;
+        }
+        fail(new Error('HTTP ' + xhr.status));
+      };
+      xhr.onerror = function () { fail(new Error('XHR error')); };
+      try { xhr.send(); } catch (e) { fail(e); }
+    }
+
+    function nextStorage() {
+      if (i >= storages.length) { fetchUrl(); return; }
+      var st = storages[i++];
+      var req;
+      try { req = st.get(PfaPlatform.normalizeStoragePath(filepath, st)); }
+      catch (e) { nextStorage(); return; }
+      if (!req) { nextStorage(); return; }
+      var done = false;
+      var timer = setTimeout(function () {
+        if (done) return;
+        done = true;
+        nextStorage();
+      }, 8000);
+      req.onsuccess = function () {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        if (!req.result) { nextStorage(); return; }
+        try { onBlob(req.result); } catch (e) { fail(e); }
+      };
+      req.onerror = function () {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        nextStorage();
+      };
+    }
+
+    nextStorage();
+  }
+
   function fetchAndLoad(filepath, name) {
-    var url = filepath;
     window._midiFilePath = filepath; // expose for native audio test
     window._midiName = name;
-    if (filepath[0] === '/') url = 'file://' + filepath;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.responseType = 'blob';
-    xhr.onload = function () {
-      if (xhr.status >= 200 && xhr.status < 300 && xhr.response) {
-        try {
-          var fb = xhr.response;
-          if (_isJsonName(name)) { _openNoteFile(fb, name); return; }
-          var fln = String(name).toLowerCase();
-          if (fln.endsWith('.mid') || fln.endsWith('.midi')) { _routeMidiBlob(fb, name); return; }
-          _sniffBlobKind(fb).then(function (kind) {
-            if (kind === 'note' || kind === 'json') _openNoteFile(fb, name);
-            else _routeMidiBlob(fb, name);
-          });
-        } catch (e) {
-          console.error('[Main] XHR MIDI parse error', e);
-          hideParsing();
-        }
-      } else {
-        console.error('[Main] XHR fetch failed', xhr.status);
-        hideParsing();
-      }
-    };
-    xhr.onerror = function () { console.error('[Main] XHR fetch error'); hideParsing(); };
-    try { xhr.send(); } catch (e) { console.error('[Main] XHR send failed', e); hideParsing(); }
+    showParsing(_parsingLabel(name || 'picked.mid'));
+    readFilepathBlob(filepath, function (blob) {
+      handlePickedBlob(blob, name);
+    }, function (e) {
+      console.error('[Main] filepath fetch failed', e);
+      hideParsing();
+    });
   }
 
   // MIDI files below this size are parsed + loaded directly (no disk write).
@@ -1240,6 +1265,19 @@
   var _mediaUrl = null;
   var _mediaErrShown = false;
   var _mediaStopped = true; // true = next play restarts at 0 (fresh start)
+  var _appMediaVolume = 1.0;
+
+  function _applyMediaVolume() {
+    if (_mediaEl) { try { _mediaEl.volume = _appMediaVolume; } catch (e) {} }
+    if (_integEl) { try { _integEl.volume = _appMediaVolume; } catch (e) {} }
+  }
+
+  window.pfaSetMediaVolume = function (v) {
+    v = Number(v);
+    if (!isFinite(v)) v = 1.0;
+    _appMediaVolume = Math.max(0, Math.min(1, v));
+    _applyMediaVolume();
+  };
 
   function _ensureMediaEl() {
     if (_mediaEl) return _mediaEl;
@@ -1272,18 +1310,14 @@
       // onStoreChange may have run before this element existed (boot order),
       // leaving the fresh element permanently audible until a manual toggle.
       _mediaApplyMute();
+      _applyMediaVolume();
     } catch (e) {}
     return _mediaEl;
   }
 
   /** Point the OS volume rocker / OSD at the media ('content') channel. */
   function _assertMediaChannel() {
-    try {
-      var acm = navigator.mozAudioChannelManager || navigator.audioChannelManager;
-      if (acm && typeof acm.volumeControlChannel === 'string') {
-        acm.volumeControlChannel = 'content';
-      }
-    } catch (e) {}
+    try { PfaPlatform.setVolumeChannel(); } catch (e) {}
   }
 
   function _mediaActive() {
@@ -1426,6 +1460,7 @@
       document.body.appendChild(_integEl);
       _assertMediaChannel();
       _integApplyMute();
+      _applyMediaVolume();
     } catch (e) {}
     return _integEl;
   }
@@ -1583,16 +1618,11 @@
     } catch (e) {}
     try {
       window._pickerOpen = true;
-      var act = new MozActivity({ name: 'pick' });
-      act.onsuccess = function (res) {
+      PfaPlatform.pickFile().then(function (res) {
         window._pickerOpen = false;
-        var blob = null;
-        if (res.target && res.target.result) blob = res.target.result.blob || res.target.result;
-        else if (res.result && res.result.blob) blob = res.result.blob;
-        else if (res.blob) blob = res.blob;
-        else if (res instanceof Blob) blob = res;
+        var blob = PfaPlatform.resultBlob(res);
         if (!blob) return;
-        var name = String(blob.name || 'media').split('/').pop();
+        var name = String(blob.name || PfaPlatform.resultName(res) || 'media').split('/').pop();
         if (_isMediaFile(blob, name)) {
           var url = URL.createObjectURL(blob);
           try { if (_mediaUrl) URL.revokeObjectURL(_mediaUrl); } catch (e) {}
@@ -1610,9 +1640,14 @@
             try { window.showErrorDialog(L10n.t('err_not_media', 'Not a media file') + ':\n' + name, null, L10n.t('error', 'Error')); } catch (e) {}
           }
         }
-      };
-      act.onerror = function () { window._pickerOpen = false; };
-    } catch (e) { window._pickerOpen = false; }
+      }, function (e) {
+        window._pickerOpen = false;
+        if (!PfaPlatform.isActivityCancel(e)) console.error('[Main] media pick failed:', e);
+      });
+    } catch (e) {
+      window._pickerOpen = false;
+      console.error('[Main] media pick error:', e);
+    }
   };
 
 
@@ -2208,18 +2243,10 @@
   // only when every candidate path resolves to nothing on every storage.
   function checkBgImageFile(path, missing) {
     var storages = [];
-    try {
-      if (typeof navigator !== 'undefined' && navigator.getDeviceStorages) {
-        storages = navigator.getDeviceStorages('sdcard');
-      } else if (typeof navigator !== 'undefined' && navigator.getDeviceStorage) {
-        storages = [navigator.getDeviceStorage('sdcard')];
-      }
-    } catch (e) { storages = []; }
+    try { storages = PfaPlatform.getDeviceStorages('sdcard') || []; }
+    catch (e) { storages = []; }
     if (!storages || !storages.length) return; // can't check — silent
     var p0 = String(path);
-    var candidates = [p0];
-    var mStripped = p0.match(/^\/[^/]+\/(.+)$/);
-    if (mStripped) candidates.push(mStripped[1]); // strip '/sdcard' prefix
     var pending = 0, found = false, doneCalled = false;
     function settle() {
       pending--;
@@ -2228,17 +2255,20 @@
         if (typeof missing === 'function') { try { missing(); } catch (e) {} }
       }
     }
-    candidates.forEach(function (p) {
-      storages.forEach(function (st) {
-        pending++;
-        var req;
-        try { req = st.get(p); } catch (e) { settle(); return; }
-        req.onsuccess = function (e) {
-          if (e && e.target && e.target.result) found = true;
-          settle();
-        };
-        req.onerror = function () { settle(); };
-      });
+    storages.forEach(function (st) {
+      var p;
+      try { p = PfaPlatform.normalizeStoragePath(p0, st); }
+      catch (e) { return; }
+      if (!p) return;
+      var req;
+      try { req = st.get(p); } catch (e) { return; }
+      if (!req) return;
+      pending++;
+      req.onsuccess = function () {
+        if (req.result) found = true;
+        settle();
+      };
+      req.onerror = function () { settle(); };
     });
     if (pending === 0 && !found && !doneCalled) {
       doneCalled = true;
@@ -2759,7 +2789,7 @@
 
   function _dsGetOnce(st, path) {
     return new Promise(function (resolve) {
-      var r = st.get(path);
+      var r = st.get(PfaPlatform.normalizeStoragePath(path, st));
       var t = setTimeout(function () { resolve(null); }, 8000);
       r.onsuccess = function () { clearTimeout(t); resolve(r.result || null); };
       r.onerror = function () { clearTimeout(t); resolve(null); };
@@ -2768,10 +2798,8 @@
 
   function _locateNoteFile(path) {
     var tries = [];
-    try {
-      if (navigator.getDeviceStorages) tries = navigator.getDeviceStorages('sdcard') || [];
-      else if (navigator.getDeviceStorage) tries = [navigator.getDeviceStorage('sdcard')];
-    } catch (e) { tries = []; }
+    try { tries = PfaPlatform.getDeviceStorages('sdcard') || []; }
+    catch (e) { tries = []; }
     var i = 0;
     function next() {
       if (i >= tries.length) return Promise.resolve(null);
@@ -3018,10 +3046,9 @@
     if (filePath.endsWith('.mid')) {
       showParsing(_parsingLabel(filePath)); // Analyzing MIDI Data...
 
-      if (typeof navigator !== 'undefined' && navigator.getDeviceStorage) {
-        var ds = navigator.getDeviceStorage('sdcard');
-        // Strip /sdcard/ prefix — getDeviceStorage path is relative to storage root
-        var dsPath = filePath.replace(/^\/sdcard\//, '');
+      var ds = PfaPlatform.getDeviceStorage('sdcard');
+      if (ds) {
+        var dsPath = PfaPlatform.normalizeStoragePath(filePath, ds);
         var req = ds.get(dsPath);
 
         req.onsuccess = function () {
@@ -3075,9 +3102,9 @@
     // Existing code for other file types (.mid.json / .json / .note MIDI)
     showParsing(_parsingLabel(filePath)); // Reading Data... for .note/.json
 
-    if (typeof navigator !== 'undefined' && navigator.getDeviceStorage) {
-      var ds = navigator.getDeviceStorage('sdcard');
-      var req = ds.get(filePath);
+    var ds = PfaPlatform.getDeviceStorage('sdcard');
+    if (ds) {
+      var req = ds.get(PfaPlatform.normalizeStoragePath(filePath, ds));
 
       req.onsuccess = function () {
         // PFA2 binary .note streams from disk; legacy text restores JSON.
@@ -3158,25 +3185,28 @@
       });
     }
 
-    if (typeof navigator !== 'undefined' && navigator.getDeviceStorage) {
-      // Try the volume hinted by the path prefix, else the other one.
-      var tries = [volName];
-      if (volName === 'sdcard1') tries.push('internal');
-      else tries.push('sdcard');
-      var attempt = 0;
-      (function next() {
-        if (attempt >= tries.length) {
+    var tries = [volName];
+    if (volName === 'sdcard1') tries.push('internal');
+    else tries.push('sdcard');
+    var attempt = 0;
+    var found = false;
+    (function next() {
+      if (attempt >= tries.length) {
+        if (found) {
           if (typeof window.showToast === 'function') window.showToast(L10n.t('error_file_read', 'Failed to read') + ' ' + sfName);
-          return;
         }
-        var storageKey = tries[attempt++];
-        var ds = navigator.getDeviceStorage(storageKey);
-        var rel = path.replace(/^\/(sdcard|sdcard1|internal|internal\/storage|volume)\//, '');
-        var req = ds.get(rel);
-        req.onsuccess = function () { readBlobToArrayBuffer(this.result, importAB); };
-        req.onerror = function () { next(); };
-      })();
-    } else {
+        return;
+      }
+      var storageKey = tries[attempt++];
+      var ds = PfaPlatform.getDeviceStorage(storageKey);
+      if (!ds) { next(); return; }
+      found = true;
+      var rel = PfaPlatform.normalizeStoragePath(path, ds);
+      var req = ds.get(rel);
+      req.onsuccess = function () { readBlobToArrayBuffer(this.result, importAB); };
+      req.onerror = function () { next(); };
+    })();
+    if (!found) {
       // Desktop debug: XHR as arrayBuffer (mozSystem not needed there).
       var xhr = new XMLHttpRequest();
       xhr.open('GET', path, true);
@@ -3607,8 +3637,8 @@
   }
   function acquireCpuWakeLock() {
     try {
-      if (navigator.requestWakeLock && !_cpuWakeLock) {
-        _cpuWakeLock = navigator.requestWakeLock('cpu');
+      if (!_cpuWakeLock) {
+        _cpuWakeLock = PfaPlatform.requestWakeLock('cpu');
         if (_cpuWakeLock) console.log('[WakeLock] cpu acquired');
       }
     } catch (e) { console.warn('[WakeLock] acquire failed: ' + e.message); }
@@ -3620,8 +3650,8 @@
   // Keep the SCREEN lit while playing so the screen never turns off mid-song.
   function acquireScreenWakeLock() {
     try {
-      if (navigator.requestWakeLock && !_screenWakeLock) {
-        _screenWakeLock = navigator.requestWakeLock('screen');
+      if (!_screenWakeLock) {
+        _screenWakeLock = PfaPlatform.requestWakeLock('screen');
         if (_screenWakeLock) console.log('[WakeLock] screen acquired');
       }
     } catch (e) { console.warn('[WakeLock] screen acquire failed: ' + e.message); }
@@ -3681,11 +3711,8 @@
       });
 
       var vols = [];
-      try {
-        vols = navigator.getDeviceStorages
-          ? (navigator.getDeviceStorages('sdcard') || [])
-          : (navigator.getDeviceStorage ? [navigator.getDeviceStorage('sdcard')] : []);
-      } catch (e2) {
+      try { vols = PfaPlatform.getDeviceStorages('sdcard') || []; }
+      catch (e2) {
         console.log('[Main] Clear: getDeviceStorages threw ' + e2);
         vols = [];
       }
@@ -3741,16 +3768,21 @@ vols.forEach(function (vol) {
         if (!chunk.length) { supplement(); return; }
         var all = chunk.map(function (nm) {
           return new Promise(function (res) {
-            var r = vol.delete(nm);
+            var rel = PfaPlatform.normalizeStoragePath(nm, vol);
+            if (!rel) { res(false); return; }
+            var r;
+            try { r = vol.delete(rel); }
+            catch (e) { res(false); return; }
+            if (!r) { res(false); return; }
             var tt = setTimeout(function () {
-              console.log('[Main] Clear: delete TIMEOUT ' + nm);
+              console.log('[Main] Clear: delete TIMEOUT ' + rel);
               res(false);
             }, 5000);
             r.onsuccess = function () { clearTimeout(tt); res(true); };
             r.onerror = function (err) {
               clearTimeout(tt);
               var en = (err && err.target && err.target.error && err.target.error.name) || '(no error)';
-              console.log('[Main] Clear: delete FAILED ' + nm + ' -> ' + en);
+              console.log('[Main] Clear: delete FAILED ' + rel + ' -> ' + en);
               res(false);
             };
           });
@@ -3772,19 +3804,28 @@ vols.forEach(function (vol) {
       function supplement() {
         var subs = [];
         var done = false;
-        var t = setTimeout(function () { done = true; finish(); }, 10000);
-        var q = vol.enumerate('others/pfa_tmp');
-        q.onerror = function () { done = true; clearTimeout(t); finish(); };
-        q.onsuccess = function () {
+        var req = null;
+        var t = setTimeout(function () {
           if (done) return;
-          var f = q.result;
-          if (!f) { done = true; clearTimeout(t); finish(); return; }
-          var nm = f.name || '';
+          done = true;
+          try { if (req && req.cancel) req.cancel(); } catch (e) {}
+          finish();
+        }, 10000);
+        function onFile(f) {
+          if (done) return;
+          var nm = PfaPlatform.normalizeStoragePath(f.name, vol);
           var rel = nm.charAt(0) === '/' ? nm.slice(1) : nm;
           if (rel.indexOf('/') === -1 && rel !== 'pfa_tmp') rel = 'others/pfa_tmp/' + rel;
           if (rel.lastIndexOf('others/pfa_tmp/', 0) === 0 && candidates.indexOf(rel) === -1) subs.push(rel);
-          q.continue();
-        };
+        }
+        function onDone() {
+          if (done) return;
+          done = true;
+          clearTimeout(t);
+          finish();
+        }
+        try { req = PfaPlatform.enumerate(vol, 'others/pfa_tmp', onFile, onDone); }
+        catch (e) { onDone(); }
         function finish() {
           if (!subs.length) { settle(); return; }
           console.log('[Main] Clear: enumerate supplement on ' + volName + ' found ' + subs.length + ' unlogged file(s)');
@@ -4012,7 +4053,7 @@ vols.forEach(function (vol) {
       try { showDevDialog(m); } catch (e) {}
     }
     var vols = [];
-    try { vols = (navigator.getDeviceStorages && navigator.getDeviceStorages('sdcard')) || []; }
+    try { vols = PfaPlatform.getDeviceStorages('sdcard') || []; }
     catch (e) {}
     if (!vols.length) { say(L10n.t('toast_no_storage_log', 'No storage available to export the log.')); return; }
 
@@ -4117,7 +4158,7 @@ vols.forEach(function (vol) {
       return;
     }
     var vols = [];
-    try { vols = (navigator.getDeviceStorages && navigator.getDeviceStorages('sdcard')) || []; }
+    try { vols = PfaPlatform.getDeviceStorages('sdcard') || []; }
     catch (e) {}
     if (!vols.length) { say(L10n.t('err_no_storage_settings', 'No storage available to export settings.')); return; }
 
@@ -4286,26 +4327,44 @@ vols.forEach(function (vol) {
     try {
       if (window._pickImportOpen) return;
       window._pickImportOpen = true;
-      var activity = new MozActivity({
-        name: 'pick'
-      });
-      activity.onsuccess = function () {
+      PfaPlatform.pickFile().then(function (res) {
         window._pickImportOpen = false;
-        var blob = extractBlob(this.result);
-        var name = extractName(this.result) || (blob && blob.name) || '';
-        if (!blob) { say(L10n.t('err_import_read', 'Cannot read that file.')); return; }
-        // "picker with filter": only .note configs may be imported. Anything
-        // else is refused BEFORE reading so no conftype gets applied by mistake.
-        if (!/\.note$/i.test(String(name).trim())) {
-          say(L10n.t('err_import_not_note', 'Only .note Settings configs can be imported.\n\nPicked: ') +
-              (name || '(no name)'));
+        var blob = (PfaPlatform.resultBlob && PfaPlatform.resultBlob(res)) || extractBlob(res);
+        var path = (PfaPlatform.resultPath && PfaPlatform.resultPath(res)) || '';
+        var name = extractName(res) || PfaPlatform.resultName(res) || (blob && blob.name) || '';
+        function useBlob(n, b) {
+          // "picker with filter": only .note configs may be imported. If the
+          // picker omits the name, the content marker is the final check.
+          if (n && !/\.note$/i.test(String(n).trim())) {
+            say(L10n.t('err_import_not_note', 'Only .note Settings configs can be imported.\n\nPicked: ') +
+                (n || '(no name)'));
+            return;
+          }
+          parseAndApply(n, b);
+        }
+        if (blob) { useBlob(name, blob); return; }
+        if (path) {
+          if (!name) {
+            name = String(path).split('#')[0].split('?')[0].replace(/\\/g, '/').split('/').pop();
+          }
+          readFilepathBlob(path, function (b) { useBlob(name, b); }, function () {
+            say(L10n.t('err_import_read', 'Cannot read that file.'));
+          });
           return;
         }
-        parseAndApply(name, blob);
-      };
-      activity.onerror = function () { window._pickImportOpen = false; };
+        say(L10n.t('err_import_read', 'Cannot read that file.'));
+      }, function (e) {
+        window._pickImportOpen = false;
+        if (PfaPlatform.isActivityCancel(e)) {
+          console.log('[Main] import pick cancelled');
+          return;
+        }
+        console.error('[Main] import pick failed:', e);
+        say(L10n.t('err_picker', 'Cannot launch the file picker.'));
+      });
     } catch (e) {
       window._pickImportOpen = false;
+      console.error('[Main] import pick error:', e);
       say(L10n.t('err_picker', 'Cannot launch the file picker.'));
     }
   }
@@ -4328,7 +4387,7 @@ vols.forEach(function (vol) {
 
     function getStorages() {
       var all = [];
-      try { all = (navigator.getDeviceStorages && navigator.getDeviceStorages('sdcard')) || []; }
+      try { all = PfaPlatform.getDeviceStorages('sdcard') || []; }
       catch (e) { push('getDeviceStorages threw: ' + e); return null; }
       push('getDeviceStorages(sdcard) → ' + all.length + ' volume(s)');
       for (var i = 0; i < all.length; i++) {

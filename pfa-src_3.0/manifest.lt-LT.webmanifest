@@ -3,6 +3,7 @@
   "name": "Piano From Above",
   "id": "PFA (BETA)",
   "short_name": "Piano From Above",
+  "version": "1.0.5",
   "categories": [
     "entertainment",
     "utilities"
@@ -26,6 +27,7 @@
   "orientation": "any",
   "b2g_features": {
     "version": "1.0",
+    "type": "privileged",
     "core": true,
     "subtitle": "MIDI grotuvas su klaviatūros vizualizacija",
     "origin": "pfa",
@@ -39,7 +41,8 @@
       },
       "audio-channel-content": {},
       "volumemanager": {},
-      "desktop-notification": {}
+      "desktop-notification": {},
+      "systemXHR": {}
     },
     "chrome": {
       "navigation": false
@@ -53,8 +56,15 @@
             "patternFlags": "gi"
           }
         },
-        "href": "/index.html",
-        "disposition": "window",
+        "returnValue": true
+      },
+      "import": {
+        "filters": {
+          "filename": {
+            "pattern": ".*(mid$|MID$|midi$|MIDI$|note$|NOTE$)",
+            "patternFlags": "gi"
+          }
+        },
         "returnValue": true
       },
       "share": {
@@ -64,15 +74,14 @@
             "patternFlags": "gi"
           }
         },
-        "href": "/index.html",
-        "disposition": "window",
         "returnValue": true
       }
-    },
-    "messages": [
-      {
-        "activity": "/index.html"
-      }
-    ]
-  }
+    }
+  },
+  "serviceworker": {
+    "script_url": "sw.js"
+  },
+  "messages": [
+    "activity"
+  ]
 }

@@ -3434,25 +3434,20 @@ var Settings = (function () {
     function launch(data) {
       try {
         window._pickerOpen = true;
-        var activity = new MozActivity({
-          name: 'pick',
-          data: data
-        });
-        activity.onsuccess = function () {
+        PfaPlatform.startActivity('pick', data).then(function (res) {
           window._pickerOpen = false;
-          var blob = extractBlob(this.result);
+          var blob = extractBlob(res) || PfaPlatform.resultBlob(res);
           if (blob) {
             applyBlob(blob);
           } else if (typeof window.showToast === 'function') {
             showToast(L10n.t('toast_cannot_read', 'Cannot read that file'));
           }
-        };
-        activity.onerror = function (e) {
+        }, function (e) {
           window._pickerOpen = false;
           // User-cancelled must NOT reopen the picker.
           var err = (e && (e.name || e.message)) || '';
           if (!/cancel/i.test(err)) retryWithType();
-        };
+        });
       } catch (e) {
         window._pickerOpen = false;
         retryWithType();
@@ -3556,29 +3551,27 @@ var Settings = (function () {
     function launch(data) {
       try {
         window._pickerOpen = true;
-        var activity = new MozActivity({ name: 'pick', data: data });
-        activity.onsuccess = function () {
+        PfaPlatform.startActivity('pick', data).then(function (res) {
           window._pickerOpen = false;
-          var res = this.result;
-          var blob = extractBlob(res);
+          var out = PfaPlatform.activityResult(res);
+          var blob = extractBlob(out) || PfaPlatform.resultBlob(out);
           if (blob) {
             // Source path for the boot existence check. Pickers return
             // name/path differently; blob.name may itself be a full path.
             var p = '';
             try {
-              if (res && (res.path || res.name)) p = String(res.path || res.name);
+              if (out && (out.path || out.name)) p = String(out.path || out.name);
               else if (blob.name) p = String(blob.name);
             } catch (e2) { p = ''; }
             applyBlob(blob, p);
           } else if (typeof window.showToast === 'function') {
             showToast(L10n.t('toast_cannot_read', 'Cannot read that file'));
           }
-        };
-        activity.onerror = function (e) {
+        }, function (e) {
           window._pickerOpen = false;
           var err = (e && (e.name || e.message)) || '';
           if (!/cancel/i.test(err)) retryWithType();
-        };
+        });
       } catch (e) {
         window._pickerOpen = false;
         retryWithType();
