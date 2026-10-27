@@ -105,19 +105,10 @@ var Synth = (function () {
         masterGain.connect(ctx.destination);
       }
 
-      var pwave = null;
-      try {
-        var pReal = new Float32Array([0, 0, 0, 0, 0, 0, 0, 0]);
-        var pImag = new Float32Array([0, 1.0, 0.35, 0.18, 0.10, 0.06, 0.035, 0.02]);
-        pwave = ctx.createPeriodicWave(pReal, pImag);
-      } catch (eWave) {}
-      console.log('[Synth] wave=' + (pwave ? 'periodic' : 'sine') + ' hp=90');
-
       // Pre-create all oscillators — never stop them, only re-trigger via gain envelope
       for (var i = 0; i < LIMIT; i++) {
         var osc = ctx.createOscillator();
-        if (pwave) osc.setPeriodicWave(pwave);
-        else osc.type = 'sine';
+        osc.type = 'sine';
         osc.frequency.setValueAtTime(440, 0);
 
         var gn = ctx.createGain();
