@@ -174,19 +174,25 @@ var PfaPlatform = (function () {
       }
       try { document.addEventListener('visibilitychange', onVis); } catch (e) {}
       try { window.addEventListener('blur', markSeen); } catch (e) {}
-      startActivity('pick', data || { type: PICK_TYPES }).then(function (res) {
-        finish(resolve, res);
-      }, function (err) {
-        clean();
-        if (isActivityCancel(err) && seen) { finish(reject, err); return; }
-        console.log('[Platform] pick failed: ' + ((err && (err.name || err.message)) || err));
-        console.log('[Platform] pick fallback input');
-        inputPick().then(function (file) {
-          finish(resolve, file);
-        }, function (e) {
-          finish(reject, e);
+      function attempt(d) {
+        startActivity('pick', d).then(function (res) {
+          finish(resolve, res);
+        }, function (err) {
+          if (isActivityCancel(err) && seen) { finish(reject, err); return; }
+          console.log('[Platform] pick failed: ' + ((err && (err.name || err.message)) || err));
+          if (d) {
+            console.log('[Platform] pick fallback input');
+            inputPick().then(function (file) {
+              finish(resolve, file);
+            }, function (e) {
+              finish(reject, e);
+            });
+            return;
+          }
+          attempt({ type: PICK_TYPES });
         });
-      });
+      }
+      attempt(data || null);
     });
   }
 

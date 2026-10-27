@@ -94,14 +94,30 @@ var Synth = (function () {
 
       masterGain = ctx.createGain();
       masterGain.gain.value = volume;
-      masterGain.connect(ctx.destination);
+      try {
+        var hp = ctx.createBiquadFilter();
+        hp.type = 'highpass';
+        hp.frequency.value = 90;
+        hp.Q.value = 0.7;
+        masterGain.connect(hp);
+        hp.connect(ctx.destination);
+      } catch (eHp) {
+        masterGain.connect(ctx.destination);
+      }
+
+      var pwave = null;
+      try {
+        var pReal = new Float32Array([0, 0, 0, 0, 0, 0, 0, 0]);
+        var pImag = new Float32Array([0, 1.0, 0.35, 0.18, 0.10, 0.06, 0.035, 0.02]);
+        pwave = ctx.createPeriodicWave(pReal, pImag);
+      } catch (eWave) {}
+      console.log('[Synth] wave=' + (pwave ? 'periodic' : 'sine') + ' hp=90');
 
       // Pre-create all oscillators — never stop them, only re-trigger via gain envelope
       for (var i = 0; i < LIMIT; i++) {
         var osc = ctx.createOscillator();
-        // Pre-create as sine (CH_WAVE default): changing osc.type on a
-        // RUNNING oscillator clicks — avoid ever doing it live.
-        osc.type = 'sine';
+        if (pwave) osc.setPeriodicWave(pwave);
+        else osc.type = 'sine';
         osc.frequency.setValueAtTime(440, 0);
 
         var gn = ctx.createGain();
@@ -259,12 +275,8 @@ var Synth = (function () {
     var now = ctx.currentTime;
     var f = 440 * Math.pow(2, (note - 69) / 12);
     var g = (vel / 127);
-    // Loudness compensation: tiny speaker can't reproduce low sines, and a
-    // pure sine has only the fundamental — so bass gets +gain relative to
-    // pitch, or it disappears under higher notes. ~0.35 → ~+4dB per octave
-    // down, capped so we never clip the mix.
-    var k = Math.pow(440 / f, 0.35);
-    if (k > 2.0) k = 2.0;
+    var k = Math.pow(440 / f, 0.18);
+    if (k > 1.4) k = 1.4;
     g = Math.min(g * k, 0.12);
     // The real "pop" = SUM clipping the DAC: N voices × gain > 1.0 rails
     // (proven: 12×0.09=1.08 → "pop"; single voice always clean; app pops

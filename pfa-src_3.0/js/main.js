@@ -1433,6 +1433,7 @@
   // speed) mirrors the preload-media hooks; alignment with the visual
   // playhead is best-effort (no tempo-map resync).
   var _integEl = null, _integUrl = null, _integStopped = true;
+  var _integFailed = false;
   // Dev kill-switch (Developer → Disable warnings in integrated): ON disables
   // the auto-switch and the >1MB check (big decodes allowed again, no forced
   // preload). Keep-alive across switches is unconditional (pause + kept
@@ -1455,7 +1456,11 @@
       try { _integEl.setAttribute('mozAudioChannelType', 'content'); } catch (e) {}
       _integEl.preload = 'none';
       _integEl.addEventListener('error', function () {
-        try { console.warn('[Integ] element error', _integEl.error ? _integEl.error.code : '?'); } catch (e) {}
+        try { if (_integUrl && _integEl.src !== _integUrl) return; } catch (eS) {}
+        var code = 0;
+        try { code = _integEl.error ? _integEl.error.code : 0; } catch (eE) {}
+        try { console.warn('[Integ] element error', code || '?'); } catch (e) {}
+        _integToSynth(code ? ('element error ' + code) : 'element error');
       });
       document.body.appendChild(_integEl);
       _assertMediaChannel();
@@ -1475,7 +1480,12 @@
     try { if (_integHoldTimer) { clearTimeout(_integHoldTimer); _integHoldTimer = null; } } catch (e) {}
     _integReleaseUrl();
     _integStopped = true;
+    _integFailed = false;
     if (!blob) return;
+    try {
+      var _bt = String(blob.type || '');
+      if (!/^audio\/x-midi$/i.test(_bt)) blob = blob.slice(0, blob.size, 'audio/x-midi');
+    } catch (eB) {}
     try {
       _integUrl = URL.createObjectURL(blob);
       var el = _ensureIntegEl();
@@ -1495,7 +1505,27 @@
     }
     _integReleaseUrl();
   }
+  function _integToSynth(why) {
+    if (!_integUrl) return;
+    var st = null;
+    try { st = Store.getState(); } catch (e) {}
+    if (!st || st.synthEngine !== 'integrated') return;
+    if (st.play !== 'play') {
+      _integFailed = true;
+      try { console.warn('[Integ] platform MIDI audio unavailable (' + why + ') → System synth on play'); } catch (eD) {}
+      return;
+    }
+    _integFailed = true;
+    try { console.warn('[Integ] platform MIDI audio unavailable (' + why + ') → System synth'); } catch (eW) {}
+    try {
+      if (typeof Settings !== 'undefined' && Settings.setSynthEngine) Settings.setSynthEngine('system');
+      else Store.setState({ synthEngine: 'system' });
+    } catch (eS) {}
+    try { if (_integAwaitTimer) { clearTimeout(_integAwaitTimer); _integAwaitTimer = null; } } catch (eT) {}
+    try { if (typeof Sequencer !== 'undefined' && Sequencer.play) Sequencer.play(); } catch (eP) {}
+  }
   function _integPlay(keepPos) {
+    if (_integFailed) { _integToSynth('unsupported source'); return; }
     if (!_integActive()) return;
     // Demo pre-roll hold (armed by startDemo): the visuals need a head
     // start, so the element must NOT start with the transport.
@@ -1510,7 +1540,10 @@
     if (fresh) { try { el.currentTime = 0; } catch (e) {} }
     try {
       var p = el.play();
-      if (p && p.catch) p.catch(function (er) { console.warn('[Integ] play blocked:', er); });
+      if (p && p.catch) p.catch(function (er) {
+        try { console.warn('[Integ] play blocked:', er); } catch (eL) {}
+        if (er && er.name === 'NotSupportedError') _integToSynth('play NotSupportedError');
+      });
     } catch (e) { console.warn('[Integ] play() threw:', e); }
   }
   function _integPause() {
@@ -1559,6 +1592,12 @@
     try { t0 = performance.now(); } catch (e) {}
     function go() {
       if (done) return; done = true;
+      try {
+        var sp = Store.getState();
+        if (!(_integEl && !_integEl.paused && !_integEl.ended) && sp.play === 'play') {
+          _integToSynth('no playing event');
+        }
+      } catch (eStall) {}
       try { if (_integEl) _integEl.removeEventListener('playing', onPlaying); } catch (e) {}
       try { if (_integAwaitTimer) clearTimeout(_integAwaitTimer); } catch (e) {}
       _integAwaitTimer = null;
@@ -1791,7 +1830,7 @@
       // loads — bounce any mid-demo change straight back (persisted too, so
       // the settings rows stay truthful). The nested applyVisual runs its
       // own full round, so this round returns after the bounce.
-      if ((_demoActive || _lockNoFile) && state.synthEngine !== 'integrated') {
+      if ((_demoActive || _lockNoFile) && state.synthEngine !== 'integrated' && !_integFailed) {
         _prevSynthEngine = state.synthEngine; // swallow this transition
         try {
           if (typeof Settings !== 'undefined' && Settings.applyVisual) Settings.applyVisual('synthEngine', 'integrated');
@@ -1900,6 +1939,7 @@
 
   function renderLoop(now) {
     rafId = requestAnimationFrame(renderLoop);
+    if (!ctx) return;
 
     // FPS counter — update every second. Counted BEFORE the analyze
     // early-return so the HUD FPS stays live during conversions too.
@@ -2416,11 +2456,13 @@
     if (demo) return;
     // Full toggle parity (values + store + persist + row repaint): a bare
     // setState would leave the settings row showing the old engine.
+    var target = 'system';
+    try { if (Store.getState().mediaSrc) target = 'preload'; } catch (eM) {}
     try {
-      if (typeof Settings !== 'undefined' && Settings.setSynthEngine) Settings.setSynthEngine('preload');
-      else Store.setState({ synthEngine: 'preload' });
+      if (typeof Settings !== 'undefined' && Settings.setSynthEngine) Settings.setSynthEngine(target);
+      else Store.setState({ synthEngine: target });
     } catch (e4) {}
-    try { console.log('[Main] big MIDI ' + sz + 'B on integrated → preload'); } catch (e5) {}
+    try { console.log('[Main] big MIDI ' + sz + 'B on integrated → ' + target); } catch (e5) {}
   }
 
   function loadMIDIData(midiData) {
