@@ -500,20 +500,24 @@
     // gap, click or restart. noteOff stays broadcast (next callback), which
     // is a safe no-op on engines holding no such voice.
     function _routeNoteToEngine(note, ch, vel, delay, dur) {
-      if (_spamGuard && (dur < 0.01 || vel < 22)) return;
+      var st = null;
+      try { st = Store.getState(); } catch (e) {}
+      var sp = (st && st.speed) ? st.speed : 1;
+      if (_spamGuard && (dur * sp < 0.01 || vel < 22)) return false;
       var useBank = false;
       try {
-        useBank = (Store.getState().engine === 'soundbank') &&
+        useBank = (st && st.engine === 'soundbank') &&
                   (typeof Soundbank !== 'undefined' && Soundbank.isReady && Soundbank.isReady());
       } catch (e) {}
       if (useBank) {
         try { Soundbank.play(note, vel, delay, dur); } catch (e2) {}
-      } else {
-        _engine().noteOn(note, ch, vel, delay, dur);
+        return true;
       }
+      _engine().noteOn(note, ch, vel, delay, dur);
+      return true;
     }
     Sequencer.noteDown(function (note, ch, vel, delay, dur) {
-      _routeNoteToEngine(note, ch, vel, delay, dur);
+      var played = _routeNoteToEngine(note, ch, vel, delay, dur);
       // Feed NoteBuffer for O(1) render
     var st = Store.getState();
 
@@ -525,6 +529,7 @@
         NoteBuffer.onNote(note, ch, vel, delay, dur,
           st.kbStart || 21, st.keyWidth || 16);
       }
+      return played;
     });
     Sequencer.noteUp(function (note, ch) {
       _engine().noteOff(note, ch);
@@ -2520,6 +2525,7 @@
       }
     }
     _spamGuard = false;
+    try { if (typeof Soundbank !== 'undefined' && Soundbank.setHugeMode) Soundbank.setHugeMode(false); } catch (eSH) {}
     Sequencer.load(notes, _tempoForLoad, div);
 
     // Store the NORMALISED map (deduped, sorted, guaranteed tick-0 entry) —
@@ -2744,6 +2750,7 @@
 
     Sequencer.load(ns, ns.tempoMap, ns.div);
     _spamGuard = (ns.length >= 200000);
+    try { if (typeof Soundbank !== 'undefined' && Soundbank.setHugeMode) Soundbank.setHugeMode(_spamGuard); } catch (eSH) {}
 
     var _nMap = (typeof Tempo !== 'undefined' && Array.isArray(Tempo.map)) ? Tempo.map.slice() : ns.tempoMap;
     var _nDiv = (typeof Tempo !== 'undefined' && Tempo.div > 0) ? Tempo.div : ns.div;

@@ -182,8 +182,7 @@ var Sequencer = (function () {
         passedCount++;
       } else {
         if (delay <= 0.05 && auCnt < AUDIO_PER_PULSE && fireOn) {
-          fireOn(n.n, n.c, n.v, Math.max(0, delay), dur);
-          auCnt++;
+          if (fireOn(n.n, n.c, n.v, Math.max(0, delay), dur)) auCnt++;
         }
         active.push({ note: n.n, channel: n.c, tick: n.t, endTick: etk,
                       startSec: ss, endSec: esSec, velocity: n.v,
@@ -205,11 +204,11 @@ var Sequencer = (function () {
         // lands late/early and rings speed× too long/short.
         if (ca.fired || (ca.startSec - nowSec) / speed > 0.05) continue;
         if (auCnt >= AUDIO_PER_PULSE) break;
-        fireOn(ca.note, ca.channel, ca.velocity,
+        var played = fireOn(ca.note, ca.channel, ca.velocity,
                Math.max(0, (ca.startSec - nowSec) / speed),
                (ca.endSec - ca.startSec) / speed);
         ca.fired = true;
-        auCnt++;
+        if (played) auCnt++;
       }
     }
 

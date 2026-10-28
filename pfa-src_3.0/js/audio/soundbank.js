@@ -457,11 +457,13 @@ var Soundbank = (function () {
   // selected banks. Settings → Synth → Soundfont Settings → Voices.
   var _activeVoices = 0;
   var _voices = 32;
+  var _hugeMode = false;
   function setVoices(n) {
     n = Math.floor(Number(n));
     if (!isFinite(n) || n < 1) n = 32;
     _voices = Math.min(256, n);
   }
+  function setHugeMode(on) { _hugeMode = !!on; }
   function voiceGuard() { return _activeVoices >= _voices; }
   function bookVoice() { _activeVoices++; }
   function freeVoice() { _activeVoices = Math.max(0, _activeVoices - 1); }
@@ -505,7 +507,7 @@ var Soundbank = (function () {
           var peak = gainVal * (entry.gain || 1) * SAMPLE_GAIN;
           var natural = entry.buffer.duration / rate;
           var span;
-          if (bank.builtin) {
+          if (bank.builtin && !_hugeMode) {
             span = natural;
           } else {
             span = (durSec && durSec > 0) ? durSec : natural;
@@ -676,6 +678,7 @@ var Soundbank = (function () {
     restore: restore,
     readRegistry: readRegistry,
     setVoices: setVoices,
+    setHugeMode: setHugeMode,
     mute: mute,
     setVolume: setVolume,
     getVolume: getVolume,
