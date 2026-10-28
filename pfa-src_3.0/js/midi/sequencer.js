@@ -181,12 +181,14 @@ var Sequencer = (function () {
       if (esSec < nowSec - 0.05) {
         passedCount++;
       } else {
+        var tried = false;
         if (delay <= 0.05 && auCnt < AUDIO_PER_PULSE && fireOn) {
+          tried = true;
           if (fireOn(n.n, n.c, n.v, Math.max(0, delay), dur)) auCnt++;
         }
         active.push({ note: n.n, channel: n.c, tick: n.t, endTick: etk,
                       startSec: ss, endSec: esSec, velocity: n.v,
-                      fired: (delay <= 0.05 && fireOn) });
+                      fired: tried });
       }
       cursor++;
     }
