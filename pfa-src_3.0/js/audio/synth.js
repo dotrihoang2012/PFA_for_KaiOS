@@ -97,10 +97,15 @@ var Synth = (function () {
       try {
         var hp = ctx.createBiquadFilter();
         hp.type = 'highpass';
-        hp.frequency.value = 90;
+        hp.frequency.value = 130;
         hp.Q.value = 0.7;
+        var shelf = ctx.createBiquadFilter();
+        shelf.type = 'highshelf';
+        shelf.frequency.value = 2000;
+        shelf.gain.value = 6;
         masterGain.connect(hp);
-        hp.connect(ctx.destination);
+        hp.connect(shelf);
+        shelf.connect(ctx.destination);
       } catch (eHp) {
         masterGain.connect(ctx.destination);
       }
@@ -111,14 +116,33 @@ var Synth = (function () {
         osc.type = 'sine';
         osc.frequency.setValueAtTime(440, 0);
 
+        var osc2 = ctx.createOscillator();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(880, 0);
+
+        var osc3 = ctx.createOscillator();
+        osc3.type = 'sine';
+        osc3.frequency.setValueAtTime(1320, 0);
+
+        var h2 = ctx.createGain();
+        h2.gain.value = 0.25;
+        var h3 = ctx.createGain();
+        h3.gain.value = 0.12;
+
         var gn = ctx.createGain();
         gn.gain.setValueAtTime(0, 0);
 
         osc.connect(gn);
+        osc2.connect(h2);
+        h2.connect(gn);
+        osc3.connect(h3);
+        h3.connect(gn);
         gn.connect(masterGain);
         osc.start(0);
+        osc2.start(0);
+        osc3.start(0);
 
-        voices.push({ osc: osc, gn: gn, alive: false, born: 0, expires: 0, note: -1, ch: -1, vel: 0, f: 0, freeAt: 0, det: false });
+        voices.push({ osc: osc, osc2: osc2, osc3: osc3, gn: gn, alive: false, born: 0, expires: 0, note: -1, ch: -1, vel: 0, f: 0, f2: 0, f3: 0, freeAt: 0, det: false });
       }
       console.log('[Synth] pool ' + LIMIT + ' oscillators pre-allocated, state=' + ctx.state);
       _resume();
@@ -266,8 +290,8 @@ var Synth = (function () {
     var now = ctx.currentTime;
     var f = 440 * Math.pow(2, (note - 69) / 12);
     var g = (vel / 127);
-    var k = Math.pow(440 / f, 0.18);
-    if (k > 1.4) k = 1.4;
+    var k = Math.pow(440 / f, 0.12);
+    if (k > 1.25) k = 1.25;
     g = Math.min(g * k, 0.12);
     // The real "pop" = SUM clipping the DAC: N voices × gain > 1.0 rails
     // (proven: 12×0.09=1.08 → "pop"; single voice always clean; app pops
@@ -276,7 +300,7 @@ var Synth = (function () {
     //  stay full-gain; dense ones auto-throttle instead of clipping.
     var _alive = 0;
     for (var _i = 0; _i < voices.length; _i++) if (voices[_i].alive) _alive++;
-    var _cap = 0.75 / (_alive + 1);
+    var _cap = 0.62 / (_alive + 1);
     if (g > _cap) g = _cap;
     // Onset de-coincidence: stagger each note's attack by (3ms × arrival mod 4)
     // so few gains step inside the same 2.7ms control block. The SUM's first
@@ -308,12 +332,16 @@ var Synth = (function () {
       if (holdc < a1c + 0.005) holdc = a1c + 0.005;
       if (a0c <= holdc) {
         if (v.f !== f) v.osc.frequency.setValueAtTime(f, a0c);
+        if (v.f2 !== f * 2) v.osc2.frequency.setValueAtTime(f * 2, a0c);
+        if (v.f3 !== f * 3) v.osc3.frequency.setValueAtTime(f * 3, a0c);
         v.gn.gain.setTargetAtTime(g, a0c, 0.030);
         v.gn.gain.setTargetAtTime(0, holdc, 0.030);
       }
     } else {
       try {
         v.osc.frequency.cancelScheduledValues(now);
+        v.osc2.frequency.cancelScheduledValues(now);
+        v.osc3.frequency.cancelScheduledValues(now);
         v.gn.gain.cancelScheduledValues(now);
         // Never read `gain.value` (idl attribute = 1.0) — decay residual.
         v.gn.gain.setTargetAtTime(0, now, 0.025);
@@ -323,6 +351,8 @@ var Synth = (function () {
         if (hold < a1 + 0.005) hold = a1 + 0.005;
         if (a0 <= hold) {
           if (v.f !== f) v.osc.frequency.setValueAtTime(f, a0);
+          if (v.f2 !== f * 2) v.osc2.frequency.setValueAtTime(f * 2, a0);
+          if (v.f3 !== f * 3) v.osc3.frequency.setValueAtTime(f * 3, a0);
           v.gn.gain.setTargetAtTime(g, a0, 0.030);
           v.gn.gain.setTargetAtTime(0, hold, 0.030);
         }
@@ -333,6 +363,8 @@ var Synth = (function () {
     }
 
     v.f = f;
+    v.f2 = f * 2;
+    v.f3 = f * 3;
     v.freeAt = 0;
 
     v.alive = true;
