@@ -97,7 +97,7 @@ var Synth = (function () {
       try {
         var hp = ctx.createBiquadFilter();
         hp.type = 'highpass';
-        hp.frequency.value = 130;
+        hp.frequency.value = 80;
         hp.Q.value = 0.7;
         var shelf = ctx.createBiquadFilter();
         shelf.type = 'highshelf';
@@ -124,25 +124,37 @@ var Synth = (function () {
         osc3.type = 'sine';
         osc3.frequency.setValueAtTime(1320, 0);
 
+        var oscx = ctx.createOscillator();
+        oscx.type = 'sine';
+        oscx.frequency.setValueAtTime(3520, 0);
+
+        var g1 = ctx.createGain();
+        g1.gain.value = 1;
         var h2 = ctx.createGain();
         h2.gain.value = 0.25;
         var h3 = ctx.createGain();
         h3.gain.value = 0.12;
+        var hx = ctx.createGain();
+        hx.gain.value = 0.05;
 
         var gn = ctx.createGain();
         gn.gain.setValueAtTime(0, 0);
 
-        osc.connect(gn);
+        osc.connect(g1);
+        g1.connect(gn);
         osc2.connect(h2);
         h2.connect(gn);
         osc3.connect(h3);
         h3.connect(gn);
+        oscx.connect(hx);
+        hx.connect(gn);
         gn.connect(masterGain);
         osc.start(0);
         osc2.start(0);
         osc3.start(0);
+        oscx.start(0);
 
-        voices.push({ osc: osc, osc2: osc2, osc3: osc3, gn: gn, alive: false, born: 0, expires: 0, note: -1, ch: -1, vel: 0, f: 0, f2: 0, f3: 0, freeAt: 0, det: false });
+        voices.push({ osc: osc, osc2: osc2, osc3: osc3, oscx: oscx, g1: g1, h2: h2, h3: h3, hx: hx, gn: gn, alive: false, born: 0, expires: 0, note: -1, ch: -1, vel: 0, f: 0, f2: 0, f3: 0, fx: 0, freeAt: 0, det: false });
       }
       console.log('[Synth] pool ' + LIMIT + ' oscillators pre-allocated, state=' + ctx.state);
       _resume();
@@ -293,6 +305,17 @@ var Synth = (function () {
     var k = Math.pow(440 / f, 0.12);
     if (k > 1.25) k = 1.25;
     g = Math.min(g * k, 0.12);
+    var _bass = (220 - f) / 155;
+    if (_bass < 0) _bass = 0;
+    if (_bass > 1) _bass = 1;
+    var _w1 = 1 - 0.45 * _bass;
+    var _w2 = 0.25 + 0.10 * _bass;
+    var _w3 = 0.12 + 0.08 * _bass;
+    var _wx = 0.05 + 0.55 * _bass;
+    var _m = 6;
+    if (f < 80) _m = 8;
+    else if (f >= 220) _m = 4;
+    var _fx = f * _m;
     // The real "pop" = SUM clipping the DAC: N voices × gain > 1.0 rails
     // (proven: 12×0.09=1.08 → "pop"; single voice always clean; app pops
     //  more with more notes). Dynamic headroom: scale each new note so that
@@ -334,6 +357,11 @@ var Synth = (function () {
         if (v.f !== f) v.osc.frequency.setValueAtTime(f, a0c);
         if (v.f2 !== f * 2) v.osc2.frequency.setValueAtTime(f * 2, a0c);
         if (v.f3 !== f * 3) v.osc3.frequency.setValueAtTime(f * 3, a0c);
+        if (v.fx !== _fx) v.oscx.frequency.setValueAtTime(_fx, a0c);
+        v.g1.gain.setTargetAtTime(_w1, a0c, 0.010);
+        v.h2.gain.setTargetAtTime(_w2, a0c, 0.010);
+        v.h3.gain.setTargetAtTime(_w3, a0c, 0.010);
+        v.hx.gain.setTargetAtTime(_wx, a0c, 0.010);
         v.gn.gain.setTargetAtTime(g, a0c, 0.030);
         v.gn.gain.setTargetAtTime(0, holdc, 0.030);
       }
@@ -342,6 +370,7 @@ var Synth = (function () {
         v.osc.frequency.cancelScheduledValues(now);
         v.osc2.frequency.cancelScheduledValues(now);
         v.osc3.frequency.cancelScheduledValues(now);
+        v.oscx.frequency.cancelScheduledValues(now);
         v.gn.gain.cancelScheduledValues(now);
         // Never read `gain.value` (idl attribute = 1.0) — decay residual.
         v.gn.gain.setTargetAtTime(0, now, 0.025);
@@ -353,6 +382,11 @@ var Synth = (function () {
           if (v.f !== f) v.osc.frequency.setValueAtTime(f, a0);
           if (v.f2 !== f * 2) v.osc2.frequency.setValueAtTime(f * 2, a0);
           if (v.f3 !== f * 3) v.osc3.frequency.setValueAtTime(f * 3, a0);
+          if (v.fx !== _fx) v.oscx.frequency.setValueAtTime(_fx, a0);
+          v.g1.gain.setTargetAtTime(_w1, a0, 0.010);
+          v.h2.gain.setTargetAtTime(_w2, a0, 0.010);
+          v.h3.gain.setTargetAtTime(_w3, a0, 0.010);
+          v.hx.gain.setTargetAtTime(_wx, a0, 0.010);
           v.gn.gain.setTargetAtTime(g, a0, 0.030);
           v.gn.gain.setTargetAtTime(0, hold, 0.030);
         }
@@ -365,6 +399,7 @@ var Synth = (function () {
     v.f = f;
     v.f2 = f * 2;
     v.f3 = f * 3;
+    v.fx = _fx;
     v.freeAt = 0;
 
     v.alive = true;
