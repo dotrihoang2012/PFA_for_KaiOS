@@ -583,34 +583,53 @@
     var _sfBootErrors = null;
     var bootSfPromise = new Promise(function (resolve) {
       updateBootProgress(50, L10n.t('boot_audio_engine', 'Initializing Audio Engine...'), '');
-      try {
-        var st = Store.getState();
-        var isAudioOn = (st && st.audio !== false);
+      var isAudioOn = true;
+      try { var st = Store.getState(); isAudioOn = !st || st.audio !== false; } catch (eSt) {}
 
+      function loadGrand() {
+        if (!isAudioOn || typeof Soundbank === 'undefined' ||
+            !Soundbank.loadBuiltin || typeof GrandSamples === 'undefined' ||
+            !GrandSamples.length) return Promise.resolve(false);
+        updateBootProgress(70, L10n.t('boot_audio_engine', 'Initializing Audio Engine...'), 'Grand Piano');
+        return Soundbank.loadBuiltin(GrandSamples, function (done, total) {
+          var pct = 70 + Math.round((done / total) * 15);
+          updateBootProgress(pct, L10n.t('boot_audio_engine', 'Initializing Audio Engine...'), 'Grand Piano ' + done + '/' + total);
+        }).then(function () { return true; }, function (eG) {
+          console.warn('[Main] grand piano load failed', eG);
+          return false;
+        });
+      }
+
+      function afterRestore() {
+        loadGrand().then(function (ok) {
+          if (ok) {
+            updateBootProgress(85, L10n.t('boot_audio_engine', 'Initializing Audio Engine...'), 'Grand Piano');
+          }
+          resolve();
+        }, function () { resolve(); });
+      }
+
+      try {
         if (isAudioOn && typeof Soundbank !== 'undefined' && Soundbank.restore) {
           var entries = (typeof Soundbank.readRegistry === 'function') ? Soundbank.readRegistry() : [];
           if (entries && entries.length > 0) {
             updateBootProgress(50, L10n.t('boot_soundfonts', 'Loading module: Soundfonts'), L10n.t('boot_prep_banks', 'Preparing banks...'));
             Soundbank.restore(function (sfPct, sfItemLog) {
-              var mappedPct = 50 + Math.round((sfPct / 100) * 35);
+              var mappedPct = 50 + Math.round((sfPct / 100) * 20);
               updateBootProgress(mappedPct, L10n.t('boot_soundfonts', 'Loading module: Soundfonts'), sfItemLog ? (L10n.t('loading_prefix', 'Loading: ') + sfItemLog) : '');
             }).then(function (res) {
               if (res && res.failed && res.failed.length > 0) {
                 _sfBootErrors = res.failed;
               }
-              resolve();
-            }).catch(function () {
-              resolve();
+              afterRestore();
+            }, function () {
+              afterRestore();
             });
             return;
           }
         }
       } catch (e) { console.error('[Main] Soundbank.restore failed', e); }
-      // Fast path if soundbanks aren't loaded: simulate brief progress step
-      setTimeout(function () {
-        updateBootProgress(75, L10n.t('boot_audio_engine', 'Initializing Audio Engine...'), L10n.t('boot_synth_ready', 'Synth ready'));
-        resolve();
-      }, 100);
+      afterRestore();
     });
 
     bootSfPromise.then(function () {
@@ -1763,6 +1782,7 @@
     } else if (state.play === 'pause' && prevPlay !== 'pause') {
       Sequencer.pause();
       _engine().silence();
+      if (typeof Soundbank !== 'undefined' && Soundbank.silence) { try { Soundbank.silence(); } catch (eSB) {} }
       // Start Delay keeps `play` at 'pause' while the MIDI waits its countdown.
       // The preload media is an INDEPENDENT track: start it now (its own Media
       // Delay applies) instead of holding it until the countdown ends.
@@ -1782,6 +1802,7 @@
       try { seqEnded = typeof Sequencer !== 'undefined' && Sequencer.isEnded && Sequencer.isEnded(); } catch (e) {}
       if (!seqEnded) { try { Sequencer.stop(); } catch (e) {} }
       _engine().silence();
+      if (typeof Soundbank !== 'undefined' && Soundbank.silence) { try { Soundbank.silence(); } catch (eSB) {} }
       _mediaStop();
       _integStop();
       // Nothing sounding anymore → suspend AudioContext so the OS status-bar
@@ -2945,6 +2966,7 @@
     if (!_demoActive && !_lockNoFile) return;
     _demoActive = false;
     try { _engine().silence(); } catch (e) {}
+    try { if (typeof Soundbank !== 'undefined' && Soundbank.silence) Soundbank.silence(); } catch (eSB) {}
     try { _integStop(); } catch (eI) {}
     if (typeof Sequencer !== 'undefined' && Sequencer.stop) {
       try { Sequencer.stop(); } catch (e) {}
@@ -2977,15 +2999,18 @@
       .then(function (txt) {
         var midi = JSON.parse(txt);
         loadMIDIData(midi);          // load notes/tempo/div, resets sequencer
-        // Demo defaults to the Integrated engine (platform demo.mid audio)
-        // regardless of the persisted engine. Store-only force — restored in
-        // clearDemo(), never persisted.
         _demoForcedEngine = null;
         try {
           var _curEng = Store.getState().synthEngine;
-          if (_curEng && _curEng !== 'integrated') {
+          var _useGrand = false;
+          try {
+            _useGrand = (Store.getState().engine === 'soundbank') &&
+                       (typeof Soundbank !== 'undefined' && Soundbank.isReady && Soundbank.isReady());
+          } catch (eB) {}
+          var _wantEng = _useGrand ? 'system' : 'integrated';
+          if (_curEng && _curEng !== _wantEng) {
             _demoForcedEngine = _curEng;
-            Store.setState({ synthEngine: 'integrated' });
+            Store.setState({ synthEngine: _wantEng });
           }
         } catch (e) {}
         _demoActive = true;          // set AFTER load so clearDemo isn't triggered

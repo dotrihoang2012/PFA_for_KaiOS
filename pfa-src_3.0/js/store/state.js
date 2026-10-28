@@ -32,7 +32,7 @@ var Store = (function () {
     audio:      true,        // master audio on/off toggle (Settings → Synth → Audio)
 
     // MIDI Output settings (mirrored from localStorage by settings.js)
-    engine:     'synth',     // 'synth' | 'soundbank'
+    engine:     'soundbank',     // 'synth' | 'soundbank'
     trail:      'medium',    // falling-note tail length
 
     // Keyboard range — the visible window of the piano strip.

@@ -32,6 +32,7 @@ var Soundbank = (function () {
 
   var REGISTRY_KEY = 'pfa.soundfonts';
   var UID_KEY = 'pfa.soundfonts.uid';
+  var GRAND_KEY = 'pfa.grand.seeded';
 
   var ctx = null;          // AudioContext shared with Synth
   var masterGain = null;   // master output bus — lets Audio On/Off mute every bank
@@ -48,7 +49,21 @@ var Soundbank = (function () {
     if (!masterGain) {
       masterGain = ctx.createGain();
       masterGain.gain.value = muted ? 0 : volume;
-      masterGain.connect(ctx.destination);
+      var comp = null;
+      try {
+        comp = ctx.createDynamicsCompressor();
+        comp.threshold.value = -14;
+        comp.knee.value = 8;
+        comp.ratio.value = 5;
+        comp.attack.value = 0.002;
+        comp.release.value = 0.2;
+      } catch (eD) { comp = null; }
+      if (comp) {
+        masterGain.connect(comp);
+        comp.connect(ctx.destination);
+      } else {
+        masterGain.connect(ctx.destination);
+      }
     }
     return ctx;
   }
@@ -73,7 +88,7 @@ var Soundbank = (function () {
           selected: !!b.selected,
           sourceType: b.sourceType
         };
-      });
+      }).filter(function (b) { return b.sourceType !== 'builtin'; });
       localStorage.setItem(REGISTRY_KEY, JSON.stringify(list));
     } catch (e) {
       console.warn('[Soundbank] registry persist failed', e);
@@ -285,6 +300,7 @@ var Soundbank = (function () {
       selected: meta.selected !== false,
       sourceType: meta.sourceType || 'file',
       presetCount: meta.presetCount || 0,
+      builtin: !!meta.builtin,
       noteMap: noteMap || {}
     };
     banks.push(bank);
@@ -292,9 +308,74 @@ var Soundbank = (function () {
     return bank;
   }
 
+  function loadBuiltin(manifest, onProgress) {
+    return new Promise(function (resolve, reject) {
+      var list = manifest || (typeof GrandSamples !== 'undefined' ? GrandSamples : null);
+      if (!list || !list.length) { reject(new Error('No built-in samples')); return; }
+      for (var bi = 0; bi < banks.length; bi++) {
+        if (banks[bi].builtin) { resolve(banks[bi]); return; }
+      }
+      var decoded = [];
+      var done = 0;
+      var total = list.length;
+      function next(idx) {
+        if (idx >= total) {
+          if (!decoded.length) { reject(new Error('Built-in samples could not be decoded')); return; }
+          var noteMap = {};
+          for (var n = 0; n < 128; n++) {
+            var best = decoded[0];
+            var bestDist = Math.abs(n - best.root);
+            for (var d = 1; d < decoded.length; d++) {
+              var dist = Math.abs(n - decoded[d].root);
+              if (dist < bestDist) { bestDist = dist; best = decoded[d]; }
+            }
+            noteMap[n] = [{ buffer: best.buffer, rootKey: best.root, gain: best.gain, sampleRate: best.sampleRate }];
+          }
+          var bank = addBank({
+            id: 'builtin-grand',
+            name: 'Grand Piano',
+            path: '',
+            volName: '',
+            selected: true,
+            sourceType: 'builtin',
+            presetCount: 1,
+            builtin: true
+          }, noteMap);
+          try {
+            if (!localStorage.getItem(GRAND_KEY)) {
+              for (var x = 0; x < banks.length; x++) {
+                if (banks[x] !== bank) banks[x].selected = false;
+              }
+              localStorage.setItem(GRAND_KEY, '1');
+            }
+          } catch (eSeed) {}
+          persist();
+          try { console.log('[Soundbank] built-in bank ready: ' + decoded.length + ' samples'); } catch (eLog) {}
+          resolve(bank);
+          return;
+        }
+        var item = list[idx];
+        fetch(item.url).then(function (resp) {
+          if (!resp.ok) throw new Error('HTTP ' + resp.status);
+          return resp.arrayBuffer();
+        }).then(decodeBuffer).then(function (buf) {
+          decoded.push({ buffer: buf, root: item.root, gain: item.gain || 1, sampleRate: buf.sampleRate });
+        }).catch(function (e) {
+          try { console.warn('[Soundbank] built-in sample failed: ' + item.url, e); } catch (eL) {}
+        }).then(function () {
+          done++;
+          if (onProgress) { try { onProgress(done, total); } catch (eP) {} }
+          setTimeout(function () { next(idx + 1); }, 0);
+        });
+      }
+      next(0);
+    });
+  }
+
   function removeBank(id) {
     for (var i = 0; i < banks.length; i++) {
       if (String(banks[i].id) === String(id)) {
+        if (banks[i].builtin) return false;
         banks.splice(i, 1);
         persist();
         return true;
@@ -357,7 +438,8 @@ var Soundbank = (function () {
         volName: b.volName,
         selected: !!b.selected,
         sourceType: b.sourceType,
-        presetCount: b.presetCount
+        presetCount: b.presetCount,
+        builtin: !!b.builtin
       };
     });
   }
@@ -384,6 +466,9 @@ var Soundbank = (function () {
   function bookVoice() { _activeVoices++; }
   function freeVoice() { _activeVoices = Math.max(0, _activeVoices - 1); }
 
+  var SAMPLE_GAIN = 4.0;
+  var _sources = [];
+
   /**
    * Play a note on EVERY selected bank (layering). delaySec/durSec are in
    * seconds relative to AudioContext.currentTime.
@@ -405,24 +490,88 @@ var Soundbank = (function () {
       for (var ei = 0; ei < entries.length; ei++) {
         var entry = entries[ei];
         if (!entry || !entry.buffer) continue;
-        if (voiceGuard()) continue; // over the Voices budget → drop
+        if (voiceGuard()) {
+          if (bank.builtin) stealOldest();
+          else continue;
+        }
         bookVoice();
         try {
           var source = audioCtx.createBufferSource();
           source.buffer = entry.buffer;
+          var rate = 1;
+          if (entry.rootKey != null) rate = Math.pow(2, (note - entry.rootKey) / 12);
+          try { source.playbackRate.value = rate; } catch (eR) {}
           var gainNode = audioCtx.createGain();
-          gainNode.gain.value = gainVal;
+          var peak = gainVal * (entry.gain || 1) * SAMPLE_GAIN;
+          var natural = entry.buffer.duration / rate;
+          var span;
+          if (bank.builtin) {
+            span = natural;
+          } else {
+            span = (durSec && durSec > 0) ? durSec : natural;
+            if (span > natural) span = natural;
+            if (span < 0.05) span = 0.05;
+          }
+          var stopTime = startTime + span;
+          var attack = Math.min(0.006, span * 0.25);
+          var release = bank.builtin ? Math.min(0.06, span * 0.1)
+                                     : Math.min(0.12, Math.max(0.02, span * 0.3));
+          var holdUntil = stopTime - release;
+          if (holdUntil < startTime + attack) holdUntil = startTime + attack;
+          gainNode.gain.setValueAtTime(0, startTime);
+          gainNode.gain.linearRampToValueAtTime(peak, startTime + attack);
+          gainNode.gain.setValueAtTime(peak, holdUntil);
+          gainNode.gain.linearRampToValueAtTime(0, stopTime);
           source.connect(gainNode).connect(masterGain || audioCtx.destination);
-          var stopTime = startTime + (durSec || entry.buffer.duration);
           source.start(startTime);
-          source.stop(stopTime);
-          source.onended = freeVoice;
+          source.stop(stopTime + 0.01);
+          var rec = { src: source, gain: gainNode, freed: false };
+          _sources.push(rec);
+          source.onended = (function (r) {
+            return function () {
+              if (!r.freed) { r.freed = true; freeVoice(); }
+              for (var k = 0; k < _sources.length; k++) {
+                if (_sources[k] === r) { _sources.splice(k, 1); break; }
+              }
+            };
+          })(rec);
         } catch (e) { freeVoice(); /* one bad layer must never stop the rest */ }
       }
     }
   }
 
+  function silence() {
+    if (!ctx) { _sources = []; _activeVoices = 0; return; }
+    var t = ctx.currentTime;
+    for (var i = 0; i < _sources.length; i++) {
+      _sources[i].freed = true;
+      try {
+        var g = _sources[i].gain.gain;
+        g.cancelScheduledValues(t);
+        g.setTargetAtTime(0, t, 0.008);
+        _sources[i].src.stop(t + 0.05);
+      } catch (e) {}
+    }
+    _sources = [];
+    _activeVoices = 0;
+  }
+
+  function stealOldest() {
+    var rec = _sources.shift();
+    if (!rec) { _activeVoices = 0; return false; }
+    rec.freed = true;
+    freeVoice();
+    try {
+      var t = ctx.currentTime;
+      rec.gain.gain.cancelScheduledValues(t);
+      rec.gain.gain.setTargetAtTime(0, t, 0.01);
+      rec.src.stop(t + 0.05);
+    } catch (e) {}
+    return true;
+  }
+
   function unload() {
+    try { silence(); } catch (eS) {}
     banks = [];
     try { localStorage.removeItem(REGISTRY_KEY); } catch (e) {}
     if (ctx && typeof ctx.close === 'function') ctx.close();
@@ -434,6 +583,7 @@ var Soundbank = (function () {
   function mute(on) {
     muted = !!on;
     if (masterGain) masterGain.gain.value = muted ? 0 : volume;
+    if (muted) { try { silence(); } catch (e) {} }
   }
 
   function setVolume(v) {
@@ -511,6 +661,7 @@ var Soundbank = (function () {
 
   return {
     loadFromFile: loadFromFile,
+    loadBuiltin: loadBuiltin,
     addBank: addBank,
     removeBank: removeBank,
     toggleSelect: toggleSelect,
@@ -520,6 +671,7 @@ var Soundbank = (function () {
     getBanks: getBanks,
     load: load,
     play: play,
+    silence: silence,
     unload: unload,
     restore: restore,
     readRegistry: readRegistry,

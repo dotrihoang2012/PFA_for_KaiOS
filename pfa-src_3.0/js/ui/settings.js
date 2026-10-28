@@ -112,8 +112,8 @@ var Settings = (function () {
 
   var DEFAULTS = {
     midi: {
-      engine:       'synth',   // 'synth' | 'soundbank'
-      synthEngine:  'integrated',  // 'system' | 'preload' | 'integrated' — default platform MIDI audio
+      engine:       'soundbank',   // 'synth' | 'soundbank'
+      synthEngine:  'system',  // 'system' | 'preload' | 'integrated' — default platform MIDI audio
       mediaName:    '',        // display name of the preloaded media (no path)
       mediaSrc:     '',        // internal blob URL of the preloaded media
       mediaDelay:   0,         // seconds before the media starts, 0 = off
@@ -446,6 +446,7 @@ var Settings = (function () {
     // persists it and the migration below never re-runs to clobber a value
     // the user later sets â€” even on a brand-new install (raw === null).
     _values.__upgraded = true;
+    _values.__grand = 2;
     if (raw) {
       try {
         var parsed = JSON.parse(raw);
@@ -464,6 +465,14 @@ var Settings = (function () {
           if (!_values.__upgraded) {
             _values.visual.trail = 1.0;
             _values.__upgraded = true;
+          }
+          if (_values.__grand !== 2) {
+            if (_values.midi.synthEngine === 'integrated' &&
+                (_values.midi.engine === 'synth' || _values.midi.engine === 'soundbank')) {
+              _values.midi.engine = 'soundbank';
+              _values.midi.synthEngine = 'system';
+            }
+            _values.__grand = 2;
           }
           // Migration: Note Trail used to live in the MIDI group; older
           // persisted profiles still carry it at midi.trail. Lift it into
@@ -605,6 +614,7 @@ var Settings = (function () {
     // and any settings UI currently open.
     _values = clone(DEFAULTS);
     _values.__upgraded = true;
+    _values.__grand = 2;
     save();
     load();
     if (typeof Keyboard !== 'undefined' && Keyboard.rebuild) {
@@ -612,6 +622,11 @@ var Settings = (function () {
     }
     if (typeof window !== 'undefined' && window.Soundbank && window.Soundbank.unload) {
       try { window.Soundbank.unload(); } catch (e) {}
+      try {
+        if (typeof GrandSamples !== 'undefined' && window.Soundbank.loadBuiltin) {
+          window.Soundbank.loadBuiltin(GrandSamples).catch(function () {});
+        }
+      } catch (eG) {}
     }
     var overlay = document.getElementById('settings-overlay');
     if (overlay && _openGroup && !overlay.classList.contains('hidden')) {
@@ -4306,9 +4321,14 @@ var Settings = (function () {
   }
 
   function openSfDeleteConfirm(focusedRow) {
-    var banks = (typeof Soundbank !== 'undefined' && Soundbank.getBanks) ? Soundbank.getBanks() : [];
+    var all = (typeof Soundbank !== 'undefined' && Soundbank.getBanks) ? Soundbank.getBanks() : [];
+    var banks = [];
+    for (var i = 0; i < all.length; i++) if (!all[i].builtin) banks.push(all[i]);
     var focusId = focusedRow ? sfRowId(focusedRow) : null;
-    var target = focusId ? [focusId] : (banks.length ? [banks[0].id] : []);
+    var target = [];
+    for (var j = 0; j < banks.length; j++) {
+      if (!focusId || String(banks[j].id) === String(focusId)) { target = [banks[j].id]; break; }
+    }
     if (!target.length) {
       if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_no_sf_to_delete', 'No soundfont to delete'));
       return;
