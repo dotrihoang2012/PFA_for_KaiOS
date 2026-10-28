@@ -500,6 +500,7 @@
     // gap, click or restart. noteOff stays broadcast (next callback), which
     // is a safe no-op on engines holding no such voice.
     function _routeNoteToEngine(note, ch, vel, delay, dur) {
+      if (_spamGuard && (dur < 0.01 || vel < 22)) return;
       var useBank = false;
       try {
         useBank = (Store.getState().engine === 'soundbank') &&
@@ -837,6 +838,7 @@
   // (3.14M notes ≈ 225MB heap). 256KB catches every real multi-note MIDI while
   // letting tiny files (<256KB) still play in RAM without an on-disk round trip.
   var HUGE_MIDI_BYTES = 256 * 1024; // 256 KB
+  var _spamGuard = false;
 
   // True while a conversion (.bin/.note writes) or a streamed .note open is in
   // flight. The pfa_tmp wipe-on-close must never run mid-pipeline, or it would
@@ -2517,6 +2519,7 @@
         } catch (e) {}
       }
     }
+    _spamGuard = false;
     Sequencer.load(notes, _tempoForLoad, div);
 
     // Store the NORMALISED map (deduped, sorted, guaranteed tick-0 entry) —
@@ -2740,6 +2743,7 @@
     try { if (performance && performance.memory) console.log('[Heap] loadBinaryNote stream OPEN heapKB=' + Math.round(performance.memory.usedJSHeapSize / 1024)); } catch (e) {}
 
     Sequencer.load(ns, ns.tempoMap, ns.div);
+    _spamGuard = (ns.length >= 200000);
 
     var _nMap = (typeof Tempo !== 'undefined' && Array.isArray(Tempo.map)) ? Tempo.map.slice() : ns.tempoMap;
     var _nDiv = (typeof Tempo !== 'undefined' && Tempo.div > 0) ? Tempo.div : ns.div;
