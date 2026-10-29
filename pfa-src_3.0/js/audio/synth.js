@@ -531,6 +531,10 @@ var Synth = (function () {
     return performance.now() / 1000;
   }
 
+  function isRunning() {
+    return !!(ctx && ctx.state === 'running');
+  }
+
   function keepAliveState() {
     return 'removed';
   }
@@ -539,7 +543,7 @@ var Synth = (function () {
     init: init, noteOn: noteOn, noteOff: noteOff,
     silence: silence, zoo: zoo, setWave: setWave,
     setVolume: setVolume, getVolume: getVolume, ensure: ensure, resume: ensure,
-    getTime: getTime, voiceCount: getVoiceCount,
+    getTime: getTime, isRunning: isRunning, voiceCount: getVoiceCount,
     keepAliveState: keepAliveState, transplant: transplant, mute: mute,
     setActive: setActive,
   };

@@ -13,6 +13,8 @@ var Sequencer = (function () {
   var speed   = 1.0;
   var playing = false;
   var timer   = null;
+  var _startPoll = null;
+  var _startWaitAt = 0;
   var ctxBase = 0;
   var tickStart = 0;
   // Pre-roll offset (seconds): when non-zero the clock starts at
@@ -50,6 +52,7 @@ var Sequencer = (function () {
     Tempo.setMap(tempoList, division, _sso);
     cursor = 0; tick = 0; _killActiveVoices(); passedCount = 0; _ended = false; stopPlay();
     _startOffsetSec = 0;  // pre-roll is demo-only; cleared when any file loads
+    if (isStr && notes.prefetch) { try { notes.prefetch(0); } catch (e) {} }
   }
 
   // Streaming provider: return a resolved note object for index i (must have
@@ -62,6 +65,30 @@ var Sequencer = (function () {
   }
 
   function _beginTimer() {
+    if (isStr && !streamReady(cursor)) {
+      if (notes.prefetch) { try { notes.prefetch(cursor); } catch (e) {} }
+      if (_startPoll) { clearInterval(_startPoll); _startPoll = null; }
+      _startWaitAt = performance.now();
+      playing = true;
+      _startPoll = setInterval(function () {
+        if (!_startPoll) return;
+        if (!playing) {
+          if (_startPoll) { clearInterval(_startPoll); _startPoll = null; }
+          return;
+        }
+        var ready = streamReady(cursor);
+        if (!ready && performance.now() - _startWaitAt < 5000) {
+          if (notes.prefetch) { try { notes.prefetch(cursor); } catch (e) {} }
+          return;
+        }
+        if (_startPoll) { clearInterval(_startPoll); _startPoll = null; }
+        _beginTimerNow();
+      }, 25);
+      return;
+    }
+    _beginTimerNow();
+  }
+  function _beginTimerNow() {
     playing = true; ctxBase = audioNow() + _startOffsetSec; tickStart = tick;
     _refireSounding();
     if (isStr && notes.prefetch) { try { notes.prefetch(cursor); } catch (e) {} }
@@ -73,7 +100,7 @@ var Sequencer = (function () {
     if (_seekPending) { _resumeSeek = true; return; }
     _beginTimer();
   }
-  function stopPlay() { playing = false; if (timer) { clearInterval(timer); timer = null; } }
+  function stopPlay() { playing = false; if (_startPoll) { clearInterval(_startPoll); _startPoll = null; } if (timer) { clearInterval(timer); timer = null; } }
   function fullStop() { _seekPending = null; _resumeSeek = false; stopPlay(); _killActiveVoices(); cursor = 0; tick = 0; passedCount = 0; _ended = false; }
   function isEnded() { return _ended; }
 

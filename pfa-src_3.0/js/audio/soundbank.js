@@ -453,6 +453,15 @@ var Soundbank = (function () {
   }
   function isReady() { return anySelected(); }
 
+  function isRunning() { return !!(ctx && ctx.state === 'running'); }
+
+  function ensure() {
+    if (muted || !anySelected()) return;
+    var audioCtx = ensureContext();
+    if (audioCtx.state === 'running') return;
+    try { if (audioCtx.resume) audioCtx.resume(); } catch (e) {}
+  }
+
   // Voice budget: total simultaneously-playing note layers across ALL
   // selected banks. Settings → Synth → Soundfont Settings → Voices.
   var _activeVoices = 0;
@@ -682,6 +691,8 @@ var Soundbank = (function () {
     mute: mute,
     setVolume: setVolume,
     getVolume: getVolume,
-    isReady: isReady
+    isReady: isReady,
+    ensure: ensure,
+    isRunning: isRunning
   };
 })();

@@ -1753,6 +1753,51 @@
   // (number of actually-sounding voices) instead of the note-event window.
   window._engine = _engine;
 
+  var _seqStartGen = 0;
+  var _seqStartTimer = null;
+  var _seqStartPoll = null;
+
+  function _cancelSeqStartWait() {
+    if (_seqStartTimer) { clearTimeout(_seqStartTimer); _seqStartTimer = null; }
+    if (_seqStartPoll) { clearInterval(_seqStartPoll); _seqStartPoll = null; }
+  }
+
+  function _startSeqWhenAudioReady() {
+    var st = null;
+    try { st = Store.getState(); } catch (e) {}
+    if (!st || st.play !== 'play') return;
+    var gen = ++_seqStartGen;
+    _cancelSeqStartWait();
+    var eng = null;
+    if (st.audio !== false && st.synthEngine !== 'preload' && st.synthEngine !== 'integrated') {
+      try {
+        if (st.engine === 'soundbank' && typeof Soundbank !== 'undefined' && Soundbank.isReady && Soundbank.isReady()) eng = Soundbank;
+        else eng = _engine();
+      } catch (eE) {}
+    }
+    var started = false;
+    function go() {
+      if (started || gen !== _seqStartGen) return;
+      started = true;
+      _cancelSeqStartWait();
+      try {
+        var sp = Store.getState();
+        if (sp && sp.play === 'play') Sequencer.play();
+      } catch (eP) {}
+    }
+    if (!eng || !eng.isRunning || eng.isRunning()) { go(); return; }
+    try { if (eng.ensure) eng.ensure(); } catch (eN) {}
+    try {
+      _seqStartPoll = setInterval(function () {
+        if (gen !== _seqStartGen) return;
+        var ok = false;
+        try { ok = !eng.isRunning || eng.isRunning(); } catch (eR) { ok = true; }
+        if (ok) go();
+      }, 20);
+    } catch (eI) { go(); return; }
+    try { _seqStartTimer = setTimeout(go, 1500); } catch (eT) { go(); }
+  }
+
   function onStoreChange(state) {
     // Playback control (avoid re-trigger from onEnd cycle)
     var prevPlay = Store._prevPlay;
@@ -1780,7 +1825,7 @@
       // element's own 'playing' event; everything else starts immediately.
       var _waitAudio = false;
       try { _waitAudio = _integFreshPending(); } catch (eD) {}
-      if (!_waitAudio) { try { Sequencer.play(); } catch (eP) {} }
+      if (!_waitAudio) { _startSeqWhenAudioReady(); }
       _mediaPlay();
       _integPlay();
       if (_waitAudio) { try { _integAwaitPlaying(); } catch (eA2) {} }
@@ -2386,7 +2431,7 @@
       if (st2 && st2.play === 'play' && typeof Sequencer !== 'undefined') {
         var _isPl = false;
         try { _isPl = Sequencer.isPlaying ? Sequencer.isPlaying() : false; } catch (eP) {}
-        if (!_isPl) Sequencer.play();
+        if (!_isPl) _startSeqWhenAudioReady();
       }
       // Re-acquire screen wake lock for foreground play (released on blur).
       if (st2 && st2.play === 'play') acquireScreenWakeLock();
@@ -3976,7 +4021,7 @@ vols.forEach(function (vol) {
           if (st.play === 'play' && typeof Sequencer !== 'undefined') {
             var _isPl2 = false;
             try { _isPl2 = Sequencer.isPlaying ? Sequencer.isPlaying() : false; } catch (eP2) {}
-            if (!_isPl2) Sequencer.play();
+            if (!_isPl2) _startSeqWhenAudioReady();
           }
         } catch (eS) {}
         try {
