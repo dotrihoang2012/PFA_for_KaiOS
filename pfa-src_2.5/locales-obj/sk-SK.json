@@ -1100,6 +1100,10 @@
     "$v": "Načítať pozadie"
   },
   {
+    "$i": "change_background",
+    "$v": "Zmeniť pozadie"
+  },
+  {
     "$i": "clear_background",
     "$v": "Vyčistiť pozadie"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Exportované nastavenia:\niné/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Nastavenia boli úspešne importované."
   },
   {
     "$i": "err_export_blocked",

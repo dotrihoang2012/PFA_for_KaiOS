@@ -1100,6 +1100,10 @@
     "$v": "Hlaða bakgrunn"
   },
   {
+    "$i": "change_background",
+    "$v": "Breyta bakgrunni"
+  },
+  {
     "$i": "clear_background",
     "$v": "Hreinsa bakgrunnur"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Stillingar fluttar út:\naðrir/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Stillingar fluttar inn."
   },
   {
     "$i": "err_export_blocked",

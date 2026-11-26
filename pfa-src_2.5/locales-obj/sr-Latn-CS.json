@@ -1100,6 +1100,10 @@
     "$v": "Учитај позадину"
   },
   {
+    "$i": "change_background",
+    "$v": "Promeni pozadinu"
+  },
+  {
     "$i": "clear_background",
     "$v": "Цлеар Бацкгроунд"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Извезена подешавања:\nдруги/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Podešavanja su uspešno uvezena."
   },
   {
     "$i": "err_export_blocked",

@@ -1100,6 +1100,10 @@
     "$v": "טען רקע"
   },
   {
+    "$i": "change_background",
+    "$v": "שנה רקע"
+  },
+  {
     "$i": "clear_background",
     "$v": "נקה רקע"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "הגדרות שיוצאו:\nאחרים/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "ההגדרות יובאו בהצלחה."
   },
   {
     "$i": "err_export_blocked",

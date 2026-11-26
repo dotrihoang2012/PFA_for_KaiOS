@@ -1180,6 +1180,10 @@
     "$v": "Load Background"
   },
   {
+    "$i": "change_background",
+    "$v": "Change Background"
+  },
+  {
     "$i": "clear_background",
     "$v": "Clear Background"
   },
@@ -1506,6 +1510,10 @@
   {
     "$i": "settings_exported",
     "$v": "Settings exported:\nothers/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Settings imported successfully."
   },
   {
     "$i": "err_export_blocked",

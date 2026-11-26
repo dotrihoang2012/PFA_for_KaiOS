@@ -1100,6 +1100,10 @@
     "$v": "Ngarko sfondin"
   },
   {
+    "$i": "change_background",
+    "$v": "Ndrysho sfondin"
+  },
+  {
     "$i": "clear_background",
     "$v": "Pastro sfondin"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Cilësimet u eksportuan:\ntë tjera/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Cilësimet u importuan me sukses."
   },
   {
     "$i": "err_export_blocked",

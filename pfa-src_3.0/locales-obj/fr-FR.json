@@ -1100,6 +1100,10 @@
     "$v": "Fond paresseux de charge"
   },
   {
+    "$i": "change_background",
+    "$v": "Changer l'arrière-plan"
+  },
+  {
     "$i": "clear_background",
     "$v": "Effacer le &fond"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Paramètres exportés :\nautres/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Paramètres importés avec succès."
   },
   {
     "$i": "err_export_blocked",

@@ -1100,6 +1100,10 @@
     "$v": "Usuli wa Mzigo"
   },
   {
+    "$i": "change_background",
+    "$v": "Badilisha Mandharinyuma"
+  },
+  {
     "$i": "clear_background",
     "$v": "Ondoa Usuli"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Mipangilio imesafirishwa:\nwengine/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Mipangilio imeingizwa kwa mafanikio."
   },
   {
     "$i": "err_export_blocked",

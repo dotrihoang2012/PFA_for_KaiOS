@@ -1100,6 +1100,10 @@
     "$v": "Carregar Fundo"
   },
   {
+    "$i": "change_background",
+    "$v": "Alterar fundo"
+  },
+  {
     "$i": "clear_background",
     "$v": "Fundo transparente"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Definições exportadas:\noutros/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Definições importadas com sucesso."
   },
   {
     "$i": "err_export_blocked",

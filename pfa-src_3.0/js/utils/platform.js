@@ -139,61 +139,53 @@ var PfaPlatform = (function () {
 
   function inputPick() {
     return new Promise(function (resolve, reject) {
-      try {
-        var input = document.createElement('input');
-        input.type = 'file';
-        input.style.position = 'fixed';
-        input.style.left = '-9999px';
-        input.onchange = function () {
-          var file = input.files && input.files[0];
-          try { if (input.parentNode) input.parentNode.removeChild(input); } catch (e) {}
-          if (file) resolve(file);
-          else reject(new Error('No file selected'));
-        };
-        document.body.appendChild(input);
-        input.click();
-      } catch (e) { reject(e); }
-    });
-  }
-
-  function pickFile(data) {
-    return new Promise(function (resolve, reject) {
-      var seen = false;
       var settled = false;
-      function markSeen() { seen = true; }
-      function onVis() { if (document.hidden) seen = true; }
-      function clean() {
+      var input = null;
+      function cleanupListeners() {
+        try { window.removeEventListener('focus', onReturn); } catch (e) {}
         try { document.removeEventListener('visibilitychange', onVis); } catch (e) {}
-        try { window.removeEventListener('blur', markSeen); } catch (e) {}
       }
       function finish(fn, value) {
         if (settled) return;
         settled = true;
-        clean();
+        if (input) input.onchange = null;
+        cleanupListeners();
         fn(value);
       }
-      try { document.addEventListener('visibilitychange', onVis); } catch (e) {}
-      try { window.addEventListener('blur', markSeen); } catch (e) {}
-      function attempt(d) {
-        startActivity('pick', d).then(function (res) {
-          finish(resolve, res);
-        }, function (err) {
-          if (isActivityCancel(err) && seen) { finish(reject, err); return; }
-          console.log('[Platform] pick failed: ' + ((err && (err.name || err.message)) || err));
-          if (d) {
-            console.log('[Platform] pick fallback input');
-            inputPick().then(function (file) {
-              finish(resolve, file);
-            }, function (e) {
-              finish(reject, e);
-            });
+      function onReturn() {
+        setTimeout(function () {
+          if (settled) return;
+          if (input && input.files && input.files[0]) {
+            finish(resolve, input.files[0]);
             return;
           }
-          attempt({ type: PICK_TYPES });
-        });
+          // Reset picker open flags so a cancelled <input type="file"> never
+          // wedges subsequent picks or suppresses background notifications,
+          // while leaving onchange alive if the device delivers it late.
+          try { window._pickerOpen = false; window._pickImportOpen = false; } catch (e) {}
+          cleanupListeners();
+        }, 500);
       }
-      attempt(data || null);
+      function onVis() { if (!document.hidden) onReturn(); }
+      try {
+        input = document.createElement('input');
+        input.type = 'file';
+        input.onchange = function () {
+          var file = input.files && input.files[0];
+          if (file) finish(resolve, file);
+          else finish(reject, new Error('Activity cancelled'));
+        };
+        try { window.addEventListener('focus', onReturn); } catch (e) {}
+        try { document.addEventListener('visibilitychange', onVis); } catch (e) {}
+        input.click();
+      } catch (e) {
+        finish(reject, e);
+      }
     });
+  }
+
+  function pickFile() {
+    return inputPick();
   }
 
   function startActivity(name, data) {

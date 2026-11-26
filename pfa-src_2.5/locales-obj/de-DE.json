@@ -1100,6 +1100,10 @@
     "$v": "Hintergrund laden"
   },
   {
+    "$i": "change_background",
+    "$v": "Hintergrund ändern"
+  },
+  {
     "$i": "clear_background",
     "$v": "Hintergrund entfernen"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Einstellungen exportiert:\nandere/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Einstellungen erfolgreich importiert."
   },
   {
     "$i": "err_export_blocked",

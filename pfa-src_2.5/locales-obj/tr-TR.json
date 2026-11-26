@@ -1100,6 +1100,10 @@
     "$v": "Yük arka planı"
   },
   {
+    "$i": "change_background",
+    "$v": "Arka Planı Değiştir"
+  },
+  {
     "$i": "clear_background",
     "$v": "Clear background"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "ihraç edilen platformlar:\nDiğerleri /"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Ayarlar başarıyla içe aktarıldı."
   },
   {
     "$i": "err_export_blocked",

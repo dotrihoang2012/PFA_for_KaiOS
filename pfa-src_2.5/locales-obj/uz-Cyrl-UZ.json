@@ -1100,6 +1100,10 @@
     "$v": "Fonni yuklash"
   },
   {
+    "$i": "change_background",
+    "$v": "Фонни ўзгартириш"
+  },
+  {
     "$i": "clear_background",
     "$v": "Fonni tozalash"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Sozlamalar eksport qilindi:\nboshqalar/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Созламалар муваффақиятли импорт қилинди."
   },
   {
     "$i": "err_export_blocked",

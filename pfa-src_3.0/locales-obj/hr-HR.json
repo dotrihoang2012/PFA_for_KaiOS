@@ -1100,6 +1100,10 @@
     "$v": "Učitaj pozadinu"
   },
   {
+    "$i": "change_background",
+    "$v": "Promijeni pozadinu"
+  },
+  {
     "$i": "clear_background",
     "$v": "Čista pozadina"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Izvezene postavke:\ndrugi/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Postavke su uspješno uvezene."
   },
   {
     "$i": "err_export_blocked",

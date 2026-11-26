@@ -1100,6 +1100,10 @@
     "$v": "Carica sfondo"
   },
   {
+    "$i": "change_background",
+    "$v": "Cambia sfondo"
+  },
+  {
     "$i": "clear_background",
     "$v": "Sfondo chiaro"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Impostazioni esportate:\naltri/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Impostazioni importate con successo."
   },
   {
     "$i": "err_export_blocked",

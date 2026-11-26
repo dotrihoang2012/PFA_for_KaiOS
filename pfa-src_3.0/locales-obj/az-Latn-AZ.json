@@ -1100,6 +1100,10 @@
     "$v": "Arxa fonu yüklə"
   },
   {
+    "$i": "change_background",
+    "$v": "Fon şəklini dəyişdir"
+  },
+  {
     "$i": "clear_background",
     "$v": "Arxa fonu sil"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "İxrac olunan parametrlər:\ndigərləri/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Parametrlər uğurla idxal edildi."
   },
   {
     "$i": "err_export_blocked",

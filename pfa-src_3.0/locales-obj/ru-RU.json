@@ -1100,6 +1100,10 @@
     "$v": "Загрузка Background"
   },
   {
+    "$i": "change_background",
+    "$v": "Изменить фон"
+  },
+  {
     "$i": "clear_background",
     "$v": "Ясный фон"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Настройки экспортируются:\nдругие"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Настройки успешно импортированы."
   },
   {
     "$i": "err_export_blocked",

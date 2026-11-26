@@ -1100,6 +1100,10 @@
     "$v": "دوبارہ لوڈ کریں"
   },
   {
+    "$i": "change_background",
+    "$v": "پس منظر تبدیل کریں"
+  },
+  {
     "$i": "clear_background",
     "$v": "صاف"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "ترتیبات:\nدوسرے/ب"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "ترتیبات کامیابی سے درآمد ہو گئیں۔"
   },
   {
     "$i": "err_export_blocked",

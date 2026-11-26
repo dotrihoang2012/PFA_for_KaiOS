@@ -1100,6 +1100,10 @@
     "$v": "Ladda bakgrund"
   },
   {
+    "$i": "change_background",
+    "$v": "Ändra bakgrund"
+  },
+  {
     "$i": "clear_background",
     "$v": "Rensa bakgrund"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Inställningar exporterade:\növriga/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Inställningar importerades."
   },
   {
     "$i": "err_export_blocked",

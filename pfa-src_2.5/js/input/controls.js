@@ -789,40 +789,42 @@ if (Settings.isSfDoneOpen && Settings.isSfDoneOpen()) {
     _focusedItemIndex = -1;
 
     try {
-      // Own activity launched → the system may hide our window meanwhile; keep
-      // the "PFA is running" notification suppressed while the picker is up
-      // (our blur/visibilitychange handlers check window._pickerOpen).
+      // File picker via <input type="file"> (same pattern as Discord4KaiOS).
+      // Keep the "PFA is running" notification suppressed while the picker is up.
       window._pickerOpen = true;
-      var act = new MozActivity({ name: 'pick' });
-      act.onsuccess = function (res) {
+      var input = document.createElement('input');
+      input.type = 'file';
+      var handled = false;
+      function clearPickerState() {
         window._pickerOpen = false;
-        // Restore fullscreen chrome state
         updateChromeAfterPicker();
-        var blob = null;
-        if (res.target && res.target.result) {
-          blob = res.target.result.blob || res.target.result;
-        } else if (res.result && res.result.blob) {
-          blob = res.result.blob;
-        } else if (res.blob) {
-          blob = res.blob;
-        } else if (res instanceof Blob) {
-          blob = res;
-        }
+        try { window.removeEventListener('focus', onReturn); } catch (e) {}
+        try { document.removeEventListener('visibilitychange', onVis); } catch (e) {}
+      }
+      function onReturn() {
+        setTimeout(function () {
+          if (!handled) clearPickerState();
+        }, 500);
+      }
+      function onVis() { if (!document.hidden) onReturn(); }
+      try { window.addEventListener('focus', onReturn); } catch (e) {}
+      try { document.addEventListener('visibilitychange', onVis); } catch (e) {}
+      input.onchange = function () {
+        handled = true;
+        var blob = input.files && input.files[0];
+        input.onchange = null;
+        clearPickerState();
         if (blob) {
           window._midiBlob = blob; // expose for native audio — disk reference, no RAM copy
           window._midiName = blob.name || 'picked.mid';
           handlePickedBlob(blob, blob.name || 'picked.mid');
         }
       };
-      act.onerror = function () {
-        window._pickerOpen = false;
-        updateChromeAfterPicker();
-        console.log('[Ctrl] MozActivity pick cancelled');
-      };
+      input.click();
     } catch (e) {
       window._pickerOpen = false;
       updateChromeAfterPicker();
-      console.error('[Ctrl] MozActivity error:', e);
+      console.error('[Ctrl] file picker error:', e);
     }
   }
 

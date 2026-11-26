@@ -1100,6 +1100,10 @@
     "$v": "Įkelti foną"
   },
   {
+    "$i": "change_background",
+    "$v": "Keisti foną"
+  },
+  {
     "$i": "clear_background",
     "$v": "Išvalyti foną"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Nustatymai eksportuoti:\nkiti/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Nustatymai sėkmingai importuoti."
   },
   {
     "$i": "err_export_blocked",

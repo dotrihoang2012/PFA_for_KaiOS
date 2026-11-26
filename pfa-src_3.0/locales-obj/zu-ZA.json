@@ -1100,6 +1100,10 @@
     "$v": "Load Background"
   },
   {
+    "$i": "change_background",
+    "$v": "Shintsha ingemuva"
+  },
+  {
     "$i": "clear_background",
     "$v": "Clear Background"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Settings exported:\nothers/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Izilungiselelo zingeniswe ngempumelelo."
   },
   {
     "$i": "err_export_blocked",

@@ -1100,6 +1100,10 @@
     "$v": "Layisha Imvelaphi"
   },
   {
+    "$i": "change_background",
+    "$v": "Tshintsha umva"
+  },
+  {
     "$i": "clear_background",
     "$v": "Imvelaphi ecacileyo"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Iisetingi zithunyelwe ngaphandle:\nabanye/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Iisetingi zingeniswe ngempumelelo."
   },
   {
     "$i": "err_export_blocked",

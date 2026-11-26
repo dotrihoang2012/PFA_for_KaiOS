@@ -1100,6 +1100,10 @@
     "$v": "Last inn bakgrunn"
   },
   {
+    "$i": "change_background",
+    "$v": "Endre bakgrunn"
+  },
+  {
     "$i": "clear_background",
     "$v": "Tøm bakgrunn"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Innstillinger eksportert:\nandre/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Innstillinger ble importert."
   },
   {
     "$i": "err_export_blocked",

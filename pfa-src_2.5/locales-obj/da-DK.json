@@ -1100,6 +1100,10 @@
     "$v": "Indlæs baggrund"
   },
   {
+    "$i": "change_background",
+    "$v": "Skift baggrund"
+  },
+  {
     "$i": "clear_background",
     "$v": "Ryd baggrund"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Indstillinger eksporteret:\nandre/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Indstillinger blev importeret."
   },
   {
     "$i": "err_export_blocked",

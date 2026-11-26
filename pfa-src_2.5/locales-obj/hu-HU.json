@@ -1100,6 +1100,10 @@
     "$v": "Háttér betöltése"
   },
   {
+    "$i": "change_background",
+    "$v": "Háttér módosítása"
+  },
+  {
     "$i": "clear_background",
     "$v": "Háttér törlése"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Exportált beállítások:\negyéb/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "A beállítások sikeresen importálva."
   },
   {
     "$i": "err_export_blocked",

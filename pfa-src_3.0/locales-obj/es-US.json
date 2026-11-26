@@ -1100,6 +1100,10 @@
     "$v": "Cargar fondo"
   },
   {
+    "$i": "change_background",
+    "$v": "Cambiar fondo"
+  },
+  {
     "$i": "clear_background",
     "$v": "Borrar fondo"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Configuración exportada:\notros/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Configuración importada correctamente."
   },
   {
     "$i": "err_export_blocked",

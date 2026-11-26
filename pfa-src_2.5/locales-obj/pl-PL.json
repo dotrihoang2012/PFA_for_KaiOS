@@ -1100,6 +1100,10 @@
     "$v": "Wczytaj tło"
   },
   {
+    "$i": "change_background",
+    "$v": "Zmień tło"
+  },
+  {
     "$i": "clear_background",
     "$v": "Wyczyść tło"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Wyeksportowane ustawienia:\ninne/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Ustawienia zostały pomyślnie zaimportowane."
   },
   {
     "$i": "err_export_blocked",

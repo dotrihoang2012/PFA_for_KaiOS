@@ -1100,6 +1100,10 @@
     "$v": "装入背景"
   },
   {
+    "$i": "change_background",
+    "$v": "更改背景"
+  },
+  {
     "$i": "clear_background",
     "$v": "清除背景"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "导出设置 :\n其他人/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "设置导入成功。"
   },
   {
     "$i": "err_export_blocked",

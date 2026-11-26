@@ -1100,6 +1100,10 @@
     "$v": "Ielādēt fonu"
   },
   {
+    "$i": "change_background",
+    "$v": "Mainīt fonu"
+  },
+  {
     "$i": "clear_background",
     "$v": "Notīrīt fonu"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Iestatījumi eksportēti:\nciti/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Iestatījumi veiksmīgi importēti."
   },
   {
     "$i": "err_export_blocked",

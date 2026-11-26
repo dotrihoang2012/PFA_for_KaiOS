@@ -1583,14 +1583,25 @@
     } catch (e) {}
     try {
       window._pickerOpen = true;
-      var act = new MozActivity({ name: 'pick' });
-      act.onsuccess = function (res) {
+      var input = document.createElement('input');
+      input.type = 'file';
+      var handled = false;
+      function clearPickerState() {
         window._pickerOpen = false;
-        var blob = null;
-        if (res.target && res.target.result) blob = res.target.result.blob || res.target.result;
-        else if (res.result && res.result.blob) blob = res.result.blob;
-        else if (res.blob) blob = res.blob;
-        else if (res instanceof Blob) blob = res;
+        try { window.removeEventListener('focus', onReturn); } catch (e) {}
+        try { document.removeEventListener('visibilitychange', onVis); } catch (e) {}
+      }
+      function onReturn() {
+        setTimeout(function () { if (!handled) clearPickerState(); }, 500);
+      }
+      function onVis() { if (!document.hidden) onReturn(); }
+      try { window.addEventListener('focus', onReturn); } catch (e) {}
+      try { document.addEventListener('visibilitychange', onVis); } catch (e) {}
+      input.onchange = function () {
+        handled = true;
+        var blob = input.files && input.files[0];
+        input.onchange = null;
+        clearPickerState();
         if (!blob) return;
         var name = String(blob.name || 'media').split('/').pop();
         if (_isMediaFile(blob, name)) {
@@ -1611,7 +1622,7 @@
           }
         }
       };
-      act.onerror = function () { window._pickerOpen = false; };
+      input.click();
     } catch (e) { window._pickerOpen = false; }
   };
 
@@ -4267,7 +4278,14 @@ vols.forEach(function (vol) {
           }
           var ok = (typeof Settings !== 'undefined' && Settings.applyImportedSettings)
             ? Settings.applyImportedSettings(parsed) : false;
-          if (!ok) say(L10n.t('err_import_apply', 'Could not apply the imported settings.'));
+          if (ok) {
+            var shortName = String(name || '').split('/').pop().split('\\').pop();
+            var msg = L10n.t('settings_imported', 'Settings imported successfully.');
+            if (shortName) msg += '\n' + shortName;
+            say(msg);
+          } else {
+            say(L10n.t('err_import_apply', 'Could not apply the imported settings.'));
+          }
         }, function () { say(L10n.t('err_import_read', 'Could not read this file.')); });
       }
       // Sniff BEFORE reading: a 75MB binary .note must be refused from its
@@ -4286,13 +4304,28 @@ vols.forEach(function (vol) {
     try {
       if (window._pickImportOpen) return;
       window._pickImportOpen = true;
-      var activity = new MozActivity({
-        name: 'pick'
-      });
-      activity.onsuccess = function () {
+      window._pickerOpen = true;
+      var input = document.createElement('input');
+      input.type = 'file';
+      var handled = false;
+      function clearPickerState() {
         window._pickImportOpen = false;
-        var blob = extractBlob(this.result);
-        var name = extractName(this.result) || (blob && blob.name) || '';
+        window._pickerOpen = false;
+        try { window.removeEventListener('focus', onReturn); } catch (e) {}
+        try { document.removeEventListener('visibilitychange', onVis); } catch (e) {}
+      }
+      function onReturn() {
+        setTimeout(function () { if (!handled) clearPickerState(); }, 500);
+      }
+      function onVis() { if (!document.hidden) onReturn(); }
+      try { window.addEventListener('focus', onReturn); } catch (e) {}
+      try { document.addEventListener('visibilitychange', onVis); } catch (e) {}
+      input.onchange = function () {
+        handled = true;
+        var blob = input.files && input.files[0];
+        input.onchange = null;
+        clearPickerState();
+        var name = (blob && blob.name) || '';
         if (!blob) { say(L10n.t('err_import_read', 'Cannot read that file.')); return; }
         // "picker with filter": only .note configs may be imported. Anything
         // else is refused BEFORE reading so no conftype gets applied by mistake.
@@ -4303,9 +4336,10 @@ vols.forEach(function (vol) {
         }
         parseAndApply(name, blob);
       };
-      activity.onerror = function () { window._pickImportOpen = false; };
+      input.click();
     } catch (e) {
       window._pickImportOpen = false;
+      window._pickerOpen = false;
       say(L10n.t('err_picker', 'Cannot launch the file picker.'));
     }
   }

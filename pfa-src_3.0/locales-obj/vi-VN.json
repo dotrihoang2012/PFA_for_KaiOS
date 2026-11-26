@@ -1092,6 +1092,10 @@
     "$v": "Tải hình nền"
   },
   {
+    "$i": "change_background",
+    "$v": "Đổi hình nền"
+  },
+  {
     "$i": "clear_background",
     "$v": "Xóa hình nền"
   },
@@ -1462,6 +1466,10 @@
   {
     "$i": "settings_exported",
     "$v": "Đã xuất cài đặt vào:\nothers/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Đã nhập cài đặt thành công."
   },
   {
     "$i": "err_export_blocked",

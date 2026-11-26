@@ -4431,7 +4431,14 @@ vols.forEach(function (vol) {
           }
           var ok = (typeof Settings !== 'undefined' && Settings.applyImportedSettings)
             ? Settings.applyImportedSettings(parsed) : false;
-          if (!ok) say(L10n.t('err_import_apply', 'Could not apply the imported settings.'));
+          if (ok) {
+            var shortName = String(name || '').split('/').pop().split('\\').pop();
+            var msg = L10n.t('settings_imported', 'Settings imported successfully.');
+            if (shortName) msg += '\n' + shortName;
+            say(msg);
+          } else {
+            say(L10n.t('err_import_apply', 'Could not apply the imported settings.'));
+          }
         }, function () { say(L10n.t('err_import_read', 'Could not read this file.')); });
       }
       // Sniff BEFORE reading: a 75MB binary .note must be refused from its

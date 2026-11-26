@@ -1100,6 +1100,10 @@
     "$v": "Încărcare fundal"
   },
   {
+    "$i": "change_background",
+    "$v": "Schimbă fundalul"
+  },
+  {
     "$i": "clear_background",
     "$v": "Șterge fundalul"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Setări exportate:\naltii/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Setările au fost importate cu succes."
   },
   {
     "$i": "err_export_blocked",

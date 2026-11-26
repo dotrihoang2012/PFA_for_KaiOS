@@ -1100,6 +1100,10 @@
     "$v": "Lataa tausta"
   },
   {
+    "$i": "change_background",
+    "$v": "Vaihda tausta"
+  },
+  {
     "$i": "clear_background",
     "$v": "Poista tausta"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Asetukset viety:\nmuut/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Asetukset tuotu onnistuneesti."
   },
   {
     "$i": "err_export_blocked",

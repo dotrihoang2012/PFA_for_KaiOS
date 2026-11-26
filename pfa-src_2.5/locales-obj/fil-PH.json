@@ -1100,6 +1100,10 @@
     "$v": "I-load ang Background"
   },
   {
+    "$i": "change_background",
+    "$v": "Palitan ang Background"
+  },
+  {
     "$i": "clear_background",
     "$v": "I-clear ang Background"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Mga setting na na-export:&#10; iba pa/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Matagumpay na na-import ang mga setting."
   },
   {
     "$i": "err_export_blocked",

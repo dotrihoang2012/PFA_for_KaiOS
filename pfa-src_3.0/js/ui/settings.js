@@ -1176,8 +1176,8 @@ var Settings = (function () {
       return true;
     }
     if (item.type === 'sub' && item.part === 'bgSettings') {
-      // Visual â†’ General â†’ Background Settings: dedicated image/color page.
-      openSub('background', 'bgSettings', 'Background Settings');
+      // Visual → General → Background Settings: dedicated image/color page.
+      openSub('background', 'bgSettings', L10n.t('background_settings', 'Background Settings'));
       if (_sub) _sub.returnTo = 'general';
       if (typeof window.updateSoftkeys === 'function') window.updateSoftkeys();
       return true;
@@ -1222,6 +1222,15 @@ var Settings = (function () {
     var returnFocusKey = _sub ? _sub.key : null;
     _sub = null;
 
+    function restoreSubHeader(ov, key, fallbackL10n, fallbackLabel) {
+      if (!ov) return;
+      var h = ov.querySelector('header');
+      if (!h) return;
+      var def = findDef(_openGroup, key);
+      if (def) h.textContent = L10n.t(def.l10nKey || def.key, def.label);
+      else h.textContent = L10n.t(fallbackL10n || key, fallbackLabel || getDrillLabel(key));
+    }
+
     if (wasFromBools) {
       // Re-open the bools page (subsettings overlay) in place.
       var list2 = document.getElementById('subsettings-list');
@@ -1230,7 +1239,10 @@ var Settings = (function () {
         _sub = { kind: 'bools', key: 'infoCard', items: [], focusIdx: 0, ui: {} };
         buildBoolPage(list2);
         var ov2 = document.getElementById('subsettings-overlay');
-        if (ov2) ov2.classList.remove('hidden');
+        if (ov2) {
+          ov2.classList.remove('hidden');
+          restoreSubHeader(ov2, 'infoCard', 'infoCard', 'Info Card');
+        }
         // Restore focus onto the row we drilled in from.
         if (returnFocusKey) {
           for (var bi = 0; bi < _sub.items.length; bi++) {
@@ -1253,7 +1265,10 @@ var Settings = (function () {
         _sub = { kind: 'piano', key: 'piano', items: [], focusIdx: 0, ui: {} };
         buildPianoPage(listP);
         var ovP = document.getElementById('subsettings-overlay');
-        if (ovP) ovP.classList.remove('hidden');
+        if (ovP) {
+          ovP.classList.remove('hidden');
+          restoreSubHeader(ovP, 'piano', 'piano', 'Piano');
+        }
         if (returnFocusKey) {
           for (var pi = 0; pi < _sub.items.length; pi++) {
             if (_sub.items[pi].part === returnFocusKey) { _sub.focusIdx = pi; break; }
@@ -1275,7 +1290,10 @@ var Settings = (function () {
         _sub = { kind: 'general', key: 'general', items: [], focusIdx: 0, ui: {} };
         buildGeneralPage(listG);
         var ovG = document.getElementById('subsettings-overlay');
-        if (ovG) ovG.classList.remove('hidden');
+        if (ovG) {
+          ovG.classList.remove('hidden');
+          restoreSubHeader(ovG, 'general', 'general', 'General');
+        }
         if (returnFocusKey) {
           for (var gi = 0; gi < _sub.items.length; gi++) {
             if (_sub.items[gi].part === returnFocusKey) { _sub.focusIdx = gi; break; }
@@ -1296,14 +1314,18 @@ var Settings = (function () {
       if (listGr) {
         while (listGr.firstChild) listGr.removeChild(listGr.firstChild);
         if (wasFromBackground) {
-          _sub = { kind: 'background', key: 'bgSettings', items: [], focusIdx: 0, ui: {} };
+          _sub = { kind: 'background', key: 'bgSettings', returnTo: 'general', items: [], focusIdx: 0, ui: {} };
           buildBackgroundSubPage(listGr);
         } else {
           _sub = { kind: 'graphics', key: 'graphics', items: [], focusIdx: 0, ui: {} };
           buildGraphicsPage(listGr);
         }
         var ovGr = document.getElementById('subsettings-overlay');
-        if (ovGr) ovGr.classList.remove('hidden');
+        if (ovGr) {
+          ovGr.classList.remove('hidden');
+          if (wasFromBackground) restoreSubHeader(ovGr, 'bgSettings', 'background_settings', 'Background Settings');
+          else restoreSubHeader(ovGr, 'graphics', 'graphics', 'Graphics');
+        }
         if (returnFocusKey) {
           for (var gri = 0; gri < _sub.items.length; gri++) {
             if (_sub.items[gri].part === returnFocusKey) { _sub.focusIdx = gri; break; }
@@ -1335,7 +1357,12 @@ var Settings = (function () {
           buildThemePage(listLb);
         }
         var ovLb = document.getElementById('subsettings-overlay');
-        if (ovLb) ovLb.classList.remove('hidden');
+        if (ovLb) {
+          ovLb.classList.remove('hidden');
+          if (wasFromLoadBar) restoreSubHeader(ovLb, 'loadingBar', 'loadingBar', 'Loading Bar');
+          else if (wasFromDialog) restoreSubHeader(ovLb, 'dialog', 'dialog', 'Dialog');
+          else restoreSubHeader(ovLb, 'themeSettings', 'theme_settings', 'Theme');
+        }
         if (returnFocusKey) {
           for (var lbi = 0; lbi < _sub.items.length; lbi++) {
             if (_sub.items[lbi].part === returnFocusKey) { _sub.focusIdx = lbi; break; }
@@ -2108,7 +2135,7 @@ var Settings = (function () {
 
     // Background Settings — drills into its own page (color + image actions).
     addSubRow(listEl, 'sub', 'bgSettings', 'Background Settings', null, function () {
-      return _values.visual.bgImageName || '';
+      return '';
     });
   }
 
@@ -3026,10 +3053,17 @@ var Settings = (function () {
       return _values.visual.bgColor || '';
     });
 
-    addActionRow(listEl, 'bgImage', 'Load Background', function () {
+    var hasBg = !!_values.visual.bgImageUrl;
+    var bgRow = addActionRow(listEl, 'bgImage', hasBg ? 'Change Background' : 'Load Background', function () {
       return '';
     });
-    if (_values.visual.bgImageUrl) {
+    if (bgRow) {
+      var bgLbl = bgRow.querySelector('.setting-row-label');
+      if (bgLbl) bgLbl.textContent = hasBg
+        ? L10n.t('change_background', 'Change Background')
+        : L10n.t('load_background', 'Load Background');
+    }
+    if (hasBg) {
       addActionRow(listEl, 'bgImageClear', 'Clear Background');
     }
   }
@@ -3436,43 +3470,26 @@ var Settings = (function () {
       img.src = URL.createObjectURL(blob);
     }
 
-    var retried = false;
-    function retryWithType() {
-      if (retried) {
-        if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_no_picker', 'Image picker not available'));
-        return;
-      }
-      retried = true;
-      launch({ type: 'image/*', multiple: false });
-    }
-
-    function launch(data) {
-      try {
-        window._pickerOpen = true;
-        PfaPlatform.startActivity('pick', data).then(function (res) {
-          window._pickerOpen = false;
-          var blob = extractBlob(res) || PfaPlatform.resultBlob(res);
-          if (blob) {
-            applyBlob(blob);
-          } else if (typeof window.showToast === 'function') {
-            showToast(L10n.t('toast_cannot_read', 'Cannot read that file'));
-          }
-        }, function (e) {
-          window._pickerOpen = false;
-          // User-cancelled must NOT reopen the picker.
-          var err = (e && (e.name || e.message)) || '';
-          if (!/cancel/i.test(err)) retryWithType();
-        });
-      } catch (e) {
+    try {
+      window._pickerOpen = true;
+      PfaPlatform.pickFile().then(function (res) {
         window._pickerOpen = false;
-        retryWithType();
-      }
+        var blob = extractBlob(res) || PfaPlatform.resultBlob(res);
+        if (blob) {
+          applyBlob(blob);
+        } else if (typeof window.showToast === 'function') {
+          showToast(L10n.t('toast_cannot_read', 'Cannot read that file'));
+        }
+      }, function (e) {
+        window._pickerOpen = false;
+        if (!PfaPlatform.isActivityCancel(e) && typeof window.showToast === 'function') {
+          window.showToast(L10n.t('toast_no_picker', 'Image picker not available'));
+        }
+      });
+    } catch (e) {
+      window._pickerOpen = false;
+      if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_no_picker', 'Image picker not available'));
     }
-
-    // Broad pick first (lists File Manager so the user can browse to an
-    // exported palette PNG). Builds where that finds no handler fall
-    // back to a typed pick (Gallery/Camera/File Manager for images).
-    launch(null);
   }
 
   /**
@@ -3553,50 +3570,32 @@ var Settings = (function () {
       img.src = URL.createObjectURL(blob);
     }
 
-    var retried = false;
-    function retryWithType() {
-      if (retried) {
-        if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_no_picker', 'Image picker not available'));
-        return;
-      }
-      retried = true;
-      launch({ type: 'image/*', multiple: false });
-    }
-
-    function launch(data) {
-      try {
-        window._pickerOpen = true;
-        PfaPlatform.startActivity('pick', data).then(function (res) {
-          window._pickerOpen = false;
-          var out = PfaPlatform.activityResult(res);
-          var blob = extractBlob(out) || PfaPlatform.resultBlob(out);
-          if (blob) {
-            // Source path for the boot existence check. Pickers return
-            // name/path differently; blob.name may itself be a full path.
-            var p = '';
-            try {
-              if (out && (out.path || out.name)) p = String(out.path || out.name);
-              else if (blob.name) p = String(blob.name);
-            } catch (e2) { p = ''; }
-            applyBlob(blob, p);
-          } else if (typeof window.showToast === 'function') {
-            showToast(L10n.t('toast_cannot_read', 'Cannot read that file'));
-          }
-        }, function (e) {
-          window._pickerOpen = false;
-          var err = (e && (e.name || e.message)) || '';
-          if (!/cancel/i.test(err)) retryWithType();
-        });
-      } catch (e) {
+    try {
+      window._pickerOpen = true;
+      PfaPlatform.pickFile().then(function (res) {
         window._pickerOpen = false;
-        retryWithType();
-      }
+        var out = PfaPlatform.activityResult(res);
+        var blob = extractBlob(out) || PfaPlatform.resultBlob(out);
+        if (blob) {
+          var p = '';
+          try {
+            if (out && (out.path || out.name)) p = String(out.path || out.name);
+            else if (blob.name) p = String(blob.name);
+          } catch (e2) { p = ''; }
+          applyBlob(blob, p);
+        } else if (typeof window.showToast === 'function') {
+          showToast(L10n.t('toast_cannot_read', 'Cannot read that file'));
+        }
+      }, function (e) {
+        window._pickerOpen = false;
+        if (!PfaPlatform.isActivityCancel(e) && typeof window.showToast === 'function') {
+          window.showToast(L10n.t('toast_no_picker', 'Image picker not available'));
+        }
+      });
+    } catch (e) {
+      window._pickerOpen = false;
+      if (typeof window.showToast === 'function') window.showToast(L10n.t('toast_no_picker', 'Image picker not available'));
     }
-
-    // Plain pick â€” the format that works on the device:
-    //   new MozActivity({ name: 'pick' })
-    // No type filter data (some builds ignore/fail the image/* hint).
-    launch(null);
   }
 
   /** Clear the loaded background image (reset row, re-render). */

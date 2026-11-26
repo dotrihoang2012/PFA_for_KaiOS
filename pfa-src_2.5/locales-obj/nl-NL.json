@@ -1100,6 +1100,10 @@
     "$v": "Achtergrond laden"
   },
   {
+    "$i": "change_background",
+    "$v": "Achtergrond wijzigen"
+  },
+  {
     "$i": "clear_background",
     "$v": "Achtergrond wissen"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Uitvoeren instellingen:\nandere /"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Instellingen succesvol geïmporteerd."
   },
   {
     "$i": "err_export_blocked",

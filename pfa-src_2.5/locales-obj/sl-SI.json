@@ -1100,6 +1100,10 @@
     "$v": "Naloži ozadje"
   },
   {
+    "$i": "change_background",
+    "$v": "Spremeni ozadje"
+  },
+  {
     "$i": "clear_background",
     "$v": "Počisti ozadje"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Izvožene nastavitve:\ndrugi/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Nastavitve so bile uspešno uvožene."
   },
   {
     "$i": "err_export_blocked",

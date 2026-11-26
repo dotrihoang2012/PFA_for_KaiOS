@@ -1100,6 +1100,10 @@
     "$v": "Laai Agtergrond"
   },
   {
+    "$i": "change_background",
+    "$v": "Verander agtergrond"
+  },
+  {
     "$i": "clear_background",
     "$v": "Maak agtergrond skoon"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Instellings uitgevoer:\nander/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Instellings suksesvol ingevoer."
   },
   {
     "$i": "err_export_blocked",

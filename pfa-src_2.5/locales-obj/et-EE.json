@@ -1100,6 +1100,10 @@
     "$v": "Laadi taust"
   },
   {
+    "$i": "change_background",
+    "$v": "Muuda tausta"
+  },
+  {
     "$i": "clear_background",
     "$v": "Tühjenda taust"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Eksporditud seaded:\nmuud/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Seaded imporditi edukalt."
   },
   {
     "$i": "err_export_blocked",

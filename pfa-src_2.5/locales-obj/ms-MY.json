@@ -1100,6 +1100,10 @@
     "$v": "Muatkan Latar Belakang"
   },
   {
+    "$i": "change_background",
+    "$v": "Tukar Latar Belakang"
+  },
+  {
     "$i": "clear_background",
     "$v": "Latar _Belakang"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Tetapan dieksport:\nlain-lain/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Tetapan berjaya diimport."
   },
   {
     "$i": "err_export_blocked",

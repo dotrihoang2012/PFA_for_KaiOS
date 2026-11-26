@@ -1100,6 +1100,10 @@
     "$v": "د شالید پورته کول"
   },
   {
+    "$i": "change_background",
+    "$v": "شالید بدل کړئ"
+  },
+  {
     "$i": "clear_background",
     "$v": "شاليد پاک کړئ"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "ترتیبات صادر شوي:\n‎ {name count} ‎ ‏ نورو"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "ترتیبات په بریالیتوب سره وارد شول."
   },
   {
     "$i": "err_export_blocked",

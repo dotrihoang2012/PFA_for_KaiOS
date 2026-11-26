@@ -1100,6 +1100,10 @@
     "$v": "Načíst pozadí"
   },
   {
+    "$i": "change_background",
+    "$v": "Změnit pozadí"
+  },
+  {
     "$i": "clear_background",
     "$v": "Vymazat pozadí"
   },
@@ -1470,6 +1474,10 @@
   {
     "$i": "settings_exported",
     "$v": "Nastavení exportováno:\nostatní/"
+  },
+  {
+    "$i": "settings_imported",
+    "$v": "Nastavení byla úspěšně importována."
   },
   {
     "$i": "err_export_blocked",
